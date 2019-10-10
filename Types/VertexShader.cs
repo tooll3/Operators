@@ -1,0 +1,49 @@
+﻿using T3.Core;
+using T3.Core.Operator;
+
+namespace T3.Operators.Types
+{
+    public class VertexShader : Instance<VertexShader>
+    {
+        [Output(Guid = "ED31838B-14B5-4875-A0FC-DC427E874362")]
+        public readonly Slot<SharpDX.Direct3D11.VertexShader> Shader = new Slot<SharpDX.Direct3D11.VertexShader>();
+
+        private uint _vertexShaderResId;
+        public VertexShader()
+        {
+            Shader.UpdateAction = Update;
+        }
+
+        private void Update(EvaluationContext context)
+        {
+            var resourceManager = ResourceManager.Instance();
+
+            if (Source.DirtyFlag.IsDirty || EntryPoint.DirtyFlag.IsDirty || DebugName.DirtyFlag.IsDirty)
+            {
+                string sourcePath = Source.GetValue(context);
+                string entryPoint = EntryPoint.GetValue(context);
+                string debugName = DebugName.GetValue(context);
+                _vertexShaderResId = resourceManager.CreateVertexShaderFromFile(sourcePath, entryPoint, debugName,
+                                                                                 () => Shader.DirtyFlag.Invalidate());
+            }
+            else
+            {
+                resourceManager.UpdateVertexShaderFromFile(Source.Value, _vertexShaderResId, ref Shader.Value);
+            }
+
+            if (_vertexShaderResId != ResourceManager.NULL_RESOURCE)
+            {
+                Shader.Value = resourceManager.GetVertexShader(_vertexShaderResId);
+            }
+        }
+
+        [Input(Guid = "78FB7501-74D9-4A27-8DB2-596F25482C87")]
+        public readonly InputSlot<string> Source = new InputSlot<string>();
+
+        [Input(Guid = "9A8B500E-C3B1-4BE1-8270-202EF3F90793")]
+        public readonly InputSlot<string> EntryPoint = new InputSlot<string>();
+
+        [Input(Guid = "C8A59CF8-6612-4D57-BCFD-3AEEA351BA50")]
+        public readonly InputSlot<string> DebugName = new InputSlot<string>();
+    }
+}
