@@ -78,6 +78,37 @@
       "Id": "c31c51f4-f655-497f-b1fd-3ae8eba04e4f"/*ColorGrade*/,
       "SymbolId": "e242e0d8-ff71-4742-9aab-6bdfcb285afc",
       "InputValues": []
+    },
+    {
+      "Id": "8668e4a5-c3a9-40f9-af1e-7d78bc5782fa"/*VertexShader*/,
+      "SymbolId": "646f5988-0a76-4996-a538-ba48054fd0ad",
+      "InputValues": [
+        {
+          "Id": "78fb7501-74d9-4a27-8db2-596f25482c87"/*Source*/,
+          "Type": "System.String",
+          "Value": "Resources\\\\vs-fullscreen-tri-pos-only.hlsl"
+        },
+        {
+          "Id": "9a8b500e-c3b1-4be1-8270-202ef3f90793"/*EntryPoint*/,
+          "Type": "System.String",
+          "Value": "main"
+        },
+        {
+          "Id": "c8a59cf8-6612-4d57-bcfd-3aeea351ba50"/*DebugName*/,
+          "Type": "System.String",
+          "Value": "VsTriPosOnly"
+        }
+      ]
+    },
+    {
+      "Id": "b3132577-a5c7-42de-9d2f-fc4b7d05ec13"/*VertexShaderStage*/,
+      "SymbolId": "a9600440-4203-4315-bdb1-4dfd603b4515",
+      "InputValues": []
+    },
+    {
+      "Id": "18424836-b95d-4b12-becd-0bdf161ff603"/*InputAssembler*/,
+      "SymbolId": "9d1266c5-23db-439f-a475-8000fdd1c318",
+      "InputValues": []
     }
   ],
   "Connections": [
@@ -146,6 +177,12 @@
       "SourceSlotId": "c99a7718-12b1-484e-ba96-b8d9ea7f448f",
       "TargetParentOrChildId": "a4350952-957f-458c-bdc1-4f9fec0006c6",
       "TargetSlotId": "b5e72715-9339-484f-b197-5a28cd823798"
+    },
+    {
+      "SourceParentOrChildId": "8668e4a5-c3a9-40f9-af1e-7d78bc5782fa",
+      "SourceSlotId": "ed31838b-14b5-4875-a0fc-dc427e874362",
+      "TargetParentOrChildId": "b3132577-a5c7-42de-9d2f-fc4b7d05ec13",
+      "TargetSlotId": "b1c236e5-6757-4d77-9911-e3acd5ea9fe9"
     },
     {
       "SourceParentOrChildId": "d032e75c-2f2d-4d4f-98e6-d558f9544838",

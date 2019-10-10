@@ -7,12 +7,12 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace T3.Operators.Types
 {
-    public class InputAssemblerShaderStage : Instance<InputAssemblerShaderStage>
+    public class InputAssembler : Instance<InputAssembler>
     {
         [Output(Guid = "18CAE035-C050-4F98-9E5E-B3A6DB70DDA7")]
         public readonly Slot<Scene> Output = new Slot<Scene>();
 
-        public InputAssemblerShaderStage()
+        public InputAssembler()
         {
             Output.UpdateAction = Update;
             Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // always render atm
