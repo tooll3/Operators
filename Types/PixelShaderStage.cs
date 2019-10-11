@@ -16,24 +16,24 @@ namespace T3.Operators.Types
             Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // always render atm
         }
 
-//        private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)
-//        {
-//            if (input.DirtyFlag.IsDirty)
-//            {
-//                var connectedConstBuffers = input.GetCollectedTypedInputs();
-//                if (connectedConstBuffers.Count != resources.Length)
-//                {
-//                    resources = new T[connectedConstBuffers.Count];
-//                }
-//
-//                for (int i = 0; i < connectedConstBuffers.Count; i++)
-//                {
-//                    resources[i] = connectedConstBuffers[i].GetValue(context);
-//                }
-//
-//                input.DirtyFlag.Clear();
-//            }
-//        }
+        private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)
+        {
+            if (input.DirtyFlag.IsDirty)
+            {
+                var connectedInputs = input.GetCollectedTypedInputs();
+                if (connectedInputs.Count != resources.Length)
+                {
+                    resources = new T[connectedInputs.Count];
+                }
+
+                for (int i = 0; i < connectedInputs.Count; i++)
+                {
+                    resources[i] = connectedInputs[i].GetValue(context);
+                }
+
+                input.DirtyFlag.Clear();
+            }
+        }
 
         private void Update(EvaluationContext context)
         {
@@ -44,7 +44,7 @@ namespace T3.Operators.Types
 
             var ps = PixelShader.GetValue(context);
 
-//            UpdateMultiInput(ConstantBuffers, ref _constantBuffers, context);
+            UpdateMultiInput(ConstantBuffers, ref _constantBuffers, context);
 //            UpdateMultiInput(ShaderResources, ref _shaderResourceViews, context);
 //            UpdateMultiInput(SamplerStates, ref _samplerStates, context);
 //            UpdateMultiInput(Uavs, ref _uavs, context);
@@ -55,18 +55,18 @@ namespace T3.Operators.Types
             psStage.Set(ps);
             psStage.SetConstantBuffers(0, _constantBuffers.Length, _constantBuffers);
             psStage.SetShaderResources(0, _shaderResourceViews.Length, _shaderResourceViews);
-            psStage.SetSamplers(0, _samplerStates);
+//            psStage.SetSamplers(0, _samplerStates);
 //            psStage.SetUnorderedAccessViews(0, _uavs);
 
             // unbind resources
 //            for (int i = 0; i < _uavs.Length; i++)
 //                psStage.SetUnorderedAccessView(i, null);
-            for (int i = 0; i < _samplerStates.Length; i++)
-                psStage.SetSampler(i, null);
-            for (int i = 0; i < _shaderResourceViews.Length; i++)
-                psStage.SetShaderResource(i, null);
-            for (int i = 0; i < _constantBuffers.Length; i++)
-                psStage.SetConstantBuffer(i, null);
+//            for (int i = 0; i < _samplerStates.Length; i++)
+//                psStage.SetSampler(i, null);
+//            for (int i = 0; i < _shaderResourceViews.Length; i++)
+//                psStage.SetShaderResource(i, null);
+//            for (int i = 0; i < _constantBuffers.Length; i++)
+//                psStage.SetConstantBuffer(i, null);
         }
 
         private Buffer[] _constantBuffers = new Buffer[0];

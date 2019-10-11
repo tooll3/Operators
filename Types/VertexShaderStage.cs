@@ -55,21 +55,18 @@ namespace T3.Operators.Types
             vsStage.Set(vs);
             vsStage.SetConstantBuffers(0, _constantBuffers.Length, _constantBuffers);
             vsStage.SetShaderResources(0, _shaderResourceViews.Length, _shaderResourceViews);
-            vsStage.SetSamplers(0, _samplerStates);
+//            vsStage.SetSamplers(0, _samplerStates);
 //            vsStage.SetUnorderedAccessViews(0, _uavs);
-
-//            Int3 dispatchCount = Dispatch.GetValue(context);
-//            deviceContext.Dispatch(dispatchCount.X, dispatchCount.Y, dispatchCount.Z);
 
             // unbind resources
 //            for (int i = 0; i < _uavs.Length; i++)
 //                vsStage.SetUnorderedAccessView(i, null);
-            for (int i = 0; i < _samplerStates.Length; i++)
-                vsStage.SetSampler(i, null);
-            for (int i = 0; i < _shaderResourceViews.Length; i++)
-                vsStage.SetShaderResource(i, null);
-            for (int i = 0; i < _constantBuffers.Length; i++)
-                vsStage.SetConstantBuffer(i, null);
+//            for (int i = 0; i < _samplerStates.Length; i++)
+//                vsStage.SetSampler(i, null);
+//            for (int i = 0; i < _shaderResourceViews.Length; i++)
+//                vsStage.SetShaderResource(i, null);
+//            for (int i = 0; i < _constantBuffers.Length; i++)
+//                vsStage.SetConstantBuffer(i, null);
         }
 
         private Buffer[] _constantBuffers = new Buffer[0];

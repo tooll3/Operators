@@ -19,24 +19,24 @@ namespace T3.Operators.Types
             Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // always render atm
         }
 
-//        private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)
-//        {
-//            if (input.DirtyFlag.IsDirty)
-//            {
-//                var connectedConstBuffers = input.GetCollectedTypedInputs();
-//                if (connectedConstBuffers.Count != resources.Length)
-//                {
-//                    resources = new T[connectedConstBuffers.Count];
-//                }
-//
-//                for (int i = 0; i < connectedConstBuffers.Count; i++)
-//                {
-//                    resources[i] = connectedConstBuffers[i].GetValue(context);
-//                }
-//
-//                input.DirtyFlag.Clear();
-//            }
-//        }
+        private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)
+        {
+            if (input.DirtyFlag.IsDirty)
+            {
+                var connectedInputs = input.GetCollectedTypedInputs();
+                if (connectedInputs.Count != resources.Length)
+                {
+                    resources = new T[connectedInputs.Count];
+                }
+
+                for (int i = 0; i < connectedInputs.Count; i++)
+                {
+                    resources[i] = connectedInputs[i].GetValue(context);
+                }
+
+                input.DirtyFlag.Clear();
+            }
+        }
 
         private void Update(EvaluationContext context)
         {
@@ -48,9 +48,11 @@ namespace T3.Operators.Types
 //            UpdateMultiInput(ConstantBuffers, ref _constantBuffers, context);
 //            UpdateMultiInput(ShaderResources, ref _shaderResourceViews, context);
 //            UpdateMultiInput(SamplerStates, ref _samplerStates, context);
-
+            UpdateMultiInput(Viewports, ref _viewports, context);
             rasterizer.State = RasterizerState.GetValue(context);
-//            rasterizer.SetViewports();
+
+
+            rasterizer.SetViewports(_viewports, _viewports.Length);
 //            rasterizer.SetScissorRectangles();
 
 // unbind resources
@@ -67,7 +69,8 @@ namespace T3.Operators.Types
 //        private Buffer[] _constantBuffers = new Buffer[0];
 //        private ShaderResourceView[] _shaderResourceViews = new ShaderResourceView[0];
 //        private SamplerState[] _samplerStates = new SamplerState[0];
-        
+        private RawViewportF[] _viewports = new RawViewportF[0];
+
         [Input(Guid = "35A52074-1E82-4352-91C3-D8E464F73BC7")]
         public readonly InputSlot<SharpDX.Direct3D11.RasterizerState> RasterizerState = new InputSlot<SharpDX.Direct3D11.RasterizerState>();
         [Input(Guid = "73945E5D-3C3C-4742-B341-A061B0DC116F")]

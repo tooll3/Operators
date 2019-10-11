@@ -15,24 +15,24 @@ namespace T3.Operators.Types
             Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // always render atm
         }
 
-//        private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)
-//        {
-//            if (input.DirtyFlag.IsDirty)
-//            {
-//                var connectedConstBuffers = input.GetCollectedTypedInputs();
-//                if (connectedConstBuffers.Count != resources.Length)
-//                {
-//                    resources = new T[connectedConstBuffers.Count];
-//                }
-//
-//                for (int i = 0; i < connectedConstBuffers.Count; i++)
-//                {
-//                    resources[i] = connectedConstBuffers[i].GetValue(context);
-//                }
-//
-//                input.DirtyFlag.Clear();
-//            }
-//        }
+        private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)
+        {
+            if (input.DirtyFlag.IsDirty)
+            {
+                var connectedInputs = input.GetCollectedTypedInputs();
+                if (connectedInputs.Count != resources.Length)
+                {
+                    resources = new T[connectedInputs.Count];
+                }
+
+                for (int i = 0; i < connectedInputs.Count; i++)
+                {
+                    resources[i] = connectedInputs[i].GetValue(context);
+                }
+
+                input.DirtyFlag.Clear();
+            }
+        }
 
         private void Update(EvaluationContext context)
         {
@@ -45,8 +45,10 @@ namespace T3.Operators.Types
 //            UpdateMultiInput(ShaderResources, ref _shaderResourceViews, context);
 //            UpdateMultiInput(SamplerStates, ref _samplerStates, context);
 
+            UpdateMultiInput(RenderTargetViews, ref _renderTargetViews, context);
 
-//            outputMerger.
+            outputMerger.SetRenderTargets(null, _renderTargetViews);
+            outputMerger.BlendState = BlendState.GetValue(context);
 
 
 // unbind resources
@@ -58,10 +60,12 @@ namespace T3.Operators.Types
 //                vsStage.SetShaderResource(i, null);
 //            for (int i = 0; i < _constantBuffers.Length; i++)
 //                vsStage.SetConstantBuffer(i, null);
+//            outputMerger.SetRenderTargets((RenderTargetView)null);
         }
 
 //        private Buffer[] _constantBuffers = new Buffer[0];
 //        private ShaderResourceView[] _shaderResourceViews = new ShaderResourceView[0];
+        private RenderTargetView[] _renderTargetViews = new RenderTargetView[0];
 //        private SamplerState[] _samplerStates = new SamplerState[0];
 
         [Input(Guid = "394D374F-2125-4ECB-8A69-CC7B2C3C6CB7")]

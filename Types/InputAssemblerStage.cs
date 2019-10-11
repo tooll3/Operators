@@ -49,10 +49,10 @@ namespace T3.Operators.Types
 //            UpdateMultiInput(SamplerStates, ref _samplerStates, context);
 //            UpdateMultiInput(Uavs, ref _uavs, context);
 
-            iaStage.InputLayout = InputLayout.GetValue(context);
+//            iaStage.InputLayout = InputLayout.GetValue(context);
             iaStage.PrimitiveTopology = PrimitiveTopology.GetValue(context);
-//            iaStage.SetVertexBuffers();
-            iaStage.SetIndexBuffer(IndexBuffer.GetValue(context), Format.R32_UInt,0); // todo: format and offset set input params
+//            iaStage.SetVertexBuffers(0, new Buffer[] {null}, new int[] {0}, new int[] {0});
+//            iaStage.SetIndexBuffer(IndexBuffer.GetValue(context), Format.R32_UInt,0); // todo: format and offset set input params
              
 
 //            Int3 dispatchCount = Dispatch.GetValue(context);
@@ -67,7 +67,7 @@ namespace T3.Operators.Types
 //                vsStage.SetShaderResource(i, null);
 //            for (int i = 0; i < _constantBuffers.Length; i++)
 //                vsStage.SetConstantBuffer(i, null);
-            iaStage.SetIndexBuffer(null, Format.R32_UInt, 0);
+//            iaStage.SetIndexBuffer(null, Format.R32_UInt, 0);
         }
 
         private Buffer[] _constantBuffers = new Buffer[0];
