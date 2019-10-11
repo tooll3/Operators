@@ -7,12 +7,12 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace T3.Operators.Types
 {
-    public class InputAssembler : Instance<InputAssembler>
+    public class InputAssemblerStage : Instance<InputAssemblerStage>
     {
         [Output(Guid = "18CAE035-C050-4F98-9E5E-B3A6DB70DDA7")]
         public readonly Slot<Scene> Output = new Slot<Scene>();
 
-        public InputAssembler()
+        public InputAssemblerStage()
         {
             Output.UpdateAction = Update;
             Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // always render atm
@@ -74,10 +74,10 @@ namespace T3.Operators.Types
         private ShaderResourceView[] _shaderResourceViews = new ShaderResourceView[0];
         private SamplerState[] _samplerStates = new SamplerState[0];
         
-        [Input(Guid = "B8E07473-60F9-4F5E-995D-7165EF8F7993")]
-        public readonly InputSlot<InputLayout> InputLayout = new InputSlot<InputLayout>();
         [Input(Guid = "1EA95430-B853-4A60-A981-F316905995E8")]
         public readonly InputSlot<PrimitiveTopology> PrimitiveTopology = new InputSlot<PrimitiveTopology>();
+        [Input(Guid = "B8E07473-60F9-4F5E-995D-7165EF8F7993")]
+        public readonly InputSlot<InputLayout> InputLayout = new InputSlot<InputLayout>();
         [Input(Guid = "4A1703D4-5958-4EDE-A755-79A12FE85F3B")]
         public readonly MultiInputSlot<Buffer> VertexBuffers = new MultiInputSlot<Buffer>();
         [Input(Guid = "C8FD1C4B-E6D6-4CA1-A718-4518E3BFFC59")]
