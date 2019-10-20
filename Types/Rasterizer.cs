@@ -11,7 +11,7 @@ namespace T3.Operators.Types
     public class Rasterizer : Instance<Rasterizer>
     {
         [Output(Guid = "C723AD69-FF0C-47B2-9327-BD27C0D7B6D1")]
-        public readonly Slot<Scene> Output = new Slot<Scene>();
+        public readonly Slot<Command> Output = new Slot<Command>();
 
         public Rasterizer()
         {

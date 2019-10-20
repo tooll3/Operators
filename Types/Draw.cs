@@ -7,7 +7,7 @@ namespace T3.Operators.Types
     public class Draw : Instance<Draw>
     {
         [Output(Guid = "49B28DC3-FCD1-4067-BC83-E1CC848AE55C")]
-        public readonly Slot<Scene> Output = new Slot<Scene>();
+        public readonly Slot<Command> Output = new Slot<Command>();
 
         public Draw()
         {

@@ -7,7 +7,7 @@ namespace T3.Operators.Types
     public class OutputMergerStage : Instance<OutputMergerStage>
     {
         [Output(Guid = "CEE8C3F0-64EA-4E4D-B967-EC7E3688DD03")]
-        public readonly Slot<Scene> Output = new Slot<Scene>();
+        public readonly Slot<Command> Output = new Slot<Command>();
 
         public OutputMergerStage()
         {

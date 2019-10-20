@@ -8,7 +8,7 @@ namespace T3.Operators.Types
     public class PixelShaderStage : Instance<PixelShaderStage>
     {
         [Output(Guid = "76E7AD5D-A31D-4B1F-9C42-B63C5161117C")]
-        public readonly Slot<Scene> Output = new Slot<Scene>();
+        public readonly Slot<Command> Output = new Slot<Command>();
 
         public PixelShaderStage()
         {

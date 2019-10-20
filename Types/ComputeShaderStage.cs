@@ -10,7 +10,7 @@ namespace T3.Operators.Types
     public class ComputeShaderStage : Instance<ComputeShaderStage>
     {
         [Output(Guid = "{C382284F-7E37-4EB0-B284-BC735247F26B}")]
-        public readonly Slot<Scene> Output = new Slot<Scene>();
+        public readonly Slot<Command> Output = new Slot<Command>();
 
         public ComputeShaderStage()
         {

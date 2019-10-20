@@ -8,7 +8,7 @@ namespace T3.Operators.Types
     public class VertexShaderStage : Instance<VertexShaderStage>
     {
         [Output(Guid = "65B394A9-06DC-4D9B-8819-15394EDE2997")]
-        public readonly Slot<Scene> Output = new Slot<Scene>();
+        public readonly Slot<Command> Output = new Slot<Command>();
 
         public VertexShaderStage()
         {
