@@ -8,11 +8,12 @@ namespace T3.Operators.Types
     public class PixelShaderStage : Instance<PixelShaderStage>
     {
         [Output(Guid = "76E7AD5D-A31D-4B1F-9C42-B63C5161117C")]
-        public readonly Slot<Command> Output = new Slot<Command>();
+        public readonly Slot<Command> Output = new Slot<Command>(new Command());
 
         public PixelShaderStage()
         {
             Output.UpdateAction = Update;
+            Output.Value.RestoreAction = Restore;
             Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // always render atm
         }
 
@@ -45,9 +46,10 @@ namespace T3.Operators.Types
             var ps = PixelShader.GetValue(context);
 
             UpdateMultiInput(ConstantBuffers, ref _constantBuffers, context);
-//            UpdateMultiInput(ShaderResources, ref _shaderResourceViews, context);
-//            UpdateMultiInput(SamplerStates, ref _samplerStates, context);
-//            UpdateMultiInput(Uavs, ref _uavs, context);
+
+            _prevPixelShader = psStage.Get();
+            _prevConstantBuffers = psStage.GetConstantBuffers(0, _constantBuffers.Length);
+            _prevShaderResourceViews = psStage.GetShaderResources(0, _shaderResourceViews.Length);
 
             if (ps == null)
                 return;
@@ -55,23 +57,24 @@ namespace T3.Operators.Types
             psStage.Set(ps);
             psStage.SetConstantBuffers(0, _constantBuffers.Length, _constantBuffers);
             psStage.SetShaderResources(0, _shaderResourceViews.Length, _shaderResourceViews);
-//            psStage.SetSamplers(0, _samplerStates);
-//            psStage.SetUnorderedAccessViews(0, _uavs);
+        }
 
-            // unbind resources
-//            for (int i = 0; i < _uavs.Length; i++)
-//                psStage.SetUnorderedAccessView(i, null);
-//            for (int i = 0; i < _samplerStates.Length; i++)
-//                psStage.SetSampler(i, null);
-//            for (int i = 0; i < _shaderResourceViews.Length; i++)
-//                psStage.SetShaderResource(i, null);
-//            for (int i = 0; i < _constantBuffers.Length; i++)
-//                psStage.SetConstantBuffer(i, null);
+        private void Restore(EvaluationContext context)
+        {
+            var deviceContext = ResourceManager.Instance()._device.ImmediateContext;
+            var psStage = deviceContext.PixelShader;
+
+            psStage.Set(_prevPixelShader);
+            psStage.SetConstantBuffers(0, _prevConstantBuffers.Length, _prevConstantBuffers);
+            psStage.SetShaderResources(0, _prevShaderResourceViews.Length, _prevShaderResourceViews);
         }
 
         private Buffer[] _constantBuffers = new Buffer[0];
         private ShaderResourceView[] _shaderResourceViews = new ShaderResourceView[0];
-        private SamplerState[] _samplerStates = new SamplerState[0];
+
+        private SharpDX.Direct3D11.PixelShader _prevPixelShader;
+        private Buffer[] _prevConstantBuffers;
+        private ShaderResourceView[] _prevShaderResourceViews;
 
         [Input(Guid = "1B9BE6EB-96C8-4B1C-B854-99B64EAF5618")]
         public readonly InputSlot<SharpDX.Direct3D11.PixelShader> PixelShader = new InputSlot<SharpDX.Direct3D11.PixelShader>();

@@ -1,4 +1,5 @@
-﻿using SharpDX.Direct3D;
+﻿using System.Security.AccessControl;
+using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
@@ -11,11 +12,12 @@ namespace T3.Operators.Types
     public class Rasterizer : Instance<Rasterizer>
     {
         [Output(Guid = "C723AD69-FF0C-47B2-9327-BD27C0D7B6D1")]
-        public readonly Slot<Command> Output = new Slot<Command>();
+        public readonly Slot<Command> Output = new Slot<Command>(new Command());
 
         public Rasterizer()
         {
             Output.UpdateAction = Update;
+            Output.Value.RestoreAction = Restore;
             Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // always render atm
         }
 
@@ -45,31 +47,23 @@ namespace T3.Operators.Types
             var deviceContext = device.ImmediateContext;
             var rasterizer = deviceContext.Rasterizer;
 
-//            UpdateMultiInput(ConstantBuffers, ref _constantBuffers, context);
-//            UpdateMultiInput(ShaderResources, ref _shaderResourceViews, context);
-//            UpdateMultiInput(SamplerStates, ref _samplerStates, context);
+            _prevViewports = rasterizer.GetViewports<RawViewportF>();
             UpdateMultiInput(Viewports, ref _viewports, context);
             rasterizer.State = RasterizerState.GetValue(context);
 
 
             rasterizer.SetViewports(_viewports, _viewports.Length);
-//            rasterizer.SetScissorRectangles();
-
-// unbind resources
-//            for (int i = 0; i < _uavs.Length; i++)
-//                vsStage.SetUnorderedAccessView(i, null);
-//            for (int i = 0; i < _samplerStates.Length; i++)
-//                vsStage.SetSampler(i, null);
-//            for (int i = 0; i < _shaderResourceViews.Length; i++)
-//                vsStage.SetShaderResource(i, null);
-//            for (int i = 0; i < _constantBuffers.Length; i++)
-//                vsStage.SetConstantBuffer(i, null);
         }
 
-//        private Buffer[] _constantBuffers = new Buffer[0];
-//        private ShaderResourceView[] _shaderResourceViews = new ShaderResourceView[0];
-//        private SamplerState[] _samplerStates = new SamplerState[0];
+        private void Restore(EvaluationContext context)
+        {
+            var deviceContext = ResourceManager.Instance()._device.ImmediateContext;
+            var rasterizer = deviceContext.Rasterizer;
+            rasterizer.SetViewports(_prevViewports, _prevViewports.Length);
+        }
+
         private RawViewportF[] _viewports = new RawViewportF[0];
+        private RawViewportF[] _prevViewports;
 
         [Input(Guid = "35A52074-1E82-4352-91C3-D8E464F73BC7")]
         public readonly InputSlot<SharpDX.Direct3D11.RasterizerState> RasterizerState = new InputSlot<SharpDX.Direct3D11.RasterizerState>();

@@ -1,4 +1,5 @@
 ﻿using SharpDX.Direct3D11;
+using SharpDX.Mathematics.Interop;
 using T3.Core;
 using T3.Core.Operator;
 
@@ -7,11 +8,12 @@ namespace T3.Operators.Types
     public class OutputMergerStage : Instance<OutputMergerStage>
     {
         [Output(Guid = "CEE8C3F0-64EA-4E4D-B967-EC7E3688DD03")]
-        public readonly Slot<Command> Output = new Slot<Command>();
+        public readonly Slot<Command> Output = new Slot<Command>(new Command());
 
         public OutputMergerStage()
         {
             Output.UpdateAction = Update;
+            Output.Value.RestoreAction = Restore;
             Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // always render atm
         }
 
@@ -41,32 +43,29 @@ namespace T3.Operators.Types
             var deviceContext = device.ImmediateContext;
             var outputMerger = deviceContext.OutputMerger;
 
-//            UpdateMultiInput(ConstantBuffers, ref _constantBuffers, context);
-//            UpdateMultiInput(ShaderResources, ref _shaderResourceViews, context);
-//            UpdateMultiInput(SamplerStates, ref _samplerStates, context);
-
             UpdateMultiInput(RenderTargetViews, ref _renderTargetViews, context);
 
+            _prevRenderTargetViews = outputMerger.GetRenderTargets(_renderTargetViews.Length, out _prevDepthStencilView);
+            _prevBlendState = outputMerger.GetBlendState(out _prevBlendFactor, out _prevSampleMask);
             outputMerger.SetRenderTargets(null, _renderTargetViews);
             outputMerger.BlendState = BlendState.GetValue(context);
-
-
-// unbind resources
-//            for (int i = 0; i < _uavs.Length; i++)
-//                vsStage.SetUnorderedAccessView(i, null);
-//            for (int i = 0; i < _samplerStates.Length; i++)
-//                vsStage.SetSampler(i, null);
-//            for (int i = 0; i < _shaderResourceViews.Length; i++)
-//                vsStage.SetShaderResource(i, null);
-//            for (int i = 0; i < _constantBuffers.Length; i++)
-//                vsStage.SetConstantBuffer(i, null);
-//            outputMerger.SetRenderTargets((RenderTargetView)null);
         }
 
-//        private Buffer[] _constantBuffers = new Buffer[0];
-//        private ShaderResourceView[] _shaderResourceViews = new ShaderResourceView[0];
+        private void Restore(EvaluationContext context)
+        {
+            var deviceContext = ResourceManager.Instance()._device.ImmediateContext;
+            var outputMerger = deviceContext.OutputMerger;
+
+            outputMerger.BlendState = _prevBlendState;
+            outputMerger.SetRenderTargets(_prevDepthStencilView, _prevRenderTargetViews);
+        }
+
         private RenderTargetView[] _renderTargetViews = new RenderTargetView[0];
-//        private SamplerState[] _samplerStates = new SamplerState[0];
+        private RenderTargetView[] _prevRenderTargetViews;
+        private DepthStencilView _prevDepthStencilView;
+        private BlendState _prevBlendState;
+        private RawColor4 _prevBlendFactor;
+        private int _prevSampleMask;
 
         [Input(Guid = "394D374F-2125-4ECB-8A69-CC7B2C3C6CB7")]
         public readonly InputSlot<DepthStencilView> DepthStencilView = new InputSlot<DepthStencilView>();
