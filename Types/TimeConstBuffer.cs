@@ -22,7 +22,8 @@ namespace T3.Operators.Types
         private void Update(EvaluationContext context)
         {
             var bufferContent = new TimeBufferLayout((float)EvaluationContext.GlobalTime, (float)context.Time);
-            ResourceManager.Instance().SetupConstBufferForCS(bufferContent, ref Buffer.Value, 0);
+            ResourceManager.Instance().SetupConstBuffer(bufferContent, ref Buffer.Value);
+            Buffer.Value.DebugName = nameof(TimeConstBuffer);
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 16)]
