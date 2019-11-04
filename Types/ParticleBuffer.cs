@@ -8,12 +8,12 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace T3.Operators.Types
 {
-    public class TestParticleBuffer : Instance<TestParticleBuffer>
+    public class ParticleBuffer : Instance<ParticleBuffer>
     {
         [Output(Guid = "FECD0B22-F28E-4EF9-80E4-76ED1EFE973C")]
         public readonly Slot<SharpDX.Direct3D11.Buffer> Buffer = new Slot<SharpDX.Direct3D11.Buffer>();
 
-        public TestParticleBuffer()
+        public ParticleBuffer()
         {
             Buffer.UpdateAction = Update;
 //            Buffer.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // for debugging with renderdoc
@@ -30,13 +30,13 @@ namespace T3.Operators.Types
                                                         ((float)rand.NextDouble() - 0.5f) * 200.0f,
                                                         ((float)rand.NextDouble() - 0.5f) * 200.0f);
 
-                Vector3 dir = new Vector3((float)rand.NextDouble() - 0.5f, (float)rand.NextDouble() - 0.5f, (float)rand.NextDouble() - 0.5f);
-                dir.Normalize();
-                bufferContent[i].Direction = dir;
+                bufferContent[i].Velocity = (float)rand.NextDouble();
+                bufferContent[i].Lifetime = (float)rand.NextDouble() * 10.0f;
+                bufferContent[i].Color = new Vector3((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
             }
 
             ResourceManager.Instance().SetupStructuredBuffer(bufferContent, ref Buffer.Value);
-            Buffer.Value.DebugName = nameof(TestParticleBuffer);
+            Buffer.Value.DebugName = nameof(ParticleBuffer);
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 32)]
@@ -44,8 +44,12 @@ namespace T3.Operators.Types
         {
             [FieldOffset(0)]
             public Vector3 Position;
+            [FieldOffset(12)]
+            public float Velocity;
             [FieldOffset(16)]
-            public Vector3 Direction;
+            public float Lifetime;
+            [FieldOffset(28)]
+            public Vector3 Color;
         }       
         
         [Input(Guid = "61D1BE34-26CF-43DB-9219-7A97AB3113B8")]
