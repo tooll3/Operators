@@ -48,7 +48,7 @@ namespace T3.Operators.Types
             public float Velocity;
             [FieldOffset(16)]
             public float Lifetime;
-            [FieldOffset(28)]
+            [FieldOffset(20)]
             public Vector3 Color;
         }       
         
