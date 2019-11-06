@@ -16,7 +16,17 @@ namespace T3.Operators.Types
         private void Update(EvaluationContext context)
         {
             var list = Input.GetValue(context);
-            var index = Index.GetValue(context);
+            if (list == null)
+            { 
+                Selected.Value= string.Empty;
+                return;
+            }
+
+            var count = list.Count;
+            if (count < 0)
+                count = -count;
+            
+            var index = Index.GetValue(context) % count;
             if (index >= 0 && index < list.Count)
             {
                 Selected.Value = list[index];
