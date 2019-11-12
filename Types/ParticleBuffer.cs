@@ -18,7 +18,7 @@ namespace T3.Operators.Types
             Buffer.UpdateAction = Update;
 //            Buffer.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // for debugging with renderdoc
         }
-
+       
         private void Update(EvaluationContext context)
         {
             int count = Count.GetValue(context);
@@ -29,27 +29,29 @@ namespace T3.Operators.Types
                 bufferContent[i].Position = new Vector3(((float)rand.NextDouble() - 0.5f) * 200.0f,
                                                         ((float)rand.NextDouble() - 0.5f) * 200.0f,
                                                         ((float)rand.NextDouble() - 0.5f) * 200.0f);
-
-                bufferContent[i].Velocity = (float)rand.NextDouble();
                 bufferContent[i].Lifetime = (float)rand.NextDouble() * 10.0f;
-                bufferContent[i].Color = new Vector3((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
+                bufferContent[i].Velocity = new Vector3((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
+                bufferContent[i].Dummy = 0.0f;
+                bufferContent[i].Color = new Vector4((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
             }
 
             ResourceManager.Instance().SetupStructuredBuffer(bufferContent, ref Buffer.Value);
             Buffer.Value.DebugName = nameof(ParticleBuffer);
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 32)]
+        [StructLayout(LayoutKind.Explicit, Size = 48)]
         public struct BufferLayout
         {
             [FieldOffset(0)]
             public Vector3 Position;
             [FieldOffset(12)]
-            public float Velocity;
-            [FieldOffset(16)]
             public float Lifetime;
-            [FieldOffset(20)]
-            public Vector3 Color;
+            [FieldOffset(16)]
+            public Vector3 Velocity;
+            [FieldOffset(28)]
+            public float Dummy;
+            [FieldOffset(32)]
+            public Vector4 Color;
         }       
         
         [Input(Guid = "61D1BE34-26CF-43DB-9219-7A97AB3113B8")]
