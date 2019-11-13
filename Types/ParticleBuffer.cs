@@ -16,10 +16,10 @@ namespace T3.Operators.Types
         public ParticleBuffer()
         {
             Buffer.UpdateAction = Update;
-            Buffer.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // for debugging with renderdoc
+            // Buffer.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // for debugging with renderdoc
         }
 
-        private static int _seed = 0;
+        private static int _seed = 19;
         private void Update(EvaluationContext context)
         {
             int count = Count.GetValue(context);
