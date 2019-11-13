@@ -17,6 +17,25 @@ namespace T3.Operators.Types
             Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
+        private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)
+        {
+            if (input.DirtyFlag.IsDirty)
+            {
+                var connectedInputs = input.GetCollectedTypedInputs();
+                if (connectedInputs.Count != resources.Length)
+                {
+                    resources = new T[connectedInputs.Count];
+                }
+
+                for (int i = 0; i < connectedInputs.Count; i++)
+                {
+                    resources[i] = connectedInputs[i].GetValue(context);
+                }
+
+                input.DirtyFlag.Clear();
+            }
+        }
+        
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
@@ -24,13 +43,20 @@ namespace T3.Operators.Types
             var deviceContext = device.ImmediateContext;
             var vsStage = deviceContext.VertexShader;
 
+            UpdateMultiInput(ConstantBuffers, ref _constantBuffers, context);
+            UpdateMultiInput(ShaderResources, ref _shaderResourceViews, context);
+            
             var vs = VertexShader.GetValue(context);
+            _prevConstantBuffers = vsStage.GetConstantBuffers(0, _constantBuffers.Length);
+            _prevShaderResourceViews = vsStage.GetShaderResources(0, _shaderResourceViews.Length);
 
             if (vs == null)
                 return;
 
             _prevVertexShader = vs;
             vsStage.Set(vs);
+            vsStage.SetConstantBuffers(0, _constantBuffers.Length, _constantBuffers);
+            vsStage.SetShaderResources(0, _shaderResourceViews.Length, _shaderResourceViews);
         }
 
         private void Restore(EvaluationContext context)
@@ -38,9 +64,16 @@ namespace T3.Operators.Types
             var deviceContext = ResourceManager.Instance()._device.ImmediateContext;
             var vsStage = deviceContext.VertexShader;
             vsStage.Set(_prevVertexShader);
+            vsStage.SetConstantBuffers(0, _prevConstantBuffers.Length, _prevConstantBuffers);
+            vsStage.SetShaderResources(0, _prevShaderResourceViews.Length, _prevShaderResourceViews);
         }
 
-        SharpDX.Direct3D11.VertexShader _prevVertexShader;
+        private Buffer[] _constantBuffers = new Buffer[0];
+        private ShaderResourceView[] _shaderResourceViews = new ShaderResourceView[0];
+
+        private SharpDX.Direct3D11.VertexShader _prevVertexShader;
+        private Buffer[] _prevConstantBuffers;
+        private ShaderResourceView[] _prevShaderResourceViews;
 
         [Input(Guid = "B1C236E5-6757-4D77-9911-E3ACD5EA9FE9")]
         public readonly InputSlot<SharpDX.Direct3D11.VertexShader> VertexShader = new InputSlot<SharpDX.Direct3D11.VertexShader>();

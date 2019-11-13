@@ -16,14 +16,15 @@ namespace T3.Operators.Types
         public ParticleBuffer()
         {
             Buffer.UpdateAction = Update;
-//            Buffer.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // for debugging with renderdoc
+            Buffer.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // for debugging with renderdoc
         }
-       
+
+        private static int _seed = 0;
         private void Update(EvaluationContext context)
         {
             int count = Count.GetValue(context);
             var bufferContent = new BufferLayout[count];
-            var rand = new System.Random(0);
+            var rand = new System.Random(_seed++);
             for (int i = 0; i < count; i++)
             {
                 bufferContent[i].Position = new Vector3(((float)rand.NextDouble() - 0.5f) * 200.0f,

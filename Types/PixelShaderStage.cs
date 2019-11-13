@@ -46,6 +46,7 @@ namespace T3.Operators.Types
             var ps = PixelShader.GetValue(context);
 
             UpdateMultiInput(ConstantBuffers, ref _constantBuffers, context);
+            UpdateMultiInput(ShaderResources, ref _shaderResourceViews, context);
 
             _prevPixelShader = psStage.Get();
             _prevConstantBuffers = psStage.GetConstantBuffers(0, _constantBuffers.Length);
