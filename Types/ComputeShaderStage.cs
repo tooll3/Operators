@@ -58,7 +58,14 @@ namespace T3.Operators.Types
             csStage.SetConstantBuffers(0, _constantBuffers.Length, _constantBuffers);
             csStage.SetShaderResources(0, _shaderResourceViews.Length, _shaderResourceViews);
             csStage.SetSamplers(0, _samplerStates);
-            csStage.SetUnorderedAccessViews(0, _uavs);
+            if (_uavs.Length == 3)
+            {
+                csStage.SetUnorderedAccessViews(0, _uavs, new[] { -1, 0, -1 });
+            }
+            else
+            {
+                csStage.SetUnorderedAccessViews(0, _uavs);
+            }
 
             Int3 dispatchCount = Dispatch.GetValue(context);
             deviceContext.Dispatch(dispatchCount.X, dispatchCount.Y, dispatchCount.Z);
@@ -92,5 +99,7 @@ namespace T3.Operators.Types
         public readonly MultiInputSlot<SamplerState> SamplerStates = new MultiInputSlot<SamplerState>();
         [Input(Guid = "{599384C2-BF6C-4953-BE74-D363292AB1C7}")]
         public readonly MultiInputSlot<UnorderedAccessView> Uavs = new MultiInputSlot<UnorderedAccessView>();
+        [Input(Guid = "0105ACA4-5FD5-40C8-82A5-E919BB7DD507")]
+        public readonly InputSlot<int> UavBufferCount = new InputSlot<int>();
     }
 }
