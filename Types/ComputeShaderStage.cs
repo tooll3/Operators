@@ -58,7 +58,7 @@ namespace T3.Operators.Types
             csStage.SetConstantBuffers(0, _constantBuffers.Length, _constantBuffers);
             csStage.SetShaderResources(0, _shaderResourceViews.Length, _shaderResourceViews);
             csStage.SetSamplers(0, _samplerStates);
-            if (_uavs.Length == 3)
+            if (_uavs.Length == 4)
             {
                 csStage.SetUnorderedAccessViews(0, _uavs, new[] { -1, 0, -1 });
             }

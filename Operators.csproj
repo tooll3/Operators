@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -62,7 +63,9 @@
     <Compile Include="Types\ColorGrade.cs" />
     <Compile Include="Types\ClearRenderTarget.cs" />
     <Compile Include="Types\CopyStructureCount.cs" />
+    <Compile Include="Types\DrawInstancedIndirect.cs" />
     <Compile Include="Types\ExecuteOnce.cs" />
+    <Compile Include="Types\IndirectBuffer.cs" />
     <Compile Include="Types\Modulo.cs" />
     <Compile Include="Types\ParticleCountConstBuffer.cs" />
     <Compile Include="Types\ParticleIndexBuffer.cs" />
@@ -110,6 +113,7 @@
     <Compile Include="Types\RunTime.cs" />
     <Compile Include="Types\ToInt.cs" />
     <Compile Include="Types\TomsShaderTest.cs" />
+    <Compile Include="Types\UavFromBuffer.cs" />
     <Compile Include="Types\UavFromStructuredBuffer.cs" />
     <Compile Include="Types\UavFromTexture2d.cs" />
     <Compile Include="Types\VertexShader.cs" />
