@@ -17,9 +17,7 @@ namespace T3.Operators.Types
         {
             var v = Value.GetValue(context);
             var mod = Mod.GetValue(context);
-            Result.Value = v >= 0 
-                               ? (v % mod)
-                               : (Math.Abs(mod+v) % mod);
+            Result.Value = v - mod * (float)Math.Floor(v/mod);
         }
         
         [Input(Guid = "8a401e5d-295d-4403-a3af-1d6b91ce3dba")]

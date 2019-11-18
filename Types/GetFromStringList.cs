@@ -23,9 +23,15 @@ namespace T3.Operators.Types
             }
 
             var count = list.Count;
+            if (count == 0)
+            {
+                Selected.Value = string.Empty;
+                return;
+            }
+            
             if (count < 0)
                 count = -count;
-            
+
             var index = Index.GetValue(context) % count;
             if (index >= 0 && index < list.Count)
             {
