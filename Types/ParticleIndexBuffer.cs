@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Runtime.InteropServices;
+using SharpDX.Direct3D11;
 using T3.Core;
 using T3.Core.Operator;
 
@@ -21,8 +23,17 @@ namespace T3.Operators.Types
             if (count == 0)
                 return;
 
-            int[] bufferContent = Enumerable.Range(0, count).ToArray();
-            ResourceManager.Instance().SetupStructuredBuffer(bufferContent, ref Buffer.Value);
+            int stride = Marshal.SizeOf(typeof(uint));
+            int sizeInBytes = stride * count;
+            var bufferDesc = new BufferDescription
+                             {
+                                 Usage = ResourceUsage.Default,
+                                 BindFlags = BindFlags.UnorderedAccess | BindFlags.ShaderResource,
+                                 SizeInBytes = sizeInBytes,
+                                 OptionFlags = ResourceOptionFlags.BufferStructured,
+                                 StructureByteStride = stride
+                             };
+            ResourceManager.Instance().SetupBuffer(ref Buffer.Value, bufferDesc);
             Buffer.Value.DebugName = nameof(ParticleIndexBuffer);
         }
 

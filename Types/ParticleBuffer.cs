@@ -30,7 +30,7 @@ namespace T3.Operators.Types
                 bufferContent[i].Position = new Vector3(((float)rand.NextDouble() - 0.5f) * 200.0f,
                                                         ((float)rand.NextDouble() - 0.5f) * 200.0f,
                                                         ((float)rand.NextDouble() - 0.5f) * 200.0f);
-                bufferContent[i].Lifetime = (float)rand.NextDouble() * 10.0f;
+                bufferContent[i].Lifetime = -10.0f;// (float)rand.NextDouble() * 10.0f;
                 bufferContent[i].Velocity = new Vector3((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
                 bufferContent[i].Dummy = 0.0f;
                 bufferContent[i].Color = new Vector4((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());

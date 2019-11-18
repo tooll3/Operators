@@ -62,6 +62,14 @@ namespace T3.Operators.Types
             {
                 csStage.SetUnorderedAccessViews(0, _uavs, new[] { -1, 0, -1 });
             }
+            else if (_uavs.Length == 1)
+            {
+                int counter = UavBufferCount.GetValue(context);
+                if (counter == -1)
+                    csStage.SetUnorderedAccessView(0, _uavs[0]);
+                else
+                    csStage.SetUnorderedAccessViews(0, _uavs, new[] { counter });
+            }
             else
             {
                 csStage.SetUnorderedAccessViews(0, _uavs);
