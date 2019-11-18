@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using SharpDX.Direct3D11;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 
 namespace T3.Operators.Types
@@ -34,7 +35,9 @@ namespace T3.Operators.Types
                                  StructureByteStride = stride
                              };
             ResourceManager.Instance().SetupBuffer(ref Buffer.Value, bufferDesc);
-            Buffer.Value.DebugName = nameof(ParticleIndexBuffer);
+            var symbolChild = Parent.Symbol.Children.Single(c => c.Id == Id);
+            Buffer.Value.DebugName = symbolChild.ReadableName;
+            Log.Info($"{symbolChild.ReadableName} updated");
         }
 
         [Input(Guid = "1AF495E6-04F2-49B2-8A44-AE100CF405C4")]

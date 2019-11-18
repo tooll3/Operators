@@ -60,7 +60,7 @@ namespace T3.Operators.Types
             csStage.SetSamplers(0, _samplerStates);
             if (_uavs.Length == 4)
             {
-                csStage.SetUnorderedAccessViews(0, _uavs, new[] { -1, 0, -1 });
+                csStage.SetUnorderedAccessViews(0, _uavs, new[] { -1, 0, -1, -1 });
             }
             else if (_uavs.Length == 1)
             {

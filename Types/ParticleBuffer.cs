@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.Direct3D11;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using Buffer = SharpDX.Direct3D11.Buffer;
 
@@ -37,7 +39,9 @@ namespace T3.Operators.Types
             }
 
             ResourceManager.Instance().SetupStructuredBuffer(bufferContent, ref Buffer.Value);
-            Buffer.Value.DebugName = nameof(ParticleBuffer);
+            var symbolChild = Parent.Symbol.Children.Single(c => c.Id == Id);
+            Buffer.Value.DebugName = symbolChild.ReadableName;
+            Log.Info($"{symbolChild.ReadableName} updated");
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 48)]
