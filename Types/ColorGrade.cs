@@ -14,12 +14,12 @@ namespace T3.Operators.Types
         public readonly InputSlot<Texture2D> Texture2d = new InputSlot<Texture2D>();
 
         [Input(Guid = "4DC44A7B-FE7C-4807-AAAA-53FB553DE017")]
-        public readonly InputSlot<System.Numerics.Vector4> Light = new InputSlot<System.Numerics.Vector4>();
+        public readonly InputSlot<System.Numerics.Vector4> Gain = new InputSlot<System.Numerics.Vector4>();
 
         [Input(Guid = "BE4DC864-A5F9-4356-91F9-58DE8056A3A8")]
-        public readonly InputSlot<System.Numerics.Vector4> Mid = new InputSlot<System.Numerics.Vector4>();
+        public readonly InputSlot<System.Numerics.Vector4> Gamma = new InputSlot<System.Numerics.Vector4>();
 
         [Input(Guid = "E8CC8A26-313E-4399-B800-901019BBAA78")]
-        public readonly InputSlot<System.Numerics.Vector4> Shadow = new InputSlot<System.Numerics.Vector4>();
+        public readonly InputSlot<System.Numerics.Vector4> Lift = new InputSlot<System.Numerics.Vector4>();
     }
 }

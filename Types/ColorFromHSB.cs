@@ -66,8 +66,8 @@ namespace T3.Operators.Types
             // Color.Value.X = brightness;
             // Color.Value.Y = fG;
             // Color.Value.Z = fB;
-            //Color.Value = new Vector4(fR, fG, fB, Alpha.GetValue(context));   
-            Color.Value = new Vector4(hue, sat, brightness, Alpha.GetValue(context));
+            Color.Value = new Vector4(fR, fG, fB, Alpha.GetValue(context));   
+            //Color.Value = new Vector4(hue, sat, brightness, Alpha.GetValue(context));
         }
 
         [Input(Guid = "2c1adb2b-36bd-4ca0-8fbb-e7571163a98d")]
