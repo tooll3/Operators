@@ -12,14 +12,11 @@ namespace T3.Operators.Types
         {
             TimeInSeconds.UpdateAction = Update;
             TimeInSeconds.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
-            _watch.Start();
         }
 
         private void Update(EvaluationContext context)
         {
-            TimeInSeconds.Value = _watch.ElapsedMilliseconds / 1000.0f;
+            TimeInSeconds.Value = (float)EvaluationContext.RunTime;
         }
-
-        private Stopwatch _watch = new Stopwatch();
     }
 }

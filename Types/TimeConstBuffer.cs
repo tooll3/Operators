@@ -21,7 +21,7 @@ namespace T3.Operators.Types
 
         private void Update(EvaluationContext context)
         {
-            var bufferContent = new TimeBufferLayout((float)EvaluationContext.GlobalTime, (float)context.Time);
+            var bufferContent = new TimeBufferLayout((float)EvaluationContext.GlobalTime, (float)context.Time, (float)EvaluationContext.RunTime);
             ResourceManager.Instance().SetupConstBuffer(bufferContent, ref Buffer.Value);
             Buffer.Value.DebugName = nameof(TimeConstBuffer);
         }
@@ -29,17 +29,19 @@ namespace T3.Operators.Types
         [StructLayout(LayoutKind.Explicit, Size = 16)]
         public struct TimeBufferLayout
         {
-            public TimeBufferLayout(float globalTime, float time)
+            public TimeBufferLayout(float globalTime, float time, float runTime)
             {
                 GlobalTime = globalTime;
                 Time = time;
+                RunTime = runTime;
             }
 
             [FieldOffset(0)]
             public float GlobalTime;
             [FieldOffset(4)]
             public float Time;
+            [FieldOffset(8)]
+            public float RunTime;
         }       
-        
     }
 }
