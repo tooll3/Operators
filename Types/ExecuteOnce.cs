@@ -13,34 +13,36 @@ namespace T3.Operators.Types
             Output.UpdateAction = Update;
         }
 
-        private int _count = 0;
         private void Update(EvaluationContext context)
         {
-            if (_count++ >= 1)
-                return;
-
-            var commands = Command.GetCollectedTypedInputs();
-
-            // do preparation if needed
-            for (int i = 0; i < commands.Count; i++)
+            if (Trigger.DirtyFlag.IsDirty)
             {
-                commands[i].Value?.PrepareAction?.Invoke(context);
-            }
+                Trigger.DirtyFlag.Clear();
+                var commands = Command.GetCollectedTypedInputs();
 
-            // execute commands
-            for (int i = 0; i < commands.Count; i++)
-            {
-                commands[i].GetValue(context);
-            }
+                // do preparation if needed
+                for (int i = 0; i < commands.Count; i++)
+                {
+                    commands[i].Value?.PrepareAction?.Invoke(context);
+                }
 
-            // cleanup after usage
-            for (int i = 0; i < commands.Count; i++)
-            {
-                commands[i].Value?.RestoreAction?.Invoke(context);
+                // execute commands
+                for (int i = 0; i < commands.Count; i++)
+                {
+                    commands[i].GetValue(context);
+                }
+
+                // cleanup after usage
+                for (int i = 0; i < commands.Count; i++)
+                {
+                    commands[i].Value?.RestoreAction?.Invoke(context);
+                }
             }
         }
 
         [Input(Guid = "7450033D-5797-40C9-B6C4-B6E8D27FE501")]
         public readonly MultiInputSlot<Command> Command = new MultiInputSlot<Command>();
+        [Input(Guid = "2049D44D-81A4-493B-A630-A1B273A4E6F9")]
+        public readonly InputSlot<bool> Trigger = new InputSlot<bool>(true);
     }
 }
