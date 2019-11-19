@@ -47,10 +47,12 @@ namespace T3.Operators.Types
 
             UpdateMultiInput(ConstantBuffers, ref _constantBuffers, context);
             UpdateMultiInput(ShaderResources, ref _shaderResourceViews, context);
+            UpdateMultiInput(SamplerStates, ref _samplerStates, context);
 
             _prevPixelShader = psStage.Get();
             _prevConstantBuffers = psStage.GetConstantBuffers(0, _constantBuffers.Length);
             _prevShaderResourceViews = psStage.GetShaderResources(0, _shaderResourceViews.Length);
+            _prevSamplerStates = psStage.GetSamplers(0, _samplerStates.Length);
 
             if (ps == null)
                 return;
@@ -58,6 +60,7 @@ namespace T3.Operators.Types
             psStage.Set(ps);
             psStage.SetConstantBuffers(0, _constantBuffers.Length, _constantBuffers);
             psStage.SetShaderResources(0, _shaderResourceViews.Length, _shaderResourceViews);
+            psStage.SetSamplers(0, _samplerStates.Length, _samplerStates);
         }
 
         private void Restore(EvaluationContext context)
@@ -68,14 +71,17 @@ namespace T3.Operators.Types
             psStage.Set(_prevPixelShader);
             psStage.SetConstantBuffers(0, _prevConstantBuffers.Length, _prevConstantBuffers);
             psStage.SetShaderResources(0, _prevShaderResourceViews.Length, _prevShaderResourceViews);
+            psStage.SetSamplers(0, _prevSamplerStates.Length, _prevSamplerStates);
         }
 
         private Buffer[] _constantBuffers = new Buffer[0];
         private ShaderResourceView[] _shaderResourceViews = new ShaderResourceView[0];
+        private SamplerState[] _samplerStates = new SamplerState[0];
 
         private SharpDX.Direct3D11.PixelShader _prevPixelShader;
         private Buffer[] _prevConstantBuffers;
         private ShaderResourceView[] _prevShaderResourceViews;
+        private SamplerState[] _prevSamplerStates = new SamplerState[0];
 
         [Input(Guid = "1B9BE6EB-96C8-4B1C-B854-99B64EAF5618")]
         public readonly InputSlot<SharpDX.Direct3D11.PixelShader> PixelShader = new InputSlot<SharpDX.Direct3D11.PixelShader>();
