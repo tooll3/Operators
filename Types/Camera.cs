@@ -13,6 +13,7 @@ namespace T3.Operators.Types
         public Camera()
         {
             Output.UpdateAction = Update;
+            Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)
@@ -24,20 +25,23 @@ namespace T3.Operators.Types
             Matrix clipSpaceTcamera = Matrix.PerspectiveFovRH(fov, aspectRatio, zNear, zFar);
             Matrix cameraTclipSpace = clipSpaceTcamera;
             cameraTclipSpace.Invert();
-            Vector3 eye = new Vector3(0.0f, 0.0f, -10.0f);
+            float x = (float)(Math.Cos(EvaluationContext.RunTime) * 300.0f);
+            float z = (float)(Math.Sin(EvaluationContext.RunTime) * 300.0f);
+            Vector3 eye = new Vector3(x, 0.0f, z);
             Vector3 target = Vector3.Zero;
             Matrix cameraTworld = Matrix.LookAtRH(eye, target, Vector3.Up);
             Matrix worldTcamera = cameraTworld;
             worldTcamera.Invert();
             Matrix clipSpaceTworld = clipSpaceTcamera * cameraTworld;
             Matrix worldTclipSpace = worldTcamera * cameraTclipSpace;
-
+            
             context.ClipSpaceTcamera = clipSpaceTcamera;
             context.CameraTclipSpace = cameraTclipSpace;
             context.CameraTworld = cameraTworld;
             context.WorldTcamera = worldTcamera;
             context.ClipSpaceTworld = clipSpaceTworld;
             context.WorldTclipSpace = worldTclipSpace;
+            Command.GetValue(context);
         }
 
         [Input(Guid = "047B8FAE-468C-48A7-8F3A-5FAC8DD5B3C6")]
