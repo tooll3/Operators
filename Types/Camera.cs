@@ -22,8 +22,6 @@ namespace T3.Operators.Types
             float aspectRatio = AspectRatio.GetValue(context);
             System.Numerics.Vector2 clip = NearFarClip.GetValue(context);
             Matrix clipSpaceTcamera = Matrix.PerspectiveFovRH(fov, aspectRatio, clip.X, clip.Y);
-            Matrix cameraTclipSpace = clipSpaceTcamera;
-            cameraTclipSpace.Invert();
             var pos = Position.GetValue(context);
             Vector3 eye = new Vector3(pos.X, pos.Y, pos.Z);
             var t = Target.GetValue(context);
@@ -31,17 +29,9 @@ namespace T3.Operators.Types
             var u = Up.GetValue(context);
             Vector3 up = new Vector3(u.X, u.Y, u.Z);
             Matrix cameraTworld = Matrix.LookAtRH(eye, target, up);
-            Matrix worldTcamera = cameraTworld;
-            worldTcamera.Invert();
-            Matrix clipSpaceTworld = clipSpaceTcamera * cameraTworld;
-            Matrix worldTclipSpace = worldTcamera * cameraTclipSpace;
             
             context.ClipSpaceTcamera = clipSpaceTcamera;
-            context.CameraTclipSpace = cameraTclipSpace;
             context.CameraTworld = cameraTworld;
-            context.WorldTcamera = worldTcamera;
-            context.ClipSpaceTworld = clipSpaceTworld;
-            context.WorldTclipSpace = worldTclipSpace;
             Command.GetValue(context);
         }
 

@@ -19,24 +19,32 @@ namespace T3.Operators.Types
 
         private void Update(EvaluationContext context)
         {
-            var bufferContent = new BufferLayout(context.ClipSpaceTcamera, context.CameraTclipSpace, context.CameraTworld, context.WorldTcamera,
-                                                 context.ClipSpaceTworld, context.WorldTclipSpace);
+            var bufferContent = new BufferLayout(context.ClipSpaceTcamera, context.CameraTworld, context.WorldTobject);
             ResourceManager.Instance().SetupConstBuffer(bufferContent, ref Buffer.Value);
             Buffer.Value.DebugName = nameof(TransformsConstBuffer);
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 4*4*4*6)]
+        [StructLayout(LayoutKind.Explicit, Size = 4*4*4*10)]
         public struct BufferLayout
         {
-            public BufferLayout(Matrix clipSpaceTcamera, Matrix cameraTclipSpace, Matrix cameraTworld, Matrix worldTcamera, Matrix clipSpaceTworld,
-                                Matrix worldTclipSpace)
+            public BufferLayout(Matrix clipSpaceTcamera, Matrix cameraTworld, Matrix worldTobject) 
             {
+                Matrix cameraTclipSpace = clipSpaceTcamera;
+                cameraTclipSpace.Invert();
+                Matrix worldTcamera = cameraTworld;
+                worldTcamera.Invert();
+                Matrix objectTworld = worldTobject;
+                objectTworld.Invert();
                 ClipSpaceTcamera = clipSpaceTcamera;
                 CameraTclipSpace = cameraTclipSpace;
                 CameraTworld = cameraTworld;
                 WorldTcamera = worldTcamera;
-                ClipSpaceTworld = clipSpaceTworld;
-                WorldTclipSpace = worldTclipSpace;
+                ClipSpaceTworld = clipSpaceTcamera * cameraTworld;
+                WorldTclipSpace = worldTcamera * cameraTclipSpace;
+                WorldTobject = worldTobject;
+                ObjectTworld = objectTworld;
+                CameraTobject = Matrix.Multiply(WorldTobject, CameraTworld); // todo: check why the order must be wrong to be correct
+                ClipSpaceTobject = ClipSpaceTcamera * CameraTobject;
             }
 
             [FieldOffset(0)]
@@ -51,6 +59,14 @@ namespace T3.Operators.Types
             public Matrix ClipSpaceTworld;
             [FieldOffset(320)]
             public Matrix WorldTclipSpace;
+            [FieldOffset(384)]
+            public Matrix WorldTobject;
+            [FieldOffset(448)]
+            public Matrix ObjectTworld;
+            [FieldOffset(512)]
+            public Matrix CameraTobject;
+            [FieldOffset(576)]
+            public Matrix ClipSpaceTobject;
         }
     }
 }
