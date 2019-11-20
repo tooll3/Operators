@@ -22,7 +22,7 @@ namespace T3.Operators.Types
             {
                 DirtyFlag.InvalidationRefFrame++;
                 Invalidate(Command);
-                Trigger.Input.Value.Assign(Trigger.Input.DefaultValue);
+                Trigger.TypedInputValue.Value = false;
                 Trigger.Value = false;
             }
             Command.GetValue(context);
