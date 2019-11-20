@@ -24,7 +24,7 @@ namespace T3.Operators.Types
                 string entryPoint = EntryPoint.GetValue(context);
                 string debugName = DebugName.GetValue(context);
                 _vertexShaderResId = resourceManager.CreateVertexShaderFromFile(sourcePath, entryPoint, debugName,
-                                                                                 () => Shader.DirtyFlag.Invalidate());
+                                                                                () => Shader.DirtyFlag.Invalidate());
             }
             else
             {

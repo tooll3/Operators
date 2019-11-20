@@ -47,7 +47,8 @@ namespace T3.Operators.Types
 
             _prevRenderTargetViews = outputMerger.GetRenderTargets(_renderTargetViews.Length, out _prevDepthStencilView);
             _prevBlendState = outputMerger.GetBlendState(out _prevBlendFactor, out _prevSampleMask);
-            outputMerger.SetRenderTargets(null, _renderTargetViews);
+            if (_renderTargetViews.Length > 0)
+                outputMerger.SetRenderTargets(null, _renderTargetViews);
             outputMerger.BlendState = BlendState.GetValue(context);
         }
 
@@ -57,7 +58,8 @@ namespace T3.Operators.Types
             var outputMerger = deviceContext.OutputMerger;
 
             outputMerger.BlendState = _prevBlendState;
-            outputMerger.SetRenderTargets(_prevDepthStencilView, _prevRenderTargetViews);
+            if (_renderTargetViews.Length > 0)
+                outputMerger.SetRenderTargets(_prevDepthStencilView, _prevRenderTargetViews);
         }
 
         private RenderTargetView[] _renderTargetViews = new RenderTargetView[0];

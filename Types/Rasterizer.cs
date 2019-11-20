@@ -51,8 +51,8 @@ namespace T3.Operators.Types
             UpdateMultiInput(Viewports, ref _viewports, context);
             rasterizer.State = RasterizerState.GetValue(context);
 
-
-            rasterizer.SetViewports(_viewports, _viewports.Length);
+            if (_viewports.Length > 0)
+                rasterizer.SetViewports(_viewports, _viewports.Length);
         }
 
         private void Restore(EvaluationContext context)
