@@ -19,16 +19,12 @@ namespace T3.Operators.Types
 
         private void Update(EvaluationContext context)
         {
-            var bufferContent = new ParamBufferLayout(
-                                                      Param1.GetValue(context), 
-                                                      Param2.GetValue(context), 
-                                                      Param3.GetValue(context), 
-                                                      Param4.GetValue(context));
+            var bufferContent = new ParamBufferLayout(Param1.GetValue(context), Param2.GetValue(context), Param3.GetValue(context), Param4.GetValue(context));
             ResourceManager.Instance().SetupConstBuffer(bufferContent, ref Buffer.Value);
             Buffer.Value.DebugName = nameof(ColorGradeConstBuffer);
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        [StructLayout(LayoutKind.Explicit, Size = 64)]
         public struct ParamBufferLayout
         {
             public ParamBufferLayout(Vector4 param1, Vector4 param2, Vector4 param3, Vector4 param4)
