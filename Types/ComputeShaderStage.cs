@@ -50,6 +50,7 @@ namespace T3.Operators.Types
             UpdateMultiInput(ShaderResources, ref _shaderResourceViews, context);
             UpdateMultiInput(SamplerStates, ref _samplerStates, context);
             UpdateMultiInput(Uavs, ref _uavs, context);
+            int counter = UavBufferCount.GetValue(context);
 
             if (_uavs.Length == 0 || _uavs[0] == null || _cs == null)
                 return;
@@ -64,7 +65,6 @@ namespace T3.Operators.Types
             }
             else if (_uavs.Length == 1)
             {
-                int counter = UavBufferCount.GetValue(context);
                 if (counter == -1)
                     csStage.SetUnorderedAccessView(0, _uavs[0]);
                 else
