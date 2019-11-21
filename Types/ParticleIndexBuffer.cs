@@ -24,17 +24,9 @@ namespace T3.Operators.Types
             if (count == 0)
                 return;
 
-            int stride = Marshal.SizeOf(typeof(uint));
-            int sizeInBytes = stride * count;
-            var bufferDesc = new BufferDescription
-                             {
-                                 Usage = ResourceUsage.Default,
-                                 BindFlags = BindFlags.UnorderedAccess | BindFlags.ShaderResource,
-                                 SizeInBytes = sizeInBytes,
-                                 OptionFlags = ResourceOptionFlags.BufferStructured,
-                                 StructureByteStride = stride
-                             };
-            ResourceManager.Instance().SetupBuffer(ref Buffer.Value, bufferDesc);
+            var resourceManager = ResourceManager.Instance();
+            resourceManager.SetupStructuredBuffer(4 * count, 4, ref Buffer.Value);
+
             var symbolChild = Parent.Symbol.Children.Single(c => c.Id == Id);
             Buffer.Value.DebugName = symbolChild.ReadableName;
             Log.Info($"{symbolChild.ReadableName} updated");

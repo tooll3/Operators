@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Numerics;
 using T3.Core;
 using T3.Core.Operator;
 using Buffer = SharpDX.Direct3D11.Buffer;
@@ -17,30 +17,8 @@ namespace T3.Operators.Types
 
         private void Update(EvaluationContext context)
         {
-            var bufferContent = new BufferLayout();
-            ResourceManager.Instance().SetupConstBuffer(bufferContent, ref Buffer.Value);
+            ResourceManager.Instance().SetupConstBuffer(Vector4.Zero, ref Buffer.Value);
             Buffer.Value.DebugName = nameof(ParticleCountConstBuffer);
         }
-
-        [StructLayout(LayoutKind.Explicit, Size = 16)]
-        public struct BufferLayout
-        {
-            public BufferLayout(int i = 0)
-            {
-                Param1 = 0;
-                Param2 = 0;
-                Param3 = 0;
-                Param4 = 100;
-            }
-
-            [FieldOffset(0)]
-            public int Param1;
-            [FieldOffset(4)]
-            public int Param2;
-            [FieldOffset(8)]
-            public int Param3;
-            [FieldOffset(12)]
-            public int Param4;
-        }       
     }
 }

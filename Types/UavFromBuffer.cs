@@ -20,30 +20,8 @@ namespace T3.Operators.Types
 
         private void Update(EvaluationContext context)
         {
-            var resourceManager = ResourceManager.Instance();
             var buffer = Buffer.GetValue(context);
-            if (buffer != null)
-            {
-                if ((buffer.Description.OptionFlags & ResourceOptionFlags.BufferStructured) != 0)
-                {
-                    Log.Warning($"{nameof(UavFromBuffer)} - input buffer is structured, skipping UAV creation.");
-                    return;
-                }
-
-                UnorderedAccessView.Value?.Dispose();
-                var desc = new UnorderedAccessViewDescription()
-                           {
-                               Dimension = UnorderedAccessViewDimension.Buffer,
-                               Format = Format.R32_UInt,
-                               Buffer = new UnorderedAccessViewDescription.BufferResource()
-                                        {
-                                            FirstElement = 0,
-                                            ElementCount = buffer.Description.SizeInBytes / Marshal.SizeOf<uint>(),
-                                            Flags = UnorderedAccessViewBufferFlags.None
-                                        }
-                           };
-                UnorderedAccessView.Value = new UnorderedAccessView(resourceManager._device, buffer, desc); // todo: create via resource manager
-            }
+            ResourceManager.Instance().CreateBufferUav<uint>(buffer, Format.R32_UInt, ref UnorderedAccessView.Value);
         }
 
         [Input(Guid = "58EBAE6E-7D8C-45A0-8266-8B71F601DA0A")]

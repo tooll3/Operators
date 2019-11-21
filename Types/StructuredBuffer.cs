@@ -11,7 +11,6 @@ namespace T3.Operators.Types
         [Output(Guid = "C10E66C8-C887-4A82-B557-642990581767")]
         public readonly Slot<SharpDX.Direct3D11.Buffer> Buffer = new Slot<SharpDX.Direct3D11.Buffer>();
 
-
         public StructuredBuffer()
         {
             Buffer.UpdateAction = UpdateBuffer;
@@ -25,15 +24,7 @@ namespace T3.Operators.Types
             if (sizeInBytes <= 0)
                 return;
 
-            var bufferDesc = new BufferDescription
-                             {
-                                 Usage = ResourceUsage.Default,
-                                 BindFlags = BindFlags.UnorderedAccess | BindFlags.ShaderResource,
-                                 SizeInBytes = sizeInBytes,
-                                 OptionFlags = ResourceOptionFlags.BufferStructured,
-                                 StructureByteStride = stride
-                             };
-            ResourceManager.Instance().SetupBuffer(ref Buffer.Value, bufferDesc);
+            ResourceManager.Instance().SetupIndirectBuffer(sizeInBytes, ref Buffer.Value);
         }
 
         [Input(Guid = "28E44436-F4E2-44EC-A28D-447E7A9F6BA8")]

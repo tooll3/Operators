@@ -23,28 +23,8 @@ namespace T3.Operators.Types
             var resourceManager = ResourceManager.Instance();
             var buffer = Buffer.GetValue(context);
             var bufferFlags = BufferFlags.GetValue(context);
-            if (buffer != null)
-            {
-                if ((buffer.Description.OptionFlags & ResourceOptionFlags.BufferStructured) == 0)
-                {
-                    Log.Warning($"{nameof(UavFromStructuredBuffer)} - input buffer is not structured, skipping SRV creation.");
-                    return;
-                }
+            resourceManager.CreateStructuredBufferUav(buffer, bufferFlags, ref UnorderedAccessView.Value);
 
-                UnorderedAccessView.Value?.Dispose();
-                var desc = new UnorderedAccessViewDescription()
-                           {
-                               Dimension = UnorderedAccessViewDimension.Buffer,
-                               Format = Format.Unknown,
-                               Buffer = new UnorderedAccessViewDescription.BufferResource()
-                                        {
-                                            FirstElement = 0,
-                                            ElementCount = buffer.Description.SizeInBytes / buffer.Description.StructureByteStride,
-                                            Flags = bufferFlags
-                                        }
-                           };
-                UnorderedAccessView.Value = new UnorderedAccessView(resourceManager._device, buffer, desc); // todo: create via resource manager
-            }
             var symbolChild = Parent.Symbol.Children.Single(c => c.Id == Id);
             UnorderedAccessView.Value.DebugName = symbolChild.ReadableName;
             Log.Info($"{symbolChild.ReadableName} updated with ref {UnorderedAccessView.DirtyFlag.Reference}");

@@ -31,7 +31,7 @@ namespace T3.Operators.Types
                                  OptionFlags = ResourceOptionFlags.DrawIndirectArguments,
                                  StructureByteStride = stride
                              };
-            ResourceManager.Instance().SetupBuffer(ref Buffer.Value, bufferDesc);
+            ResourceManager.Instance().SetupBuffer(bufferDesc, ref Buffer.Value);
         }
 
         [Input(Guid = "38D649D2-861B-4302-A879-973D6405A4DE")]

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using SharpDX;
-using SharpDX.Direct3D11;
+﻿using System.Linq;
 using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
@@ -13,52 +9,25 @@ namespace T3.Operators.Types
     public class ParticleBuffer : Instance<ParticleBuffer>
     {
         [Output(Guid = "FECD0B22-F28E-4EF9-80E4-76ED1EFE973C")]
-        public readonly Slot<SharpDX.Direct3D11.Buffer> Buffer = new Slot<SharpDX.Direct3D11.Buffer>();
+        public readonly Slot<Buffer> Buffer = new Slot<Buffer>();
 
         public ParticleBuffer()
         {
             Buffer.UpdateAction = Update;
-            // Buffer.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // for debugging with renderdoc
         }
 
-        private static int _seed = 19;
         private void Update(EvaluationContext context)
         {
             int count = Count.GetValue(context);
-            var bufferContent = new BufferLayout[count];
-            var rand = new System.Random(_seed++);
-            for (int i = 0; i < count; i++)
-            {
-                bufferContent[i].Position = new Vector3(((float)rand.NextDouble() - 0.5f) * 200.0f,
-                                                        ((float)rand.NextDouble() - 0.5f) * 200.0f,
-                                                        ((float)rand.NextDouble() - 0.5f) * 200.0f);
-                bufferContent[i].Lifetime = -10.0f;// (float)rand.NextDouble() * 10.0f;
-                bufferContent[i].Velocity = new Vector3((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
-                bufferContent[i].Dummy = 0.0f;
-                bufferContent[i].Color = new Vector4((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
-            }
+            int stride = 48;
+            var bufferData = Enumerable.Repeat(-10.0f, count * (stride / 4)).ToArray(); // init with negative lifetime other values doesn't matter
+            ResourceManager.Instance().SetupStructuredBuffer(bufferData, stride * count, stride, ref Buffer.Value);
 
-            ResourceManager.Instance().SetupStructuredBuffer(bufferContent, ref Buffer.Value);
             var symbolChild = Parent.Symbol.Children.Single(c => c.Id == Id);
             Buffer.Value.DebugName = symbolChild.ReadableName;
             Log.Info($"{symbolChild.ReadableName} updated");
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 48)]
-        public struct BufferLayout
-        {
-            [FieldOffset(0)]
-            public Vector3 Position;
-            [FieldOffset(12)]
-            public float Lifetime;
-            [FieldOffset(16)]
-            public Vector3 Velocity;
-            [FieldOffset(28)]
-            public float Dummy;
-            [FieldOffset(32)]
-            public Vector4 Color;
-        }       
-        
         [Input(Guid = "61D1BE34-26CF-43DB-9219-7A97AB3113B8")]
         public readonly InputSlot<int> Count = new InputSlot<int>(1000);
     }
