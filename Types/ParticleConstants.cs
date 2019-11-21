@@ -23,7 +23,7 @@ namespace T3.Operators.Types
         {
             Count.UpdateAction = Update;
             DeadListInitDispatch.UpdateAction = Update;
-            EmitDispatch.UpdateAction = EmitUpdate;
+            EmitDispatch.UpdateAction = Update;
             UpdateDispatch.UpdateAction = Update;
         }
 
@@ -35,13 +35,13 @@ namespace T3.Operators.Types
                 Count.Value = maxCount;
                 DeadListInitDispatch.Value = new Int3(maxCount / 64, 1, 1);
                 UpdateDispatch.Value = new Int3(maxCount / 64, 1, 1);
-                Log.Info("constants updated");
             }
-        }
 
-        private void EmitUpdate(EvaluationContext context)
-        {
-            EmitDispatch.Value = new Int3(MaxEmitRatePerFrame.GetValue(context), 1, 1);
+            if (MaxEmitRatePerFrame.DirtyFlag.IsDirty)
+            {
+                EmitDispatch.Value = new Int3(MaxEmitRatePerFrame.GetValue(context), 1, 1);
+            }
+            Log.Info("constants updated");
         }
 
         [Input(Guid = "B0B1BCB1-9F02-4482-A323-89408B4AB347")]
