@@ -1,4 +1,5 @@
 ﻿using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 
 namespace T3.Operators.Types
@@ -17,6 +18,7 @@ namespace T3.Operators.Types
         {
             if (Trigger.DirtyFlag.IsDirty)
             {
+                Log.Info("ExecuteOnce triggered");
                 Trigger.DirtyFlag.Clear();
                 var commands = Command.GetCollectedTypedInputs();
 
