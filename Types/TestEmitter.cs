@@ -19,5 +19,9 @@ namespace T3.Operators.Types
         public readonly InputSlot<float> Lifetime = new InputSlot<float>();
         [Input(Guid = "16576E3C-A55E-426E-BF1F-95F18F8648EC")]
         public readonly InputSlot<Vector4> Color = new InputSlot<Vector4>();
+        [Input(Guid = "CF063078-99D3-421D-80D4-DA83AA89A859")]
+        public readonly InputSlot<Vector4> ScatterColor = new InputSlot<Vector4>();
+        [Input(Guid = "B7E871B1-49BB-44E1-9A71-203911A42D97")]
+        public readonly InputSlot<Vector4> RandomVelocity = new InputSlot<Vector4>();
     }
 }
