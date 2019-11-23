@@ -1,0 +1,32 @@
+{
+  "Name": "BUG02_ColorGradeDoesNotUpdateChildren",
+  "Id": "5eec3f44-2503-44a6-878e-b1b674380b8f",
+  "InstanceType": "T3.Operators.Types.BUG02_ColorGradeDoesNotUpdateChildren, Operators",
+  "Inputs": [],
+  "Children": [
+    {
+      "Id": "e2464bac-2cfb-46f2-831a-11b942f9cfd2"/*BUG01_TransformRotation*/,
+      "SymbolId": "c28fa486-97d8-4a5d-807f-bccd2b07b86e",
+      "InputValues": []
+    },
+    {
+      "Id": "696ba966-4d1e-4ac0-981c-15b3405e8062"/*ColorGrade*/,
+      "SymbolId": "42d86738-d644-47c8-ab92-cc426d958e51",
+      "InputValues": []
+    }
+  ],
+  "Connections": [
+    {
+      "SourceParentOrChildId": "696ba966-4d1e-4ac0-981c-15b3405e8062",
+      "SourceSlotId": "1680781d-af5e-4b77-beb6-3e4a12d73d59",
+      "TargetParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "TargetSlotId": "7e044d64-f6ab-4a23-aaa9-c1d61a8c59fe"
+    },
+    {
+      "SourceParentOrChildId": "e2464bac-2cfb-46f2-831a-11b942f9cfd2",
+      "SourceSlotId": "d5cb94a8-e295-45b8-9e6f-b750ebd863a7",
+      "TargetParentOrChildId": "696ba966-4d1e-4ac0-981c-15b3405e8062",
+      "TargetSlotId": "777b2c27-a3c8-40d0-a196-80a08af51296"
+    }
+  ]
+}
