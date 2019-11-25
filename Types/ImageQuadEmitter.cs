@@ -1,0 +1,20 @@
+using SharpDX.Direct3D11;
+using T3.Core;
+using T3.Core.Operator;
+using T3.Core.Operator.Helper;
+
+namespace T3.Operators.Types
+{
+    public class ImageQuadEmitter : Instance<ImageQuadEmitter>
+    {
+        [Output(Guid = "23c5d230-4f31-44f8-9b65-5c8cf111bd45")]
+        public readonly Slot<Command> Command = new Slot<Command>();
+
+        [Input(Guid = "3fc23e8b-95bc-467d-8e60-3794b9135c34")]
+        public readonly InputSlot<string> ShaderFilename = new InputSlot<string>();
+        [Input(Guid = "49a41a2a-39a4-46fd-ab70-5c8442a6fd61")]
+        public readonly InputSlot<ParticleSystem> ParticleSystem = new InputSlot<ParticleSystem>();
+        [Input(Guid = "d133b57d-4e2c-432a-8172-599e7f70e79e")]
+        public readonly MultiInputSlot<ShaderResourceView> ShaderResources = new MultiInputSlot<ShaderResourceView>();
+    }
+}
