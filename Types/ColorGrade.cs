@@ -21,5 +21,9 @@ namespace T3.Operators.Types
 
         [Input(Guid = "E8CC8A26-313E-4399-B800-901019BBAA78")]
         public readonly InputSlot<System.Numerics.Vector4> Lift = new InputSlot<System.Numerics.Vector4>();
+        
+        [Input(Guid = "16231DE9-2E85-4A9A-A2D1-99DFAC18A0F6")]
+        public readonly InputSlot<float> PreSaturate = new InputSlot<float>();
+
     }
 }
