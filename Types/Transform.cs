@@ -20,8 +20,8 @@ namespace T3.Operators.Types
         {
             var s = Scale.GetValue(context);
             var r = Rotation.GetValue(context);
-            float yaw = MathUtil.DegreesToRadians(r.X);
-            float pitch = MathUtil.DegreesToRadians(r.Y);
+            float yaw = MathUtil.DegreesToRadians(r.Y);
+            float pitch = MathUtil.DegreesToRadians(r.X);
             float roll = MathUtil.DegreesToRadians(r.Z);
             var t = Translation.GetValue(context);
             var worldTobject = Matrix.Transformation(Vector3.Zero, Quaternion.Identity, new Vector3(s.X, s.Y, s.Z), Vector3.Zero,
