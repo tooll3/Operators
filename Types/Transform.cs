@@ -26,7 +26,7 @@ namespace T3.Operators.Types
             var t = Translation.GetValue(context);
             var worldTobject = Matrix.Transformation(Vector3.Zero, Quaternion.Identity, new Vector3(s.X, s.Y, s.Z), Vector3.Zero,
                                                          Quaternion.RotationYawPitchRoll(yaw, pitch, roll), new Vector3(t.X, t.Y, t.Z));
-            context.WorldTobject = worldTobject;
+            context.WorldTobject = Matrix.Multiply(context.WorldTobject, worldTobject);
             Command.GetValue(context);
         }
 
