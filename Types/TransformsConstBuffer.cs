@@ -39,12 +39,12 @@ namespace T3.Operators.Types
                 CameraTclipSpace = cameraTclipSpace;
                 CameraTworld = cameraTworld;
                 WorldTcamera = worldTcamera;
-                ClipSpaceTworld = clipSpaceTcamera * cameraTworld;
-                WorldTclipSpace = worldTcamera * cameraTclipSpace;
+                ClipSpaceTworld = Matrix.Multiply(clipSpaceTcamera, cameraTworld);
+                WorldTclipSpace = Matrix.Multiply(worldTcamera, cameraTclipSpace);
                 WorldTobject = worldTobject;
                 ObjectTworld = objectTworld;
-                CameraTobject = Matrix.Multiply(WorldTobject, CameraTworld); // todo: check why the order must be wrong to be correct
-                ClipSpaceTobject = ClipSpaceTcamera * CameraTobject;
+                CameraTobject = Matrix.Multiply(cameraTworld, worldTobject);
+                ClipSpaceTobject = Matrix.Multiply(clipSpaceTcamera, CameraTobject);
             }
 
             [FieldOffset(0)]
