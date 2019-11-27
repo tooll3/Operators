@@ -1,5 +1,6 @@
 ﻿using SharpDX.Direct3D11;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 
 namespace T3.Operators.Types
@@ -25,7 +26,7 @@ namespace T3.Operators.Types
             var setPs = deviceContext.PixelShader.Get();
             if (setVs == null || setPs == null)
             {
-                int i = 0;
+                Log.Warning("Trying to issue draw call, but pixel and/or vertex shader are null.");
                 return;
             }
 
