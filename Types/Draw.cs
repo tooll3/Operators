@@ -20,6 +20,15 @@ namespace T3.Operators.Types
             var resourceManager = ResourceManager.Instance();
             var device = resourceManager._device;
             var deviceContext = device.ImmediateContext;
+
+            var setVs = deviceContext.VertexShader.Get();
+            var setPs = deviceContext.PixelShader.Get();
+            if (setVs == null || setPs == null)
+            {
+                int i = 0;
+                return;
+            }
+
             deviceContext.Draw(VertexCount.GetValue(context), VertexStartLocation.GetValue(context));
         }
 
