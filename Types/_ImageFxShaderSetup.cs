@@ -21,9 +21,6 @@ namespace T3.Operators.Types
         [Input(Guid = "900877d3-c5df-420b-a2ac-eeb6c5219dd3")]
         public readonly InputSlot<Texture2D> Texture = new InputSlot<Texture2D>();
         
-        [Input(Guid = "c9be988d-56a5-4fcc-a036-406a498affe5")]
-        public readonly InputSlot<Texture2D> Texture2 = new InputSlot<Texture2D>();
-
         [Input(Guid = "4f73a058-1750-434b-b8b1-205c52d90c34")]
         public readonly MultiInputSlot<float> Params = new MultiInputSlot<float>();
 
