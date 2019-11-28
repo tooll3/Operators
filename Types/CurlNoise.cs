@@ -1,32 +1,34 @@
-using SharpDX.Direct3D11;
-using T3.Core;
+using System;
 using T3.Core.Operator;
-using T3.Core.Operator.Helper;
 
 namespace T3.Operators.Types
 {
     public class CurlNoise : Instance<CurlNoise>
     {
         [Output(Guid = "a507e4cd-1b47-4cf5-924c-29ec6374f34e")]
-        public readonly Slot<Command> Command = new Slot<Command>();
+        public readonly Slot<T3.Core.Command> Command = new Slot<T3.Core.Command>();
+
 
         [Input(Guid = "d8f26ecf-f7eb-44c9-9911-bc177c771c0e")]
         public readonly InputSlot<string> ShaderFilename = new InputSlot<string>();
-        
+
         [Input(Guid = "18d7ff8e-4118-4e65-91eb-917d085f5384")]
-        public readonly InputSlot<ParticleSystem> ParticleSystem = new InputSlot<ParticleSystem>();
-        
+        public readonly InputSlot<T3.Core.Operator.Helper.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.Operator.Helper.ParticleSystem>();
+
         [Input(Guid = "ffe9dbb2-97ef-46e9-b365-490341624daf")]
-        public readonly MultiInputSlot<ShaderResourceView> ShaderResources = new MultiInputSlot<ShaderResourceView>();
-        
-        [Input(Guid = "49DFC07F-6AD0-46A4-AA2A-A9FE547BAF60")]
+        public readonly MultiInputSlot<SharpDX.Direct3D11.ShaderResourceView> ShaderResources = new MultiInputSlot<SharpDX.Direct3D11.ShaderResourceView>();
+
+        [Input(Guid = "49dfc07f-6ad0-46a4-aa2a-a9fe547baf60")]
         public readonly InputSlot<float> Frequency = new InputSlot<float>();
 
-        [Input(Guid = "4A4191B6-63F3-4F59-AD63-B83BD581800A")]
+        [Input(Guid = "4a4191b6-63f3-4f59-ad63-b83bd581800a")]
         public readonly InputSlot<float> Amount = new InputSlot<float>();
 
-        [Input(Guid = "2849511F-DC52-4A95-924D-1EB2E6C53F7E")]
+        [Input(Guid = "2849511f-dc52-4a95-924d-1eb2e6c53f7e")]
         public readonly InputSlot<float> Phase = new InputSlot<float>();
 
+        [Input(Guid = "eb15afd2-a3f8-427c-b4cd-e2a803e93f5c")]
+        public readonly InputSlot<float> ParticleFriction = new InputSlot<float>();
     }
 }
+
