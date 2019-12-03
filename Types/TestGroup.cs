@@ -1,5 +1,3 @@
-using System;
-using System;
 using T3.Core.Operator;
 
 namespace T3.Operators.Types
