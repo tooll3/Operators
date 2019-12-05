@@ -25,7 +25,7 @@ namespace T3.Operators.Types
             var bufferFlags = BufferFlags.GetValue(context);
             resourceManager.CreateStructuredBufferUav(buffer, bufferFlags, ref UnorderedAccessView.Value);
 
-            var symbolChild = Parent.Symbol.Children.Single(c => c.Id == Id);
+            var symbolChild = Parent.Symbol.Children.Single(c => c.Id == SymbolChildId);
             UnorderedAccessView.Value.DebugName = symbolChild.ReadableName;
             Log.Info($"{symbolChild.ReadableName} updated with ref {UnorderedAccessView.DirtyFlag.Reference}");
         }

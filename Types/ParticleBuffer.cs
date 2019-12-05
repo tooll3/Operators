@@ -23,7 +23,7 @@ namespace T3.Operators.Types
             var bufferData = Enumerable.Repeat(-10.0f, count * (stride / 4)).ToArray(); // init with negative lifetime other values doesn't matter
             ResourceManager.Instance().SetupStructuredBuffer(bufferData, stride * count, stride, ref Buffer.Value);
 
-            var symbolChild = Parent.Symbol.Children.Single(c => c.Id == Id);
+            var symbolChild = Parent.Symbol.Children.Single(c => c.Id == SymbolChildId);
             Buffer.Value.DebugName = symbolChild.ReadableName;
             Log.Info($"{symbolChild.ReadableName} updated");
         }
