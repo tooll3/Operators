@@ -33,6 +33,7 @@ namespace T3.Operators.Types
 
         [Input(Guid = "62575BBF-1F2B-45CC-9A77-A5F41BFFF09C")]
         public readonly InputSlot<int> MaxCount = new InputSlot<int>(2048);
+        
         [Input(Guid = "F8FD66CA-F2D1-421B-878E-A306CB4EC70F")]
         public readonly InputSlot<int> MaxEmitRatePerFrame = new InputSlot<int>(16);
     }
