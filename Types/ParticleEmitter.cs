@@ -1,20 +1,34 @@
-﻿using SharpDX.Direct3D11;
-using T3.Core;
+using System;
 using T3.Core.Operator;
-using T3.Core.Operator.Helper;
 
 namespace T3.Operators.Types
 {
     public class ParticleEmitter : Instance<ParticleEmitter>
     {
-        [Output(Guid = "AA24848D-4EC6-4F1A-9A5A-C64587EE6F75")]
-        public readonly Slot<Command> Command = new Slot<Command>();
+        [Output(Guid = "aa24848d-4ec6-4f1a-9a5a-c64587ee6f75")]
+        public readonly Slot<T3.Core.Command> Command = new Slot<T3.Core.Command>();
 
-        [Input(Guid = "B33B6B8B-37CD-475A-B67D-AC672478F439")]
+
+        [Input(Guid = "b33b6b8b-37cd-475a-b67d-ac672478f439")]
         public readonly InputSlot<string> ShaderFilename = new InputSlot<string>();
-        [Input(Guid = "7F5E613E-03F0-48A0-9844-54E78868F7E3")]
-        public readonly InputSlot<ParticleSystem> ParticleSystem = new InputSlot<ParticleSystem>();
-        [Input(Guid = "88AD8D03-0281-417F-8830-69CCAD5345AD")]
-        public readonly MultiInputSlot<ShaderResourceView> ShaderResources = new MultiInputSlot<ShaderResourceView>();
+
+        [Input(Guid = "7f5e613e-03f0-48a0-9844-54e78868f7e3")]
+        public readonly InputSlot<T3.Core.Operator.Helper.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.Operator.Helper.ParticleSystem>();
+
+        [Input(Guid = "88ad8d03-0281-417f-8830-69ccad5345ad")]
+        public readonly MultiInputSlot<SharpDX.Direct3D11.ShaderResourceView> ShaderResources = new MultiInputSlot<SharpDX.Direct3D11.ShaderResourceView>();
+
+        [Input(Guid = "1468320d-e1f9-4bb9-bc8e-f7cfbc7a4ea6")]
+        public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();
+
+        [Input(Guid = "64af7117-3423-4c1e-9856-0b06777985a3")]
+        public readonly InputSlot<System.Numerics.Vector4> ColorScatter = new InputSlot<System.Numerics.Vector4>();
+
+        [Input(Guid = "488e4032-0261-41d0-966f-225cf00c7653")]
+        public readonly InputSlot<float> LifeTime = new InputSlot<float>();
+
+        [Input(Guid = "43d0b219-bc30-4e46-acb1-18848d8b04a9")]
+        public readonly InputSlot<float> ScatterPosition = new InputSlot<float>();
     }
 }
+
