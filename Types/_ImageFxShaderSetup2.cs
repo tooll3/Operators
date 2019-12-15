@@ -12,11 +12,6 @@ namespace T3.Operators.Types
         [Input(Guid = "16dce9bc-02d9-48f8-b07e-94a9af48d27b")]
         public readonly InputSlot<string> Source = new InputSlot<string>();
 
-        [Input(Guid = "4ea22917-b060-41be-b9b6-ba64c1e9c1de")]
-        public readonly InputSlot<string> EntryPoint = new InputSlot<string>();
-
-        [Input(Guid = "d927a9d2-c073-42d0-8b3c-70fb6a89f716")]
-        public readonly InputSlot<string> DebugName = new InputSlot<string>();
 
         [Input(Guid = "36abde68-0d79-4fb6-b8ce-ac8a27b66850")]
         public readonly InputSlot<Texture2D> Texture = new InputSlot<Texture2D>();
