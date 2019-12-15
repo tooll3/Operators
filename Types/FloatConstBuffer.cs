@@ -23,7 +23,8 @@ namespace T3.Operators.Types
         private void Update(EvaluationContext context)
         {
             var param = Params.GetCollectedTypedInputs();
-            var array = new float[ Math.Max(16, param.Count)];
+            int arraySize = (param.Count / 4 + (param.Count % 4 == 0 ? 0 : 1)) * 4; // always 16byte slices for alignment
+            var array = new float[arraySize];
 
             if (array.Length == 0)
                 return;
