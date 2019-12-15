@@ -34,7 +34,7 @@ namespace T3.Operators.Types
                                      IsScissorEnabled = ScissorEnabled.GetValue(context),
                                      SlopeScaledDepthBias = SlopeScaledDepthBias.GetValue(context)
                                  };
-            RasterizerState.Value = new RasterizerState(ResourceManager.Instance()._device, rasterizerDesc); // todo: put into resource manager
+            RasterizerState.Value = new RasterizerState(ResourceManager.Instance().Device, rasterizerDesc); // todo: put into resource manager
         }
 
         [Input(Guid = "03F3BC7F-3949-4A97-88CF-04E162CFA2F7")]

@@ -31,7 +31,7 @@ namespace T3.Operators.Types
                 resourceManager.UpdateVertexShaderFromFile(Source.Value, _vertexShaderResId, ref Shader.Value);
             }
 
-            if (_vertexShaderResId != ResourceManager.NULL_RESOURCE)
+            if (_vertexShaderResId != ResourceManager.NullResource)
             {
                 Shader.Value = resourceManager.GetVertexShader(_vertexShaderResId);
             }

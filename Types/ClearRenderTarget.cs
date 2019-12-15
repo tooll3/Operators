@@ -20,7 +20,7 @@ namespace T3.Operators.Types
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
-            var device = resourceManager._device;
+            var device = resourceManager.Device;
             var deviceContext = device.ImmediateContext;
             // deviceContext.Draw2(VertexCount.GetValue(context), VertexStartLocation.GetValue(context));
             var rtv = RenderTarget.GetValue(context);

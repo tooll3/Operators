@@ -40,7 +40,7 @@ namespace T3.Operators.Types
                                               ElementCount = buffer.Description.SizeInBytes / buffer.Description.StructureByteStride
                                           }
                            };
-                ShaderResourceView.Value = new ShaderResourceView(resourceManager._device, buffer, desc); // todo: create via resource manager
+                ShaderResourceView.Value = new ShaderResourceView(resourceManager.Device, buffer, desc); // todo: create via resource manager
             }
         }
 

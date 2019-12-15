@@ -32,7 +32,7 @@ namespace T3.Operators.Types
                 resourceManager.UpdatePixelShaderFromFile(Source.Value, _pixelShaderResId, ref Shader.Value);
             }
 
-            if (_pixelShaderResId != ResourceManager.NULL_RESOURCE)
+            if (_pixelShaderResId != ResourceManager.NullResource)
             {
                 Shader.Value = resourceManager.GetPixelShader(_pixelShaderResId);
             }

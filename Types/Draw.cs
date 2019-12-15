@@ -19,7 +19,7 @@ namespace T3.Operators.Types
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
-            var device = resourceManager._device;
+            var device = resourceManager.Device;
             var deviceContext = device.ImmediateContext;
 
             var setVs = deviceContext.VertexShader.Get();

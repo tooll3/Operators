@@ -31,7 +31,7 @@ namespace T3.Operators.Types
                 resourceManager.UpdateComputeShaderFromFile(Source.Value, _computeShaderResId, ref ComputerShader.Value);
             }
 
-            if (_computeShaderResId != ResourceManager.NULL_RESOURCE)
+            if (_computeShaderResId != ResourceManager.NullResource)
             {
                 ComputerShader.Value = resourceManager.GetComputeShader(_computeShaderResId);
             }

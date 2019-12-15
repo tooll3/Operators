@@ -54,7 +54,7 @@ namespace T3.Operators.Types
             }
 
             if (ShaderResourceView.Value != null)
-                resourceManager._device.ImmediateContext.GenerateMips(ShaderResourceView.Value);
+                resourceManager.Device.ImmediateContext.GenerateMips(ShaderResourceView.Value);
         }
 
         [Input(Guid = "{76CC3811-4AE0-48B2-A119-890DB5A4EEB2}")]

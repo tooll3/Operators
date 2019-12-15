@@ -34,7 +34,7 @@ namespace T3.Operators.Types
                                   MinimumLod = MinimumLod.GetValue(context),
                                   MaximumLod = MaximumLod.GetValue(context)
                               };
-            SamplerState.Value = new SamplerState(ResourceManager.Instance()._device, samplerDesc); // todo: put into resource manager
+            SamplerState.Value = new SamplerState(ResourceManager.Instance().Device, samplerDesc); // todo: put into resource manager
         }
 
         [Input(Guid = "{A870921F-A28C-4501-9F31-38A18B0ACDCC}")]

@@ -23,7 +23,7 @@ namespace T3.Operators.Types
             if (texture != null)
             {
                 ShaderResourceView.Value?.Dispose();
-                ShaderResourceView.Value = new ShaderResourceView(resourceManager._device, texture); // todo: create via resource manager
+                ShaderResourceView.Value = new ShaderResourceView(resourceManager.Device, texture); // todo: create via resource manager
             }
         }
 

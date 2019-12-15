@@ -28,7 +28,7 @@ namespace T3.Operators.Types
                 if (((int)texture.Description.BindFlags & (int)BindFlags.RenderTarget) > 0)
                 {
                     RenderTargetView.Value?.Dispose();
-                    RenderTargetView.Value = new RenderTargetView(resourceManager._device, texture); // todo: create via resource manager
+                    RenderTargetView.Value = new RenderTargetView(resourceManager.Device, texture); // todo: create via resource manager
                 }
                 else
                 {

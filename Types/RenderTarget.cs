@@ -22,7 +22,7 @@ namespace T3.Operators.Types
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
-            var device = resourceManager._device;
+            var device = resourceManager.Device;
 
             Size2 size = Size.GetValue(context);
             if (size.Width == 0 || size.Height == 0)

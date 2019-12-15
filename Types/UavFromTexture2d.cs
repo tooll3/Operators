@@ -28,7 +28,7 @@ namespace T3.Operators.Types
                 if (((int)texture.Description.BindFlags & (int)BindFlags.UnorderedAccess) > 0)
                 {
                     UnorderedAccessView.Value?.Dispose();
-                    UnorderedAccessView.Value = new UnorderedAccessView(resourceManager._device, texture); // todo: create via resource manager
+                    UnorderedAccessView.Value = new UnorderedAccessView(resourceManager.Device, texture); // todo: create via resource manager
                 }
                 else
                 {

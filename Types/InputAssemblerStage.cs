@@ -21,7 +21,7 @@ namespace T3.Operators.Types
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
-            var device = resourceManager._device;
+            var device = resourceManager.Device;
             var deviceContext = device.ImmediateContext;
             var iaStage = deviceContext.InputAssembler;
 
@@ -32,7 +32,7 @@ namespace T3.Operators.Types
         public void Restore(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
-            var device = resourceManager._device;
+            var device = resourceManager.Device;
             var deviceContext = device.ImmediateContext;
             var iaStage = deviceContext.InputAssembler;
 

@@ -34,7 +34,7 @@ namespace T3.Operators.Types
             }
             
             var resourceManager = ResourceManager.Instance();
-            var device = resourceManager._device;
+            var device = resourceManager.Device;
 
             var size = sizeof(float)*array.Length;
             using (var data = new DataStream(size, true, true))

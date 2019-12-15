@@ -22,7 +22,7 @@ namespace T3.Operators.Types
                 return;
             
             var resourceManager = ResourceManager.Instance();
-            var device = resourceManager._device;
+            var device = resourceManager.Device;
             var deviceContext = device.ImmediateContext;
             deviceContext.DrawInstancedIndirect(buffer, AlignedByteOffsetForArgs.GetValue(context));
         }

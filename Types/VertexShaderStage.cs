@@ -39,7 +39,7 @@ namespace T3.Operators.Types
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
-            var device = resourceManager._device;
+            var device = resourceManager.Device;
             var deviceContext = device.ImmediateContext;
             var vsStage = deviceContext.VertexShader;
 
@@ -61,7 +61,7 @@ namespace T3.Operators.Types
 
         private void Restore(EvaluationContext context)
         {
-            var deviceContext = ResourceManager.Instance()._device.ImmediateContext;
+            var deviceContext = ResourceManager.Instance().Device.ImmediateContext;
             var vsStage = deviceContext.VertexShader;
             vsStage.Set(_prevVertexShader);
             vsStage.SetConstantBuffers(0, _prevConstantBuffers.Length, _prevConstantBuffers);

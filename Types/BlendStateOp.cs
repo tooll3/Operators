@@ -34,7 +34,7 @@ namespace T3.Operators.Types
             {
                 blendDesc.RenderTarget[i] = _connectedDescriptions[i].GetValue(context);
             }
-            BlendState.Value = new BlendState(ResourceManager.Instance()._device, blendDesc); // todo: put into resource manager
+            BlendState.Value = new BlendState(ResourceManager.Instance().Device, blendDesc); // todo: put into resource manager
         }
 
         private List<Slot<RenderTargetBlendDescription>> _connectedDescriptions;

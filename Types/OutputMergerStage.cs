@@ -39,7 +39,7 @@ namespace T3.Operators.Types
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
-            var device = resourceManager._device;
+            var device = resourceManager.Device;
             var deviceContext = device.ImmediateContext;
             var outputMerger = deviceContext.OutputMerger;
 
@@ -54,7 +54,7 @@ namespace T3.Operators.Types
 
         private void Restore(EvaluationContext context)
         {
-            var deviceContext = ResourceManager.Instance()._device.ImmediateContext;
+            var deviceContext = ResourceManager.Instance().Device.ImmediateContext;
             var outputMerger = deviceContext.OutputMerger;
 
             outputMerger.BlendState = _prevBlendState;
