@@ -17,6 +17,9 @@ namespace T3.Operators.Types
 
         [Input(Guid = "a2d39e5b-38c7-4751-bc29-7389f9e9d8e5")]
         public readonly InputSlot<float> Height = new InputSlot<float>();
+
+        [Input(Guid = "307e2b98-a337-4636-969f-a19841b11511")]
+        public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture = new InputSlot<SharpDX.Direct3D11.Texture2D>();
     }
 }
 
