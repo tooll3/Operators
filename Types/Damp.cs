@@ -19,6 +19,8 @@ namespace T3.Operators.Types
             var friction = Friction.GetValue(context);
 
             var dt = (float)(context.Time - _lastTime);
+            _lastTime = context.Time;
+            
             var f = friction * dt;
             f = Math.Max(0, f);
             f = Math.Min(1, f);
@@ -26,7 +28,7 @@ namespace T3.Operators.Types
             Result.Value = _dampedValue;
         }
 
-        private float _lastTime;
+        private double _lastTime;
         private float _dampedValue;
         
         [Input(Guid = "795aca79-dd10-4f28-a290-a30e7b27b436")]

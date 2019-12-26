@@ -38,7 +38,11 @@ namespace T3.Operators.Types
             var c = ClearColor.GetValue(context);
             deviceContext.ClearRenderTargetView(_colorBufferRtv, new Color(c.X, c.Y, c.Z, c.W));
 
+            //context.CameraTworld = Matrix.Identity;
+            var keepWorldTobject= context.WorldTobject;
+            context.WorldTobject = Matrix.Identity;
             Command.GetValue(context);
+            context.WorldTobject = keepWorldTobject;
 
             deviceContext.Rasterizer.SetViewports(_prevViewports);
             deviceContext.OutputMerger.SetTargets(_prevTargets);

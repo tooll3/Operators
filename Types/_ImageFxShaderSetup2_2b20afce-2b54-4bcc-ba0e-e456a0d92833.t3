@@ -9,12 +9,12 @@
       "DefaultValue": null
     },
     {
-      "Id": "8e9b8826-5870-4db6-93c2-9fb469cfeec9"/*Params*/,
-      "DefaultValue": 0.0
-    },
-    {
       "Id": "16dce9bc-02d9-48f8-b07e-94a9af48d27b"/*Source*/,
       "DefaultValue": ""
+    },
+    {
+      "Id": "8e9b8826-5870-4db6-93c2-9fb469cfeec9"/*Params*/,
+      "DefaultValue": 0.0
     }
   ],
   "Children": [
@@ -89,7 +89,23 @@
     {
       "Id": "3f3e4ac3-b221-48e3-ae4d-8777c9d59f2c"/*SamplerStateOp*/,
       "SymbolId": "9515d59d-0bd5-406b-96da-6a5f60215700",
-      "InputValues": []
+      "InputValues": [
+        {
+          "Id": "e7c95fd5-14d1-434f-a140-f22ef69076ab"/*AddressU*/,
+          "Type": "SharpDX.Direct3D11.TextureAddressMode",
+          "Value": "Clamp"
+        },
+        {
+          "Id": "fdeb503f-09c6-48d1-8853-7426f68cdec3"/*AddressV*/,
+          "Type": "SharpDX.Direct3D11.TextureAddressMode",
+          "Value": "Clamp"
+        },
+        {
+          "Id": "93d8bf26-5067-4ccc-b4cb-e03970686462"/*AddressW*/,
+          "Type": "SharpDX.Direct3D11.TextureAddressMode",
+          "Value": "Clamp"
+        }
+      ]
     },
     {
       "Id": "a99b0473-394c-411e-9829-218f62b88c32"/*BlendStateOp*/,
