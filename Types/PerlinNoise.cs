@@ -15,27 +15,26 @@ namespace T3.Operators.Types
 
         private void Update(EvaluationContext context)
         {
-            var value = Value.GetValue(context);
-            var seed = Seed.GetValue(context);
-            var period = Period.GetValue(context);
-            var octaves = Octaves.GetValue(context);
-            var zoom = Zoom.GetValue(context);
-            var rangeMin = RangeMin.GetValue(context);
-            var rangeMax = RangeMax.GetValue(context);
+            float value = Value.GetValue(context);
+            int seed = Seed.GetValue(context);
+            float period = Period.GetValue(context);
+            int octaves = Octaves.GetValue(context);
+            float zoom = Zoom.GetValue(context);
+            float rangeMin = RangeMin.GetValue(context);
+            float rangeMax = RangeMax.GetValue(context);
 
-            var noiseSum = 0.0f;
+            float noiseSum = 0.0f;
 
-            for (var a = 0; a < octaves - 1; a++)
+            for (int octave = 0; octave < octaves - 1; octave++)
             {
-                var frequency = (float)Math.Pow(2, a);
-                var amplitude = (float)Math.Pow(period, a);
+                float frequency = (float)Math.Pow(2, octave);
+                float amplitude = (float)Math.Pow(period, octave);
 
-                var v = value * frequency / zoom + seed * 12.468f;
-
-                noiseSum += Lerp(Noise((int)v, seed),
-                                 Noise((int)v + 1, seed),
-                                 Fade(v - (float)Math.Floor(v))
-                                ) * amplitude;
+                float v = value * frequency / zoom + seed * 12.468f;
+                float a = Noise((int)v, seed);
+                float b = Noise((int)v + 1, seed);
+                float t = Fade(v - (float)Math.Floor(v));
+                noiseSum += SharpDX.MathUtil.Lerp(a, b, t) * amplitude;
             }
 
             Result.Value = (noiseSum + 1f) * 0.5f * (rangeMax - rangeMin) + rangeMin;
@@ -46,11 +45,6 @@ namespace T3.Operators.Types
             int n = x + seed * 137;
             n = (n << 13) ^ n;
             return (float)(1.0 - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
-        }
-
-        private static float Lerp(float a, float b, float t)
-        {
-            return a + t * (b - a);
         }
 
         private static float Fade(float t)
