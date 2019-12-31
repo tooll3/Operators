@@ -1,0 +1,66 @@
+{
+  "Name": "TestLab",
+  "Id": "a4f8b7e9-a52f-41b6-a63b-d30e5ba77825",
+  "Namespace": "user.pixtur.research",
+  "InstanceType": "T3.Operators.Types.TestLab, Operators",
+  "Inputs": [],
+  "Children": [
+    {
+      "Id": "a09846d8-9a88-4508-90eb-c6f507d12901"/*BugMultipleTransforms*/,
+      "SymbolId": "02806690-dfd2-43eb-8d77-8eb5f723003e",
+      "InputValues": []
+    },
+    {
+      "Id": "e5f3b9d4-fb38-4eb9-bb3e-771183245dd6"/*WaveForm*/,
+      "SymbolId": "40528e34-732e-4653-bbcf-eeea36c3c4cf",
+      "InputValues": []
+    },
+    {
+      "Id": "cd7a691a-34c2-41d1-8791-24529a1fa2fa"/*CheckerBoard*/,
+      "SymbolId": "1a411be2-1757-4019-8ce2-e29f808ed839",
+      "InputValues": []
+    },
+    {
+      "Id": "74606c97-821a-44ef-8582-1e39ccbe5544"/*NoiseLab*/,
+      "SymbolId": "97eb35ec-2825-4f63-8fdf-3fe38fa9e652",
+      "InputValues": [
+        {
+          "Id": "ab0d389b-4cd3-4781-8c35-9ae59ccae564"/*Size*/,
+          "Type": "System.Numerics.Vector2",
+          "Value": {
+            "X": 0.05,
+            "Y": 0.05
+          }
+        },
+        {
+          "Id": "6fe3a975-6bb5-4cf1-9a24-6cf04ac800b6"/*ColorA*/,
+          "Type": "System.Numerics.Vector4",
+          "Value": {
+            "X": 0.301418424,
+            "Y": 0.3014154,
+            "Z": 0.3014154,
+            "W": 1.0
+          }
+        },
+        {
+          "Id": "a966d9a1-b36f-4f85-b918-8651ea7d055d"/*ColorB*/,
+          "Type": "System.Numerics.Vector4",
+          "Value": {
+            "X": 0.216312051,
+            "Y": 0.21630989,
+            "Z": 0.21630989,
+            "W": 1.0
+          }
+        }
+      ]
+    }
+  ],
+  "Connections": [
+    {
+      "SourceParentOrChildId": "a09846d8-9a88-4508-90eb-c6f507d12901",
+      "SourceSlotId": "160bb9ff-3083-42aa-98a4-54884f43b8cb",
+      "TargetParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "TargetSlotId": "486eb33f-111d-4d6e-b81e-9f2ca16cb729"
+    }
+  ]
+}

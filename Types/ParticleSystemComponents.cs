@@ -71,7 +71,7 @@ namespace T3.Operators.Types
 
             ParticleCountConstBuffer.Value = particleSystem.ParticleCountConstBuffer;
 
-            Log.Info("particle system components updated");
+            //Log.Info("particle system components updated");
         }
 
         [Input(Guid = "E5CEBE45-C1D2-48FA-83AA-E321AEE14912")]

@@ -1,4 +1,4 @@
-﻿using SharpDX.Direct3D11;
+using SharpDX.Direct3D11;
 using T3.Core.Operator;
 
 namespace T3.Operators.Types
@@ -17,5 +17,8 @@ namespace T3.Operators.Types
 
         [Input(Guid = "{C99A7718-12B1-484E-BA96-B8D9EA7F448F}")]
         public readonly MultiInputSlot<string> MultiInput = new MultiInputSlot<string>();
+
+        [Input(Guid = "f693cb54-30e7-4021-a6b3-0465bdc66c93")]
+        public readonly InputSlot<float> Test3 = new InputSlot<float>();
     }
 }
