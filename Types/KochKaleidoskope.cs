@@ -24,14 +24,17 @@ namespace T3.Operators.Types
         [Input(Guid = "a1b3ae23-cb29-4e3e-93b6-fd4f1efadbf1")]
         public readonly InputSlot<float> Angle = new InputSlot<float>();
 
-        [Input(Guid = "4b1cea23-5471-4af2-9bed-86ec1e0f3417")]
-        public readonly InputSlot<float> AngleOffset = new InputSlot<float>();
-
         [Input(Guid = "c355fa5c-c1f5-4e80-b1b1-d2d233dea3fc")]
         public readonly InputSlot<int> Steps = new InputSlot<int>();
 
-        [Input(Guid = "a21ed2c3-f7db-4ba7-a125-c2eca3c67c68")]
-        public readonly InputSlot<float> Fade = new InputSlot<float>();
+        [Input(Guid = "05d0a5b2-a7a6-45c5-969a-f00150558a30")]
+        public readonly InputSlot<float> Rotate = new InputSlot<float>();
+
+        [Input(Guid = "d2e12b96-7be3-4b31-bcdd-c882543a6ca6")]
+        public readonly InputSlot<float> ShadeFolds = new InputSlot<float>();
+
+        [Input(Guid = "9618504d-bfbd-4d3d-b4d4-03a7064f0fea")]
+        public readonly InputSlot<float> ShadeSteps = new InputSlot<float>();
     }
 }
 
