@@ -23,8 +23,10 @@ namespace T3.Operators.Types
             {
                 Size.Value = new Size2(texture.Description.Width, texture.Description.Height);
             }
-            
-            Size.Value = FallbackSize.GetValue(context);
+            else
+            {
+                Size.Value = FallbackSize.GetValue(context);
+            }
         }
 
         [Input(Guid = "8b15d8e1-10c7-41e1-84db-a85e31e0c909")]
