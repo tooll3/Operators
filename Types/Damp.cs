@@ -20,6 +20,7 @@ namespace T3.Operators.Types
 
             var dt = (float)(context.Time - _lastTime);
             _lastTime = context.Time;
+            dt = 0.015f;    // hack until we have beattime in context
             
             var f = friction * dt;
             f = Math.Max(0, f);

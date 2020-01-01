@@ -1,4 +1,5 @@
 using System;
+using System.Security.Policy;
 using T3.Core.Operator;
 
 namespace T3.Operators.Types
@@ -15,26 +16,29 @@ namespace T3.Operators.Types
 
         private void Update(EvaluationContext context)
         {
-            float value = Value.GetValue(context);
-            int seed = Seed.GetValue(context);
-            float period = Period.GetValue(context);
-            int octaves = Octaves.GetValue(context);
-            float zoom = Zoom.GetValue(context);
-            float rangeMin = RangeMin.GetValue(context);
-            float rangeMax = RangeMax.GetValue(context);
+            var value = Value.GetValue(context);
+            var seed = Seed.GetValue(context);
+            var period = Frequency.GetValue(context);
+            var octaves = Octaves.GetValue(context);
+            //var zoom = Zoom.GetValue(context);
+            var rangeMin = RangeMin.GetValue(context);
+            var rangeMax = RangeMax.GetValue(context);
 
-            float noiseSum = 0.0f;
+            var noiseSum = 0.0f;
 
-            for (int octave = 0; octave < octaves - 1; octave++)
+            var frequency = period;
+            var amplitude = 0.5f;
+            for (var octave = 0; octave < octaves - 1; octave++)
             {
-                float frequency = (float)Math.Pow(2, octave);
-                float amplitude = (float)Math.Pow(period, octave);
-
-                float v = value * frequency / zoom + seed * 12.468f;
-                float a = Noise((int)v, seed);
-                float b = Noise((int)v + 1, seed);
-                float t = Fade(v - (float)Math.Floor(v));
+                //float frequency = (float)Math.Pow(2, octave);
+                //var amplitude = (float)Math.Pow(period, octave);
+                var v = value * frequency + seed * 12.468f;
+                var a = Noise((int)v, seed);
+                var b = Noise((int)v + 1, seed);
+                var t = Fade(v - (float)Math.Floor(v));
                 noiseSum += SharpDX.MathUtil.Lerp(a, b, t) * amplitude;
+                frequency *= 2;
+                amplitude *= 0.5f;
             }
 
             Result.Value = (noiseSum + 1f) * 0.5f * (rangeMax - rangeMin) + rangeMin;
@@ -59,14 +63,11 @@ namespace T3.Operators.Types
         public readonly InputSlot<int> Seed = new InputSlot<int>();
 
         [Input(Guid = "B7434932-AEEA-407E-BB00-22337A21F293")]
-        public readonly InputSlot<float> Period = new InputSlot<float>();
+        public readonly InputSlot<float> Frequency = new InputSlot<float>();
 
         [Input(Guid = "C6286F1C-00A3-40AF-94DD-66375ED0343F")]
         public readonly InputSlot<int> Octaves = new InputSlot<int>();
-
-        [Input(Guid = "A17F04F8-D8DE-4EEB-B4F6-7B3FA4CAD03C")]
-        public readonly InputSlot<float> Zoom = new InputSlot<float>();
-
+        
         [Input(Guid = "B112705E-3EC3-4904-B978-BC784D9B2F94")]
         public readonly InputSlot<float> RangeMin = new InputSlot<float>();
 
