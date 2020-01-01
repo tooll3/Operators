@@ -18,6 +18,9 @@ namespace T3.Operators.Types
         [Input(Guid = "36abde68-0d79-4fb6-b8ce-ac8a27b66850")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
+        [Input(Guid = "41b7d3d2-5f16-45c5-88eb-66ef3745e9e2")]
+        public readonly InputSlot<SharpDX.Size2> FallbackResolution = new InputSlot<SharpDX.Size2>();
+
     }
 }
 

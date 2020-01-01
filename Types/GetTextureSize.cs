@@ -23,12 +23,14 @@ namespace T3.Operators.Types
             {
                 Size.Value = new Size2(texture.Description.Width, texture.Description.Height);
             }
+            
+            Size.Value = FallbackSize.GetValue(context);
         }
 
         [Input(Guid = "8b15d8e1-10c7-41e1-84db-a85e31e0c909")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture = new InputSlot<SharpDX.Direct3D11.Texture2D>();
-
-        [Input(Guid = "e0e3a635-424c-4bc7-8463-d06b4ae78244")]
+        
+        [Input(Guid = "52b2f067-5619-4d8d-a982-58668a8dc6a4")]
         public readonly InputSlot<SharpDX.Size2> FallbackSize = new InputSlot<SharpDX.Size2>();
     }
 }
