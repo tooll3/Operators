@@ -25,5 +25,8 @@ namespace T3.Operators.Types
         [Input(Guid = "d09c7a75-d02d-421b-ba0f-17b345f523ec")]
         public readonly InputSlot<System.Numerics.Vector4> ChannelWeights = new InputSlot<System.Numerics.Vector4>();
 
+        [Input(Guid = "9756e240-6527-4cda-accd-e8096682b6bd")]
+        public readonly InputSlot<float> Bias = new InputSlot<float>();
+
     }
 }
