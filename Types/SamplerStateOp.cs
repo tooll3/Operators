@@ -6,7 +6,7 @@ using SharpDX.Mathematics.Interop;
 using T3.Core;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_9515d59d_0bd5_406b_96da_6a5f60215700
 {
     public class SamplerStateOp : Instance<SamplerStateOp>
     {

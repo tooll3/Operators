@@ -1,7 +1,7 @@
 using System;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_b89c5923_cc58_4d7a_8dce_eb1f8cdfc6e8
 {
     public class RenderQuad : Instance<RenderQuad>
     {

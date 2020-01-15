@@ -2,7 +2,7 @@
 using T3.Core;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_5a88fa27_16ad_454f_a08d_5e65dd75cefe
 {
     public class IndirectBuffer : Instance<IndirectBuffer>
     {

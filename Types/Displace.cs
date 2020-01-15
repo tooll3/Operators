@@ -2,7 +2,7 @@ using System.Numerics;
 using SharpDX.Direct3D11;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_26a34630_ad46_4bcc_8ff8_ed37fe021f6c
 {
     public class Displace : Instance<Displace>
     {

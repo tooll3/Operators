@@ -2,7 +2,7 @@ using T3.Core.Operator.Helper;
 using T3.Core;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_98d6089f_50f9_4b4c_ba86_18d19ae9dd17
 {
     public class ParticleDraw : Instance<ParticleDraw>
     {

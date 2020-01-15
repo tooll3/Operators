@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_0841cdd4_0106_4f4e_826b_8de23bb5b5f0
 {
     public class SelectFloatFromList : Instance<SelectFloatFromList>
     {

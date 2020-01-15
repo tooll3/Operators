@@ -1,7 +1,7 @@
 using System;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_2b20afce_2b54_4bcc_ba0e_e456a0d92833
 {
     public class _ImageFxShaderSetup2 : Instance<_ImageFxShaderSetup2>
     {

@@ -4,7 +4,7 @@ using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_c2078514_cf1d_439c_a732_0d7b31b5084a
 {
     public class SrvFromTexture2d : Instance<SrvFromTexture2d>
     {

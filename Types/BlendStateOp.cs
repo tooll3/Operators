@@ -3,7 +3,7 @@ using SharpDX.Direct3D11;
 using T3.Core;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_064ca51f_47ab_4cb7_95f2_e537b68e137e
 {
     public class BlendStateOp : Instance<BlendStateOp>
     {

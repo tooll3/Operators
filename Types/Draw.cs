@@ -3,7 +3,7 @@ using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_9b28e6b9_1d1f_42d8_8a9e_33497b1df820
 {
     public class Draw : Instance<Draw>
     {

@@ -1,7 +1,7 @@
 using SharpDX.Direct3D11;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_86cb0f9d_756e_4172_a886_90d56befb89b
 {
     public class _ImageFxShaderSetup : Instance<_ImageFxShaderSetup>
     {

@@ -4,7 +4,7 @@ using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Helper;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_36cec77e_fd3b_4ec7_ac93_74ee67fb97a2
 {
     public class TestEmitter : Instance<TestEmitter>
     {

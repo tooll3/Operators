@@ -3,7 +3,7 @@ using T3.Core;
 using T3.Core.Operator;
 using Buffer = SharpDX.Direct3D11.Buffer;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_c30542d5_609c_452a_9168_78964a3a0927
 {
     public class ParamConstBuffer : Instance<ParamConstBuffer>
     {

@@ -2,7 +2,7 @@ using System.Numerics;
 using SharpDX.Direct3D11;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_d9a71078_8296_4a07_b7de_250d4e2b95ac
 {
     public class Tint : Instance<Tint>
     {

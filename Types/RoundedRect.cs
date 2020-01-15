@@ -1,7 +1,7 @@
 using System;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_c8590f8f_cca1_434a_a880_67bb91920e1a
 {
     public class RoundedRect : Instance<RoundedRect>
     {

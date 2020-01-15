@@ -1,7 +1,7 @@
 ﻿using SharpDX.Direct3D11;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_38ee7546_8d7d_463c_aeea_e482d7ca3f30
 {
     public class RenderTargetBlendDesc : Instance<RenderTargetBlendDesc>
     {

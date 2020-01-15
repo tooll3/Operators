@@ -1,7 +1,7 @@
 using System.Numerics;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_0946c48b_85d8_4072_8f21_11d17cc6f6cf
 {
     public class Vector2Components : Instance<Vector2Components>
     {

@@ -6,7 +6,7 @@ using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_8c41b312_6628_411c_a61d_604413b73a72
 {
     public class SrvFromStructuredBuffer : Instance<SrvFromStructuredBuffer>
     {

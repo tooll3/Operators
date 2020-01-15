@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_83b8fc42_a200_4c3d_85dc_035b4f478069
 {
     public class ClipTime : Instance<ClipTime>
     {

@@ -4,7 +4,7 @@ using T3.Core;
 using T3.Core.Operator;
 using Buffer = SharpDX.Direct3D11.Buffer;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_1ba08d52_c8ec_479a_8dc0_95d92da36577
 {
     public class ColorGradeConstBuffer : Instance<ColorGradeConstBuffer>
     {

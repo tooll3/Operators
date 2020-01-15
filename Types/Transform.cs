@@ -3,7 +3,7 @@ using SharpDX;
 using T3.Core;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_284d2183_197d_47fd_b130_873cced78b1c
 {
     public class Transform : Instance<Transform>
     {

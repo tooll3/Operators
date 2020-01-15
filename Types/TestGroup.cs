@@ -1,6 +1,6 @@
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_15a821ae_7381_415a_b524_adc643f2c4bb
 {
     public class TestGroup : Instance<TestGroup>
     {

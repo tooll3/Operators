@@ -7,7 +7,7 @@ using T3.Core;
 using T3.Core.Operator;
 using Buffer = SharpDX.Direct3D11.Buffer;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_fbd7f0f0_36a3_4fbb_91e1_cb33d4666d09
 {
     public class Rasterizer : Instance<Rasterizer>
     {

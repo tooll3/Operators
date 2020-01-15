@@ -2,7 +2,7 @@
 using T3.Core.Operator;
 using T3.Core.Operator.Helper;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_181c69cd_a251_4891_af67_78aa70af2f90
 {
     public class ParticleSystemSetup : Instance<ParticleSystemSetup>
     {

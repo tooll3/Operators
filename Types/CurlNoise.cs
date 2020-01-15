@@ -1,7 +1,7 @@
 using System;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_0e553db8_9621_45e2_b871_736b7630bf1f
 {
     public class CurlNoise : Instance<CurlNoise>
     {

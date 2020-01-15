@@ -1,7 +1,7 @@
 using SharpDX.Direct3D11;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_c28fa486_97d8_4a5d_807f_bccd2b07b86e
 {
     public class BUG01_TransformRotation : Instance<BUG01_TransformRotation>
     {

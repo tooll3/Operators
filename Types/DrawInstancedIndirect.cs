@@ -2,7 +2,7 @@
 using T3.Core;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_c676b9c7_06d7_4ee0_8ffc_9bee96c5dc18
 {
     public class DrawInstancedIndirect: Instance<DrawInstancedIndirect>
     {

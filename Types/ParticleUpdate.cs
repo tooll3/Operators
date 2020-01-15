@@ -3,7 +3,7 @@ using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Helper;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_c6fce5e7_391e_4d08_bdc2_4c4960a2296e
 {
     public class ParticleUpdate : Instance<ParticleUpdate>
     {

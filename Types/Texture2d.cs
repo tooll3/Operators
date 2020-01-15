@@ -5,7 +5,7 @@ using SharpDX.DXGI;
 using T3.Core;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_f52db9a4_fde9_49ca_9ef7_131825c34e65
 {
     public class Texture2d : Instance<Texture2d>
     {

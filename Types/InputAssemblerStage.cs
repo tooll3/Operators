@@ -4,7 +4,7 @@ using T3.Core;
 using T3.Core.Operator;
 using Buffer = SharpDX.Direct3D11.Buffer;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_9d1266c5_23db_439f_a475_8000fdd1c318
 {
     public class InputAssemblerStage : Instance<InputAssemblerStage>
     {

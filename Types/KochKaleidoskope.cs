@@ -1,7 +1,7 @@
 using System;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_f7366bdc_86b2_4951_8788_3826126ed8c2
 {
     public class KochKaleidoskope : Instance<KochKaleidoskope>
     {

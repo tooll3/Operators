@@ -2,7 +2,7 @@ using System.Numerics;
 using SharpDX.Direct3D11;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_42d86738_d644_47c8_ab92_cc426d958e51
 {
     public class ColorGrade : Instance<ColorGrade>
     {

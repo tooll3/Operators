@@ -6,7 +6,7 @@ using T3.Core;
 using T3.Core.Operator;
 using Device = SharpDX.Direct3D11.Device;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 {
     public class RenderTarget : Instance<RenderTarget>
     {

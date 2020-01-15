@@ -1,7 +1,7 @@
 ﻿using T3.Core;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_a256d70f_adb3_481d_a926_caf35bd3e64c
 {
     public class ComputeShader : Instance<ComputeShader>
     {

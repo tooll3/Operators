@@ -1,7 +1,7 @@
 using System;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_40528e34_732e_4653_bbcf_eeea36c3c4cf
 {
     public class WaveForm : Instance<WaveForm>
     {

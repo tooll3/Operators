@@ -1,7 +1,7 @@
 using SharpDX.Direct3D11;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_3439ca3a_2d29_41e3_835a_d2eaef729208
 {
     public class PartialScene01 : Instance<PartialScene01>
     {

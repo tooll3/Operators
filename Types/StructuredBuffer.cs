@@ -4,7 +4,7 @@ using SharpDX.DXGI;
 using T3.Core;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_a8a0e6c4_1f49_4ed8_8d0b_e7aa6cdf8a87
 {
     public class StructuredBuffer : Instance<StructuredBuffer>
     {

@@ -2,7 +2,7 @@ using System;
 using System.Numerics;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_b15e4950_5c72_4655_84bc_c00647319030
 {
     public class Vector4Components : Instance<Vector4Components>
     {

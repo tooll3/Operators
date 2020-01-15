@@ -1,7 +1,7 @@
 using System;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_61c70843_08ea_4249_ba90_9971493e45d1
 {
     public class Cos : Instance<Cos>
     {

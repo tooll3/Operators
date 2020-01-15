@@ -5,7 +5,7 @@ using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_0618660b_32fb_4c78_953c_b178f53699c2
 {
     public class ParticleIndexBuffer : Instance<ParticleIndexBuffer>
     {

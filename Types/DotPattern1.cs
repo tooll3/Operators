@@ -1,7 +1,7 @@
 using System;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_3ee3597d_dbf1_43a2_89d9_2f7b099112c7
 {
     public class DotPattern1 : Instance<DotPattern1>
     {

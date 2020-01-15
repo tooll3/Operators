@@ -1,7 +1,7 @@
 using System;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_119f710b_e6be_4eef_af63_13cfc6ba86fd
 {
     public class ParticleEmitter : Instance<ParticleEmitter>
     {

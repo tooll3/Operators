@@ -1,10 +1,8 @@
-﻿using System;
-using SharpDX.Direct3D11;
+﻿using SharpDX.Direct3D11;
 using T3.Core;
-using T3.Core.Logging;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_0b3436db_e283_436e_ba85_2f3a1de76a9d
 {
     public class LoadTexture2d : Instance<LoadTexture2d>
     {

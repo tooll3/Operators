@@ -4,7 +4,7 @@ using T3.Core;
 using T3.Core.Operator;
 using Buffer = SharpDX.Direct3D11.Buffer;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_a60adc26_d7c6_4615_af78_8d2d6da46b79
 {
     public class TransformsConstBuffer : Instance<TransformsConstBuffer>
     {

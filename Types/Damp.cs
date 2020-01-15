@@ -1,7 +1,7 @@
 using System;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_af9c5db8_7144_4164_b605_b287aaf71bf6
 {
     public class Damp : Instance<Damp>
     {

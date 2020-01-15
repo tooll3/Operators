@@ -3,7 +3,7 @@ using SharpDX;
 using T3.Core;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_38b85057_fbcb_4ab1_9b40_cfb090750150
 {
     public class ResetSubtreeTrigger : Instance<ResetSubtreeTrigger>
     {

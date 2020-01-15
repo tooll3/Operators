@@ -6,7 +6,7 @@ using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_0b5b14bf_c850_493a_afb1_72643926e214
 {
     public class UavFromStructuredBuffer : Instance<UavFromStructuredBuffer>
     {

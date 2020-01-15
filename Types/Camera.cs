@@ -3,7 +3,7 @@ using SharpDX;
 using T3.Core;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_746d886c_5ab6_44b1_bb15_f3ce2fadf7e6
 {
     public class Camera : Instance<Camera>
     {

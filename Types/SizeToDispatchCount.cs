@@ -1,7 +1,7 @@
 using SharpDX;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_cc11774e_82dd_409f_97fb_5be3f2746f9d
 {
     public class SizeToDispatchCount : Instance<SizeToDispatchCount>
     {

@@ -3,7 +3,7 @@ using SharpDX.Mathematics.Interop;
 using T3.Core;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_5efaf208_ba62_42ce_b3df_059b37fc1382
 {
     public class OutputMergerStage : Instance<OutputMergerStage>
     {

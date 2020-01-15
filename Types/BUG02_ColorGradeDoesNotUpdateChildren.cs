@@ -1,7 +1,7 @@
 using SharpDX.Direct3D11;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_5eec3f44_2503_44a6_878e_b1b674380b8f
 {
     public class BUG02_ColorGradeDoesNotUpdateChildren : Instance<BUG02_ColorGradeDoesNotUpdateChildren>
     {

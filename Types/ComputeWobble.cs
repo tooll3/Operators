@@ -1,7 +1,7 @@
 ﻿using SharpDX.Direct3D11;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_7b95571c_8391_4313_a008_7020a14887f4
 {
     public class ComputeWobble : Instance<ComputeWobble>
     {

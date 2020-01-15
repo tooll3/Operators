@@ -2,7 +2,7 @@ using System;
 using SharpDX;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_0c2dcf1f_48ff_45aa_a28b_c5900279ce6e
 {
     public class Int3FromInts : Instance<Int3FromInts>
     {

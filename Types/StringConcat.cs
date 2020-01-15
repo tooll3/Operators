@@ -1,6 +1,6 @@
 ﻿using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_48ab9824_76ca_4238_800f_9cf95311e6c0
 {
     public class StringConcat : Instance<StringConcat>
     {

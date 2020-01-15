@@ -1,7 +1,7 @@
 using System;
 using T3.Core.Operator;
 
-namespace T3.Operators.Types
+namespace T3.Operators.Types.Id_dc066031_ccf6_4a23_8412_a266e5f2cb16
 {
     public class ImageFx : Instance<ImageFx>
     {
