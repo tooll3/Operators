@@ -31,8 +31,8 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             UpdateTextures(device, size);
 
             var deviceContext = device.ImmediateContext;
-            var _prevViewports = deviceContext.Rasterizer.GetViewports<RawViewportF>();
-            var _prevTargets = deviceContext.OutputMerger.GetRenderTargets(1);
+            var prevViewports = deviceContext.Rasterizer.GetViewports<RawViewportF>();
+            var prevTargets = deviceContext.OutputMerger.GetRenderTargets(1);
             deviceContext.Rasterizer.SetViewport(new SharpDX.Viewport(0, 0, size.Width, size.Height, 0.0f, 1.0f));
             deviceContext.OutputMerger.SetTargets(_colorBufferRtv);
             var c = ClearColor.GetValue(context);
@@ -44,8 +44,14 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             Command.GetValue(context);
             context.WorldTobject = keepWorldTobject;
 
-            deviceContext.Rasterizer.SetViewports(_prevViewports);
-            deviceContext.OutputMerger.SetTargets(_prevTargets);
+            deviceContext.Rasterizer.SetViewports(prevViewports);
+            deviceContext.OutputMerger.SetTargets(prevTargets);
+
+            // clean up ref counts for RTVs
+            for (int i = 0; i < prevTargets.Length; i++)
+            {
+                prevTargets[i].Dispose();
+            }
 
             Output.Value = _colorBuffer;
         }
