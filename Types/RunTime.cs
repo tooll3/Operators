@@ -16,7 +16,7 @@ namespace T3.Operators.Types.Id_862de1a8_f630_4823_8860_7afa918bb1bc
 
         private void Update(EvaluationContext context)
         {
-            TimeInSeconds.Value = (float)EvaluationContext.RunTime;
+            TimeInSeconds.Value = (float)EvaluationContext.RunTimeInSecs;
         }
     }
 }

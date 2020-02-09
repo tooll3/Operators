@@ -17,7 +17,7 @@ namespace T3.Operators.Types.Id_83b8fc42_a200_4c3d_85dc_035b4f478069
         private void Update(EvaluationContext context)
         {
             
-            Time.Value = (float)context.Time;
+            Time.Value = (float)context.TimeInBars;
         }
     }
 }

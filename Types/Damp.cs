@@ -18,8 +18,8 @@ namespace T3.Operators.Types.Id_af9c5db8_7144_4164_b605_b287aaf71bf6
             var v = Value.GetValue(context);
             var friction = Friction.GetValue(context);
 
-            var dt = (float)(context.Time - _lastTime);
-            _lastTime = context.Time;
+            var dt = (float)(context.TimeInBars - _lastTime);
+            _lastTime = context.TimeInBars;
             dt = 0.015f;    // hack until we have beattime in context
             
             var f = friction * dt;

@@ -22,9 +22,9 @@ namespace T3.Operators.Types.Id_de8bc97a_8ef0_4d4a_9ffa_88046a2daf40
         private void Update(EvaluationContext context)
         {
             var bufferContent = new TimeBufferLayout(
-                                                     (float)EvaluationContext.GlobalTime, 
-                                                     (float)context.Time, 
-                                                     (float)EvaluationContext.RunTime,
+                                                     (float)EvaluationContext.GlobalTimeInBars, 
+                                                     (float)context.TimeInBars, 
+                                                     (float)EvaluationContext.RunTimeInSecs,
                                                      (float)EvaluationContext.BeatTime);
             ResourceManager.Instance().SetupConstBuffer(bufferContent, ref Buffer.Value);
             Buffer.Value.DebugName = nameof(TimeConstBuffer);
