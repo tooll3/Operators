@@ -31,7 +31,7 @@ namespace T3.Operators.Types.Id_3036067a_a4c2_434b_b0e3_ac95c5c943f4
             var timeIn = TimeIn.GetValue(context);
             var timeOut = TimeOut.GetValue(context);
 
-            if (timeIn < context.TimeInBars || timeOut > context.TimeInBars)
+            if (timeIn > context.TimeInBars || timeOut < context.TimeInBars)
             {
                 return;
             } 
