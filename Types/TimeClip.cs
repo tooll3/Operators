@@ -3,7 +3,6 @@ using SharpDX;
 using T3.Core;
 using T3.Core.Animation;
 using T3.Core.Operator;
-using T3.Gui.Windows.TimeLine;
 
 namespace T3.Operators.Types.Id_3036067a_a4c2_434b_b0e3_ac95c5c943f4
 {
