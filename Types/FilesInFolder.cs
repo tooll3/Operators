@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using T3.Core.Operator;
+using T3.Core.Operator.Attributes;
 
 namespace T3.Operators.Types.Id_f90fcd0a_eab9_4e2a_b393_e8d3a0380823
 {

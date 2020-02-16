@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using T3.Core;
 using T3.Core.Operator;
+using T3.Core.Operator.Attributes;
 using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace T3.Operators.Types.Id_c30542d5_609c_452a_9168_78964a3a0927

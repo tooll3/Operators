@@ -5,6 +5,7 @@ using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using T3.Core;
 using T3.Core.Operator;
+using T3.Core.Operator.Attributes;
 using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace T3.Operators.Types.Id_fbd7f0f0_36a3_4fbb_91e1_cb33d4666d09

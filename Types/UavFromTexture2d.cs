@@ -3,6 +3,7 @@ using SharpDX.Direct3D11;
 using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
+using T3.Core.Operator.Attributes;
 
 namespace T3.Operators.Types.Id_84e02044_3011_4a5e_b76a_c904d9b4557f
 {

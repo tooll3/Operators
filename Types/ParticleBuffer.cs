@@ -2,6 +2,7 @@
 using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
+using T3.Core.Operator.Attributes;
 using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace T3.Operators.Types.Id_3546ec16_cf88_4915_b8bb_9566769687ca

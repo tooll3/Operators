@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using T3.Core.Operator;
+using T3.Core.Operator.Attributes;
 
 namespace T3.Operators.Types.Id_06b4728e_852c_491a_a89d_647f7e0b5415
 {

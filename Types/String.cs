@@ -1,5 +1,6 @@
 using System;
 using T3.Core.Operator;
+using T3.Core.Operator.Attributes;
 
 namespace T3.Operators.Types.Id_5880cbc3_a541_4484_a06a_0e6f77cdbe8e
 {
