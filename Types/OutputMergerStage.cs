@@ -3,6 +3,7 @@ using SharpDX.Mathematics.Interop;
 using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_5efaf208_ba62_42ce_b3df_059b37fc1382
 {

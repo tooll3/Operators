@@ -5,6 +5,7 @@ using SharpDX.DXGI;
 using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_f52db9a4_fde9_49ca_9ef7_131825c34e65
 {

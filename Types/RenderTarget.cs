@@ -5,6 +5,7 @@ using SharpDX.Mathematics.Interop;
 using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Slots;
 using Device = SharpDX.Direct3D11.Device;
 
 namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1

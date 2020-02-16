@@ -1,6 +1,7 @@
 using SharpDX.Direct3D11;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_86cb0f9d_756e_4172_a886_90d56befb89b
 {

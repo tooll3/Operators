@@ -2,6 +2,7 @@ using System;
 using SharpDX;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_926ab3fd_fbaf_4c4b_91bc_af277000dcb8
 {

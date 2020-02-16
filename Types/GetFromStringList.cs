@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_ef357e66_24e9_4f54_8d86_869db74602f4
 {
