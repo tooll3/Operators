@@ -23,36 +23,29 @@ namespace T3.Operators.Types.Id_e64f95e4_c045_400f_98ca_7c020ad46174
             var commands = Commands.GetCollectedTypedInputs();
             var index = Index.GetValue(context);
 
-            if (commands.Count == 0)
-                return;
-
-            
-            if (index == -1)
+            if (commands.Count == 0 || index == -1)
             {
                 return;
             }
-
+            
             // Do all
             if (index == -2)
             {
                 for (int i = 0; i < commands.Count; i++)
                 {
-                    commands[i].Value?.PrepareAction?.Invoke(context);
                     commands[i].GetValue(context); 
-                    commands[i].Value?.RestoreAction?.Invoke(context);
                 }
 
                 return;
             }
             
-            
             index %= commands.Count;
             if (index < 0)
+            {
                 index += commands.Count;
+            }
                 
-            commands[index].Value?.PrepareAction?.Invoke(context);
             commands[index].GetValue(context); 
-            commands[index].Value?.RestoreAction?.Invoke(context);
         }
 
         [Input(Guid = "988DD1B5-636D-4A78-9592-2C6601401CC1")]
