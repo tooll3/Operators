@@ -28,7 +28,12 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
             Size2 size = Size.GetValue(context);
             if (size.Width == 0 || size.Height == 0)
-                return;
+            {
+                size = context.RequestedResolution;
+                if(size.Width <=0 || size.Height <= 0)
+                    return;
+            }
+                
 
             UpdateTextures(device, size);
 

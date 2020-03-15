@@ -60,18 +60,21 @@ namespace T3.Operators.Types.Id_ffed6f9e_2495_4cf3_9cda_740ecec75d10
                 v = 16;
             }
 
+            v *= Speed.GetValue(context);
             Result.Value = (1 - (beatTime * v) % 1) * intensity;
             Counter.Value = (int) (beatTime * v);
         }
 
-        [Input (Guid = "3B60DB67-3A12-44C3-91BA-5517F74879D6")]
-        public readonly InputSlot<float> BeatTime = new InputSlot<float> ();
+        [Input(Guid = "3b60db67-3a12-44c3-91ba-5517f74879d6")]
+        public readonly InputSlot<float> BeatTime = new InputSlot<float>();
 
-        [Input (Guid = "C1E5CE4C-6780-414E-9596-703FA7CB0392")]
-        public readonly InputSlot<float> Frequency = new InputSlot<float> ();
+        [Input(Guid = "c1e5ce4c-6780-414e-9596-703fa7cb0392")]
+        public readonly InputSlot<float> Frequency = new InputSlot<float>();
 
-        [Input (Guid = "399C783C-7DB2-4173-87C6-FFC2BB9CC859")]
-        public readonly InputSlot<float> Intensity = new InputSlot<float> ();
+        [Input(Guid = "1154B0A7-E244-43FF-A80B-9D099BE85053")]
+        public readonly InputSlot<float> Speed = new InputSlot<float>();
 
+        [Input(Guid = "399c783c-7db2-4173-87c6-ffc2bb9cc859")]
+        public readonly InputSlot<float> Intensity = new InputSlot<float>();
     }
 }

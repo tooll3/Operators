@@ -1,23 +1,23 @@
 {
   "Name": "NoiseLab",
   "Id": "97eb35ec-2825-4f63-8fdf-3fe38fa9e652",
-  "Namespace": "lib.img.generate",
+  "Namespace": "4",
   "Inputs": [
     {
       "Id": "6fe3a975-6bb5-4cf1-9a24-6cf04ac800b6"/*ColorA*/,
       "DefaultValue": {
-        "X": 0.202127635,
-        "Y": 0.202125609,
-        "Z": 0.202125609,
+        "X": 1E-06,
+        "Y": 9.9999E-07,
+        "Z": 9.9999E-07,
         "W": 1.0
       }
     },
     {
       "Id": "a966d9a1-b36f-4f85-b918-8651ea7d055d"/*ColorB*/,
       "DefaultValue": {
-        "X": 0.120567381,
-        "Y": 0.120566174,
-        "Z": 0.120566174,
+        "X": 1.0,
+        "Y": 0.99999,
+        "Z": 0.99999,
         "W": 1.0
       }
     },
@@ -31,8 +31,8 @@
     {
       "Id": "2381e8e4-a4e5-4691-9059-3b2096146970"/*Scale*/,
       "DefaultValue": {
-        "X": 0.0,
-        "Y": 0.0
+        "X": 2.0,
+        "Y": 2.0
       }
     },
     {
@@ -42,6 +42,13 @@
     {
       "Id": "0e3d1c9f-d0aa-4765-a0ab-d8292a981368"/*Bias*/,
       "DefaultValue": 0.0
+    },
+    {
+      "Id": "37b24ceb-2d25-43e8-a31c-7caf62c2b7ee"/*Resolution*/,
+      "DefaultValue": {
+        "Width": 0,
+        "Height": 0
+      }
     }
   ],
   "Children": [
@@ -83,8 +90,8 @@
           "Id": "03749b41-cc3c-4f38-aea6-d7cea19fc073"/*Size*/,
           "Type": "SharpDX.Size2",
           "Value": {
-            "Width": 529,
-            "Height": 536
+            "Width": 0,
+            "Height": 0
           }
         }
       ],
@@ -193,6 +200,12 @@
       "SourceSlotId": "0e3d1c9f-d0aa-4765-a0ab-d8292a981368",
       "TargetParentOrChildId": "46f31dd4-0e0f-4187-973f-ce0ba825f144",
       "TargetSlotId": "8e9b8826-5870-4db6-93c2-9fb469cfeec9"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "37b24ceb-2d25-43e8-a31c-7caf62c2b7ee",
+      "TargetParentOrChildId": "47b31bf5-8844-4c2e-a64a-f93fae56dc6d",
+      "TargetSlotId": "03749b41-cc3c-4f38-aea6-d7cea19fc073"
     },
     {
       "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",

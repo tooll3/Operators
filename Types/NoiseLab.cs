@@ -26,6 +26,9 @@ namespace T3.Operators.Types.Id_97eb35ec_2825_4f63_8fdf_3fe38fa9e652
 
         [Input(Guid = "0e3d1c9f-d0aa-4765-a0ab-d8292a981368")]
         public readonly InputSlot<float> Bias = new InputSlot<float>();
+
+        [Input(Guid = "37b24ceb-2d25-43e8-a31c-7caf62c2b7ee")]
+        public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
     }
 }
 
