@@ -40,6 +40,9 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
             if (text.Length == 0)
                 return;
             
+            if (textCycle < 0)
+                textCycle = -textCycle;
+            
             var size = rows * columns;
             _bufferContent = new BufferLayout[size];
             

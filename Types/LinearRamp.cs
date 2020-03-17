@@ -31,6 +31,9 @@ namespace T3.Operators.Types.Id_2c3d2c26_ac45_42e9_8f13_6ea338333568
 
         [Input(Guid = "d9d6878b-29d4-40d9-b342-ed8f60178ec2")]
         public readonly InputSlot<float> PingPong = new InputSlot<float>();
+
+        [Input(Guid = "b2fe829e-10cb-46f3-95f2-1e9acb3bd052")]
+        public readonly InputSlot<float> SmoothGradient = new InputSlot<float>();
     }
 }
 
