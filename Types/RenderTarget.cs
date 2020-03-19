@@ -1,4 +1,4 @@
-﻿using SharpDX;
+using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
@@ -26,16 +26,16 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             var resourceManager = ResourceManager.Instance();
             var device = resourceManager.Device;
 
-            Size2 size = Size.GetValue(context);
+            Size2 size = Resolution.GetValue(context);
             if (size.Width == 0 || size.Height == 0)
             {
                 size = context.RequestedResolution;
                 if(size.Width <=0 || size.Height <= 0)
                     return;
             }
-                
 
-            UpdateTextures(device, size);
+            
+            UpdateTextures(device, size, TextureFormat.GetValue(context));
 
             var deviceContext = device.ImmediateContext;
             var prevViewports = deviceContext.Rasterizer.GetViewports<RawViewportF>();
@@ -63,9 +63,12 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             Output.Value = _colorBuffer;
         }
 
-        private void UpdateTextures(Device device, Size2 size)
+        private void UpdateTextures(Device device, Size2 size, Format format)
         {
-            if (_colorBuffer != null && _colorBuffer.Description.Width == size.Width && _colorBuffer.Description.Height == size.Height)
+            if (_colorBuffer != null 
+                && _colorBuffer.Description.Width == size.Width 
+                && _colorBuffer.Description.Height == size.Height 
+                && _colorBuffer.Description.Format == format)
                 return; // nothing changed
 
             _colorBuffer?.Dispose();
@@ -77,7 +80,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                 ArraySize = 1,
                                 BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
                                 CpuAccessFlags = CpuAccessFlags.None,
-                                Format = Format.R8G8B8A8_UNorm,
+                                Format = format,
                                 Width = size.Width,
                                 Height = size.Height,
                                 MipLevels = 1,
@@ -101,11 +104,17 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
         public readonly InputSlot<Command> Command = new InputSlot<Command>();
 
         [Input(Guid = "03749B41-CC3C-4F38-AEA6-D7CEA19FC073")]
-        public readonly InputSlot<Size2> Size = new InputSlot<Size2>();
+        public readonly InputSlot<Size2> Resolution = new InputSlot<Size2>();
 
         [Input(Guid = "8BB4A4E5-0C88-4D99-A5B2-2C9E22BD301F")]
         public readonly InputSlot<System.Numerics.Vector4> ClearColor = new InputSlot<System.Numerics.Vector4>();
 
+        [Input(Guid = "EC46BEF4-8DCE-4EB4-BFE8-E35A5AC416EC")]
+        public readonly InputSlot<Format> TextureFormat = new InputSlot<Format>();
+
+        // [Input(Guid = "2ac5ac30-6298-45a9-805b-326b933826fd")]
+        // public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
+        
         // [Input(Guid = "")]
         // public readonly InputSlot<System.Numerics.Vector3> Scale = new InputSlot<System.Numerics.Vector3>();
     }

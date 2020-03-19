@@ -10,7 +10,6 @@ namespace T3.Operators.Types.Id_cb28a67e_80cb_460a_8130_00e3cd85b7c2
         [Output(Guid = "c26d8fbe-19b5-475a-bf2e-8dd7c1136c4b")]
         public readonly Slot<SharpDX.Direct3D11.Texture2D> TextureOutput = new Slot<SharpDX.Direct3D11.Texture2D>();
 
-
         [Input(Guid = "e6b078e9-6df0-463c-b7af-ae0d425327db")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Image = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
@@ -25,6 +24,12 @@ namespace T3.Operators.Types.Id_cb28a67e_80cb_460a_8130_00e3cd85b7c2
 
         [Input(Guid = "6e5d8458-e108-47d7-9f91-74851e9703a4")]
         public readonly InputSlot<System.Numerics.Vector2> Splits = new InputSlot<System.Numerics.Vector2>();
+
+        [Input(Guid = "a2bc64ce-c6c4-4fa1-a30c-288882a2bb84")]
+        public readonly InputSlot<System.Numerics.Vector2> SplitB = new InputSlot<System.Numerics.Vector2>();
+
+        [Input(Guid = "7e96e51d-5ed9-4e94-82e5-0f7a8ae62cce")]
+        public readonly InputSlot<System.Numerics.Vector2> SplitC = new InputSlot<System.Numerics.Vector2>();
 
         [Input(Guid = "094f0b30-347a-4079-b6e4-cedf85063250")]
         public readonly InputSlot<System.Numerics.Vector2> SplitProbability = new InputSlot<System.Numerics.Vector2>();
@@ -56,11 +61,8 @@ namespace T3.Operators.Types.Id_cb28a67e_80cb_460a_8130_00e3cd85b7c2
         [Input(Guid = "7b9ac96b-4b15-42e3-9329-c280503d47de")]
         public readonly InputSlot<float> ScrollOffset = new InputSlot<float>();
 
-        [Input(Guid = "a2bc64ce-c6c4-4fa1-a30c-288882a2bb84")]
-        public readonly InputSlot<System.Numerics.Vector2> SplitB = new InputSlot<System.Numerics.Vector2>();
-
-        [Input(Guid = "7e96e51d-5ed9-4e94-82e5-0f7a8ae62cce")]
-        public readonly InputSlot<System.Numerics.Vector2> SplitC = new InputSlot<System.Numerics.Vector2>();
+        [Input(Guid = "b7571823-89a5-4a93-8828-eadf631438c9")]
+        public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
     }
 }
 
