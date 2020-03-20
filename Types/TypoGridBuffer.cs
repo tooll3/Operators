@@ -31,6 +31,7 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
             var text = Text.GetValue(context);
             var bufferSize = BufferSize.GetValue(context);
             var textCycle = TextCycle.GetValue(context);
+            var wrapText = WrapText.GetValue(context);
             
             var columns = bufferSize.Width;
             var rows = bufferSize.Height;
@@ -47,14 +48,26 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
             _bufferContent = new BufferLayout[size];
             
             var index = 0;
+            var centerOffset = new Vector3(cellSize.X * columns/2f, -cellSize.Y * rows/2f,0);
+
+            char c;
             for (var rowIndex = 0; rowIndex < rows; rowIndex++)
             {
                 for (var columnIndex = 0; columnIndex < columns; columnIndex++)
                 {
-                    var c = (int)text[(index + textCycle) % text.Length];
+                    if (wrapText)
+                    {
+                        c = text[(index + textCycle) % text.Length];
+                    }
+                    else
+                    {
+                        var i = index + textCycle;
+                        var indexIsValid = i >= 0 && i < text.Length;
+                        c = indexIsValid ? text[i] : 'x';
+                    }
                     
                     _bufferContent[index] = new BufferLayout(
-                                                                pos:new Vector3(columnIndex * cellSize.X, rowIndex * cellSize.Y,0),
+                                                                pos:new Vector3(columnIndex * cellSize.X,-rowIndex * cellSize.Y,0)- centerOffset,
                                                                 uv:new Vector2(c%16, (c>>4)),
                                                                 size:new Vector2(cellSize.X -cellPadding.X, cellSize.Y - cellPadding.Y));
 
@@ -105,5 +118,8 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
         
         [Input(Guid = "18B86E6A-3A7F-4FE4-9716-57AC19528CFD")]
         public readonly InputSlot<int> TextCycle = new InputSlot<int>();
+        
+        [Input(Guid = "1F34D82F-455E-4D6B-8C36-B058FBB5DE3D")]
+        public readonly InputSlot<bool> WrapText = new InputSlot<bool>();
     }
 }

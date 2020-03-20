@@ -40,6 +40,9 @@ namespace T3.Operators.Types.Id_ad28819d_be62_4ed7_932a_fc861562983d
 
         [Input(Guid = "fc0074cd-3e09-4978-95f7-9ae8780539d3")]
         public readonly InputSlot<int> TextCycle = new InputSlot<int>();
+
+        [Input(Guid = "94312d3c-ac74-4965-9874-ddd96d1437ff")]
+        public readonly InputSlot<bool> WrapText = new InputSlot<bool>();
     }
 }
 
