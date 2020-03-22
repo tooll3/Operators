@@ -31,10 +31,16 @@ namespace T3.Operators.Types.Id_746d886c_5ab6_44b1_bb15_f3ce2fadf7e6
             var u = Up.GetValue(context);
             Vector3 up = new Vector3(u.X, u.Y, u.Z);
             Matrix cameraTworld = Matrix.LookAtRH(eye, target, up);
-            
+
+            var prevClipSpace = context.ClipSpaceTcamera; 
             context.ClipSpaceTcamera = clipSpaceTcamera;
+
+            var prevCamToWorld = context.CameraTworld;
             context.CameraTworld = cameraTworld;
             Command.GetValue(context);
+            
+            context.ClipSpaceTcamera = prevClipSpace;
+            context.CameraTworld = prevCamToWorld;
         }
 
         [Input(Guid = "047B8FAE-468C-48A7-8F3A-5FAC8DD5B3C6")]

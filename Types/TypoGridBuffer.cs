@@ -26,12 +26,13 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
 
         private void Update(EvaluationContext context)
         {
-            var cellSize = CellSize.GetValue(context);
-            var cellPadding = CellPadding.GetValue(context);
+            //var cellSize = CellSize.GetValue(context);
+            //var cellPadding = CellPadding.GetValue(context);
             var text = Text.GetValue(context);
             var bufferSize = BufferSize.GetValue(context);
-            var textCycle = TextCycle.GetValue(context);
+            //var textCycle = TextCycle.GetValue(context);
             var wrapText = WrapText.GetValue(context);
+            var textOffset = TextOffset.GetValue(context);
             
             var columns = bufferSize.Width;
             var rows = bufferSize.Height;
@@ -41,14 +42,15 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
             if (text.Length == 0)
                 return;
             
-            if (textCycle < 0)
-                textCycle = -textCycle;
-            
+            //if (textCycle < 0)
+            //    textCycle = -textCycle;
+            var textCycle = (int)textOffset.X + (int)(textOffset.Y) * columns;
+
             var size = rows * columns;
             _bufferContent = new BufferLayout[size];
             
             var index = 0;
-            var centerOffset = new Vector3(cellSize.X * columns/2f, -cellSize.Y * rows/2f,0);
+            //var centerOffset = new Vector3(cellSize.X * columns/2f, -cellSize.Y * rows/2f,0);
 
             char c;
             for (var rowIndex = 0; rowIndex < rows; rowIndex++)
@@ -57,7 +59,11 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
                 {
                     if (wrapText)
                     {
-                        c = text[(index + textCycle) % text.Length];
+                        var i = (index + textCycle) % text.Length;
+                        if (i < 0)
+                            i += text.Length;
+                        
+                        c = text[i];
                     }
                     else
                     {
@@ -65,11 +71,13 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
                         var indexIsValid = i >= 0 && i < text.Length;
                         c = indexIsValid ? text[i] : 'x';
                     }
-                    
+
                     _bufferContent[index] = new BufferLayout(
-                                                                pos:new Vector3(columnIndex * cellSize.X,-rowIndex * cellSize.Y,0)- centerOffset,
-                                                                uv:new Vector2(c%16, (c>>4)),
-                                                                size:new Vector2(cellSize.X -cellPadding.X, cellSize.Y - cellPadding.Y));
+                                                             //pos:new Vector3(columnIndex * cellSize.X,-rowIndex * cellSize.Y,0)- centerOffset,
+                                                             //pos:new Vector3((float)columnIndex / columns, -(float)rowIndex/rows,0),
+                                                             pos: new Vector2((float)columnIndex / columns, 1 - (float)rowIndex / rows),
+                                                             uv: new Vector2(c % 16, (c >> 4)));
+                                                                //size:new Vector2(cellSize.X -cellPadding.X, cellSize.Y - cellPadding.Y));
 
                     index++;
                 }
@@ -83,22 +91,24 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
 
         private BufferLayout[] _bufferContent;
 
-        [StructLayout(LayoutKind.Explicit, Size = 32)]
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
         public struct BufferLayout
         {
-            public BufferLayout(Vector3 pos, Vector2 uv, Vector2 size)
+            public BufferLayout(Vector2 pos, Vector2 uv)
             {
                 Pos = pos;
                 Uv = uv;
-                Size = size;
+                // Size = size;
             }
 
             [FieldOffset(0)]
-            public Vector3 Pos;
-            [FieldOffset(16)]
+            public Vector2 Pos;
+            
+            [FieldOffset(2*4)]
             public Vector2 Uv;
-            [FieldOffset(24)]
-            public Vector2 Size;
+            //
+            // [FieldOffset(4*4)]
+            // public Vector2 Size;
         }       
         
         [Input(Guid = "86144B95-9272-4D02-A1A7-67C6544C3BB9")]
@@ -121,5 +131,8 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
         
         [Input(Guid = "1F34D82F-455E-4D6B-8C36-B058FBB5DE3D")]
         public readonly InputSlot<bool> WrapText = new InputSlot<bool>();
+        
+        [Input(Guid = "A9A4470C-980C-4FFF-936B-DA0D28584E02")]
+        public readonly InputSlot<System.Numerics.Vector2> TextOffset = new InputSlot<System.Numerics.Vector2>();
     }
 }

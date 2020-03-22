@@ -18,7 +18,10 @@ namespace T3.Operators.Types.Id_9cb4d49e_135b_400b_a035_2b02c5ea6a72
 
         private void Update(EvaluationContext context)
         {
-            TimeInBeats.Value = (float)EvaluationContext.BeatTime;
+            TimeInBeats.Value = (float)EvaluationContext.BeatTime * SpeedFactor.GetValue(context);
         }
+        
+        [Input(Guid = "2d9c040d-5244-40ac-8090-d8d57323487b")]
+        public readonly InputSlot<float> SpeedFactor = new InputSlot<float>();
     }
 }

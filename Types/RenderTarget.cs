@@ -25,17 +25,17 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
         {
             var resourceManager = ResourceManager.Instance();
             var device = resourceManager.Device;
+            var clear = Clear.GetValue(context);
 
             Size2 size = Resolution.GetValue(context);
             if (size.Width == 0 || size.Height == 0)
             {
                 size = context.RequestedResolution;
-                if(size.Width <=0 || size.Height <= 0)
+                if (size.Width <= 0 || size.Height <= 0)
                     return;
             }
 
-            
-            UpdateTextures(device, size, TextureFormat.GetValue(context));
+            var wasRebuild = UpdateTextures(device, size, TextureFormat.GetValue(context));
 
             var deviceContext = device.ImmediateContext;
             var prevViewports = deviceContext.Rasterizer.GetViewports<RawViewportF>();
@@ -43,10 +43,14 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             deviceContext.Rasterizer.SetViewport(new SharpDX.Viewport(0, 0, size.Width, size.Height, 0.0f, 1.0f));
             deviceContext.OutputMerger.SetTargets(_colorBufferRtv);
             var c = ClearColor.GetValue(context);
-            deviceContext.ClearRenderTargetView(_colorBufferRtv, new Color(c.X, c.Y, c.Z, c.W));
+            if (clear || !_wasCleared)
+            {
+                deviceContext.ClearRenderTargetView(_colorBufferRtv, new Color(c.X, c.Y, c.Z, c.W));
+                _wasCleared = true;
+            }
 
             //context.CameraTworld = Matrix.Identity;
-            var keepWorldTobject= context.WorldTobject;
+            var keepWorldTobject = context.WorldTobject;
             context.WorldTobject = Matrix.Identity;
             Command.GetValue(context);
             context.WorldTobject = keepWorldTobject;
@@ -63,13 +67,13 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             Output.Value = _colorBuffer;
         }
 
-        private void UpdateTextures(Device device, Size2 size, Format format)
+        private bool UpdateTextures(Device device, Size2 size, Format format)
         {
-            if (_colorBuffer != null 
-                && _colorBuffer.Description.Width == size.Width 
-                && _colorBuffer.Description.Height == size.Height 
+            if (_colorBuffer != null
+                && _colorBuffer.Description.Width == size.Width
+                && _colorBuffer.Description.Height == size.Height
                 && _colorBuffer.Description.Format == format)
-                return; // nothing changed
+                return false; // nothing changed
 
             _colorBuffer?.Dispose();
             _colorBufferSrv?.Dispose();
@@ -91,10 +95,13 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             _colorBuffer = new Texture2D(device, colorDesc);
             _colorBufferSrv = new ShaderResourceView(device, _colorBuffer);
             _colorBufferRtv = new RenderTargetView(device, _colorBuffer);
+            _wasCleared = false;
+            return true;
         }
 
         private Texture2D _colorBuffer;
         private ShaderResourceView _colorBufferSrv;
+        private bool _wasCleared;
 
         private RenderTargetView _colorBufferRtv;
         // private Texture2D _depthBuffer;
@@ -112,9 +119,12 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
         [Input(Guid = "EC46BEF4-8DCE-4EB4-BFE8-E35A5AC416EC")]
         public readonly InputSlot<Format> TextureFormat = new InputSlot<Format>();
 
+        [Input(Guid = "AACAFC4D-F47F-4893-9A6E-98DB306A8901")]
+        public readonly InputSlot<bool> Clear = new InputSlot<bool>();
+
         // [Input(Guid = "2ac5ac30-6298-45a9-805b-326b933826fd")]
         // public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
-        
+
         // [Input(Guid = "")]
         // public readonly InputSlot<System.Numerics.Vector3> Scale = new InputSlot<System.Numerics.Vector3>();
     }
