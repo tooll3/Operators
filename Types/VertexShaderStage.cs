@@ -48,14 +48,14 @@ namespace T3.Operators.Types.Id_a9600440_4203_4315_bdb1_4dfd603b4515
             UpdateMultiInput(ConstantBuffers, ref _constantBuffers, context);
             UpdateMultiInput(ShaderResources, ref _shaderResourceViews, context);
             
-            var vs = VertexShader.GetValue(context);
             _prevConstantBuffers = vsStage.GetConstantBuffers(0, _constantBuffers.Length);
             _prevShaderResourceViews = vsStage.GetShaderResources(0, _shaderResourceViews.Length);
+            _prevVertexShader = vsStage.Get();
 
+            var vs = VertexShader.GetValue(context);
             if (vs == null)
                 return;
 
-            _prevVertexShader = vs;
             vsStage.Set(vs);
             vsStage.SetConstantBuffers(0, _constantBuffers.Length, _constantBuffers);
             vsStage.SetShaderResources(0, _shaderResourceViews.Length, _shaderResourceViews);
