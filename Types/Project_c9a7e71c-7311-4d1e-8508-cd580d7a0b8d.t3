@@ -327,7 +327,12 @@
         {
           "Id": "38ce7f47-c117-47a2-aeea-609716c60555"/*MaxLength*/,
           "Type": "System.Int32",
-          "Value": 2000
+          "Value": 4001
+        },
+        {
+          "Id": "8eee8067-1a4e-4372-93d0-2dbc368aa45a"/*Separator*/,
+          "Type": "System.String",
+          "Value": " >>> "
         }
       ],
       "OutputData": []
@@ -342,6 +347,16 @@
       "Id": "dfe445f4-068e-4618-88a6-e321cb744b29"/*TextGrid*/,
       "SymbolId": "ad28819d-be62-4ed7-932a-fc861562983d",
       "InputValues": [
+        {
+          "Id": "7f86c4ea-48d1-4d3a-9a5a-cfbca0da4daa"/*Color*/,
+          "Type": "System.Numerics.Vector4",
+          "Value": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0,
+            "W": 1.0
+          }
+        },
         {
           "Id": "94312d3c-ac74-4965-9874-ddd96d1437ff"/*WrapText*/,
           "Type": "System.Boolean",
@@ -395,9 +410,9 @@
           "Id": "8bb4a4e5-0c88-4d99-a5b2-2c9e22bd301f"/*ClearColor*/,
           "Type": "System.Numerics.Vector4",
           "Value": {
-            "X": 1.0,
-            "Y": 0.99999,
-            "Z": 0.99999,
+            "X": 0.294,
+            "Y": 1.0,
+            "Z": 1.0,
             "W": 1.0
           }
         }
@@ -409,14 +424,29 @@
       "SymbolId": "bf76bc78-74e1-45c3-9c67-de50262a48ae",
       "InputValues": [
         {
-          "Id": "f35cd93e-ed9a-472c-b03f-ff3cabcbc631"/*String*/,
-          "Type": "System.String",
-          "Value": "Corona! "
-        },
-        {
           "Id": "7e68d5fd-f9be-4f23-bc1b-0bdb72e63137"/*MaxLength*/,
           "Type": "System.Int32",
-          "Value": 0
+          "Value": 1
+        },
+        {
+          "Id": "aa458c22-a874-4200-af62-0da94d82631f"/*TriggerFill*/,
+          "Type": "System.Boolean",
+          "Value": false
+        },
+        {
+          "Id": "262511b2-3a96-4600-8325-0fe84568b42f"/*TriggerFillJump*/,
+          "Type": "System.Boolean",
+          "Value": true
+        },
+        {
+          "Id": "eb856f4f-2b57-40cc-bf7e-ee6bfc955f34"/*FillString*/,
+          "Type": "System.String",
+          "Value": "?"
+        },
+        {
+          "Id": "10a1209a-15f1-42ac-b105-2ccbc0f4ff4d"/*FillDirection*/,
+          "Type": "System.Int32",
+          "Value": -1
         }
       ],
       "OutputData": []
@@ -428,108 +458,21 @@
       "OutputData": []
     },
     {
-      "Id": "112dd7e5-4008-4c7c-a68f-dfe0b14a6cd5"/*RunTime*/,
-      "SymbolId": "862de1a8-f630-4823-8860-7afa918bb1bc",
-      "InputValues": [],
-      "OutputData": []
-    },
-    {
-      "Id": "6617b24e-2e8d-488e-934d-fc1ba1541a88"/*ToInt*/,
-      "SymbolId": "06b4728e-852c-491a-a89d-647f7e0b5415",
-      "InputValues": [],
-      "OutputData": []
-    },
-    {
-      "Id": "be2aa4d6-4a8a-4932-b925-8d2de28aa2b8"/*Multiply*/,
-      "SymbolId": "17b60044-9125-4961-8a79-ca94697b3726",
-      "InputValues": [
-        {
-          "Id": "5ae4bb07-4214-4ec3-a499-24d9f6d404a5"/*B*/,
-          "Type": "System.Single",
-          "Value": 60.0
-        }
-      ],
-      "OutputData": []
-    },
-    {
-      "Id": "d55ef86a-e3bf-4e53-bf33-8868dfd064e4"/*BeatTime*/,
-      "SymbolId": "9cb4d49e-135b-400b-a035-2b02c5ea6a72",
-      "InputValues": [
-        {
-          "Id": "2d9c040d-5244-40ac-8090-d8d57323487b"/*SpeedFactor*/,
-          "Type": "System.Single",
-          "Value": 16.0
-        }
-      ],
-      "OutputData": []
-    },
-    {
-      "Id": "48af12d3-f518-4cbe-8877-1111c5132ba8"/*Modulo*/,
-      "SymbolId": "5202d3f6-c970-4006-933d-3c60d6c202dc",
-      "InputValues": [],
-      "OutputData": []
-    },
-    {
       "Id": "26613d97-cf37-4b32-824b-6cac8cbfaebf"/*ToInt*/,
       "SymbolId": "06b4728e-852c-491a-a89d-647f7e0b5415",
       "InputValues": [],
       "OutputData": []
     },
     {
-      "Id": "c324e662-2b6d-4ba4-8720-e03d9901fba0"/*Remap*/,
-      "SymbolId": "f0acd1a4-7a98-43ab-a807-6d1bd3e92169",
-      "InputValues": [
-        {
-          "Id": "edb98f34-d019-47f6-b275-e5a80061e1f7"/*RangeInMin*/,
-          "Type": "System.Single",
-          "Value": 0.8
-        },
-        {
-          "Id": "cd369755-5062-4934-8f37-e3a5cc9963df"/*RangeInMax*/,
-          "Type": "System.Single",
-          "Value": 1.0
-        },
-        {
-          "Id": "f2baf278-adde-42de-afce-336b6c8d0387"/*RangeOutMin*/,
-          "Type": "System.Single",
-          "Value": 0.99
-        },
-        {
-          "Id": "252276fb-8de1-42cc-ba41-07d6862015bd"/*RangeOutMax*/,
-          "Type": "System.Single",
-          "Value": 2.0
-        }
-      ],
-      "OutputData": []
-    },
-    {
-      "Id": "041217ba-93e6-4605-86c0-e1b90cb36367"/*BeatTime*/,
-      "SymbolId": "9cb4d49e-135b-400b-a035-2b02c5ea6a72",
-      "InputValues": [
-        {
-          "Id": "2d9c040d-5244-40ac-8090-d8d57323487b"/*SpeedFactor*/,
-          "Type": "System.Single",
-          "Value": 1.0
-        }
-      ],
-      "OutputData": []
-    },
-    {
-      "Id": "0c530a46-c945-4519-b31b-284bb014a502"/*HasValueIncreased*/,
-      "SymbolId": "c513c58d-e45c-408d-a0b8-250c9af31545",
-      "InputValues": [
-        {
-          "Id": "ed88c6c7-1ea2-4593-9589-ec670afb4654"/*Value*/,
-          "Type": "System.Single",
-          "Value": 16.0
-        }
-      ],
-      "OutputData": []
-    },
-    {
       "Id": "ba90bb44-0ea5-4c4c-9d85-578e7736abd9"/*Pulsate*/,
       "SymbolId": "ffed6f9e-2495-4cf3-9cda-740ecec75d10",
-      "InputValues": [],
+      "InputValues": [
+        {
+          "Id": "1154b0a7-e244-43ff-a80b-9d099be85053"/*Speed*/,
+          "Type": "System.Single",
+          "Value": 0.5
+        }
+      ],
       "OutputData": []
     },
     {
@@ -551,7 +494,61 @@
         {
           "Id": "b1fd8b37-140e-487f-bfe2-bc426d8fe439"/*String*/,
           "Type": "System.String",
-          "Value": "The bird has died long ago."
+          "Value": "116,505 US\n92,472 Italy\n81,999 China\n72,248 Spain\n56,202 Germany\n38,105 France\n35,408 Iran\n17,312 United Kingdom\n14,076 Switzerland\n9,819 Netherlands\n9,478 Korea, South\n9,134 Belgium\n8,188 Austria\n7,402 Turkey\n5,448 Canada\n5,170 Portugal\n3,981 Norway\n3,640 Australia\n3,619 Israel\n3,477 Brazil\n3,447 Sweden\n2,541 Czechia\n2,415 Ireland\n2,366 Denmark\n2,320 Malaysia\n1,909 Chile\n1,831 Luxembourg\n1,823 Ecuador\n1,638 Poland\n1,499 Japan\n1,495 Pakistan\n1,452 Romania\n1,264 Russia\n1,245 Thailand\n1,203 Saudi Arabia\n1,187 South Africa\n1,167 Finland\n1,155 Indonesia\n1,075 Philippines\n1,061 Greece\n963 Iceland\n933 India\n802 Singapore\n786 Panama\n719 Dominican Republic\n717 Mexico\n712 Diamond Princess\n690 Argentina\n684 Slovenia\n671 Peru\n659 Serbia\n657 Croatia\n645 Estonia\n608 Colombia\n590 Qatar\n576 Egypt\n506 Iraq\n476 Bahrain\n468 United Arab Emirates\n454 Algeria\n451 New Zealand\n412 Lebanon\n407 Armenia\n394 Lithuania\n359 Morocco\n343 Hungary\n331 Bulgaria\n311 Ukraine\n308 Andorra\n305 Latvia\n292 Slovakia\n283 Taiwan*\n274 Uruguay\n263 Costa Rica\n258 Bosnia and Herzegovina\n257 Tunisia\n246 Jordan\n241 North Macedonia\n235 Kuwait\n231 Moldova\n228 Kazakhstan\n224 San Marino\n207 Burkina Faso\n197 Albania\n182 Azerbaijan\n179 Cyprus\n174 Vietnam\n152 Oman\n149 Malta\n141 Ghana\n130 Senegal\n120 Brunei\n119 Cuba\n113 Sri Lanka\n113 Venezuela\n110 Afghanistan\n104 Uzbekistan\n102 Mauritius\n101 Cote d'Ivoire\n99 Cambodia\n97 West Bank and Gaza\n95 Honduras\n94 Belarus\n91 Cameroon\n90 Georgia\n89 Nigeria\n88 Kosovo\n82 Montenegro\n74 Bolivia\n74 Trinidad and Tobago\n65 Congo (Kinshasa)\n60 Rwanda\n58 Kyrgyzstan\n56 Liechtenstein\n56 Paraguay\n48 Bangladesh\n42 Monaco\n38 Kenya\n34 Guatemala\n30 Jamaica\n28 Zambia\n26 Barbados\n26 Madagascar\n25 Togo\n23 Uganda\n19 El Salvador\n18 Mali\n16 Ethiopia\n16 Maldives\n14 Tanzania\n12 Djibouti\n12 Equatorial Guinea\n12 Mongolia\n11 Dominica\n10 Bahamas\n10 Niger\n9 Eswatini\n8 Burma\n8 Guinea\n8 Guyana\n8 Haiti\n8 Laos\n8 Mozambique\n8 Namibia\n8 Suriname\n7 Antigua and Barbuda\n7 Gabon\n7 Grenada\n7 Seychelles\n7 Zimbabwe\n6 Benin\n6 Eritrea\n6 Holy See\n5 Cabo Verde\n5 Fiji\n5 Mauritania\n5 Nepal\n5 Sudan\n5 Syria\n4 Angola\n4 Congo (Brazzaville)\n4 Nicaragua\n3 Bhutan\n3 Central African Republic\n3 Chad\n3 Gambia\n3 Liberia\n3 Libya\n3 Saint Lucia\n3 Somalia\n2 Belize\n2 Guinea-Bissau\n2 MS Zaandam\n2 Saint Kitts and Nevis\n1 Papua New Guinea"
+        }
+      ],
+      "OutputData": []
+    },
+    {
+      "Id": "774fe624-0b41-4349-9837-429bf4f86dc3"/*ToUpperCase*/,
+      "SymbolId": "acdd78b1-4e66-4fd0-a36b-5318670fefd4",
+      "InputValues": [],
+      "OutputData": []
+    },
+    {
+      "Id": "5ccb06f2-5e6c-414c-8006-639ecdfdf07a"/*Pulsate*/,
+      "SymbolId": "ffed6f9e-2495-4cf3-9cda-740ecec75d10",
+      "InputValues": [
+        {
+          "Id": "1154b0a7-e244-43ff-a80b-9d099be85053"/*Speed*/,
+          "Type": "System.Single",
+          "Value": 128.0
+        }
+      ],
+      "OutputData": []
+    },
+    {
+      "Id": "1e26f640-72ee-40b8-969a-18020d051d5f"/*Pulsate*/,
+      "SymbolId": "ffed6f9e-2495-4cf3-9cda-740ecec75d10",
+      "InputValues": [
+        {
+          "Id": "1154b0a7-e244-43ff-a80b-9d099be85053"/*Speed*/,
+          "Type": "System.Single",
+          "Value": 32.0
+        }
+      ],
+      "OutputData": []
+    },
+    {
+      "Id": "e881b9c6-8da5-4c0a-8799-a33258f7bc66"/*Multiply*/,
+      "SymbolId": "17b60044-9125-4961-8a79-ca94697b3726",
+      "InputValues": [
+        {
+          "Id": "5ae4bb07-4214-4ec3-a499-24d9f6d404a5"/*B*/,
+          "Type": "System.Single",
+          "Value": 60.0
+        }
+      ],
+      "OutputData": []
+    },
+    {
+      "Id": "ff58da7e-8b76-47da-bfdd-d05ffe33a451"/*Pulsate*/,
+      "SymbolId": "ffed6f9e-2495-4cf3-9cda-740ecec75d10",
+      "InputValues": [
+        {
+          "Id": "1154b0a7-e244-43ff-a80b-9d099be85053"/*Speed*/,
+          "Type": "System.Single",
+          "Value": 32.0
         }
       ],
       "OutputData": []
@@ -565,10 +562,10 @@
       "TargetSlotId": "80e2c6c3-1282-4075-b4e3-86bd67795f1c"
     },
     {
-      "SourceParentOrChildId": "ba90bb44-0ea5-4c4c-9d85-578e7736abd9",
-      "SourceSlotId": "1fe51f05-f488-4dcb-98f3-b4321a991afa",
-      "TargetParentOrChildId": "0c530a46-c945-4519-b31b-284bb014a502",
-      "TargetSlotId": "ed88c6c7-1ea2-4593-9589-ec670afb4654"
+      "SourceParentOrChildId": "e932ff36-4abd-48c3-8793-53631f88bde3",
+      "SourceSlotId": "b20573fe-7a7e-48e1-9370-744288ca6e32",
+      "TargetParentOrChildId": "1e26f640-72ee-40b8-969a-18020d051d5f",
+      "TargetSlotId": "3b60db67-3a12-44c3-91ba-5517f74879d6"
     },
     {
       "SourceParentOrChildId": "cb48da37-0dbb-4b91-9f9a-86006af5c381",
@@ -577,8 +574,8 @@
       "TargetSlotId": "dcd066ce-ac44-4e76-85b3-78821245d9dc"
     },
     {
-      "SourceParentOrChildId": "c324e662-2b6d-4ba4-8720-e03d9901fba0",
-      "SourceSlotId": "de6e6f65-cb51-49f1-bb90-34ed1ec963c1",
+      "SourceParentOrChildId": "e881b9c6-8da5-4c0a-8799-a33258f7bc66",
+      "SourceSlotId": "e011dd8c-1b9c-458f-8960-e6c38e83ca74",
       "TargetParentOrChildId": "26613d97-cf37-4b32-824b-6cac8cbfaebf",
       "TargetSlotId": "af866a6c-1ab0-43c0-9e8a-5d25c300e128"
     },
@@ -601,10 +598,10 @@
       "TargetSlotId": "dcd066ce-ac44-4e76-85b3-78821245d9dc"
     },
     {
-      "SourceParentOrChildId": "d55ef86a-e3bf-4e53-bf33-8868dfd064e4",
+      "SourceParentOrChildId": "e932ff36-4abd-48c3-8793-53631f88bde3",
       "SourceSlotId": "b20573fe-7a7e-48e1-9370-744288ca6e32",
-      "TargetParentOrChildId": "48af12d3-f518-4cbe-8877-1111c5132ba8",
-      "TargetSlotId": "8a401e5d-295d-4403-a3af-1d6b91ce3dba"
+      "TargetParentOrChildId": "5ccb06f2-5e6c-414c-8006-639ecdfdf07a",
+      "TargetSlotId": "3b60db67-3a12-44c3-91ba-5517f74879d6"
     },
     {
       "SourceParentOrChildId": "221ede0f-ba44-4efb-a78c-ec7d957ba50a",
@@ -617,12 +614,6 @@
       "SourceSlotId": "e4a8d926-7abd-4d2a-82a1-b7d140cb457f",
       "TargetParentOrChildId": "5ea92267-d161-4714-9fa5-c70d12f07877",
       "TargetSlotId": "5d73ebe6-9aa0-471a-ae6b-3f5bfd5a0f9c"
-    },
-    {
-      "SourceParentOrChildId": "be2aa4d6-4a8a-4932-b925-8d2de28aa2b8",
-      "SourceSlotId": "e011dd8c-1b9c-458f-8960-e6c38e83ca74",
-      "TargetParentOrChildId": "6617b24e-2e8d-488e-934d-fc1ba1541a88",
-      "TargetSlotId": "af866a6c-1ab0-43c0-9e8a-5d25c300e128"
     },
     {
       "SourceParentOrChildId": "d16b0961-580f-4d71-a5c3-faff866f631a",
@@ -667,22 +658,10 @@
       "TargetSlotId": "3b60db67-3a12-44c3-91ba-5517f74879d6"
     },
     {
-      "SourceParentOrChildId": "0c530a46-c945-4519-b31b-284bb014a502",
-      "SourceSlotId": "598e38d5-2347-4b93-a7a4-a23190d95dcd",
+      "SourceParentOrChildId": "ba90bb44-0ea5-4c4c-9d85-578e7736abd9",
+      "SourceSlotId": "853a932c-21ba-403a-a6c1-5707a6e98ce8",
       "TargetParentOrChildId": "bcd9b7ae-ffe8-4dce-975c-27fa0a17d7ac",
       "TargetSlotId": "f5c0b04e-8c4e-43ba-ae19-79f80c0f830d"
-    },
-    {
-      "SourceParentOrChildId": "112dd7e5-4008-4c7c-a68f-dfe0b14a6cd5",
-      "SourceSlotId": "1c34d39c-0bef-4c4a-a3e4-dcb8d5664f3b",
-      "TargetParentOrChildId": "be2aa4d6-4a8a-4932-b925-8d2de28aa2b8",
-      "TargetSlotId": "372288fa-3794-47ba-9f91-59240513217a"
-    },
-    {
-      "SourceParentOrChildId": "48af12d3-f518-4cbe-8877-1111c5132ba8",
-      "SourceSlotId": "4e4ebbcf-6b12-4ce7-9bec-78cd9049e239",
-      "TargetParentOrChildId": "c324e662-2b6d-4ba4-8720-e03d9901fba0",
-      "TargetSlotId": "40606d4e-acaf-4f23-a845-16f0eb9b73cf"
     },
     {
       "SourceParentOrChildId": "d3e6650d-aac5-454e-a5b4-184ab8310b70",
@@ -709,6 +688,12 @@
       "TargetSlotId": "08206117-24fa-4900-b095-acd3a5ddd58d"
     },
     {
+      "SourceParentOrChildId": "5ccb06f2-5e6c-414c-8006-639ecdfdf07a",
+      "SourceSlotId": "853a932c-21ba-403a-a6c1-5707a6e98ce8",
+      "TargetParentOrChildId": "d3a93ab8-b31e-4f8b-9aa1-970b14841865",
+      "TargetSlotId": "095202bf-118f-4c4c-802e-7916bc290a60"
+    },
+    {
       "SourceParentOrChildId": "bcd9b7ae-ffe8-4dce-975c-27fa0a17d7ac",
       "SourceSlotId": "deb52613-01fc-428d-b2d1-4be7b6767fad",
       "TargetParentOrChildId": "d3a93ab8-b31e-4f8b-9aa1-970b14841865",
@@ -721,10 +706,16 @@
       "TargetSlotId": "f834fb3b-d6f1-4fbe-974a-cfcd90ffdba8"
     },
     {
-      "SourceParentOrChildId": "26613d97-cf37-4b32-824b-6cac8cbfaebf",
-      "SourceSlotId": "1eb7c5c4-0982-43f4-b14d-524571e3cdda",
+      "SourceParentOrChildId": "ff58da7e-8b76-47da-bfdd-d05ffe33a451",
+      "SourceSlotId": "853a932c-21ba-403a-a6c1-5707a6e98ce8",
       "TargetParentOrChildId": "d3e6650d-aac5-454e-a5b4-184ab8310b70",
-      "TargetSlotId": "7e68d5fd-f9be-4f23-bc1b-0bdb72e63137"
+      "TargetSlotId": "262511b2-3a96-4600-8325-0fe84568b42f"
+    },
+    {
+      "SourceParentOrChildId": "1e26f640-72ee-40b8-969a-18020d051d5f",
+      "SourceSlotId": "853a932c-21ba-403a-a6c1-5707a6e98ce8",
+      "TargetParentOrChildId": "d3e6650d-aac5-454e-a5b4-184ab8310b70",
+      "TargetSlotId": "b5deeff1-7188-4742-a438-cb3ce1afde59"
     },
     {
       "SourceParentOrChildId": "d3a93ab8-b31e-4f8b-9aa1-970b14841865",
@@ -745,16 +736,16 @@
       "TargetSlotId": "8d5e77a6-1ec4-4979-ad26-f7862049bce1"
     },
     {
-      "SourceParentOrChildId": "9b9c1e91-99e2-4447-97ec-9f5953bbd00b",
-      "SourceSlotId": "7a4c4feb-be2f-463e-96c6-cd9a6bad77a2",
-      "TargetParentOrChildId": "dfe445f4-068e-4618-88a6-e321cb744b29",
-      "TargetSlotId": "1178c7c0-12ec-4284-9d28-c357f8e8a8ca"
+      "SourceParentOrChildId": "e932ff36-4abd-48c3-8793-53631f88bde3",
+      "SourceSlotId": "b20573fe-7a7e-48e1-9370-744288ca6e32",
+      "TargetParentOrChildId": "e881b9c6-8da5-4c0a-8799-a33258f7bc66",
+      "TargetSlotId": "372288fa-3794-47ba-9f91-59240513217a"
     },
     {
-      "SourceParentOrChildId": "c9f4d6f2-1232-4fe1-9f7c-18ceddae170a",
-      "SourceSlotId": "71c4aa96-9a20-494a-9a28-6dd33a867ed2",
-      "TargetParentOrChildId": "dfe445f4-068e-4618-88a6-e321cb744b29",
-      "TargetSlotId": "7c3dbe80-da67-430b-9aaa-f2e2f34fed73"
+      "SourceParentOrChildId": "e932ff36-4abd-48c3-8793-53631f88bde3",
+      "SourceSlotId": "b20573fe-7a7e-48e1-9370-744288ca6e32",
+      "TargetParentOrChildId": "ff58da7e-8b76-47da-bfdd-d05ffe33a451",
+      "TargetSlotId": "3b60db67-3a12-44c3-91ba-5517f74879d6"
     }
   ],
   "Animator": [

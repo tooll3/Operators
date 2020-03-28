@@ -11,11 +11,16 @@ namespace T3.Operators.Types.Id_ffed6f9e_2495_4cf3_9cda_740ecec75d10
 
         [Output (Guid = "1FE51F05-F488-4DCB-98F3-B4321A991AFA")]
         public readonly Slot<float> Counter = new Slot<float> ();
+        
+        [Output (Guid = "853A932C-21BA-403A-A6C1-5707A6E98CE8")]
+        public readonly Slot<bool> Bang = new Slot<bool> ();
+
 
         public Pulsate ()
         {
             Result.UpdateAction = Update;
             Counter.UpdateAction = Update;
+            Bang.UpdateAction = Update;
         }
 
         private void Update (EvaluationContext context)
@@ -62,8 +67,22 @@ namespace T3.Operators.Types.Id_ffed6f9e_2495_4cf3_9cda_740ecec75d10
 
             v *= Speed.GetValue(context);
             Result.Value = (1 - (beatTime * v) % 1) * intensity;
-            Counter.Value = (int) (beatTime * v);
+            int beatCounter = (int) (beatTime * v);
+            Counter.Value = beatCounter;
+
+            var wasBang = Counter.Value > _lastBeatCounter;
+            _lastBeatCounter = beatCounter;
+            
+            // Only ping updates on actual changes
+            if (wasBang != _lastBang)
+            {
+                Bang.Value = wasBang;
+                _lastBang = wasBang;
+            } 
         }
+
+        private int _lastBeatCounter;
+        private bool _lastBang;
 
         [Input(Guid = "3b60db67-3a12-44c3-91ba-5517f74879d6")]
         public readonly InputSlot<float> BeatTime = new InputSlot<float>();

@@ -21,11 +21,12 @@ namespace T3.Operators.Types.Id_c513c58d_e45c_408d_a0b8_250c9af31545
         {
             var v = Value.GetValue(context);
             var result = v > _lastValue;
+            _lastValue = v;
+            
             if (result == _lastResult)
                 return;
 
             HasIncreased.Value = result;
-            _lastValue = v;
             _lastResult = result;
         }
 

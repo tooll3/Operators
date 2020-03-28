@@ -23,9 +23,9 @@ namespace T3.Operators.Types.Id_a0fcf7ed_1f14_4a8b_a57e_99e5b2407b1b
         private void Update(EvaluationContext context)
         {
             var split = Split.GetValue(context);
-            var c = split.Length > 0
-                        ? split[0]
-                        : '\n';
+            var c = (split.Length == 0 || split == "\\n")  
+                        ? '\n'
+                        : split[0];
             Fragments.Value = String.GetValue(context).Split(c).ToList();
         }
 
