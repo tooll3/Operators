@@ -40,6 +40,12 @@ namespace T3.Operators.Types.Id_ad28819d_be62_4ed7_932a_fc861562983d
 
         [Input(Guid = "7dc864f5-b6eb-4d99-815e-8920e86e36b9")]
         public readonly InputSlot<float> OverrideScale = new InputSlot<float>();
+
+        [Input(Guid = "98b5699a-60fb-436e-93f1-d301a471dfe1")]
+        public readonly InputSlot<System.Numerics.Vector4> HighlightColor = new InputSlot<System.Numerics.Vector4>();
+
+        [Input(Guid = "b1a5ff6b-dfa4-4fac-b676-e2ba38d6a9f8")]
+        public readonly InputSlot<string> HighlightChars = new InputSlot<string>();
     }
 }
 

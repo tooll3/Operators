@@ -63,6 +63,19 @@
     {
       "Id": "7dc864f5-b6eb-4d99-815e-8920e86e36b9"/*OverrideScale*/,
       "DefaultValue": 0.0
+    },
+    {
+      "Id": "98b5699a-60fb-436e-93f1-d301a471dfe1"/*HighlightColor*/,
+      "DefaultValue": {
+        "X": 1.0,
+        "Y": 1.0,
+        "Z": 1.0,
+        "W": 1.0
+      }
+    },
+    {
+      "Id": "b1a5ff6b-dfa4-4fac-b676-e2ba38d6a9f8"/*HighlightChars*/,
+      "DefaultValue": ""
     }
   ],
   "Children": [
@@ -287,6 +300,11 @@
           "Id": "e815d72e-1c71-42b7-a0a2-994c6e9f2954"/*Text*/,
           "Type": "System.String",
           "Value": "LENA LENA LENA LENA LENA LENA LENA "
+        },
+        {
+          "Id": "df1a4a1e-f1fb-4fb5-8416-422d224c3d23"/*HighlightCharacters*/,
+          "Type": "System.String",
+          "Value": "0123456789"
         }
       ],
       "OutputData": []
@@ -509,6 +527,23 @@
       "SymbolId": "b470fdf9-ac0b-4eb9-9600-453b8c094e3f",
       "InputValues": [],
       "OutputData": []
+    },
+    {
+      "Id": "f2a3e7d4-3af9-4009-9909-c702d9722f21"/*Vector4Components*/,
+      "SymbolId": "b15e4950-5c72-4655-84bc-c00647319030",
+      "InputValues": [
+        {
+          "Id": "980ef785-6ae2-44d1-803e-febfc75791c5"/*Value*/,
+          "Type": "System.Numerics.Vector4",
+          "Value": {
+            "X": 1.0,
+            "Y": 0.0,
+            "Z": 0.6279073,
+            "W": 1.0
+          }
+        }
+      ],
+      "OutputData": []
     }
   ],
   "Connections": [
@@ -611,6 +646,30 @@
     {
       "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
       "SourceSlotId": "7dc864f5-b6eb-4d99-815e-8920e86e36b9",
+      "TargetParentOrChildId": "027f7fbb-8159-44c9-896b-0384c273fb2e",
+      "TargetSlotId": "49556d12-4cd1-4341-b9d8-c356668d296c"
+    },
+    {
+      "SourceParentOrChildId": "f2a3e7d4-3af9-4009-9909-c702d9722f21",
+      "SourceSlotId": "cfb58526-0053-4bca-aa85-d83823efba96",
+      "TargetParentOrChildId": "027f7fbb-8159-44c9-896b-0384c273fb2e",
+      "TargetSlotId": "49556d12-4cd1-4341-b9d8-c356668d296c"
+    },
+    {
+      "SourceParentOrChildId": "f2a3e7d4-3af9-4009-9909-c702d9722f21",
+      "SourceSlotId": "2f8e90dd-ba03-43dc-82a2-8d817df45cc7",
+      "TargetParentOrChildId": "027f7fbb-8159-44c9-896b-0384c273fb2e",
+      "TargetSlotId": "49556d12-4cd1-4341-b9d8-c356668d296c"
+    },
+    {
+      "SourceParentOrChildId": "f2a3e7d4-3af9-4009-9909-c702d9722f21",
+      "SourceSlotId": "162bb4fe-3c59-45c2-97cc-ecba85c1b275",
+      "TargetParentOrChildId": "027f7fbb-8159-44c9-896b-0384c273fb2e",
+      "TargetSlotId": "49556d12-4cd1-4341-b9d8-c356668d296c"
+    },
+    {
+      "SourceParentOrChildId": "f2a3e7d4-3af9-4009-9909-c702d9722f21",
+      "SourceSlotId": "e1dede5f-6963-4bcc-aa12-abeb819bb5da",
       "TargetParentOrChildId": "027f7fbb-8159-44c9-896b-0384c273fb2e",
       "TargetSlotId": "49556d12-4cd1-4341-b9d8-c356668d296c"
     },
@@ -838,6 +897,12 @@
     },
     {
       "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "b1a5ff6b-dfa4-4fac-b676-e2ba38d6a9f8",
+      "TargetParentOrChildId": "d671112a-f3c5-4181-87cd-b65a929a0814",
+      "TargetSlotId": "df1a4a1e-f1fb-4fb5-8416-422d224c3d23"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
       "SourceSlotId": "3ab49a26-3168-486a-be7e-35883659e0ef",
       "TargetParentOrChildId": "d671112a-f3c5-4181-87cd-b65a929a0814",
       "TargetSlotId": "e4aa7336-3d09-470e-b09c-352efbc706f3"
@@ -859,6 +924,12 @@
       "SourceSlotId": "7a4c4feb-be2f-463e-96c6-cd9a6bad77a2",
       "TargetParentOrChildId": "e67d1372-64ff-47be-ba87-1dd544a9b8af",
       "TargetSlotId": "3f1d8fa3-73bd-475c-a65b-c5352bf6ea85"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "98b5699a-60fb-436e-93f1-d301a471dfe1",
+      "TargetParentOrChildId": "f2a3e7d4-3af9-4009-9909-c702d9722f21",
+      "TargetSlotId": "980ef785-6ae2-44d1-803e-febfc75791c5"
     },
     {
       "SourceParentOrChildId": "8e60d0cd-d76a-4e54-9c69-9037bb9d4794",

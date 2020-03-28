@@ -21,16 +21,12 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
         public TypoGridBuffer()
         {
             Buffer.UpdateAction = Update;
-            //VertexCount.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)
         {
-            //var cellSize = CellSize.GetValue(context);
-            //var cellPadding = CellPadding.GetValue(context);
             var text = Text.GetValue(context);
             var bufferSize = BufferSize.GetValue(context);
-            //var textCycle = TextCycle.GetValue(context);
             var wrapText = WrapText.GetValue(context);
             var textOffset = TextOffset.GetValue(context);
             
@@ -42,17 +38,16 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
             if ( string.IsNullOrEmpty(text))
                 return;
             
-            //if (textCycle < 0)
-            //    textCycle = -textCycle;
             var textCycle = (int)textOffset.X + (int)(textOffset.Y) * columns;
 
             var size = rows * columns;
             _bufferContent = new BufferLayout[size];
             
             var index = 0;
-            //var centerOffset = new Vector3(cellSize.X * columns/2f, -cellSize.Y * rows/2f,0);
 
             char c;
+            var highlightChars = HighlightCharacters.GetValue(context);
+            
             for (var rowIndex = 0; rowIndex < rows; rowIndex++)
             {
                 for (var columnIndex = 0; columnIndex < columns; columnIndex++)
@@ -69,15 +64,15 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
                     {
                         var i = index + textCycle;
                         var indexIsValid = i >= 0 && i < text.Length;
-                        c = indexIsValid ? text[i] : 'x';
+                        c = indexIsValid ? text[i] : ' ';
                     }
 
+                    var highlight =  highlightChars.IndexOf(c) > -1 ? 1f : 0 ;    // oh, that's slow!
+                    
                     _bufferContent[index] = new BufferLayout(
-                                                             //pos:new Vector3(columnIndex * cellSize.X,-rowIndex * cellSize.Y,0)- centerOffset,
-                                                             //pos:new Vector3((float)columnIndex / columns, -(float)rowIndex/rows,0),
                                                              pos: new Vector2((float)columnIndex / columns, 1 - (float)rowIndex / rows),
-                                                             uv: new Vector2(c % 16, (c >> 4)));
-                                                                //size:new Vector2(cellSize.X -cellPadding.X, cellSize.Y - cellPadding.Y));
+                                                             uv: new Vector2(c % 16, (c >> 4)),
+                                                             highlight: highlight); 
 
                     index++;
                 }
@@ -91,14 +86,14 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
 
         private BufferLayout[] _bufferContent;
 
-        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        [StructLayout(LayoutKind.Explicit, Size = 32)]
         public struct BufferLayout
         {
-            public BufferLayout(Vector2 pos, Vector2 uv)
+            public BufferLayout(Vector2 pos, Vector2 uv, float highlight)
             {
                 Pos = pos;
                 Uv = uv;
-                // Size = size;
+                Highlight = highlight;
             }
 
             [FieldOffset(0)]
@@ -106,9 +101,9 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
             
             [FieldOffset(2*4)]
             public Vector2 Uv;
-            //
-            // [FieldOffset(4*4)]
-            // public Vector2 Size;
+            
+            [FieldOffset(4*4)]
+            public float Highlight;
         }       
         
         [Input(Guid = "86144B95-9272-4D02-A1A7-67C6544C3BB9")]
@@ -134,5 +129,9 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
         
         [Input(Guid = "A9A4470C-980C-4FFF-936B-DA0D28584E02")]
         public readonly InputSlot<System.Numerics.Vector2> TextOffset = new InputSlot<System.Numerics.Vector2>();
+        
+        [Input(Guid = "DF1A4A1E-F1FB-4FB5-8416-422D224C3D23")]
+        public readonly InputSlot<string> HighlightCharacters = new InputSlot<string>();
+
     }
 }
