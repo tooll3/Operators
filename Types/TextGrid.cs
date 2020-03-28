@@ -6,7 +6,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_ad28819d_be62_4ed7_932a_fc861562983d
 {
-    public class TypoGrid : Instance<TypoGrid>
+    public class TextGrid : Instance<TextGrid>
     {
         [Output(Guid = "982bd425-e781-42ad-9c58-f026fb6f193c")]
         public readonly Slot<Command> Output = new Slot<Command>();
