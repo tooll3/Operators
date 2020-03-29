@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -14,18 +15,15 @@ namespace T3.Operators.Types.Id_c513c58d_e45c_408d_a0b8_250c9af31545
         public HasValueIncreased()
         {
             HasIncreased.UpdateAction = Update;
-            //HasIncreased.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
+            HasIncreased.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)
         {
             var v = Value.GetValue(context);
-            var result = v > _lastValue + Threshold.GetValue(context);
+            var result = v > _lastValue;// + Threshold.GetValue(context);
             _lastValue = v;
             
-            if (result == _lastResult)
-                return;
-
             HasIncreased.Value = result;
             _lastResult = result;
         }

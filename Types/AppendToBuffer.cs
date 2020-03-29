@@ -1,5 +1,8 @@
 using System;
+using System.Diagnostics;
 using System.Text;
+using SharpDX;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -46,14 +49,21 @@ namespace T3.Operators.Types.Id_7b21f10b_3548_4a23_95df_360addaeb03d
 
                     stringBuilder.Remove(pos, insLength);
                     stringBuilder.Insert(pos, ins);
-                    _index += insLength;
+                    var fillOffset = FillOffset.GetValue(context);
+                    _index += fillOffset == 0 ? insLength : fillOffset;
+
+
                 }
             }
-
+            if (Fill.GetValue(context) && TriggerRandomPos.GetValue(context))
+            {
+                _index = (int)_random.NextLong(0, maxLength);
+            }
             Builder.Value = stringBuilder;
         }
 
         private int _index = 0;
+        private Random _random = new Random();
 
         [Input(Guid = "CCFAC8A9-0954-4869-A47C-B66C714F6545")]
         public readonly InputSlot<StringBuilder> InputBuffer = new InputSlot<StringBuilder>();
@@ -72,5 +82,11 @@ namespace T3.Operators.Types.Id_7b21f10b_3548_4a23_95df_360addaeb03d
 
         [Input(Guid = "B5027A5D-BA50-4BDC-8488-3F71B188FCBC")]
         public readonly InputSlot<bool> Fill = new InputSlot<bool>();
+        
+        [Input(Guid = "1559C0E9-BA56-447F-8241-03D8D59AC205")]
+        public readonly InputSlot<int> FillOffset = new InputSlot<int>();
+
+        [Input(Guid = "F977FAAF-1840-4A75-9BC5-43176F2E88E9")]
+        public readonly InputSlot<bool> TriggerRandomPos = new InputSlot<bool>();
     }
 }

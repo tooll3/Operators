@@ -11,6 +11,8 @@ namespace T3.Operators.Types.Id_f1218934_f874_4f70_a077_0ebe7d12104d
         [Output(Guid = "3265FF5F-9D8D-48D5-A6F8-9085B4F19A78")]
         public readonly Slot<Size2> Result = new Slot<Size2>();
 
+        [Output(Guid = "F5912E37-AF78-49C2-91D0-0675A8845F00")]
+        public readonly Slot<int> Capacity = new Slot<int>();
         
         public Size2_()
         {
@@ -19,7 +21,9 @@ namespace T3.Operators.Types.Id_f1218934_f874_4f70_a077_0ebe7d12104d
 
         private void Update(EvaluationContext context)
         {
-            Result.Value = new Size2(X.GetValue(context), Y.GetValue(context));;
+            var s = new Size2(X.GetValue(context), Y.GetValue(context));
+            Result.Value = s;
+            Capacity.Value = s.Width * s.Height;
         }
         
         [Input(Guid = "579E72D6-638E-4B17-BB4E-88A55E3A1D4D")]
