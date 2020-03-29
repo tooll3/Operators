@@ -20,7 +20,7 @@ namespace T3.Operators.Types.Id_c513c58d_e45c_408d_a0b8_250c9af31545
         private void Update(EvaluationContext context)
         {
             var v = Value.GetValue(context);
-            var result = v > _lastValue;
+            var result = v > _lastValue + Threshold.GetValue(context);
             _lastValue = v;
             
             if (result == _lastResult)
@@ -35,5 +35,9 @@ namespace T3.Operators.Types.Id_c513c58d_e45c_408d_a0b8_250c9af31545
         
         [Input(Guid = "ed88c6c7-1ea2-4593-9589-ec670afb4654")]
         public readonly InputSlot<float> Value = new InputSlot<float>();
+        
+        [Input(Guid = "2E43732B-48C4-4EE4-BF92-AF5FAB5B0597")]
+        public readonly InputSlot<float> Threshold = new InputSlot<float>();
+
     }
 }
