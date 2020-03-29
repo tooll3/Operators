@@ -34,6 +34,9 @@ namespace T3.Operators.Types.Id_2c3d2c26_ac45_42e9_8f13_6ea338333568
 
         [Input(Guid = "b2fe829e-10cb-46f3-95f2-1e9acb3bd052")]
         public readonly InputSlot<float> SmoothGradient = new InputSlot<float>();
+
+        [Input(Guid = "53afc8d9-f417-4628-9a97-220bec62919f")]
+        public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
     }
 }
 

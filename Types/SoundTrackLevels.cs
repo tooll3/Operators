@@ -30,6 +30,10 @@ namespace T3.Operators.Types.Id_a9e77500_ccb5_45b9_9f17_0d9bf9b58fb5
 
             BeatIndex.UpdateAction = Update;
             BeatIndex.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
+            
+            Loudness.UpdateAction = Update;
+            Loudness.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
+
         }
         
 
@@ -102,7 +106,8 @@ namespace T3.Operators.Types.Id_a9e77500_ccb5_45b9_9f17_0d9bf9b58fb5
                 UpdateAllBeatNumbers();
             }
 
-            var index = (int)(Time.GetValue(context) * SampleResolutionPerSecond);
+            //var index = (int)(Time.GetValue(context) * SampleResolutionPerSecond);
+            var index = (int)(EvaluationContext.GlobalTimeInSecs * SampleResolutionPerSecond);
             var needToFindNewBoundaries = (index <= _beatStartIndex || index >= _beatEndIndex);
             needToFindNewBoundaries |= needsRescanBeats;
 
@@ -289,8 +294,8 @@ namespace T3.Operators.Types.Id_a9e77500_ccb5_45b9_9f17_0d9bf9b58fb5
         [Input(Guid = "839BAB2B-440F-40E9-A670-723F2A684AA9")]
         public readonly InputSlot<string> FilePath = new InputSlot<string>(".");
 
-        [Input(Guid = "FE2812F5-1C3F-4560-B6E7-55F0E895AEB2")]
-        public readonly InputSlot<float> Time = new InputSlot<float>();
+        // [Input(Guid = "FE2812F5-1C3F-4560-B6E7-55F0E895AEB2")]
+        // public readonly InputSlot<float> Time = new InputSlot<float>();
 
         [Input(Guid = "4EF9500A-DAA4-4979-A03C-306E8E56C2F1")]
         public readonly InputSlot<float> Threshold = new InputSlot<float>();
