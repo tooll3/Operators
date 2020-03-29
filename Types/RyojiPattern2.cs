@@ -5,7 +5,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_cb28a67e_80cb_460a_8130_00e3cd85b7c2
 {
-    public class DotPattern2 : Instance<DotPattern2>
+    public class RyojiPattern2 : Instance<RyojiPattern2>
     {
         [Output(Guid = "c26d8fbe-19b5-475a-bf2e-8dd7c1136c4b")]
         public readonly Slot<SharpDX.Direct3D11.Texture2D> TextureOutput = new Slot<SharpDX.Direct3D11.Texture2D>();
