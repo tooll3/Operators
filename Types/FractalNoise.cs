@@ -4,7 +4,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_97eb35ec_2825_4f63_8fdf_3fe38fa9e652
 {
-    public class NoiseLab : Instance<NoiseLab>
+    public class FractalNoise : Instance<FractalNoise>
     {
         [Output(Guid = "bfce8bf6-9ef3-4fdb-8c6e-21aa65485f14")]
         public readonly Slot<SharpDX.Direct3D11.Texture2D> TextureOutput = new Slot<SharpDX.Direct3D11.Texture2D>();
