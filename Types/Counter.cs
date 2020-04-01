@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -13,6 +15,7 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
         public Counter()
         {
             Result.UpdateAction = Update;
+            Result.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
         }
 
         private void Update (EvaluationContext context)
@@ -22,15 +25,18 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
                 _value = StartValue.GetValue(context);
             }
             
+            
             var countTriggered = TriggerCount.GetValue(context);
+            //Log.Debug("count.update  Triggered:" + countTriggered);
             if (countTriggered != _lastCountTriggered)
             {
+                //Log.Debug("   changed!");
                 if (countTriggered)
                     _value += Increment.GetValue(context);
                     
                 _lastCountTriggered = countTriggered;
             }
-
+            //_lastCountTriggered = countTriggered;
 
             Result.Value = _value;
         }

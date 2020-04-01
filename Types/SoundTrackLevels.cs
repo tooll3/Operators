@@ -34,6 +34,8 @@ namespace T3.Operators.Types.Id_a9e77500_ccb5_45b9_9f17_0d9bf9b58fb5
             Loudness.UpdateAction = Update;
             Loudness.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
 
+            Level.UpdateAction = Update;
+            Level.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
         }
         
 
@@ -107,7 +109,8 @@ namespace T3.Operators.Types.Id_a9e77500_ccb5_45b9_9f17_0d9bf9b58fb5
             }
 
             //var index = (int)(Time.GetValue(context) * SampleResolutionPerSecond);
-            var index = (int)(EvaluationContext.GlobalTimeInSecs * SampleResolutionPerSecond);
+            var index = (int)(EvaluationContext.GlobalTimeInBars * SampleResolutionPerSecond);
+            // Log.Debug("INdex:" + index);
             var needToFindNewBoundaries = (index <= _beatStartIndex || index >= _beatEndIndex);
             needToFindNewBoundaries |= needsRescanBeats;
 

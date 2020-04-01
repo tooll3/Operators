@@ -21,14 +21,13 @@ namespace T3.Operators.Types.Id_c513c58d_e45c_408d_a0b8_250c9af31545
         private void Update(EvaluationContext context)
         {
             var v = Value.GetValue(context);
-            var result = v > _lastValue;// + Threshold.GetValue(context);
-            _lastValue = v;
+            HasIncreased.Value = v > _lastValue + 0.0001f;// + Threshold.GetValue(context);
+            _lastValue = v + 0.0001f;
+            //if(HasIncreased.Value)
+            //Log.Debug("Increased! " + context.TimeInBars + " / " + v);
             
-            HasIncreased.Value = result;
-            _lastResult = result;
         }
 
-        private bool _lastResult = false;
         private float _lastValue = 0;
         
         [Input(Guid = "ed88c6c7-1ea2-4593-9589-ec670afb4654")]

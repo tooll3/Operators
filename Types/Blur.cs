@@ -5,7 +5,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_946da16c_f536_4887_b764_af9468f22c0f
 {
-    public class Bloom : Instance<Bloom>
+    public class Blur : Instance<Blur>
     {
         [Output(Guid = "fa46b9f0-46d6-4ab3-8406-409e1dc5e9a4")]
         public readonly Slot<SharpDX.Direct3D11.Texture2D> TextureOutput = new Slot<SharpDX.Direct3D11.Texture2D>();
