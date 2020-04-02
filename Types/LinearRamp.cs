@@ -10,7 +10,6 @@ namespace T3.Operators.Types.Id_2c3d2c26_ac45_42e9_8f13_6ea338333568
         [Output(Guid = "d140f068-d71e-4af5-a563-ab599dae5dbf")]
         public readonly Slot<SharpDX.Direct3D11.Texture2D> TextureOutput = new Slot<SharpDX.Direct3D11.Texture2D>();
 
-
         [Input(Guid = "d6e157fb-5300-4a9a-aea8-8b0ea0104ea3")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Image = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 

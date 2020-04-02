@@ -40,7 +40,7 @@ namespace T3.Operators.Types.Id_f52db9a4_fde9_49ca_9ef7_131825c34e65
                               OptionFlags = ResourceOptionFlags.GetValue(context)
                           };
             ResourceManager.Instance().CreateTexture(texDesc, "Texture2D", ref _textureResId, ref Texture.Value);
-            ResourceManager.Instance().TestId = _textureResId;
+            //ResourceManager.Instance().id .TestId = _textureResId;
         }
 
         [Input(Guid = "{B77088A9-2676-4CAA-809A-5E0F120D25D7}")]
