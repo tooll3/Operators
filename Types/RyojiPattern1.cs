@@ -57,6 +57,9 @@ namespace T3.Operators.Types.Id_3ee3597d_dbf1_43a2_89d9_2f7b099112c7
 
         [Input(Guid = "a55d2480-2807-48b2-80f2-eb750a99dc17")]
         public readonly InputSlot<float> HighlightSeed = new InputSlot<float>();
+
+        [Input(Guid = "dc471f4a-167c-4283-b4fc-55a2e453316e")]
+        public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
     }
 }
 

@@ -18,6 +18,9 @@ namespace T3.Operators.Types.Id_d8c5330f_59b5_4907_b845_a02def3042fa
         [Input(Guid = "ed4f8c30-7b71-4649-97e6-710a718039b0")]
         public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();
 
+        [Input(Guid = "c8d0e44e-acd1-4045-b565-e1ce0b722e70")]
+        public readonly InputSlot<int> BlendMode = new InputSlot<int>();
+
     }
 }
 

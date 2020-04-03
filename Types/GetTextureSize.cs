@@ -18,16 +18,21 @@ namespace T3.Operators.Types.Id_daec568f_f7b4_4d81_a401_34d62462daab
 
         private void Update(EvaluationContext context)
         {
-            Size.Value = FallbackSize.GetValue(context);
-
+            var fallbackSize = FallbackSize.GetValue(context);
+            var useContext = fallbackSize.Width < 0 || fallbackSize.Height < 0;
+            
             var texture = Texture.GetValue(context);
-            if (texture != null)
+            if (useContext)
+            {
+                Size.Value = context.RequestedResolution;
+            }
+            else if (texture != null)
             {
                 Size.Value = new Size2(texture.Description.Width, texture.Description.Height);
             }
             else
             {
-                Size.Value = FallbackSize.GetValue(context);
+                Size.Value = fallbackSize;
             }
         }
 
