@@ -1,8 +1,10 @@
+using System.Diagnostics;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -31,8 +33,13 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             if (size.Width == 0 || size.Height == 0)
             {
                 size = context.RequestedResolution;
-                if (size.Width <= 0 || size.Height <= 0)
-                    return;
+
+            }
+
+            if (size.Width <= 0 || size.Height <= 0)
+            {
+                Log.Warning("Invalid texture size:" + size);
+                return;
             }
 
             var wasRebuild = UpdateTextures(device, size, TextureFormat.GetValue(context));

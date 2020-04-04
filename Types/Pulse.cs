@@ -26,6 +26,8 @@ namespace T3.Operators.Types.Id_5952d7b4_29ac_41fb_9324_287392d55048
             }
 
             var timeSinceTrigger = (float)EvaluationContext.GlobalTimeInSecs - _lastTriggerTime;
+            if (timeSinceTrigger < 0)
+                timeSinceTrigger = 0;
             Result.Value = Math.Max(Amplitude.GetValue(context) - timeSinceTrigger * Decay.GetValue(context),0);
         }
 
