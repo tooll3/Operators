@@ -26,13 +26,17 @@ namespace T3.Operators.Types.Id_daec568f_f7b4_4d81_a401_34d62462daab
             {
                 Size.Value = context.RequestedResolution;
             }
+            else if (fallbackSize.Width > 0 && fallbackSize.Height > 0)
+            {
+                Size.Value = fallbackSize;
+            }
             else if (texture != null)
             {
                 Size.Value = new Size2(texture.Description.Width, texture.Description.Height);
             }
             else
             {
-                Size.Value = fallbackSize;
+                Size.Value = new Size2(0,0);
             }
         }
 

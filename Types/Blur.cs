@@ -25,6 +25,9 @@ namespace T3.Operators.Types.Id_946da16c_f536_4887_b764_af9468f22c0f
 
         [Input(Guid = "d1421b9f-ddde-426a-9d68-32d3a41bf881")]
         public readonly InputSlot<float> Glow = new InputSlot<float>();
+
+        [Input(Guid = "e4e5e654-d570-4dea-ad16-f4eb1018ff2f")]
+        public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
     }
 }
 
