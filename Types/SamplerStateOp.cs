@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -36,7 +38,15 @@ namespace T3.Operators.Types.Id_9515d59d_0bd5_406b_96da_6a5f60215700
                                   MinimumLod = MinimumLod.GetValue(context),
                                   MaximumLod = MaximumLod.GetValue(context)
                               };
-            SamplerState.Value = new SamplerState(ResourceManager.Instance().Device, samplerDesc); // todo: put into resource manager
+
+            try
+            {
+                SamplerState.Value = new SamplerState(ResourceManager.Instance().Device, samplerDesc); // todo: put into resource manager
+            }
+            catch(SharpDXException e)
+            {
+                Log.Error("Invalid sampler state " + e.Message);
+            }
         }
 
         [Input(Guid = "{A870921F-A28C-4501-9F31-38A18B0ACDCC}")]

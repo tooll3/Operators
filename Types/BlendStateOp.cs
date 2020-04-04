@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using SharpDX;
 using SharpDX.Direct3D11;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -36,7 +38,15 @@ namespace T3.Operators.Types.Id_064ca51f_47ab_4cb7_95f2_e537b68e137e
             {
                 blendDesc.RenderTarget[i] = _connectedDescriptions[i].GetValue(context);
             }
-            BlendState.Value = new BlendState(ResourceManager.Instance().Device, blendDesc); // todo: put into resource manager
+
+            try
+            {
+                BlendState.Value = new BlendState(ResourceManager.Instance().Device, blendDesc); // todo: put into resource manager
+            }
+            catch (SharpDXException e)
+            {
+                Log.Error("Failed to create BlendState " + e.Message);
+            } 
         }
 
         private List<Slot<RenderTargetBlendDescription>> _connectedDescriptions;
