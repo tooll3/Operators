@@ -10,6 +10,9 @@ namespace T3.Operators.Types.Id_d75de240_28a1_48cc_9b8f_388272188023
         [Output(Guid = "93c699c3-6d32-4425-8a00-6ce472bb808b")]
         public readonly Slot<Texture2D> Output = new Slot<Texture2D>();
 
+        [Output(Guid = "36d50979-ceae-4087-886e-eeaf1b33d73b")]
+        public readonly Slot<T3.Core.Command> CombinedLayers = new Slot<T3.Core.Command>();
+
 
         [Input(Guid = "4a83673a-c0ec-4dba-9ce0-b71cb2ee0849")]
         public readonly InputSlot<Texture2D> Image = new InputSlot<Texture2D>();
