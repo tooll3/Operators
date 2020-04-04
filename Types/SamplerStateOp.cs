@@ -24,28 +24,39 @@ namespace T3.Operators.Types.Id_9515d59d_0bd5_406b_96da_6a5f60215700
 
         private void Update(EvaluationContext context)
         {
-            SamplerState.Value?.Dispose();
             var samplerDesc = new SamplerStateDescription()
-                              {
-                                  Filter = Filter.GetValue(context),
-                                  AddressU = AddressU.GetValue(context),
-                                  AddressV = AddressV.GetValue(context),
-                                  AddressW = AddressW.GetValue(context),
-                                  MipLodBias = MipLoadBias.GetValue(context),
-                                  MaximumAnisotropy = MaximumAnisotropy.GetValue(context),
-                                  ComparisonFunction = ComparisonFunction.GetValue(context),
-//                                  BorderColor = BorderColor.GetValue(context),
-                                  MinimumLod = MinimumLod.GetValue(context),
-                                  MaximumLod = MaximumLod.GetValue(context)
-                              };
+                                  {
+                                      Filter = Filter.GetValue(context),
+                                      AddressU = AddressU.GetValue(context),
+                                      AddressV = AddressV.GetValue(context),
+                                      AddressW = AddressW.GetValue(context),
+                                      MipLodBias = MipLoadBias.GetValue(context),
+                                      MaximumAnisotropy = MaximumAnisotropy.GetValue(context),
+                                      ComparisonFunction = ComparisonFunction.GetValue(context),
+                                      // BorderColor = BorderColor.GetValue(context),
+                                      MinimumLod = MinimumLod.GetValue(context),
+                                      MaximumLod = MaximumLod.GetValue(context)
+                                  };
 
             try
             {
-                SamplerState.Value = new SamplerState(ResourceManager.Instance().Device, samplerDesc); // todo: put into resource manager
+                var samplerState = new SamplerState(ResourceManager.Instance().Device, samplerDesc); // todo: put into resource manager
+                SamplerState.Value?.Dispose();
+                SamplerState.Value = samplerState;
             }
-            catch(SharpDXException e)
+            catch (SharpDXException e)
             {
-                Log.Error("Invalid sampler state " + e.Message);
+                Log.Error($"{Parent.Symbol.Name}.SamplerStateOp: Invalid sampler state " + e.Message);
+                if (SamplerState.Value == null)
+                {
+                    // there was no previous valid sampler state, so set default sampler state
+                    SamplerState.Value = ResourceManager.Instance().DefaultSamplerState;
+                    Log.Error("Using the default sampler state instead.");
+                }
+                else
+                {
+                    Log.Error("Using the last valid sampler state instead.");
+                }
             }
         }
 
