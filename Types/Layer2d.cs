@@ -21,6 +21,9 @@ namespace T3.Operators.Types.Id_d8c5330f_59b5_4907_b845_a02def3042fa
         [Input(Guid = "c8d0e44e-acd1-4045-b565-e1ce0b722e70")]
         public readonly InputSlot<int> BlendMode = new InputSlot<int>();
 
+        [Input(Guid = "a384be77-c5fc-47b3-9ec3-960db9f9bae9")]
+        public readonly InputSlot<System.Numerics.Vector2> Position = new InputSlot<System.Numerics.Vector2>();
+
     }
 }
 
