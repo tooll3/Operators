@@ -14,6 +14,7 @@ namespace T3.Operators.Types.Id_daec568f_f7b4_4d81_a401_34d62462daab
         public GetTextureSize()
         {
             Size.UpdateAction = Update;
+            //Size.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)
