@@ -15,20 +15,29 @@ namespace T3.Operators.Types.Id_c513c58d_e45c_408d_a0b8_250c9af31545
         public HasValueIncreased()
         {
             HasIncreased.UpdateAction = Update;
-            HasIncreased.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)
         {
             var v = Value.GetValue(context);
-            HasIncreased.Value = v > _lastValue + 0.0001f;// + Threshold.GetValue(context);
-            _lastValue = v + 0.0001f;
+            var hasIncreased = v > _lastValue;// + Threshold.GetValue(context);;
+            if (hasIncreased != _lastIncreased)
+            {
+                _lastIncreased = hasIncreased;
+                HasIncreased.Value = hasIncreased;
+            }
+            else
+            {
+                HasIncreased.Value = false;
+            }
+            _lastValue = v;
             //if(HasIncreased.Value)
             //Log.Debug("Increased! " + context.TimeInBars + " / " + v);
             
         }
 
         private float _lastValue = 0;
+        private bool _lastIncreased;
         
         [Input(Guid = "ed88c6c7-1ea2-4593-9589-ec670afb4654")]
         public readonly InputSlot<float> Value = new InputSlot<float>();

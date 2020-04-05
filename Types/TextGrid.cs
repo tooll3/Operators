@@ -14,6 +14,9 @@ namespace T3.Operators.Types.Id_ad28819d_be62_4ed7_932a_fc861562983d
         [Input(Guid = "7c3dbe80-da67-430b-9aaa-f2e2f34fed73")]
         public readonly InputSlot<string> Text = new InputSlot<string>();
 
+        [Input(Guid = "1178c7c0-12ec-4284-9d28-c357f8e8a8ca")]
+        public readonly InputSlot<SharpDX.Direct3D11.Texture2D> DisplaceTexture = new InputSlot<SharpDX.Direct3D11.Texture2D>();
+
         [Input(Guid = "a5b86357-0d11-4034-b19a-5c2d617bb261")]
         public readonly InputSlot<SharpDX.Size2> GridSize = new InputSlot<SharpDX.Size2>();
 
@@ -31,9 +34,6 @@ namespace T3.Operators.Types.Id_ad28819d_be62_4ed7_932a_fc861562983d
 
         [Input(Guid = "b49b85c9-9cc8-4118-a145-3d514108d3e2")]
         public readonly InputSlot<System.Numerics.Vector3> DisplaceAmount = new InputSlot<System.Numerics.Vector3>();
-
-        [Input(Guid = "1178c7c0-12ec-4284-9d28-c357f8e8a8ca")]
-        public readonly InputSlot<SharpDX.Direct3D11.Texture2D> DisplaceTexture = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
         [Input(Guid = "94312d3c-ac74-4965-9874-ddd96d1437ff")]
         public readonly InputSlot<bool> WrapText = new InputSlot<bool>();

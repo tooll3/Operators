@@ -23,6 +23,8 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
+        private const int MaximumTexture2DArraySize = 16384;
+            
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
@@ -36,7 +38,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
             }
 
-            if (size.Width <= 0 || size.Height <= 0)
+            if (size.Width <= 0 || size.Height <= 0 || size.Width > MaximumTexture2DArraySize || size.Height > MaximumTexture2DArraySize)
             {
                 Log.Warning("Invalid texture size:" + size);
                 return;
