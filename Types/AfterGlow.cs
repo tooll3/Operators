@@ -16,11 +16,11 @@ namespace T3.Operators.Types.Id_d75de240_28a1_48cc_9b8f_388272188023
         [Input(Guid = "4a83673a-c0ec-4dba-9ce0-b71cb2ee0849")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Image = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
-        [Input(Guid = "baa63233-d740-4978-b115-1f20975b53b0")]
-        public readonly InputSlot<float> GlowImpact = new InputSlot<float>();
-
         [Input(Guid = "a4794ed9-d432-4118-9078-0a832cd1c046")]
         public readonly InputSlot<float> BlurAmount = new InputSlot<float>();
+
+        [Input(Guid = "baa63233-d740-4978-b115-1f20975b53b0")]
+        public readonly InputSlot<float> GlowImpact = new InputSlot<float>();
 
         [Input(Guid = "6ddbf04b-75ff-4e6e-b850-d28cb7fb8fc0")]
         public readonly InputSlot<float> DecayRate = new InputSlot<float>();

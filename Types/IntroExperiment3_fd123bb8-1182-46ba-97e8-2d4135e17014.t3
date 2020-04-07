@@ -204,18 +204,6 @@
       "OutputData": []
     },
     {
-      "Id": "5f889d5c-c89b-4b4e-a2b0-c69ebe0e20b6"/*Pulsate*/,
-      "SymbolId": "ffed6f9e-2495-4cf3-9cda-740ecec75d10",
-      "InputValues": [
-        {
-          "Id": "1154b0a7-e244-43ff-a80b-9d099be85053"/*Speed*/,
-          "Type": "System.Single",
-          "Value": 16.0
-        }
-      ],
-      "OutputData": []
-    },
-    {
       "Id": "dc7b3a46-812f-42b6-ae07-c8d1e6768bb0"/*NumberPattern*/,
       "SymbolId": "1fec51bc-4de7-400a-8910-db39f4129579",
       "InputValues": [
@@ -378,18 +366,6 @@
           "Id": "16231de9-2e85-4a9a-a2d1-99dfac18a0f6"/*PreSaturate*/,
           "Type": "System.Single",
           "Value": 0.17233336
-        }
-      ],
-      "OutputData": []
-    },
-    {
-      "Id": "a1e958e9-2b75-4bce-87cb-d9072938c369"/*Multiply*/,
-      "SymbolId": "17b60044-9125-4961-8a79-ca94697b3726",
-      "InputValues": [
-        {
-          "Id": "5ae4bb07-4214-4ec3-a499-24d9f6d404a5"/*B*/,
-          "Type": "System.Single",
-          "Value": 22.5
         }
       ],
       "OutputData": []
@@ -597,14 +573,14 @@
       "SymbolId": "d75de240-28a1-48cc-9b8f-388272188023",
       "InputValues": [
         {
-          "Id": "baa63233-d740-4978-b115-1f20975b53b0"/*GlowImpact*/,
-          "Type": "System.Single",
-          "Value": 1.2366668
-        },
-        {
           "Id": "a4794ed9-d432-4118-9078-0a832cd1c046"/*BlurAmount*/,
           "Type": "System.Single",
           "Value": -0.0366666242
+        },
+        {
+          "Id": "baa63233-d740-4978-b115-1f20975b53b0"/*GlowImpact*/,
+          "Type": "System.Single",
+          "Value": 1.2366668
         },
         {
           "Id": "6ddbf04b-75ff-4e6e-b850-d28cb7fb8fc0"/*DecayRate*/,
@@ -654,27 +630,9 @@
       "OutputData": []
     },
     {
-      "Id": "34d579b0-04ce-45bc-bb97-5582372f2b14"/*RoundedRect*/,
+      "Id": "34d579b0-04ce-45bc-bb97-5582372f2b14"/*Debug*/,
       "SymbolId": "c8590f8f-cca1-434a-a880-67bb91920e1a",
-      "InputValues": [],
-      "OutputData": []
-    },
-    {
-      "Id": "99a6daf1-d821-4011-8e05-06b6b5427801"/*Counter*/,
-      "SymbolId": "11882635-4757-4cac-a024-70bb4e8b504c",
-      "InputValues": [],
-      "OutputData": []
-    },
-    {
-      "Id": "7cdf6b75-2579-44a8-ae01-e810f1175eb2"/*reset counter*/,
-      "SymbolId": "5d7d61ae-0a41-4ffa-a51d-93bab665e7fe",
-      "Name": "reset counter",
-      "InputValues": [],
-      "OutputData": []
-    },
-    {
-      "Id": "1a60ca4c-3e9f-4106-b0d6-9a4ed69c8f27"/*HasValueIncreased*/,
-      "SymbolId": "c513c58d-e45c-408d-a0b8-250c9af31545",
+      "Name": "Debug",
       "InputValues": [],
       "OutputData": []
     },
@@ -705,12 +663,6 @@
           "Value": 2.29666662
         }
       ],
-      "OutputData": []
-    },
-    {
-      "Id": "d046cb78-0f0c-4018-ae90-b489727bcb97"/*Transform*/,
-      "SymbolId": "284d2183-197d-47fd-b130-873cced78b1c",
-      "InputValues": [],
       "OutputData": []
     },
     {
@@ -775,12 +727,6 @@
           "Value": "Converted GraphCanvas draw context menu lambda into normal method\nAdded output removal functionality and connected it in context menu\nGeneralized remoing syntax nodes by attribute id\nThis is prework for output removal.\nUpdated context menu to show entries for selected outputs\nAlso removed some redundant code for input selection.\nUpdated submodule references"
         }
       ],
-      "OutputData": []
-    },
-    {
-      "Id": "da15b514-3dd7-4dbb-8d9a-34242027f7c4"/*ScaleResolution*/,
-      "SymbolId": "eb818dd0-0c9c-40ee-b76e-2148f958b987",
-      "InputValues": [],
       "OutputData": []
     },
     {
@@ -885,12 +831,6 @@
       "TargetSlotId": "22b41600-7d42-44ad-8e94-3819f8d24964"
     },
     {
-      "SourceParentOrChildId": "7cdf6b75-2579-44a8-ae01-e810f1175eb2",
-      "SourceSlotId": "f83f1835-477e-4bb6-93f0-14bf273b8e94",
-      "TargetParentOrChildId": "1a60ca4c-3e9f-4106-b0d6-9a4ed69c8f27",
-      "TargetSlotId": "ed88c6c7-1ea2-4593-9589-ec670afb4654"
-    },
-    {
       "SourceParentOrChildId": "50974332-3d03-43a4-b444-9cdac1979984",
       "SourceSlotId": "56020950-21f1-4868-b753-07c5ad1d22e8",
       "TargetParentOrChildId": "34d579b0-04ce-45bc-bb97-5582372f2b14",
@@ -957,12 +897,6 @@
       "TargetSlotId": "5d73ebe6-9aa0-471a-ae6b-3f5bfd5a0f9c"
     },
     {
-      "SourceParentOrChildId": "b52908e7-54a9-4057-bc69-df157702a76c",
-      "SourceSlotId": "b20573fe-7a7e-48e1-9370-744288ca6e32",
-      "TargetParentOrChildId": "5f889d5c-c89b-4b4e-a2b0-c69ebe0e20b6",
-      "TargetSlotId": "3b60db67-3a12-44c3-91ba-5517f74879d6"
-    },
-    {
       "SourceParentOrChildId": "02729bb3-140d-446b-9a0c-4a99ec19d810",
       "SourceSlotId": "93c699c3-6d32-4425-8a00-6ce472bb808b",
       "TargetParentOrChildId": "5fd738d6-b505-4498-801e-4d03aa507dce",
@@ -985,24 +919,6 @@
       "SourceSlotId": "56020950-21f1-4868-b753-07c5ad1d22e8",
       "TargetParentOrChildId": "93b075d8-d4b4-4040-8bfa-2cdffdb5d027",
       "TargetSlotId": "40606d4e-acaf-4f23-a845-16f0eb9b73cf"
-    },
-    {
-      "SourceParentOrChildId": "1a60ca4c-3e9f-4106-b0d6-9a4ed69c8f27",
-      "SourceSlotId": "598e38d5-2347-4b93-a7a4-a23190d95dcd",
-      "TargetParentOrChildId": "99a6daf1-d821-4011-8e05-06b6b5427801",
-      "TargetSlotId": "7bfbae6b-fa0b-4e5a-8040-e0be3600afeb"
-    },
-    {
-      "SourceParentOrChildId": "a7299668-4f1f-49f6-a861-ed0431302944",
-      "SourceSlotId": "598e38d5-2347-4b93-a7a4-a23190d95dcd",
-      "TargetParentOrChildId": "99a6daf1-d821-4011-8e05-06b6b5427801",
-      "TargetSlotId": "eefdb8ca-68e7-4e39-b302-22eb8930fb8c"
-    },
-    {
-      "SourceParentOrChildId": "b52908e7-54a9-4057-bc69-df157702a76c",
-      "SourceSlotId": "b20573fe-7a7e-48e1-9370-744288ca6e32",
-      "TargetParentOrChildId": "a1e958e9-2b75-4bce-87cb-d9072938c369",
-      "TargetSlotId": "372288fa-3794-47ba-9f91-59240513217a"
     },
     {
       "SourceParentOrChildId": "b2b24621-7bf7-4b2a-88bb-d1d602724067",
