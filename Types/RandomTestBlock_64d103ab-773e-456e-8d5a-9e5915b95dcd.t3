@@ -40,8 +40,12 @@
       "DefaultValue": 0.0
     },
     {
+      "Id": "de927ee1-c823-4a0b-9291-59b596575bfc"/*AspectRatio*/,
+      "DefaultValue": 1.78
+    },
+    {
       "Id": "82a13642-3e90-40a8-90c6-4e8d17b48685"/*TextureResolution*/,
-      "DefaultValue": 4.0
+      "DefaultValue": 24.0
     },
     {
       "Id": "c22ee6c4-691c-4619-8ddc-29dc6c14ea83"/*FontSize*/,
@@ -76,6 +80,14 @@
           "Value": {
             "X": 6.0,
             "Y": 6.0
+          }
+        },
+        {
+          "Id": "0b5244ef-3588-48c4-9e26-195409fbaac8"/*TextOffset*/,
+          "Type": "System.Numerics.Vector2",
+          "Value": {
+            "X": 0.0,
+            "Y": -6.00000048
           }
         },
         {
@@ -180,14 +192,6 @@
           "Id": "c8d0e44e-acd1-4045-b565-e1ce0b722e70"/*BlendMode*/,
           "Type": "System.Int32",
           "Value": 0
-        },
-        {
-          "Id": "a384be77-c5fc-47b3-9ec3-960db9f9bae9"/*Position*/,
-          "Type": "System.Numerics.Vector2",
-          "Value": {
-            "X": -1.86333334,
-            "Y": 0.6
-          }
         }
       ],
       "OutputData": []
@@ -503,6 +507,11 @@
           "Id": "b1fd8b37-140e-487f-bfe2-bc426d8fe439"/*String*/,
           "Type": "System.String",
           "Value": "China China CDC ORF1ab and Nucleoprotein (N)\nGermany Charité RdRP, E, N\nHong Kong HKU ORF1b-nsp14, N\nJapan NIID Pancorona and multiple targets,\nSpike protein (Peplomer)\nThailand National Institute of Health N\nUnited States US CDC Three targets in N gene\nFrance Pasteur Institute Two targets in RdRP "
+        },
+        {
+          "Id": "c54e4b16-b185-41f8-bc50-230b7624d093"/*Split*/,
+          "Type": "System.String",
+          "Value": ""
         }
       ],
       "OutputData": []
@@ -546,6 +555,12 @@
     {
       "Id": "b0006861-4b66-4cbc-afb7-8a40a92f088b"/*ToUpperCase*/,
       "SymbolId": "acdd78b1-4e66-4fd0-a36b-5318670fefd4",
+      "InputValues": [],
+      "OutputData": []
+    },
+    {
+      "Id": "92f9ed7e-08f4-4e63-8619-3800cde89929"/*RenderTarget*/,
+      "SymbolId": "f9fe78c5-43a6-48ae-8e8c-6cdbbc330dd1",
       "InputValues": [],
       "OutputData": []
     }
@@ -697,6 +712,12 @@
     },
     {
       "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "de927ee1-c823-4a0b-9291-59b596575bfc",
+      "TargetParentOrChildId": "3f538f6c-3fa0-44f6-8947-fad9b54918e5",
+      "TargetSlotId": "f66e91a1-b991-48c3-a8c9-33bcad0c2f6f"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
       "SourceSlotId": "82a13642-3e90-40a8-90c6-4e8d17b48685",
       "TargetParentOrChildId": "40233505-2c35-4c8b-bb07-63760b4eae84",
       "TargetSlotId": "2d9c040d-5244-40ac-8090-d8d57323487b"
@@ -802,6 +823,12 @@
       "SourceSlotId": "e011dd8c-1b9c-458f-8960-e6c38e83ca74",
       "TargetParentOrChildId": "91c87fa8-8de5-4b37-8b28-8af9dfecfd79",
       "TargetSlotId": "372288fa-3794-47ba-9f91-59240513217a"
+    },
+    {
+      "SourceParentOrChildId": "3f538f6c-3fa0-44f6-8947-fad9b54918e5",
+      "SourceSlotId": "2e1742d8-9ba3-4236-a0cd-a2b02c9f5924",
+      "TargetParentOrChildId": "92f9ed7e-08f4-4e63-8619-3800cde89929",
+      "TargetSlotId": "4da253b7-4953-439a-b03f-1d515a78bddf"
     },
     {
       "SourceParentOrChildId": "fe9991d1-d243-4949-936b-6216b9c009c9",

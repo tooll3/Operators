@@ -25,6 +25,9 @@ namespace T3.Operators.Types.Id_64d103ab_773e_456e_8d5a_9e5915b95dcd
         [Input(Guid = "6eb104c0-8a0c-4f28-859b-168a7ec16f16")]
         public readonly InputSlot<float> Rotation = new InputSlot<float>();
 
+        [Input(Guid = "de927ee1-c823-4a0b-9291-59b596575bfc")]
+        public readonly InputSlot<float> AspectRatio = new InputSlot<float>();
+
         [Input(Guid = "82a13642-3e90-40a8-90c6-4e8d17b48685")]
         public readonly InputSlot<float> TextureResolution = new InputSlot<float>();
 
