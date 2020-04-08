@@ -34,6 +34,9 @@ namespace T3.Operators.Types.Id_c8590f8f_cca1_434a_a880_67bb91920e1a
 
         [Input(Guid = "2d3a7e9a-9efe-486a-8c33-10a5a16dc17b")]
         public readonly InputSlot<float> FeatherBias = new InputSlot<float>();
+
+        [Input(Guid = "9786d2b3-2cff-40fb-8ab7-d96f3ac3dd76")]
+        public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
     }
 }
 
