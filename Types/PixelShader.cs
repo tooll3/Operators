@@ -1,4 +1,5 @@
-﻿using T3.Core;
+﻿using System.IO;
+using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -26,6 +27,10 @@ namespace T3.Operators.Types.Id_f7c625da_fede_4993_976c_e259e0ee4985
                 string sourcePath = Source.GetValue(context);
                 string entryPoint = EntryPoint.GetValue(context);
                 string debugName = DebugName.GetValue(context);
+                if (string.IsNullOrEmpty(debugName))
+                {
+                    debugName = new FileInfo(sourcePath).Name;
+                }
                 _pixelShaderResId = resourceManager.CreatePixelShaderFromFile(sourcePath, entryPoint, debugName,
                                                                               () => Shader.DirtyFlag.Invalidate());
             }

@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using System.IO;
+using SharpDX;
 using SharpDX.D3DCompiler;
 using T3.Core;
 using T3.Core.Operator;
@@ -30,6 +31,10 @@ namespace T3.Operators.Types.Id_a256d70f_adb3_481d_a926_caf35bd3e64c
                 string sourcePath = Source.GetValue(context);
                 string entryPoint = EntryPoint.GetValue(context);
                 string debugName = DebugName.GetValue(context);
+                if (string.IsNullOrEmpty(debugName))
+                {
+                    debugName = new FileInfo(sourcePath).Name;
+                }
                 _computeShaderResId = resourceManager.CreateComputeShaderFromFile(sourcePath, entryPoint, debugName,
                                                                                   () => ComputerShader.DirtyFlag.Invalidate());
             }

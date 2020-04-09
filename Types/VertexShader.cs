@@ -1,4 +1,5 @@
-﻿using T3.Core;
+﻿using System.IO;
+using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -25,6 +26,10 @@ namespace T3.Operators.Types.Id_646f5988_0a76_4996_a538_ba48054fd0ad
                 string sourcePath = Source.GetValue(context);
                 string entryPoint = EntryPoint.GetValue(context);
                 string debugName = DebugName.GetValue(context);
+                if (string.IsNullOrEmpty(debugName))
+                {
+                    debugName = new FileInfo(sourcePath).Name;
+                }
                 _vertexShaderResId = resourceManager.CreateVertexShaderFromFile(sourcePath, entryPoint, debugName,
                                                                                 () => Shader.DirtyFlag.Invalidate());
             }
