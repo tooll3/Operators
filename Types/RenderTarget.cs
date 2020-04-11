@@ -4,11 +4,13 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using T3.Core;
+using T3.Core.Animation;
 using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
 using Device = SharpDX.Direct3D11.Device;
+using Utilities = SharpDX.Utilities;
 
 namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 {
@@ -20,11 +22,10 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
         public RenderTarget()
         {
             Output.UpdateAction = Update;
-            Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
-        private const int MaximumTexture2DArraySize = 16384;
-            
+        private const int MaximumTexture2DSize = SharpDX.Direct3D11.Resource.MaximumTexture2DSize;
+
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
@@ -35,26 +36,30 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             if (size.Width == 0 || size.Height == 0)
             {
                 size = context.RequestedResolution;
-
             }
 
-            if (size.Width <= 0 || size.Height <= 0 || size.Width > MaximumTexture2DArraySize || size.Height > MaximumTexture2DArraySize)
+            if (size.Width <= 0 || size.Height <= 0 || size.Width > MaximumTexture2DSize || size.Height > MaximumTexture2DSize)
             {
-                Log.Warning("Invalid texture size:" + size);
+                Log.Warning("Invalid texture size: " + size);
                 return;
             }
 
-            var wasRebuild = UpdateTextures(device, size, TextureFormat.GetValue(context));
+            var wasRebuild = UpdateTextures(device, size, TextureFormat.GetValue(context), DepthFormat.GetValue(context));
 
             var deviceContext = device.ImmediateContext;
             var prevViewports = deviceContext.Rasterizer.GetViewports<RawViewportF>();
-            var prevTargets = deviceContext.OutputMerger.GetRenderTargets(1);
+            var prevTargets = deviceContext.OutputMerger.GetRenderTargets(1, out var prevDepthStencilView);
             deviceContext.Rasterizer.SetViewport(new SharpDX.Viewport(0, 0, size.Width, size.Height, 0.0f, 1.0f));
-            deviceContext.OutputMerger.SetTargets(_colorBufferRtv);
+            deviceContext.OutputMerger.SetTargets(_depthBufferDsv, _colorBufferRtv);
             var c = ClearColor.GetValue(context);
             if (clear || !_wasCleared)
             {
                 deviceContext.ClearRenderTargetView(_colorBufferRtv, new Color(c.X, c.Y, c.Z, c.W));
+                if (_depthBufferDsv != null)
+                {
+                    deviceContext.ClearDepthStencilView(_depthBufferDsv, DepthStencilClearFlags.Depth, 1.0f, 0);
+                }
+
                 _wasCleared = true;
             }
 
@@ -65,7 +70,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             context.WorldTobject = keepWorldTobject;
 
             deviceContext.Rasterizer.SetViewports(prevViewports);
-            deviceContext.OutputMerger.SetTargets(prevTargets);
+            deviceContext.OutputMerger.SetTargets(prevDepthStencilView, prevTargets);
 
             // clean up ref counts for RTVs
             for (int i = 0; i < prevTargets.Length; i++)
@@ -73,38 +78,73 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                 prevTargets[i].Dispose();
             }
 
+            prevDepthStencilView?.Dispose();
+
             Output.Value = _colorBuffer;
         }
 
-        private bool UpdateTextures(Device device, Size2 size, Format format)
+        private bool UpdateTextures(Device device, Size2 size, Format colorFormat, Format depthFormat)
         {
-            if (_colorBuffer != null
-                && _colorBuffer.Description.Width == size.Width
-                && _colorBuffer.Description.Height == size.Height
-                && _colorBuffer.Description.Format == format)
-                return false; // nothing changed
+            bool colorBufferNeedsUpdate = _colorBuffer == null || _colorBuffer.Description.Width != size.Width ||
+                                          _colorBuffer.Description.Height != size.Height || _colorBuffer.Description.Format != colorFormat;
 
-            _colorBuffer?.Dispose();
-            _colorBufferSrv?.Dispose();
-            _colorBufferRtv?.Dispose();
+            if (colorBufferNeedsUpdate)
+            {
+                _colorBuffer?.Dispose();
+                _colorBufferSrv?.Dispose();
+                _colorBufferRtv?.Dispose();
 
-            var colorDesc = new Texture2DDescription()
-                            {
-                                ArraySize = 1,
-                                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-                                CpuAccessFlags = CpuAccessFlags.None,
-                                Format = format,
-                                Width = size.Width,
-                                Height = size.Height,
-                                MipLevels = 1,
-                                OptionFlags = ResourceOptionFlags.None,
-                                SampleDescription = new SampleDescription(1, 0),
-                                Usage = ResourceUsage.Default
-                            };
-            _colorBuffer = new Texture2D(device, colorDesc);
-            _colorBufferSrv = new ShaderResourceView(device, _colorBuffer);
-            _colorBufferRtv = new RenderTargetView(device, _colorBuffer);
-            _wasCleared = false;
+                var colorDesc = new Texture2DDescription()
+                                    {
+                                        ArraySize = 1,
+                                        BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                                        CpuAccessFlags = CpuAccessFlags.None,
+                                        Format = colorFormat,
+                                        Width = size.Width,
+                                        Height = size.Height,
+                                        MipLevels = 1,
+                                        OptionFlags = ResourceOptionFlags.None,
+                                        SampleDescription = new SampleDescription(1, 0),
+                                        Usage = ResourceUsage.Default
+                                    };
+                _colorBuffer = new Texture2D(device, colorDesc);
+                _colorBufferSrv = new ShaderResourceView(device, _colorBuffer);
+                _colorBufferRtv = new RenderTargetView(device, _colorBuffer);
+
+                _wasCleared = false;
+            }
+
+            bool depthBufferNeedsUpdate = _depthBuffer == null || (_depthBuffer != null && depthFormat == Format.Unknown) ||
+                                          _depthBuffer.Description.Width != size.Width || _depthBuffer.Description.Height != size.Height ||
+                                          _depthBuffer.Description.Format != depthFormat;
+
+            if (depthBufferNeedsUpdate)
+            {
+                Core.Utilities.Dispose(ref _depthBuffer);
+                Core.Utilities.Dispose(ref _depthBufferDsv);
+
+                if (depthFormat == Format.Unknown)
+                    return true;
+
+                var depthDesc = new Texture2DDescription()
+                                    {
+                                        ArraySize = 1,
+                                        BindFlags = BindFlags.DepthStencil,
+                                        CpuAccessFlags = CpuAccessFlags.None,
+                                        Format = depthFormat,
+                                        Width = size.Width,
+                                        Height = size.Height,
+                                        MipLevels = 1,
+                                        OptionFlags = ResourceOptionFlags.None,
+                                        SampleDescription = new SampleDescription(1, 0),
+                                        Usage = ResourceUsage.Default
+                                    };
+                _depthBuffer = new Texture2D(device, depthDesc);
+                _depthBufferDsv = new DepthStencilView(device, _depthBuffer);
+
+                _wasCleared = false;
+            }
+
             return true;
         }
 
@@ -113,28 +153,25 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
         private bool _wasCleared;
 
         private RenderTargetView _colorBufferRtv;
-        // private Texture2D _depthBuffer;
-        // private DepthStencilView _depthBufferDsv;
+        private Texture2D _depthBuffer;
+        private DepthStencilView _depthBufferDsv;
 
-        [Input(Guid = "4DA253B7-4953-439A-B03F-1D515A78BDDF")]
-        public readonly InputSlot<Command> Command = new InputSlot<Command>();
+        [Input(Guid = "4da253b7-4953-439a-b03f-1d515a78bddf")]
+        public readonly InputSlot<T3.Core.Command> Command = new InputSlot<T3.Core.Command>();
 
-        [Input(Guid = "03749B41-CC3C-4F38-AEA6-D7CEA19FC073")]
-        public readonly InputSlot<Size2> Resolution = new InputSlot<Size2>();
+        [Input(Guid = "03749b41-cc3c-4f38-aea6-d7cea19fc073")]
+        public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
 
-        [Input(Guid = "8BB4A4E5-0C88-4D99-A5B2-2C9E22BD301F")]
+        [Input(Guid = "8bb4a4e5-0c88-4d99-a5b2-2c9e22bd301f")]
         public readonly InputSlot<System.Numerics.Vector4> ClearColor = new InputSlot<System.Numerics.Vector4>();
 
-        [Input(Guid = "EC46BEF4-8DCE-4EB4-BFE8-E35A5AC416EC")]
-        public readonly InputSlot<Format> TextureFormat = new InputSlot<Format>();
+        [Input(Guid = "ec46bef4-8dce-4eb4-bfe8-e35a5ac416ec")]
+        public readonly InputSlot<SharpDX.DXGI.Format> TextureFormat = new InputSlot<SharpDX.DXGI.Format>();
 
-        [Input(Guid = "AACAFC4D-F47F-4893-9A6E-98DB306A8901")]
+        [Input(Guid = "2d54adbb-04c7-4f92-babd-9822953aa4cd")]
+        public readonly InputSlot<SharpDX.DXGI.Format> DepthFormat = new InputSlot<SharpDX.DXGI.Format>();
+
+        [Input(Guid = "aacafc4d-f47f-4893-9a6e-98db306a8901")]
         public readonly InputSlot<bool> Clear = new InputSlot<bool>();
-
-        // [Input(Guid = "2ac5ac30-6298-45a9-805b-326b933826fd")]
-        // public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
-
-        // [Input(Guid = "")]
-        // public readonly InputSlot<System.Numerics.Vector3> Scale = new InputSlot<System.Numerics.Vector3>();
     }
 }
