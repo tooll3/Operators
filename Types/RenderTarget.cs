@@ -97,9 +97,9 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
             if (colorBufferNeedsUpdate)
             {
-                Core.Utilities.Dispose(ref _colorBuffer);
                 Core.Utilities.Dispose(ref _colorBufferSrv);
                 Core.Utilities.Dispose(ref _colorBufferRtv);
+                Core.Utilities.Dispose(ref _colorBuffer);
 
                 try
                 {
@@ -117,18 +117,17 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                             Usage = ResourceUsage.Default
                                         };
 
-                    var colorBuffer = new Texture2D(device, colorDesc);
-                    var colorBufferSrv = new ShaderResourceView(device, colorBuffer);
-                    var colorBufferRtv = new RenderTargetView(device, colorBuffer);
-
-                    _colorBuffer = colorBuffer;
-                    _colorBufferSrv = colorBufferSrv;
-                    _colorBufferRtv = colorBufferRtv;
+                    _colorBuffer = new Texture2D(device, colorDesc);
+                    _colorBufferSrv = new ShaderResourceView(device, _colorBuffer);
+                    _colorBufferRtv = new RenderTargetView(device, _colorBuffer);
 
                     _wasCleared = false;
                 }
                 catch
                 {
+                    Core.Utilities.Dispose(ref _colorBufferSrv);
+                    Core.Utilities.Dispose(ref _colorBufferRtv);
+                    Core.Utilities.Dispose(ref _colorBuffer);
                     Log.Error("Error creating color render target.");
                 }
             }
@@ -139,8 +138,8 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
             if (depthBufferNeedsUpdate)
             {
-                Core.Utilities.Dispose(ref _depthBuffer);
                 Core.Utilities.Dispose(ref _depthBufferDsv);
+                Core.Utilities.Dispose(ref _depthBuffer);
 
                 if (depthFormat == Format.Unknown)
                     return true;
@@ -160,16 +159,14 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                             SampleDescription = new SampleDescription(1, 0),
                                             Usage = ResourceUsage.Default
                                         };
-                    var depthBuffer = new Texture2D(device, depthDesc);
-                    var depthBufferDsv = new DepthStencilView(device, depthBuffer);
-
-                    _depthBuffer = depthBuffer;
-                    _depthBufferDsv = depthBufferDsv;
-
+                    _depthBuffer = new Texture2D(device, depthDesc);
+                    _depthBufferDsv = new DepthStencilView(device, _depthBuffer);
                     _wasCleared = false;
                 }
                 catch
                 {
+                    Core.Utilities.Dispose(ref _depthBufferDsv);
+                    Core.Utilities.Dispose(ref _depthBuffer);
                     Log.Error("Error creating depth/stencil buffer.");
                 }
             }
