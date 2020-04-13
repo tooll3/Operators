@@ -71,11 +71,10 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                 }
             }
 
-            //context.CameraTworld = Matrix.Identity;
-            var keepWorldTobject = context.WorldTobject;
+            var prevWorldTobject = context.WorldTobject;
             context.WorldTobject = Matrix.Identity;
             Command.GetValue(context);
-            context.WorldTobject = keepWorldTobject;
+            context.WorldTobject = prevWorldTobject;
 
             deviceContext.Rasterizer.SetViewports(prevViewports);
             deviceContext.OutputMerger.SetTargets(prevDepthStencilView, prevTargets);

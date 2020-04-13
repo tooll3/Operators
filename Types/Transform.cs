@@ -28,6 +28,8 @@ namespace T3.Operators.Types.Id_284d2183_197d_47fd_b130_873cced78b1c
             var t = Translation.GetValue(context);
             var worldTobject = Matrix.Transformation(Vector3.Zero, Quaternion.Identity, new Vector3(s.X, s.Y, s.Z), Vector3.Zero,
                                                          Quaternion.RotationYawPitchRoll(yaw, pitch, roll), new Vector3(t.X, t.Y, t.Z));
+            worldTobject.Transpose();
+            
             var previousWorldTobject = context.WorldTobject;
             context.WorldTobject = Matrix.Multiply(context.WorldTobject, worldTobject);
             Command.GetValue(context);

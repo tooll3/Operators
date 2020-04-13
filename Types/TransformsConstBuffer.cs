@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using SharpDX;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -37,6 +38,7 @@ namespace T3.Operators.Types.Id_a60adc26_d7c6_4615_af78_8d2d6da46b79
                 worldTcamera.Invert();
                 Matrix objectTworld = worldTobject;
                 objectTworld.Invert();
+                
                 ClipSpaceTcamera = clipSpaceTcamera;
                 CameraTclipSpace = cameraTclipSpace;
                 CameraTworld = cameraTworld;
@@ -47,6 +49,18 @@ namespace T3.Operators.Types.Id_a60adc26_d7c6_4615_af78_8d2d6da46b79
                 ObjectTworld = objectTworld;
                 CameraTobject = Matrix.Multiply(cameraTworld, worldTobject);
                 ClipSpaceTobject = Matrix.Multiply(clipSpaceTcamera, CameraTobject);
+
+                // transpose all as mem layout in hlsl constant buffer is row based
+                ClipSpaceTcamera.Transpose();
+                CameraTclipSpace.Transpose();
+                CameraTworld.Transpose();
+                WorldTcamera.Transpose();
+                ClipSpaceTworld.Transpose();
+                WorldTclipSpace.Transpose();
+                WorldTobject.Transpose();
+                ObjectTworld.Transpose();
+                CameraTobject.Transpose();
+                ClipSpaceTobject.Transpose();
             }
 
             [FieldOffset(0)]

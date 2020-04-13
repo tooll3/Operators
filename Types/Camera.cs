@@ -1,6 +1,7 @@
 ﻿using System;
 using SharpDX;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -24,6 +25,7 @@ namespace T3.Operators.Types.Id_746d886c_5ab6_44b1_bb15_f3ce2fadf7e6
             float aspectRatio = AspectRatio.GetValue(context);
             System.Numerics.Vector2 clip = NearFarClip.GetValue(context);
             Matrix clipSpaceTcamera = Matrix.PerspectiveFovRH(fov, aspectRatio, clip.X, clip.Y);
+            clipSpaceTcamera.Transpose();
             var pos = Position.GetValue(context);
             Vector3 eye = new Vector3(pos.X, pos.Y, pos.Z);
             var t = Target.GetValue(context);
@@ -31,6 +33,7 @@ namespace T3.Operators.Types.Id_746d886c_5ab6_44b1_bb15_f3ce2fadf7e6
             var u = Up.GetValue(context);
             Vector3 up = new Vector3(u.X, u.Y, u.Z);
             Matrix cameraTworld = Matrix.LookAtRH(eye, target, up);
+            cameraTworld.Transpose();
 
             var prevClipSpace = context.ClipSpaceTcamera; 
             context.ClipSpaceTcamera = clipSpaceTcamera;
