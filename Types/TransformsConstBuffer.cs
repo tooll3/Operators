@@ -69,7 +69,7 @@ namespace T3.Operators.Types.Id_a60adc26_d7c6_4615_af78_8d2d6da46b79
             public Matrix CameraTclipSpace;
             [FieldOffset(128)]
             public Matrix CameraTworld;
-            [FieldOffset(196)]
+            [FieldOffset(192)]
             public Matrix WorldTcamera;
             [FieldOffset(256)]
             public Matrix ClipSpaceTworld;
