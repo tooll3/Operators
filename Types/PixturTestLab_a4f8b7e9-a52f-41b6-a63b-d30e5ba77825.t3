@@ -114,6 +114,112 @@
           }
         }
       ]
+    },
+    {
+      "Id": "5af7fe30-7a40-411e-94c0-c3169e881973"/*SampleCurve*/,
+      "SymbolId": "b724ea74-d5d7-4928-9cd1-7a7850e4e179",
+      "InputValues": [
+        {
+          "Id": "108cb829-5f9e-4a45-bc6b-7cf40a0a0f89"/*Curve*/,
+          "Type": "T3.Core.Animation.Curve",
+          "Value": {
+            "Curve": {
+              "PreCurve": "Constant",
+              "PostCurve": "Constant",
+              "Keys": [
+                {
+                  "Time": 0.0,
+                  "Value": 0.0,
+                  "InType": "Linear",
+                  "OutType": "Linear",
+                  "InEditMode": "Linear",
+                  "OutEditMode": "Linear",
+                  "InTangentAngle": 0.19739556271548864,
+                  "OutTangentAngle": 3.3389882163052818
+                },
+                {
+                  "Time": 5.0,
+                  "Value": 1.0000000149011612,
+                  "InType": "Linear",
+                  "OutType": "Linear",
+                  "InEditMode": "Linear",
+                  "OutEditMode": "Linear",
+                  "InTangentAngle": 0.19739556271548864,
+                  "OutTangentAngle": -2.9441970908743045
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "OutputData": []
+    },
+    {
+      "Id": "5e13c545-03c2-4df3-8075-ba5040889f58"/*SampleCurve*/,
+      "SymbolId": "b724ea74-d5d7-4928-9cd1-7a7850e4e179",
+      "InputValues": [
+        {
+          "Id": "108cb829-5f9e-4a45-bc6b-7cf40a0a0f89"/*Curve*/,
+          "Type": "T3.Core.Animation.Curve",
+          "Value": {
+            "Curve": {
+              "PreCurve": "Constant",
+              "PostCurve": "Constant",
+              "Keys": [
+                {
+                  "Time": 0.0,
+                  "Value": 0.0,
+                  "InType": "Spline",
+                  "OutType": "Spline",
+                  "InEditMode": "Smooth",
+                  "OutEditMode": "Smooth",
+                  "InTangentAngle": 0.0,
+                  "OutTangentAngle": 3.1415926535897931
+                },
+                {
+                  "Time": 0.5,
+                  "Value": 1.0000000149011612,
+                  "InType": "Spline",
+                  "OutType": "Spline",
+                  "InEditMode": "Smooth",
+                  "OutEditMode": "Smooth",
+                  "InTangentAngle": 0.0,
+                  "OutTangentAngle": 3.1415926535897931
+                },
+                {
+                  "Time": 1.0,
+                  "Value": 0.0,
+                  "InType": "Spline",
+                  "OutType": "Spline",
+                  "InEditMode": "Smooth",
+                  "OutEditMode": "Smooth",
+                  "InTangentAngle": 0.0,
+                  "OutTangentAngle": -3.1415926535897931
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "OutputData": []
+    },
+    {
+      "Id": "a11d44c3-bc09-418e-837c-8cc7c4f17494"/*BeatCounterTest*/,
+      "SymbolId": "08ad4c93-81ee-4c21-9bff-b5b03f7dd1f7",
+      "InputValues": [],
+      "OutputData": []
+    },
+    {
+      "Id": "42dd8fdb-a4af-45e7-8417-26425375e0aa"/*Time*/,
+      "SymbolId": "9cb4d49e-135b-400b-a035-2b02c5ea6a72",
+      "InputValues": [],
+      "OutputData": []
+    },
+    {
+      "Id": "cfc96467-e7b9-4ed6-9034-716ab23abe7d"/*Pulsate*/,
+      "SymbolId": "ffed6f9e-2495-4cf3-9cda-740ecec75d10",
+      "InputValues": [],
+      "OutputData": []
     }
   ],
   "Connections": [
@@ -140,6 +246,18 @@
       "SourceSlotId": "f83f1835-477e-4bb6-93f0-14bf273b8e94",
       "TargetParentOrChildId": "17f88b7c-d95c-4929-ad09-012d36fecae4",
       "TargetSlotId": "af4a49e6-1ecd-4e94-ae6d-fb5d2bc8430c"
+    },
+    {
+      "SourceParentOrChildId": "cfc96467-e7b9-4ed6-9034-716ab23abe7d",
+      "SourceSlotId": "cb128b17-6855-440d-8539-bfd437e4193c",
+      "TargetParentOrChildId": "5e13c545-03c2-4df3-8075-ba5040889f58",
+      "TargetSlotId": "2c24d4fe-6c96-4502-bf76-dac756a16215"
+    },
+    {
+      "SourceParentOrChildId": "42dd8fdb-a4af-45e7-8417-26425375e0aa",
+      "SourceSlotId": "b20573fe-7a7e-48e1-9370-744288ca6e32",
+      "TargetParentOrChildId": "cfc96467-e7b9-4ed6-9034-716ab23abe7d",
+      "TargetSlotId": "3b60db67-3a12-44c3-91ba-5517f74879d6"
     }
   ],
   "Animator": [
