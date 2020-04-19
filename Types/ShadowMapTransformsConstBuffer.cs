@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using SharpDX;
 using T3.Core;
@@ -43,7 +44,10 @@ namespace T3.Operators.Types.Id_e6f2a00d_854e_412e_94a1_a21df91fc988
             Vector3 eye = new Vector3(pos.X, pos.Y, pos.Z);
             var t = Target.GetValue(context);
             Vector3 target = new Vector3(t.X, t.Y, t.Z);
-            Vector3 up = Vector3.Cross(Vector3.Up, target - eye);
+            Vector3 viewDir = target - eye;
+            viewDir.Normalize();
+            Vector3 upRef = (Math.Abs(Vector3.Dot(viewDir, Vector3.Up)) > 0.9) ? Vector3.Left : Vector3.Up;
+            Vector3 up = Vector3.Cross(upRef, target - eye);
             Matrix cameraTworld = Matrix.LookAtRH(eye, target, up);
             cameraTworld.Transpose();
 
