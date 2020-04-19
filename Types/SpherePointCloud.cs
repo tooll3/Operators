@@ -54,12 +54,9 @@ namespace T3.Operators.Types.Id_491d5fc3_75f4_4ddd_854b_cd1769166fa6
             var radius = Radius.GetValue(context);
             for (int index = 0; index < numEntries; index++)
             {
-                var v = new Vector3(
-                                    random.NextFloat(0, radius),
-                                    random.NextFloat(0, radius),
-                                    random.NextFloat(0, radius)
-                                    );
+                var v = new Vector3(random.NextFloat(-1, 1), random.NextFloat(-1, 1), random.NextFloat(-1, 1));
                 v.Normalize();
+                v *= radius;
                 bufferData[index].Pos = new Vector4(v.X, v.Y, v.Z, 1.0f);
                 bufferData[index].Color = new Vector4(color.X, color.Y, color.Z, color.W);
             }
