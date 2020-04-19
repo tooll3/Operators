@@ -1,13 +1,16 @@
+using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using SharpDX;
-using SharpDX.Direct3D11;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
+using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace T3.Operators.Types.Id_2d09d163_4aa3_4a58_a93c_86dfb7963070
 {
@@ -32,36 +35,43 @@ namespace T3.Operators.Types.Id_2d09d163_4aa3_4a58_a93c_86dfb7963070
         }
 
         public Buffer Buffer;
-        
+
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
             string path = Path.GetValue(context);
             if (string.IsNullOrEmpty(path) || !(new FileInfo(path).Exists))
                 return;
-            
+
             var numEntries = File.ReadLines(path).Count();
             var bufferData = new BufferEntry[numEntries];
-            
+
             using (var stream = new StreamReader(path))
             {
-                string line;
-                int index = 0;
-                while ((line = stream.ReadLine()) != null)
+                try
                 {
-                    var values = line.Split(' ');
-                    float x = float.Parse(values[0], CultureInfo.InvariantCulture);
-                    float y = float.Parse(values[1], CultureInfo.InvariantCulture);
-                    float z = float.Parse(values[2], CultureInfo.InvariantCulture);
-                    float r = float.Parse(values[3]) / 255.0f;
-                    float g = float.Parse(values[4]) / 255.0f;
-                    float b = float.Parse(values[5]) / 255.0f;
-                    bufferData[index].Pos = new Vector4(x, y, z, 1.0f);
-                    bufferData[index].Color = new Vector4(r, g, b, 1.0f);
-                    index++;
+                    string line;
+                    int index = 0;
+                    while ((line = stream.ReadLine()) != null)
+                    {
+                        var values = line.Split(' ');
+                        float x = float.Parse(values[0], CultureInfo.InvariantCulture);
+                        float y = float.Parse(values[1], CultureInfo.InvariantCulture);
+                        float z = float.Parse(values[2], CultureInfo.InvariantCulture);
+                        float r = float.Parse(values[3]) / 255.0f;
+                        float g = float.Parse(values[4]) / 255.0f;
+                        float b = float.Parse(values[5]) / 255.0f;
+                        bufferData[index].Pos = new Vector4(x, y, z, 1.0f);
+                        bufferData[index].Color = new Vector4(r, g, b, 1.0f);
+                        index++;
+                    }
+                }
+                catch(Exception e)
+                {
+                    Log.Error("Failed to load point cloud:" + e.Message);
                 }
             }
-            
+
             int stride = 32;
             resourceManager.SetupStructuredBuffer(bufferData, stride * numEntries, stride, ref Buffer);
             resourceManager.CreateStructuredBufferSrv(Buffer, ref PointCloudSrv.Value);
