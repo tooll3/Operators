@@ -45,8 +45,8 @@ namespace T3.Operators.Types.Id_491d5fc3_75f4_4ddd_854b_cd1769166fa6
 
             var numEntries = Count.GetValue(context);
             numEntries = Math.Max(numEntries, 1);
-            numEntries = Math.Min(numEntries, 10000);
-            
+            numEntries = Math.Min(numEntries, 500000);
+
             var bufferData = new BufferEntry[numEntries];
 
             var color = Color.GetValue(context);

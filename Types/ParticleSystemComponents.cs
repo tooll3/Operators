@@ -1,4 +1,4 @@
-﻿using SharpDX.Direct3D11;
+using SharpDX.Direct3D11;
 using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
@@ -9,6 +9,9 @@ namespace T3.Operators.Types.Id_c78a26f9_0c0e_4f1e_a2aa_6ca6136c52d0
 {
     public class ParticleSystemComponents : Instance<ParticleSystemComponents>
     {
+        [Output(Guid = "b658104b-95ee-4d5a-ab13-159c2a992e22")]
+        public readonly Slot<int> MaxParticleCount = new Slot<int>();
+
         // [Output(Guid = "CD69742E-3581-4600-AEF6-EC908B450C5B")]
         // public readonly Slot<Buffer> ParticleBuffer = new Slot<Buffer>();
         [Output(Guid = "DBF61091-A9A7-4AD2-9DC1-68AFDC3EA9FD")]
@@ -38,6 +41,8 @@ namespace T3.Operators.Types.Id_c78a26f9_0c0e_4f1e_a2aa_6ca6136c52d0
 
         public ParticleSystemComponents()
         {
+            MaxParticleCount.UpdateAction = Update;
+
             // ParticleBuffer.UpdateAction = Update;
             ParticleBufferUav.UpdateAction = Update;
             ParticleBufferSrv.UpdateAction = Update;
@@ -56,6 +61,8 @@ namespace T3.Operators.Types.Id_c78a26f9_0c0e_4f1e_a2aa_6ca6136c52d0
             var particleSystem = ParticleSystem.GetValue(context);
             if (particleSystem == null)
                 return;
+
+            MaxParticleCount.Value = particleSystem.MaxCount;
 
             // ParticleBuffer.Value = particleSystem.ParticleBuffer;
             ParticleBufferUav.Value = particleSystem.ParticleBufferUav;
