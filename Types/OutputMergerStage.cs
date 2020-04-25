@@ -65,7 +65,7 @@ namespace T3.Operators.Types.Id_5efaf208_ba62_42ce_b3df_059b37fc1382
 
             for (int i = 0; i < _prevRenderTargetViews.Length; i++)
             {
-                _prevRenderTargetViews[i].Dispose();
+                _prevRenderTargetViews[i]?.Dispose();
             }
         }
 
