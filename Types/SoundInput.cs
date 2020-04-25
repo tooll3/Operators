@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Windows.Threading;
 using ManagedBass;
 using ManagedBass.Wasapi;
 using T3.Core.Logging;
@@ -17,156 +19,203 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
         {
             Result.UpdateAction = Update;
             Result.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
-            //StartRecording();
-            StartWasapi();
         }
-
-        private const int BufferSize = 10;
+        
         private void Update(EvaluationContext context)
         {
-            //Bass.ChannelGetData(_recHandle, _buffer,  Length: BufferSize);
-            //var level = Bass.ChannelGetLevel(_recHandle);
-            //Result.Value = level /10000f;
-            
-            //BassWasapi.GetData(_floatBuffer, _floatBufferLength);
-            BassWasapi.GetLevel(_floatBuffer, 10, LevelRetrievalFlags.All);
-            Result.Value = _floatBuffer[0] + 0.1f;
-        }
+            if (_analyzer == null)
+                _analyzer = new Analyzer();
 
-        private readonly int[] _buffer = new int[BufferSize];
+            _analyzer.SetDeviceIndex((int)Input1.GetValue(context));
 
-        private const int _floatBufferLength = 100;
-        private float[] _floatBuffer = new float[_floatBufferLength];
-        
-        //private BassWasapi;
-        private const int Undefined = -1;
-        private void StartWasapi()
-        {
-            WasapiDeviceInfo devInfo;
-
-            
-            var defaultDeviceIndex = Undefined;
-            for (var i = 0; BassWasapi.GetDeviceInfo(i, out devInfo); ++i)
-            {
-                if (devInfo.IsEnabled && devInfo.IsLoopback)
-                {
-                    defaultDeviceIndex = i;
-                    Log.Debug($"Device: {i}:" + devInfo);
-                    break;
-                }
-            }
-
-            if (defaultDeviceIndex == Undefined)
-            {
-                Log.Warning("Can't find default wasapi device");
+            if (_analyzer.SpectrumData.Count < 16)
                 return;
-            }
-            
-            //BassWasapi.CurrentDevice = 0;
-            //if (BassWasapi.Init(defaultDeviceIndex,Frequency: 48000, Channels:2 , Flags: WasapiInitFlags.Buffer, Buffer: 0f, Period: 0f))
-            if (!BassWasapi.Init(-2))
-            {
-                Log.Debug("init WASAPI failed");
-            }
 
-            BassWasapi.Start();
-            
-            // BassWasapi.GetInfo(out WasapiInfo info);
-            // Log.Debug("Wasapi:" + info);
-            //
-            // BassWasapi.Start();
-            // BassWasapi.GetData(_floatBuffer, _floatBufferLength);
-            // var deviceInfo= BassWasapi.GetDeviceInfo(deviceIndex);
-            // Log.Debug("Device: " + deviceInfo);
-
-            //var _wasapi = BassWasapi;
-            //Private _wasapi As BassWasapiHandler
-            //    ...
-            // not playing anything via BASS, so don't need an update thread
-            //Bass.UpdatePeriod = 0;
-            // ' setup BASS - "no sound" device
-            //Bass.Init(0, 48000, DeviceInitFlags.Default, IntPtr.Zero);
-            //     ...
-
-
-            // assign WASAPI input in shared-mode
-            // _wasapi = new BassWasapiHandler(-2, false, 48000, 2, 0f, 0f)
-            //var xx = new WasapiProcedure()
-            // ' init and start WASAPI
-            // _wasapi.Init()
-            // Dim recordStream As Integer = _wasapi.InputChannel
-            // ' double check, that the device is not muted externally
-            //     If _wasapi.DeviceMute Then
-            // _wasapi.DeviceMute = False
-            // End If
-            // _wasapi.Start()
-            // End If
-            //     ...
-            // ' now you can use recordStream to setup any DSP/FX etc.            
+            Result.Value = _analyzer.SpectrumData[2];
         }
-        
-        //private  RECORDPROC _myRecProc; // make it global, so that the GC can not remove it 
-        private void StartRecording()
-        {
-            if (!Bass.RecordInit(-1))
-                return;
-            
-            _recHandle = Bass.RecordStart(44100, 2, BassFlags.RecordPause, null, IntPtr.Zero);
-            Bass.ChannelPlay(_recHandle, false);
-        }
-        
-        /*
-        private void StartRecordingWithCallback()
-        {
-            if (!Bass.RecordInit(-1))
-                return;
-            
-            _myRecProc = OnRecordingUpdate;
-            _recHandle = Bass.RecordStart(44100, 2, BassFlags.RecordPause, _myRecProc, IntPtr.Zero);
-            Bass.ChannelPlay(_recHandle, false);
-        }
-        
-        private bool OnRecordingUpdate(int handle, IntPtr buffer, int length, IntPtr user)
-        {
-            if (length <= 0 || buffer == IntPtr.Zero)
-                return true;
-            
-            // Increase the rec buffer as needed 
-            if (_recbuffer == null || _recbuffer.Length < length)
-                _recbuffer = new byte[length];
-                
-            // Copy from managed to unmanaged memory
-            //Marshal.Copy(buffer, _recbuffer, 0, length);
-            //_bytesWritten += length;
-                
-            // write to file
-            // ... insert here...
-                
-            // Stop recording after a certain Amount (just to demo) 
-            var continueRecording = (_byteswritten < 800000);
-            return continueRecording;
-        }
-        
-        private int _bytesWritten = 0;
-        private byte[] _recbuffer; // local recording buffer
-        
-        */
-        
-        private int _recHandle;
 
+        private static Analyzer _analyzer;
 
         [Input(Guid = "e8a10146-ef7f-459c-a1f8-eef621a2c522")]
         public readonly InputSlot<float> Input1 = new InputSlot<float>();
+    }
 
-        [Input(Guid = "81b675d8-e6e2-4661-b0d5-8e3bc2767265")]
-        public readonly InputSlot<float> Input2 = new InputSlot<float>();
+    /// <summary>
+    /// This is based on https://www.codeproject.com/Articles/797537/
+    /// Audio Spectrum by @webmaster442
+    /// </summary>
+    internal class Analyzer
+    {
+        public Analyzer()
+        {
+            _timer.Interval = TimeSpan.FromMilliseconds(25); //40hz refresh rate
+            _timer.Tick += TimerUpdateEventHandler;
+            _wasapiProcedure = new WasapiProcedure(Process); // capture to avoid freeing by GC
+            _initialized = false;
+            Init();
+        }
 
-        private RecordProcedure _myRecProc;
+        private int _deviceIndex = 0;
 
-        //         [Input(Guid = "{D7478BAA-41B4-4F83-873B-6267AA93BFA9}")]
-        //         public readonly InputSlot<float> Input3 = new InputSlot<float>();
-        // 
-        //         [Input(Guid = "{99A53560-8F62-4240-9ED4-800525CF2EF3}")]
-        //         public readonly InputSlot<float> Input4 = new InputSlot<float>();
+        public void SetDeviceIndex(int index)
+        {
+            if (index == _deviceIndex)
+                return;
+
+            _deviceIndex = index;
+            _initialized = false;
+            SetEnable(true);
+        }
+
+        private void SetEnable(bool enable)
+        {
+            _enable = enable;
+            if (enable)
+            {
+                if (!_initialized)
+                {
+                    var str = (_deviceList[_deviceIndex % _deviceList.Count] as string);
+                    var array = str.Split(' ');
+                    _wasapiDeviceIndex = Convert.ToInt32(array[0]);
+                    Log.Debug($"Initializing WASAPI for {str}... #{_wasapiDeviceIndex}");
+                    bool result = BassWasapi.Init(_wasapiDeviceIndex, 0, 0,
+                                                  WasapiInitFlags.Buffer,
+                                                  1f, 0.05f,
+                                                  _wasapiProcedure, IntPtr.Zero);
+                    if (!result)
+                    {
+                        Log.Error("Can't initialize WASAPI:" + Bass.LastError);
+                    }
+                    else
+                    {
+                        _initialized = true;
+                    }
+                }
+
+                BassWasapi.Start();
+            }
+            else
+            {
+                BassWasapi.Stop();
+            }
+
+            System.Threading.Thread.Sleep(500);
+            _timer.IsEnabled = enable;
+        }
+
+        
+        private void Init()
+        {
+            var result = false;
+            for (var i = 0; i < BassWasapi.DeviceCount; i++)
+            {
+                var device = BassWasapi.GetDeviceInfo(i);
+                if (device.IsEnabled && device.IsLoopback)
+                {
+                    _deviceList.Add(string.Format($"{i} - {device.Name}"));
+                }
+            }
+
+            Bass.Configure(Configuration.UpdateThreads, false);
+
+            result = Bass.Init(Device: 0, Frequency: 44100, Flags: DeviceInitFlags.Default, Win: IntPtr.Zero);
+            if (result)
+            {
+                Log.Debug("Successfully initialized BASS.Init()");
+            }
+
+            if (!result)
+            {
+                Log.Error("Bass initialization failed:" + Bass.LastError);
+            }
+
+            SetEnable(true);
+        }
+
+        private void TimerUpdateEventHandler(object sender, EventArgs e)
+        {
+            // get FFT data. Return value is -1 on error
+            var ret = BassWasapi.GetData(_fftBuffer, _fftBuffer.Length);
+            if (ret < 0)
+                return;
+
+            int x, y;
+            var b0 = 0;
+
+            // Compute the spectrum data, the code is taken from a bass_wasapi sample.
+            SpectrumData.Clear();
+            for (x = 0; x < SpectrumLineCount; x++)
+            {
+                float peak = 0;
+                var b1 = (int)Math.Pow(2, x * 10.0 / (SpectrumLineCount - 1));
+                if (b1 > 1023) b1 = 1023;
+                if (b1 <= b0) b1 = b0 + 1;
+                for (; b0 < b1; b0++)
+                {
+                    if (peak < _fftBuffer[1 + b0]) peak = _fftBuffer[1 + b0];
+                }
+
+                y = (int)(Math.Sqrt(peak) * 3 * 255 - 4);
+                if (y > 255) y = 255;
+                if (y < 0) y = 0;
+                SpectrumData.Add((byte)y);
+            }
+
+            // Get audio level
+            var level = BassWasapi.GetLevel();
+            var left = level &= 0xffff;
+            var right = level >> 16;
+            LeftLevel = 65384f / left;
+            RightLevel = 65384f / right;
+
+            if (level == LastLevel && level != 0) _hangCounter++;
+            LastLevel = level;
+
+            // Required, because some programs hang the output. If the output hangs for a 75ms
+            // this piece of code re initializes the output so it doesn't make a glitched sound for long.
+            if (_hangCounter > 10)
+            {
+                Log.Warning("Looks like sound got lost. Trying to restart.");
+                _hangCounter = 0;
+                Free();
+                
+                //Bass.BASS_Init(0, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
+                Bass.Init();
+                _initialized = false;
+                SetEnable(true);
+            }
+        }
+
+        /// <summary>
+        /// WASAPI callback, required for continuous recording
+        /// </summary>
+        private static int Process(IntPtr buffer, int length, IntPtr user)
+        {
+            return length;
+        }
+
+        //cleanup
+        private static void Free()
+        {
+            BassWasapi.Free();
+            Bass.Free();
+        }
+
+        private bool _enable;
+        private readonly DispatcherTimer _timer = new DispatcherTimer(); //timer that refreshes the display
+
+        public readonly List<byte> SpectrumData = new List<byte>();
+        private readonly float[] _fftBuffer = new float[1024];
+
+        private WasapiProcedure _wasapiProcedure;
+        public float RightLevel = 0;
+        public float LeftLevel = 0;
+        public int LastLevel = 0;
+        private int _hangCounter = 0;
+        
+        private readonly List<string> _deviceList = new List<string>();
+        private bool _initialized;
+        private int _wasapiDeviceIndex;
+        private const int SpectrumLineCount = 16;
     }
 }
