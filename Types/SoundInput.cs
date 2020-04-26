@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Threading;
 using ManagedBass;
 using ManagedBass.Wasapi;
@@ -12,15 +13,28 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
 {
     public class SoundInput : Instance<SoundInput>
     {
+        [Output(Guid = "B3EFDF25-4692-456D-AA48-563CFB0B9DEB")]
+        public readonly Slot<List<float>> FftBuffer = new Slot<List<float>>();
+
         [Output(Guid = "b438986f-6ef9-40d5-8a2c-b00c01578ebc")]
         public readonly Slot<float> Result = new Slot<float>();
+
+        [Output(Guid = "D7D2A87C-4231-4F8B-904F-6E5F5D01B1D8")]
+        public readonly Slot<float> AvailableData = new Slot<float>();
 
         public SoundInput()
         {
             Result.UpdateAction = Update;
             Result.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
+
+            FftBuffer.UpdateAction = Update;
+            FftBuffer.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
+            
+            AvailableData.UpdateAction = Update;
+            AvailableData.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
+
         }
-        
+
         private void Update(EvaluationContext context)
         {
             if (_analyzer == null)
@@ -32,6 +46,8 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
                 return;
 
             Result.Value = _analyzer.SpectrumData[2];
+            FftBuffer.Value = _analyzer.FftBuffer.ToList();
+            AvailableData.Value = _analyzer.AvailableData;
         }
 
         private static Analyzer _analyzer;
@@ -48,14 +64,20 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
     {
         public Analyzer()
         {
-            _timer.Interval = TimeSpan.FromMilliseconds(25); //40hz refresh rate
+            _timer.Interval = TimeSpan.FromMilliseconds(1 / 44.1f * 1000);
             _timer.Tick += TimerUpdateEventHandler;
+            // ReSharper disable once RedundantDelegateCreation
             _wasapiProcedure = new WasapiProcedure(Process); // capture to avoid freeing by GC
             _initialized = false;
             Init();
         }
 
-        private int _deviceIndex = 0;
+        /// <summary>
+        /// This property returns the length of the available data.
+        /// This might be useful for eventually discover the reason for
+        /// the frequent connection problems to sound provides like streaming from Firefox 
+        /// </summary>
+        public float AvailableData { get; private set; }
 
         public void SetDeviceIndex(int index)
         {
@@ -64,49 +86,55 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
 
             _deviceIndex = index;
             _initialized = false;
-            SetEnable(true);
+            SetEnableWasapi(true);
         }
 
-        private void SetEnable(bool enable)
+        private void SetEnableWasapi(bool enable)
         {
-            _enable = enable;
-            if (enable)
-            {
-                if (!_initialized)
-                {
-                    var str = (_deviceList[_deviceIndex % _deviceList.Count] as string);
-                    var array = str.Split(' ');
-                    _wasapiDeviceIndex = Convert.ToInt32(array[0]);
-                    Log.Debug($"Initializing WASAPI for {str}... #{_wasapiDeviceIndex}");
-                    bool result = BassWasapi.Init(_wasapiDeviceIndex, 0, 0,
-                                                  WasapiInitFlags.Buffer,
-                                                  1f, 0.05f,
-                                                  _wasapiProcedure, IntPtr.Zero);
-                    if (!result)
-                    {
-                        Log.Error("Can't initialize WASAPI:" + Bass.LastError);
-                    }
-                    else
-                    {
-                        _initialized = true;
-                    }
-                }
-
-                BassWasapi.Start();
-            }
-            else
+            if (!enable)
             {
                 BassWasapi.Stop();
+                _timer.Stop();
+                _timer.IsEnabled = false;
+                return;
             }
 
+            if (!_initialized)
+            {
+                var str = _deviceList[_deviceIndex % _deviceList.Count];
+                var array = str.Split(' ');
+                _wasapiDeviceIndex = Convert.ToInt32(array[0]);
+                Log.Debug($"Initializing WASAPI for {str}... #{_wasapiDeviceIndex}");
+                if (!BassWasapi.Init(_wasapiDeviceIndex, 
+                                     Frequency: 0, 
+                                     Channels: 0,
+                                     Flags: WasapiInitFlags.Buffer,
+                                     Buffer: 0.004f, // was 1
+                                     Period: 0.004f,
+                                     Procedure: _wasapiProcedure, 
+                                     User: IntPtr.Zero))
+                {
+                    Log.Error("Can't initialize WASAPI:" + Bass.LastError);
+                    return;
+                }
+
+                _initialized = true;
+            }
+
+            BassWasapi.Start();
             System.Threading.Thread.Sleep(500);
-            _timer.IsEnabled = enable;
+            _timer.IsEnabled = true;
+            _timer.Start();
         }
 
-        
         private void Init()
         {
-            var result = false;
+            InitBass();
+            SetEnableWasapi(true);
+        }
+
+        private void InitBass()
+        {
             for (var i = 0; i < BassWasapi.DeviceCount; i++)
             {
                 var device = BassWasapi.GetDeviceInfo(i);
@@ -118,7 +146,7 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
 
             Bass.Configure(Configuration.UpdateThreads, false);
 
-            result = Bass.Init(Device: 0, Frequency: 44100, Flags: DeviceInitFlags.Default, Win: IntPtr.Zero);
+            var result = Bass.Init(Device: 0, Frequency: 44100, Flags: DeviceInitFlags.Default, Win: IntPtr.Zero);
             if (result)
             {
                 Log.Debug("Successfully initialized BASS.Init()");
@@ -128,18 +156,18 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
             {
                 Log.Error("Bass initialization failed:" + Bass.LastError);
             }
-
-            SetEnable(true);
         }
 
         private void TimerUpdateEventHandler(object sender, EventArgs e)
         {
+            AvailableData = BassWasapi.GetData(null, (int)DataFlags.Available);
+            
             // get FFT data. Return value is -1 on error
-            var ret = BassWasapi.GetData(_fftBuffer, _fftBuffer.Length);
+            var ret = BassWasapi.GetData(FftBuffer, (int)DataFlags.FFT512);
             if (ret < 0)
                 return;
-
-            int x, y;
+            
+            int x;
             var b0 = 0;
 
             // Compute the spectrum data, the code is taken from a bass_wasapi sample.
@@ -148,17 +176,27 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
             {
                 float peak = 0;
                 var b1 = (int)Math.Pow(2, x * 10.0 / (SpectrumLineCount - 1));
-                if (b1 > 1023) b1 = 1023;
-                if (b1 <= b0) b1 = b0 + 1;
+
+                if (b1 > FftBuffer.Length - 2)
+                    b1 = FftBuffer.Length - 2;
+
+                if (b1 <= b0)
+                    b1 = b0 + 1;
+
                 for (; b0 < b1; b0++)
                 {
-                    if (peak < _fftBuffer[1 + b0]) peak = _fftBuffer[1 + b0];
+                    if (peak < FftBuffer[1 + b0])
+                        peak = FftBuffer[1 + b0];
                 }
 
-                y = (int)(Math.Sqrt(peak) * 3 * 255 - 4);
-                if (y > 255) y = 255;
-                if (y < 0) y = 0;
-                SpectrumData.Add((byte)y);
+                var y = (int)(Math.Sqrt(peak) * 3 * 255 - 4);
+                if (y > 255)
+                    y = 255;
+
+                if (y < 0)
+                    y = 0;
+
+                SpectrumData.Add(y);
             }
 
             // Get audio level
@@ -168,8 +206,8 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
             LeftLevel = 65384f / left;
             RightLevel = 65384f / right;
 
-            if (level == LastLevel && level != 0) _hangCounter++;
-            LastLevel = level;
+            if (level == _lastLevel && level != 0) _hangCounter++;
+            _lastLevel = level;
 
             // Required, because some programs hang the output. If the output hangs for a 75ms
             // this piece of code re initializes the output so it doesn't make a glitched sound for long.
@@ -178,11 +216,10 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
                 Log.Warning("Looks like sound got lost. Trying to restart.");
                 _hangCounter = 0;
                 Free();
-                
-                //Bass.BASS_Init(0, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
-                Bass.Init();
+
+                InitBass();
                 _initialized = false;
-                SetEnable(true);
+                SetEnableWasapi(true);
             }
         }
 
@@ -201,18 +238,18 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
             Bass.Free();
         }
 
-        private bool _enable;
+        private int _deviceIndex;
         private readonly DispatcherTimer _timer = new DispatcherTimer(); //timer that refreshes the display
 
-        public readonly List<byte> SpectrumData = new List<byte>();
-        private readonly float[] _fftBuffer = new float[1024];
+        public readonly List<float> SpectrumData = new List<float>();
+        public readonly float[] FftBuffer = new float[512];
 
-        private WasapiProcedure _wasapiProcedure;
-        public float RightLevel = 0;
-        public float LeftLevel = 0;
-        public int LastLevel = 0;
-        private int _hangCounter = 0;
-        
+        private readonly WasapiProcedure _wasapiProcedure;
+        public float RightLevel;
+        public float LeftLevel;
+        private int _lastLevel;
+        private int _hangCounter;
+
         private readonly List<string> _deviceList = new List<string>();
         private bool _initialized;
         private int _wasapiDeviceIndex;
