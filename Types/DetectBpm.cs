@@ -55,7 +55,7 @@ namespace T3.Operators.Types.Id_e712e801_863d_45c5_9ef8_fbe90dcb8375
             }
             
             _bufferLength = bufferDuration;
-            
+            _lockInFactor = LockItFactor.GetValue(context);
 
             UpdateBuffer(fft, LowerLimit.GetValue(context), UpperLimit.GetValue(context));
             SmoothBuffer(ref _smoothedBuffer, _buffer);
@@ -66,7 +66,7 @@ namespace T3.Operators.Types.Id_e712e801_863d_45c5_9ef8_fbe90dcb8375
 
             for(var bpm = _bpmRangeMin; bpm < _bpmRangeMax; bpm++ )
             {
-                var m = MeasureEnergyDifference(bpm) / ComputeFocusFactor(bpm, _currentBpm, 6, 0.04f);
+                var m = MeasureEnergyDifference(bpm) / ComputeFocusFactor(bpm, _currentBpm, 4, _lockInFactor);
                 if (m < bestMeasurement)
                 {
                     bestMeasurement = m;
@@ -108,6 +108,7 @@ namespace T3.Operators.Types.Id_e712e801_863d_45c5_9ef8_fbe90dcb8375
         private  int _bpmRangeMax = 150;
         //private  int _bpmRangeSteps = bpmRangeMax - bpmRangeMin;
         private List<float> _bpmEnergies = new List<float>(128);
+        private float _lockInFactor = 0;
         
         private float _currentBpm = 122;
         private float[] _searchOffsets = new float[]{  -0.5f, -0.1f,  0,  0.1f, 0.5f, };
@@ -143,10 +144,10 @@ namespace T3.Operators.Types.Id_e712e801_863d_45c5_9ef8_fbe90dcb8375
             if(output.Length != buffer.Count)
                 output = new float[buffer.Count];
             
-            if (buffer.Count < 2)
-                return;
 
-            int smoothSteps = 2;
+            int smoothSteps = 5;
+            if (buffer.Count < smoothSteps * 2 +1)
+                return;
             for (int i = smoothSteps; i < buffer.Count - smoothSteps; i++)
             {
                 var sum = 0f;
@@ -200,6 +201,10 @@ namespace T3.Operators.Types.Id_e712e801_863d_45c5_9ef8_fbe90dcb8375
 
         [Input(Guid = "17208FFF-AB9A-46AA-AB1C-A1AE426CA5DF")]
         public readonly InputSlot<int> HighestBpm = new InputSlot<int>(0);
+
+        [Input(Guid = "F50CD488-9914-491D-9861-621A9C93019D")]
+        public readonly InputSlot<float> LockItFactor = new InputSlot<float>(0);
+
         
         [Input(Guid = "7ba20a6a-13f9-47a2-9d46-b8ac59210f08")]
         public readonly InputSlot<List<float>> FftInput = new InputSlot<List<float>>(new List<float>(20));
