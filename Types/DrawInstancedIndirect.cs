@@ -8,13 +8,12 @@ namespace T3.Operators.Types.Id_c676b9c7_06d7_4ee0_8ffc_9bee96c5dc18
 {
     public class DrawInstancedIndirect: Instance<DrawInstancedIndirect>
     {
-        [Output(Guid = "3A8880AF-BBBF-4560-B0C7-6E643A20FC20")]
+        [Output(Guid = "3A8880AF-BBBF-4560-B0C7-6E643A20FC20", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         public DrawInstancedIndirect()
         {
             Output.UpdateAction = Update;
-            Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)

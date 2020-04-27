@@ -9,14 +9,13 @@ namespace T3.Operators.Types.Id_a9600440_4203_4315_bdb1_4dfd603b4515
 {
     public class VertexShaderStage : Instance<VertexShaderStage>
     {
-        [Output(Guid = "65B394A9-06DC-4D9B-8819-15394EDE2997")]
+        [Output(Guid = "65B394A9-06DC-4D9B-8819-15394EDE2997", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>(new Command());
 
         public VertexShaderStage()
         {
             Output.UpdateAction = Update;
             Output.Value.RestoreAction = Restore;
-            Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)

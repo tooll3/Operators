@@ -9,14 +9,13 @@ namespace T3.Operators.Types.Id_5efaf208_ba62_42ce_b3df_059b37fc1382
 {
     public class OutputMergerStage : Instance<OutputMergerStage>
     {
-        [Output(Guid = "CEE8C3F0-64EA-4E4D-B967-EC7E3688DD03")]
+        [Output(Guid = "CEE8C3F0-64EA-4E4D-B967-EC7E3688DD03", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>(new Command());
 
         public OutputMergerStage()
         {
             Output.UpdateAction = Update;
             Output.Value.RestoreAction = Restore;
-            Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // always render atm
         }
 
         private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)

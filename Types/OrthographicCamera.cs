@@ -9,13 +9,12 @@ namespace T3.Operators.Types.Id_954af16f_b37b_4e64_a965_4bec02b9179e
 {
     public class OrthographicCamera : Instance<OrthographicCamera>
     {
-        [Output(Guid = "93241f33-8a3e-4bba-8852-ca5d4d4523aa")]
+        [Output(Guid = "93241f33-8a3e-4bba-8852-ca5d4d4523aa", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         public OrthographicCamera()
         {
             Output.UpdateAction = Update;
-            Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)

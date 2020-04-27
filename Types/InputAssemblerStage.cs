@@ -10,14 +10,13 @@ namespace T3.Operators.Types.Id_9d1266c5_23db_439f_a475_8000fdd1c318
 {
     public class InputAssemblerStage : Instance<InputAssemblerStage>
     {
-        [Output(Guid = "18CAE035-C050-4F98-9E5E-B3A6DB70DDA7")]
+        [Output(Guid = "18CAE035-C050-4F98-9E5E-B3A6DB70DDA7", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>(new Command());
 
         public InputAssemblerStage()
         {
             Output.UpdateAction = Update;
             Output.Value.RestoreAction = Restore;
-            Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // always render atm
         }
 
         private void Update(EvaluationContext context)

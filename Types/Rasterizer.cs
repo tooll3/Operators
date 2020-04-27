@@ -13,14 +13,13 @@ namespace T3.Operators.Types.Id_fbd7f0f0_36a3_4fbb_91e1_cb33d4666d09
 {
     public class Rasterizer : Instance<Rasterizer>
     {
-        [Output(Guid = "C723AD69-FF0C-47B2-9327-BD27C0D7B6D1")]
+        [Output(Guid = "C723AD69-FF0C-47B2-9327-BD27C0D7B6D1", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>(new Command());
 
         public Rasterizer()
         {
             Output.UpdateAction = Update;
             Output.Value.RestoreAction = Restore;
-            Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // always render atm
         }
 
         private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)

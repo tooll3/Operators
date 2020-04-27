@@ -8,13 +8,12 @@ namespace T3.Operators.Types.Id_b0212daa_7fba_4f6a_851c_3dd9e2e8a23e
 {
     public class ShowTexture2d : Instance<ShowTexture2d>
     {
-        [Output(Guid = "{996A44A6-005B-421F-85A4-A3CCA425044E}")]
+        [Output(Guid = "{996A44A6-005B-421F-85A4-A3CCA425044E}", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Texture2D> TextureOutput = new Slot<Texture2D>();
 
         public ShowTexture2d()
         {
             TextureOutput.UpdateAction = Update;
-            TextureOutput.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)

@@ -9,13 +9,12 @@ namespace T3.Operators.Types.Id_c30542d5_609c_452a_9168_78964a3a0927
 {
     public class ParamConstBuffer : Instance<ParamConstBuffer>
     {
-        [Output(Guid = "{89957A76-09F1-4448-B23E-39DFDD0AA5B0}")]
+        [Output(Guid = "{89957A76-09F1-4448-B23E-39DFDD0AA5B0}", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Buffer> Buffer = new Slot<Buffer>();
 
         public ParamConstBuffer()
         {
             Buffer.UpdateAction = Update;
-            Buffer.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)

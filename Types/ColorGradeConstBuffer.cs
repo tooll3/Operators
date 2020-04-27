@@ -10,13 +10,12 @@ namespace T3.Operators.Types.Id_1ba08d52_c8ec_479a_8dc0_95d92da36577
 {
     public class ColorGradeConstBuffer : Instance<ColorGradeConstBuffer>
     {
-        [Output(Guid = "c63a8582-726d-4a18-a256-48ccf13f1289")]
+        [Output(Guid = "c63a8582-726d-4a18-a256-48ccf13f1289", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Buffer> Buffer = new Slot<Buffer>();
 
         public ColorGradeConstBuffer()
         {
             Buffer.UpdateAction = Update;
-            Buffer.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)

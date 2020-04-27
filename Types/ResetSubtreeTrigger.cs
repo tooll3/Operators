@@ -9,13 +9,12 @@ namespace T3.Operators.Types.Id_38b85057_fbcb_4ab1_9b40_cfb090750150
 {
     public class ResetSubtreeTrigger : Instance<ResetSubtreeTrigger>
     {
-        [Output(Guid = "0CF2EF2A-D47A-461A-A7EF-7279C5A17883")]
+        [Output(Guid = "0CF2EF2A-D47A-461A-A7EF-7279C5A17883", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         public ResetSubtreeTrigger()
         {
             Output.UpdateAction = Update;
-            Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)

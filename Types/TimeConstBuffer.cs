@@ -18,7 +18,6 @@ namespace T3.Operators.Types.Id_de8bc97a_8ef0_4d4a_9ffa_88046a2daf40
         public TimeConstBuffer()
         {
             Buffer.UpdateAction = Update;
-            Buffer.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)

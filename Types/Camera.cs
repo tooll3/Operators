@@ -10,13 +10,12 @@ namespace T3.Operators.Types.Id_746d886c_5ab6_44b1_bb15_f3ce2fadf7e6
 {
     public class Camera : Instance<Camera>
     {
-        [Output(Guid = "2E1742D8-9BA3-4236-A0CD-A2B02C9F5924")]
+        [Output(Guid = "2E1742D8-9BA3-4236-A0CD-A2B02C9F5924", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         public Camera()
         {
             Output.UpdateAction = Update;
-            Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)

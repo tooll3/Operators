@@ -13,13 +13,12 @@ namespace T3.Operators.Types.Id_724da755_2d0c_42ab_8335_8c88ec5fb078
 {
     public class FloatConstBuffer : Instance<FloatConstBuffer>
     {
-        [Output(Guid = "f5531ffb-dbde-45d3-af2a-bd90bcbf3710")]
+        [Output(Guid = "f5531ffb-dbde-45d3-af2a-bd90bcbf3710", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Buffer> Buffer = new Slot<Buffer>();
 
         public FloatConstBuffer()
         {
             Buffer.UpdateAction = Update;
-            Buffer.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)

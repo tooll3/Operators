@@ -7,13 +7,12 @@ namespace T3.Operators.Types.Id_3036067a_a4c2_434b_b0e3_ac95c5c943f4
 {
     public class TimeClip : Instance<TimeClip>
     {
-        [Output(Guid = "de6ff8b5-40fe-47fa-b9f2-d926b17f9a7f")]
+        [Output(Guid = "de6ff8b5-40fe-47fa-b9f2-d926b17f9a7f", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly TimeClipSlot<Command> Output = new TimeClipSlot<Command>();
         
         public TimeClip()
         {
             Output.UpdateAction = Update;
-            Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)

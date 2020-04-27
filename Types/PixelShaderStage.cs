@@ -9,14 +9,13 @@ namespace T3.Operators.Types.Id_75306997_4329_44e9_a17a_050dae532182
 {
     public class PixelShaderStage : Instance<PixelShaderStage>
     {
-        [Output(Guid = "76E7AD5D-A31D-4B1F-9C42-B63C5161117C")]
+        [Output(Guid = "76E7AD5D-A31D-4B1F-9C42-B63C5161117C", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>(new Command());
 
         public PixelShaderStage()
         {
             Output.UpdateAction = Update;
             Output.Value.RestoreAction = Restore;
-            Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always; // always render atm
         }
 
         private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)

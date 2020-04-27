@@ -9,13 +9,12 @@ namespace T3.Operators.Types.Id_81ff4731_e244_4995_b03d_5544d9211d83
 {
     public class CopyStructureCount : Instance<CopyStructureCount>
     {
-        [Output(Guid = "1C8785E7-A709-4D8C-91CB-A10C052A6169")]
+        [Output(Guid = "1C8785E7-A709-4D8C-91CB-A10C052A6169", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         public CopyStructureCount()
         {
             Output.UpdateAction = Update;
-            Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)

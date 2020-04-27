@@ -12,7 +12,7 @@ namespace T3.Operators.Types.Id_e6f2a00d_854e_412e_94a1_a21df91fc988
 {
     public class ShadowMapTransformsConstBuffer : Instance<ShadowMapTransformsConstBuffer>
     {
-        [Output(Guid = "9b622d38-52e8-4a6d-8c03-4fc6eb8051b0")]
+        [Output(Guid = "9b622d38-52e8-4a6d-8c03-4fc6eb8051b0", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Buffer> Buffer = new Slot<Buffer>();
 
         [Input(Guid = "94d229a4-8bbf-4be4-a2f1-9b52cc785490")]
@@ -30,7 +30,6 @@ namespace T3.Operators.Types.Id_e6f2a00d_854e_412e_94a1_a21df91fc988
         public ShadowMapTransformsConstBuffer()
         {
             Buffer.UpdateAction = Update;
-            Buffer.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)

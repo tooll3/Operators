@@ -9,13 +9,12 @@ namespace T3.Operators.Types.Id_284d2183_197d_47fd_b130_873cced78b1c
 {
     public class Transform : Instance<Transform>
     {
-        [Output(Guid = "2D329133-29B9-4F56-B5A6-5FF7D83638FA")]
+        [Output(Guid = "2D329133-29B9-4F56-B5A6-5FF7D83638FA", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         public Transform()
         {
             Output.UpdateAction = Update;
-            Output.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)
