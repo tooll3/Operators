@@ -13,26 +13,20 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
 {
     public class SoundInput : Instance<SoundInput>
     {
-        [Output(Guid = "B3EFDF25-4692-456D-AA48-563CFB0B9DEB")]
+        [Output(Guid = "B3EFDF25-4692-456D-AA48-563CFB0B9DEB", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<List<float>> FftBuffer = new Slot<List<float>>();
 
-        [Output(Guid = "b438986f-6ef9-40d5-8a2c-b00c01578ebc")]
+        [Output(Guid = "b438986f-6ef9-40d5-8a2c-b00c01578ebc", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<float> Result = new Slot<float>();
 
-        [Output(Guid = "D7D2A87C-4231-4F8B-904F-6E5F5D01B1D8")]
+        [Output(Guid = "D7D2A87C-4231-4F8B-904F-6E5F5D01B1D8", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<float> AvailableData = new Slot<float>();
 
         public SoundInput()
         {
             Result.UpdateAction = Update;
-            Result.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
-
             FftBuffer.UpdateAction = Update;
-            FftBuffer.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
-            
             AvailableData.UpdateAction = Update;
-            AvailableData.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
-
         }
 
         private void Update(EvaluationContext context)

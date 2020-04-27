@@ -11,31 +11,24 @@ namespace T3.Operators.Types.Id_a9e77500_ccb5_45b9_9f17_0d9bf9b58fb5
 {
     public class SoundTrackLevels : Instance<SoundTrackLevels>
     {
-        [Output(Guid = "CFAD7CDE-8E78-4983-924A-0A50F15EF747")]
+        [Output(Guid = "CFAD7CDE-8E78-4983-924A-0A50F15EF747", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<float> Level = new Slot<float>();
 
-        [Output(Guid = "39EA5257-D6F3-4CCF-B03E-17D98C1E192F")]
+        [Output(Guid = "39EA5257-D6F3-4CCF-B03E-17D98C1E192F", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<float> BeatIndex = new Slot<float>();
 
-        [Output(Guid = "49F89288-3066-4282-8E8D-0828D814A599")]
+        [Output(Guid = "49F89288-3066-4282-8E8D-0828D814A599", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<float> BeatTime = new Slot<float>();
 
-        [Output(Guid = "409D628F-2CBE-4BB1-9937-B78203E68489")]
+        [Output(Guid = "409D628F-2CBE-4BB1-9937-B78203E68489", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<float> Loudness = new Slot<float>();
 
         public SoundTrackLevels()
         {
             Level.UpdateAction = Update;
-            Level.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
-
             BeatIndex.UpdateAction = Update;
-            BeatIndex.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
-            
             Loudness.UpdateAction = Update;
-            Loudness.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
-
             Level.UpdateAction = Update;
-            Level.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
         }
         
 

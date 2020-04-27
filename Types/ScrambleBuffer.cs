@@ -9,14 +9,13 @@ namespace T3.Operators.Types.Id_bf76bc78_74e1_45c3_9c67_de50262a48ae
 {
     public class ScrambleBuffer : Instance<ScrambleBuffer>
     {
-        [Output(Guid = "f460db31-2603-4468-ac68-d1a3b93c41da")]
+        [Output(Guid = "f460db31-2603-4468-ac68-d1a3b93c41da", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<System.Text.StringBuilder> Builder = new Slot<System.Text.StringBuilder>();
 
         
         public ScrambleBuffer()
         {
             Builder.UpdateAction = Update;
-            Builder.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)

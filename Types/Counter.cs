@@ -15,7 +15,6 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
         public Counter()
         {
             Result.UpdateAction = Update;
-            Result.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
         }
 
         private void Update (EvaluationContext context)

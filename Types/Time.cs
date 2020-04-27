@@ -7,26 +7,21 @@ namespace T3.Operators.Types.Id_9cb4d49e_135b_400b_a035_2b02c5ea6a72
 {
     public class Time : Instance<Time>
     {
-        [Output(Guid = "b20573fe-7a7e-48e1-9370-744288ca6e32")]
+        [Output(Guid = "b20573fe-7a7e-48e1-9370-744288ca6e32", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<float> BeatTime = new Slot<float>();
 
-        [Output(Guid = "3D781CD5-4FC3-4328-9784-9550420F7C53")]
+        [Output(Guid = "3D781CD5-4FC3-4328-9784-9550420F7C53", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<float> TimeInBars = new Slot<float>();
         
-        [Output(Guid = "A606B326-F3AF-470B-B6E5-3175F7A54E31")]
+        [Output(Guid = "A606B326-F3AF-470B-B6E5-3175F7A54E31", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<float> TimeInSecs = new Slot<float>();
 
         
         public Time()
         {
             BeatTime.UpdateAction = Update;
-            BeatTime.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
-            
             TimeInBars.UpdateAction = Update;
-            TimeInBars.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
-
             TimeInSecs.UpdateAction = Update;
-            TimeInSecs.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)

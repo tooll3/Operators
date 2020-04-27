@@ -11,13 +11,12 @@ namespace T3.Operators.Types.Id_7b21f10b_3548_4a23_95df_360addaeb03d
 {
     public class AppendToBuffer : Instance<AppendToBuffer>
     {
-        [Output(Guid = "8116d50e-0220-4bb7-b09d-881f722804cd")]
+        [Output(Guid = "8116d50e-0220-4bb7-b09d-881f722804cd", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<System.Text.StringBuilder> Builder = new Slot<System.Text.StringBuilder>();
 
         public AppendToBuffer()
         {
             Builder.UpdateAction = Update;
-            Builder.DirtyFlag.Trigger |= DirtyFlagTrigger.Always;
         }
 
         private void Update(EvaluationContext context)
