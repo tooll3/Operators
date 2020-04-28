@@ -39,9 +39,6 @@ namespace T3.Operators.Types.Id_491d5fc3_75f4_4ddd_854b_cd1769166fa6
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
-            // string path = Path.GetValue(context);
-            // if (string.IsNullOrEmpty(path) || !(new FileInfo(path).Exists))
-            //     return;
 
             var numEntries = Count.GetValue(context);
             numEntries = Math.Max(numEntries, 1);
@@ -67,9 +64,6 @@ namespace T3.Operators.Types.Id_491d5fc3_75f4_4ddd_854b_cd1769166fa6
             resourceManager.CreateStructuredBufferSrv(Buffer, ref PointCloudSrv.Value);
         }
         
-        [Input(Guid = "0295ce1a-cdc5-44ec-bc61-fb73d2983fa3")]
-        public readonly InputSlot<string> Path = new InputSlot<string>();
-
         [Input(Guid = "AD7F8575-A978-4A09-89F8-CF6F6EE8808C")]
         public readonly InputSlot<int> Count = new InputSlot<int>();
 
