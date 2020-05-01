@@ -60,11 +60,20 @@ namespace T3.Operators.Types.Id_491d5fc3_75f4_4ddd_854b_cd1769166fa6
             var radius = Radius.GetValue(context);
             for (int index = 0; index < numEntries; index++)
             {
-                var v = new Vector3(random.NextFloat(-1, 1), random.NextFloat(-1, 1), random.NextFloat(-1, 1));
-                v.Normalize();
-                // v *= radius;
-                v *= random.NextFloat(0.0f, radius);
-                bufferData[index].Pos = v;
+                float u = random.NextFloat(0, 1);
+                float v = random.NextFloat(0, 1);
+
+                float theta = SharpDX.MathUtil.TwoPi * u;
+                float z = 1.0f - 2.0f * v;
+                float phi = (float)Math.Acos(z);
+                float sinPhi = (float)Math.Sin(phi);
+                float x = sinPhi * (float)Math.Cos(theta);
+                float y = sinPhi * (float)Math.Sin(theta);
+                
+                var dir = new Vector3(x, y, z);
+                // dir *= radius;
+                dir *= random.NextFloat(0.0f, radius);
+                bufferData[index].Pos = dir;
                 bufferData[index].Id = _id;
                 bufferData[index].Color = new Vector4(color.X, color.Y, color.Z, color.W);
             }
