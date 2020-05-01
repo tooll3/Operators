@@ -19,11 +19,14 @@ namespace T3.Operators.Types.Id_ee398291_674c_409b_aab8_9ca843ce6cef
         [Input(Guid = "165b0ad5-1fde-4f8d-871e-f1498a419887")]
         public readonly InputSlot<System.Numerics.Vector4> Background = new InputSlot<System.Numerics.Vector4>();
 
-        [Input(Guid = "f238894d-4b34-47fe-9fe4-e28b630b5e99")]
-        public readonly InputSlot<System.Numerics.Vector4> LineColor = new InputSlot<System.Numerics.Vector4>();
-
         [Input(Guid = "4ba0a4d2-44c8-4c8e-95d1-7b1fbda6975b")]
         public readonly InputSlot<System.Numerics.Vector2> Center = new InputSlot<System.Numerics.Vector2>();
+
+        [Input(Guid = "00ffc593-d62e-4f40-8957-906b444b8f3b")]
+        public readonly InputSlot<float> Divisions = new InputSlot<float>();
+
+        [Input(Guid = "e635d5cd-8250-4722-a11a-ffe27a922f3e")]
+        public readonly InputSlot<float> LineThickness = new InputSlot<float>();
 
         [Input(Guid = "dfdeeb3d-ce18-48a6-9f18-a0aea28b2fff")]
         public readonly InputSlot<float> Width = new InputSlot<float>();
@@ -34,9 +37,6 @@ namespace T3.Operators.Types.Id_ee398291_674c_409b_aab8_9ca843ce6cef
         [Input(Guid = "553b006b-6cab-4a40-915e-dc5038ff5032")]
         public readonly InputSlot<float> PingPong = new InputSlot<float>();
 
-        [Input(Guid = "e635d5cd-8250-4722-a11a-ffe27a922f3e")]
-        public readonly InputSlot<float> LineThickness = new InputSlot<float>();
-
         [Input(Guid = "995307c3-f7c7-41c5-a1a8-49fe32a54716")]
         public readonly InputSlot<float> SmoothGradient = new InputSlot<float>();
 
@@ -45,6 +45,9 @@ namespace T3.Operators.Types.Id_ee398291_674c_409b_aab8_9ca843ce6cef
 
         [Input(Guid = "4ed054c5-2a48-4717-9984-a191c26db163")]
         public readonly InputSlot<float> Bias = new InputSlot<float>();
+
+        [Input(Guid = "f238894d-4b34-47fe-9fe4-e28b630b5e99")]
+        public readonly InputSlot<System.Numerics.Vector4> LineColor = new InputSlot<System.Numerics.Vector4>();
     }
 }
 
