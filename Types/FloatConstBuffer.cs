@@ -34,6 +34,8 @@ namespace T3.Operators.Types.Id_724da755_2d0c_42ab_8335_8c88ec5fb078
             {
                 array[i]= param[i].GetValue(context);
             }
+
+            Params.DirtyFlag.Clear();
             
             var resourceManager = ResourceManager.Instance();
             var device = resourceManager.Device;
