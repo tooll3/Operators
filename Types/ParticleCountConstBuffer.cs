@@ -20,7 +20,7 @@ namespace T3.Operators.Types.Id_5924e06d_f0e6_41dd_b71f_43b9d7b50cb3
         private void Update(EvaluationContext context)
         {
             ResourceManager.Instance().SetupConstBuffer(Vector4.Zero, ref Buffer.Value);
-            Buffer.Value.DebugName = nameof(ParticleCountConstBuffer);
+            // Buffer.Value.DebugName = nameof(ParticleCountConstBuffer);
         }
     }
 }

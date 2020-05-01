@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using SharpDX;
 using SharpDX.Direct3D11;
 using T3.Core;
@@ -95,20 +95,26 @@ namespace T3.Operators.Types.Id_8bef116d_7d1c_4c1b_b902_25c1d5e925a9
         private ShaderResourceView[] _shaderResourceViews = new ShaderResourceView[0];
         private SamplerState[] _samplerStates = new SamplerState[0];
         private UnorderedAccessView[] _uavs = new UnorderedAccessView[0];
-        
-        [Input(Guid = "{180CAE35-10E3-47F3-8191-F6ECEA7D321C}")]
-        public readonly InputSlot<Int3> Dispatch = new InputSlot<Int3>(new Int3(16, 16, 1));
-        [Input(Guid = "{5C0E9C96-9ABA-4757-AE1F-CC50FB6173F1}")]
+
+        [Input(Guid = "5c0e9c96-9aba-4757-ae1f-cc50fb6173f1")]
         public readonly InputSlot<SharpDX.Direct3D11.ComputeShader> ComputeShader = new InputSlot<SharpDX.Direct3D11.ComputeShader>();
-        [Input(Guid = "{34CF06FE-8F63-4F14-9C59-35A2C021B817}")]
-        public readonly MultiInputSlot<Buffer> ConstantBuffers = new MultiInputSlot<Buffer>();
-        [Input(Guid = "{88938B09-D5A7-437C-B6E1-48A5B375D756}")]
-        public readonly MultiInputSlot<ShaderResourceView> ShaderResources = new MultiInputSlot<ShaderResourceView>();
-        [Input(Guid = "{4047C9E7-1EDB-4C71-B85C-C1B87058C81C}")]
-        public readonly MultiInputSlot<SamplerState> SamplerStates = new MultiInputSlot<SamplerState>();
-        [Input(Guid = "{599384C2-BF6C-4953-BE74-D363292AB1C7}")]
-        public readonly MultiInputSlot<UnorderedAccessView> Uavs = new MultiInputSlot<UnorderedAccessView>();
-        [Input(Guid = "0105ACA4-5FD5-40C8-82A5-E919BB7DD507")]
+
+        [Input(Guid = "180cae35-10e3-47f3-8191-f6ecea7d321c")]
+        public readonly InputSlot<SharpDX.Int3> Dispatch = new InputSlot<SharpDX.Int3>();
+
+        [Input(Guid = "34cf06fe-8f63-4f14-9c59-35a2c021b817")]
+        public readonly MultiInputSlot<SharpDX.Direct3D11.Buffer> ConstantBuffers = new MultiInputSlot<SharpDX.Direct3D11.Buffer>();
+
+        [Input(Guid = "88938b09-d5a7-437c-b6e1-48a5b375d756")]
+        public readonly MultiInputSlot<SharpDX.Direct3D11.ShaderResourceView> ShaderResources = new MultiInputSlot<SharpDX.Direct3D11.ShaderResourceView>();
+
+        [Input(Guid = "4047c9e7-1edb-4c71-b85c-c1b87058c81c")]
+        public readonly MultiInputSlot<SharpDX.Direct3D11.SamplerState> SamplerStates = new MultiInputSlot<SharpDX.Direct3D11.SamplerState>();
+
+        [Input(Guid = "599384c2-bf6c-4953-be74-d363292ab1c7")]
+        public readonly MultiInputSlot<SharpDX.Direct3D11.UnorderedAccessView> Uavs = new MultiInputSlot<SharpDX.Direct3D11.UnorderedAccessView>();
+
+        [Input(Guid = "0105aca4-5fd5-40c8-82a5-e919bb7dd507")]
         public readonly InputSlot<int> UavBufferCount = new InputSlot<int>();
     }
 }
