@@ -1,12 +1,7 @@
 using System;
-using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using SharpDX;
 using T3.Core;
-using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -22,11 +17,9 @@ namespace T3.Operators.Types.Id_491d5fc3_75f4_4ddd_854b_cd1769166fa6
         [Output(Guid = "8c6b023f-6e09-48ae-b6b9-7e04b5032be3")]
         public readonly Slot<int> EmitterId = new Slot<int>();
 
-        private static int IdCount = 0;
-        
         public SpherePointCloud()
         {
-            _id = ++IdCount;
+            _id = EmitterCounter.GetId();
             EmitterId.Value = _id;
             PointCloudSrv.UpdateAction = Update;
         }
@@ -58,6 +51,8 @@ namespace T3.Operators.Types.Id_491d5fc3_75f4_4ddd_854b_cd1769166fa6
             var color = Color.GetValue(context);
             var random = new Random(Seed.GetValue(context));
             var radius = Radius.GetValue(context);
+            var world_T_object = context.WorldTobject;
+            world_T_object.Transpose();
             for (int index = 0; index < numEntries; index++)
             {
                 float u = random.NextFloat(0, 1);
@@ -70,10 +65,13 @@ namespace T3.Operators.Types.Id_491d5fc3_75f4_4ddd_854b_cd1769166fa6
                 float x = sinPhi * (float)Math.Cos(theta);
                 float y = sinPhi * (float)Math.Sin(theta);
                 
-                var dir = new Vector3(x, y, z);
+                var pos = new Vector3(x, y, z);
                 // dir *= radius;
-                dir *= random.NextFloat(0.0f, radius);
-                bufferData[index].Pos = dir;
+                pos *= random.NextFloat(0.0f, radius);
+
+                var world_P = Vector3.Transform(pos, world_T_object); 
+
+                bufferData[index].Pos = new Vector3(world_P.X, world_P.Y, world_P.Z);
                 bufferData[index].Id = _id;
                 bufferData[index].Color = new Vector4(color.X, color.Y, color.Z, color.W);
             }
