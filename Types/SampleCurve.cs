@@ -16,7 +16,7 @@ namespace T3.Operators.Types.Id_b724ea74_d5d7_4928_9cd1_7a7850e4e179
         public SampleCurve()
         {
             Result.UpdateAction = Update;
-            Curve.UpdateAction = Update;
+            CurveOutput.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)
