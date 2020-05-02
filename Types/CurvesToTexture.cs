@@ -1,8 +1,10 @@
+using System.Diagnostics;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using T3.Core.Animation;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -21,23 +23,45 @@ namespace T3.Operators.Types.Id_ab511978_bad5_4b69_90b2_c028447fe9f7
             CurveTexture.UpdateAction = Update;
         }
 
+        private float[] _floatBuffer = new float[0];
+        
         private void Update(EvaluationContext context)
         {
-            if (Curve == null)
-                return;
-
-            var u = U.GetValue(context);
-            var c = Curve.GetValue(context);
-            if (c == null)
+            
+            if (!Curves.IsConnected)
                 return;
             
+            var curveCount = Curves.CollectedInputs.Count;
+            if (curveCount == 0)
+                return;
+            
+            
+            // var c = Curves.GetValue(context);
+            // if (c == null)
+            //     return;
+            
             const int sampleCount = 256;
-            var bufferData = new float[sampleCount];
-            for (var index = 0; index < sampleCount; index++)
+            var bufferLength = curveCount * sampleCount;
+            if (_floatBuffer.Length != bufferLength)
             {
-                bufferData[index] = (float)c.GetSampledValue((float)index/sampleCount);
+                _floatBuffer = new float[bufferLength];
             }
 
+            var bufferIndex = 0;
+            foreach (var curveInput in Curves.CollectedInputs)
+            {
+                var curve = curveInput.GetValue(context);
+                if (curve == null)
+                    continue;
+                
+                for (var sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++)
+                {
+                    _floatBuffer[bufferIndex] = (float)curve.GetSampledValue((float)sampleIndex/sampleCount);
+                    bufferIndex++;
+                }
+            }
+            
+            
             const int stride = 4;
             
             using (var buffer = new DataStream(sampleCount * stride, true, true))
@@ -45,7 +69,7 @@ namespace T3.Operators.Types.Id_ab511978_bad5_4b69_90b2_c028447fe9f7
                 var texDesc = new Texture2DDescription()
                                   {
                                       Width = sampleCount,
-                                      Height = 1,
+                                      Height = curveCount,
                                       ArraySize = 1,
                                       BindFlags = BindFlags.ShaderResource,
                                       Usage = ResourceUsage.Default,
@@ -54,8 +78,13 @@ namespace T3.Operators.Types.Id_ab511978_bad5_4b69_90b2_c028447fe9f7
                                       Format = Format.R32_Float,
                                       SampleDescription = new SharpDX.DXGI.SampleDescription(1, 0),
                                   };
+                
+                
                 var dataBoxArray = new DataBox[1] { new DataBox(buffer.DataPointer, sampleCount * stride, 0)};
-                buffer.WriteRange(bufferData);
+                return;
+                
+                // FIXME: this will crash...
+                buffer.WriteRange(_floatBuffer);
                 buffer.Position = 0;
                 var texture = new Texture2D(ResourceManager.Instance().Device, texDesc, dataBoxArray);
                 CurveTexture.Value = texture;
@@ -64,12 +93,6 @@ namespace T3.Operators.Types.Id_ab511978_bad5_4b69_90b2_c028447fe9f7
 
 
         [Input(Guid = "83c5a68a-2685-4506-8d79-d0db7d739102")]
-        public readonly InputSlot<Curve> Curve = new InputSlot<T3.Core.Animation.Curve>();
-
-        [Input(Guid = "fcf47c84-f386-4099-a5ea-ffc32b476a44")]
-        public readonly InputSlot<float> U = new InputSlot<float>();
-
-        [Input(Guid = "4453e970-c803-44cc-b910-0c09bdf7aa85")]
-        public readonly InputSlot<float> Input2 = new InputSlot<float>();
+        public readonly MultiInputSlot<Curve> Curves = new MultiInputSlot<T3.Core.Animation.Curve>();
     }
 }
