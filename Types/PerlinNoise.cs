@@ -26,6 +26,13 @@ namespace T3.Operators.Types.Id_436e93a8_03c0_4366_8d9a_2245e5bcaa6c
             var rangeMin = RangeMin.GetValue(context);
             var rangeMax = RangeMax.GetValue(context);
 
+            var noiseSum = ComputePerlinNoise(value, period, octaves, seed);
+
+            Result.Value = (noiseSum + 1f) * 0.5f * (rangeMax - rangeMin) + rangeMin;
+        }
+
+        private static float ComputePerlinNoise(float value, float period, int octaves, int seed)
+        {
             var noiseSum = 0.0f;
 
             var frequency = period;
@@ -43,7 +50,7 @@ namespace T3.Operators.Types.Id_436e93a8_03c0_4366_8d9a_2245e5bcaa6c
                 amplitude *= 0.5f;
             }
 
-            Result.Value = (noiseSum + 1f) * 0.5f * (rangeMax - rangeMin) + rangeMin;
+            return noiseSum;
         }
 
         private static float Noise(int x, int seed)
