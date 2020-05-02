@@ -48,6 +48,9 @@ namespace T3.Operators.Types.Id_ee398291_674c_409b_aab8_9ca843ce6cef
 
         [Input(Guid = "f238894d-4b34-47fe-9fe4-e28b630b5e99")]
         public readonly InputSlot<System.Numerics.Vector4> LineColor = new InputSlot<System.Numerics.Vector4>();
+
+        [Input(Guid = "a519e9b5-2ab3-4a5b-ab01-25109761d0a3")]
+        public readonly InputSlot<T3.Core.Animation.Curve> Progression = new InputSlot<T3.Core.Animation.Curve>();
     }
 }
 

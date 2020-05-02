@@ -27,7 +27,7 @@ namespace T3.Operators.Types.Id_f7c625da_fede_4993_976c_e259e0ee4985
                 string sourcePath = Source.GetValue(context);
                 string entryPoint = EntryPoint.GetValue(context);
                 string debugName = DebugName.GetValue(context);
-                if (string.IsNullOrEmpty(debugName))
+                if (string.IsNullOrEmpty(debugName) && !string.IsNullOrEmpty(sourcePath))
                 {
                     debugName = new FileInfo(sourcePath).Name;
                 }
