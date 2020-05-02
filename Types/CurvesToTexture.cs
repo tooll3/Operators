@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.IO;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
@@ -8,6 +9,7 @@ using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
+using Utilities = T3.Core.Utilities;
 
 namespace T3.Operators.Types.Id_ab511978_bad5_4b69_90b2_c028447fe9f7
 {
@@ -35,36 +37,12 @@ namespace T3.Operators.Types.Id_ab511978_bad5_4b69_90b2_c028447fe9f7
             if (curveCount == 0)
                 return;
             
-            
-            // var c = Curves.GetValue(context);
-            // if (c == null)
-            //     return;
-            
             const int sampleCount = 256;
-            var bufferLength = curveCount * sampleCount;
-            if (_floatBuffer.Length != bufferLength)
-            {
-                _floatBuffer = new float[bufferLength];
-            }
+            const int entrySizeInBytes = sizeof(float);
+            const int curveSizeInBytes = sampleCount * entrySizeInBytes;
+            int bufferSizeInBytes = curveCount * curveSizeInBytes;
 
-            var bufferIndex = 0;
-            foreach (var curveInput in Curves.CollectedInputs)
-            {
-                var curve = curveInput.GetValue(context);
-                if (curve == null)
-                    continue;
-                
-                for (var sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++)
-                {
-                    _floatBuffer[bufferIndex] = (float)curve.GetSampledValue((float)sampleIndex/sampleCount);
-                    bufferIndex++;
-                }
-            }
-            
-            
-            const int stride = 4;
-            
-            using (var buffer = new DataStream(sampleCount * stride, true, true))
+            using (var dataStream = new DataStream(bufferSizeInBytes, true, true))
             {
                 var texDesc = new Texture2DDescription()
                                   {
@@ -78,16 +56,27 @@ namespace T3.Operators.Types.Id_ab511978_bad5_4b69_90b2_c028447fe9f7
                                       Format = Format.R32_Float,
                                       SampleDescription = new SharpDX.DXGI.SampleDescription(1, 0),
                                   };
-                
-                
-                var dataBoxArray = new DataBox[1] { new DataBox(buffer.DataPointer, sampleCount * stride, 0)};
-                return;
-                
-                // FIXME: this will crash...
-                buffer.WriteRange(_floatBuffer);
-                buffer.Position = 0;
-                var texture = new Texture2D(ResourceManager.Instance().Device, texDesc, dataBoxArray);
-                CurveTexture.Value = texture;
+
+                foreach (var curveInput in Curves.CollectedInputs)
+                {
+                    var curve = curveInput.GetValue(context);
+                    if (curve == null)
+                    {
+                        dataStream.Seek(curveSizeInBytes, SeekOrigin.Current);
+                        continue;
+                    }
+
+                    for (var sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++)
+                    {
+                        dataStream.Write((float)curve.GetSampledValue((float)sampleIndex / sampleCount));
+                    }
+                }
+                Curves.DirtyFlag.Clear();
+
+                dataStream.Position = 0;
+                var dataRectangles = new DataRectangle[] { new DataRectangle(dataStream.DataPointer, curveSizeInBytes) };
+                Utilities.Dispose(ref CurveTexture.Value);
+                CurveTexture.Value = new Texture2D(ResourceManager.Instance().Device, texDesc, dataRectangles);
             }
         }
 
