@@ -21,7 +21,143 @@
       "SymbolId": "a9080ad4-6cb2-4d5b-ad07-1cce239ee787",
       "InputValues": [],
       "Outputs": []
+    },
+    {
+      "Id": "c1708ef8-4207-45f3-9c6f-f369026ab71c"/*CurvesToTexture*/,
+      "SymbolId": "ab511978-bad5-4b69-90b2-c028447fe9f7",
+      "InputValues": [
+        {
+          "Id": "83c5a68a-2685-4506-8d79-d0db7d739102"/*Curves*/,
+          "Type": "T3.Core.Animation.Curve",
+          "Value": {
+            "Curve": {
+              "PreCurve": "Constant",
+              "PostCurve": "Constant",
+              "Keys": [
+                {
+                  "Time": 0.0,
+                  "Value": 0.0,
+                  "InType": "Spline",
+                  "OutType": "Spline",
+                  "InEditMode": "Smooth",
+                  "OutEditMode": "Smooth",
+                  "InTangentAngle": 0.0,
+                  "OutTangentAngle": 3.1415926535897931
+                },
+                {
+                  "Time": 1.0,
+                  "Value": 1.0,
+                  "InType": "Spline",
+                  "OutType": "Spline",
+                  "InEditMode": "Smooth",
+                  "OutEditMode": "Smooth",
+                  "InTangentAngle": 0.0,
+                  "OutTangentAngle": -3.1415926535897931
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "db6692a0-1d3d-487b-8d05-549947360975"/*SampleCurve*/,
+      "SymbolId": "b724ea74-d5d7-4928-9cd1-7a7850e4e179",
+      "InputValues": [
+        {
+          "Id": "108cb829-5f9e-4a45-bc6b-7cf40a0a0f89"/*Curve*/,
+          "Type": "T3.Core.Animation.Curve",
+          "Value": {
+            "Curve": {
+              "PreCurve": "Constant",
+              "PostCurve": "Constant",
+              "Keys": [
+                {
+                  "Time": 0.0,
+                  "Value": 0.0,
+                  "InType": "Linear",
+                  "OutType": "Linear",
+                  "InEditMode": "Linear",
+                  "OutEditMode": "Linear",
+                  "InTangentAngle": 0.78539817084802888,
+                  "OutTangentAngle": 3.926990824437822
+                },
+                {
+                  "Time": 1.0,
+                  "Value": 1.0000000149011612,
+                  "InType": "Linear",
+                  "OutType": "Linear",
+                  "InEditMode": "Linear",
+                  "OutEditMode": "Linear",
+                  "InTangentAngle": 0.78539817084802876,
+                  "OutTangentAngle": -2.3561944827417642
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "82dde766-aaa3-4d4d-afff-19ae122e1265"/*SampleCurve*/,
+      "SymbolId": "b724ea74-d5d7-4928-9cd1-7a7850e4e179",
+      "InputValues": [
+        {
+          "Id": "108cb829-5f9e-4a45-bc6b-7cf40a0a0f89"/*Curve*/,
+          "Type": "T3.Core.Animation.Curve",
+          "Value": {
+            "Curve": {
+              "PreCurve": "Constant",
+              "PostCurve": "Constant",
+              "Keys": [
+                {
+                  "Time": 0.0354,
+                  "Value": 0.81999999284744263,
+                  "InType": "Linear",
+                  "OutType": "Constant",
+                  "InEditMode": "Linear",
+                  "OutEditMode": "Constant",
+                  "InTangentAngle": 0.0,
+                  "OutTangentAngle": 3.1415926535897931
+                },
+                {
+                  "Time": 0.5,
+                  "Value": -0.2199999988079071,
+                  "InType": "Spline",
+                  "OutType": "Spline",
+                  "InEditMode": "Tangent",
+                  "OutEditMode": "Tangent",
+                  "InTangentAngle": -1.4347077608108521,
+                  "OutTangentAngle": -4.5763004144006452
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "Outputs": []
     }
   ],
-  "Connections": []
+  "Connections": [
+    {
+      "SourceParentOrChildId": "db6692a0-1d3d-487b-8d05-549947360975",
+      "SourceSlotId": "1a20c791-a1fe-4a14-a9cf-615691948f2d",
+      "TargetParentOrChildId": "c1708ef8-4207-45f3-9c6f-f369026ab71c",
+      "TargetSlotId": "83c5a68a-2685-4506-8d79-d0db7d739102"
+    },
+    {
+      "SourceParentOrChildId": "82dde766-aaa3-4d4d-afff-19ae122e1265",
+      "SourceSlotId": "1a20c791-a1fe-4a14-a9cf-615691948f2d",
+      "TargetParentOrChildId": "c1708ef8-4207-45f3-9c6f-f369026ab71c",
+      "TargetSlotId": "83c5a68a-2685-4506-8d79-d0db7d739102"
+    },
+    {
+      "SourceParentOrChildId": "db6692a0-1d3d-487b-8d05-549947360975",
+      "SourceSlotId": "1a20c791-a1fe-4a14-a9cf-615691948f2d",
+      "TargetParentOrChildId": "c1708ef8-4207-45f3-9c6f-f369026ab71c",
+      "TargetSlotId": "83c5a68a-2685-4506-8d79-d0db7d739102"
+    }
+  ]
 }
