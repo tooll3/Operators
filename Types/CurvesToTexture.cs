@@ -71,7 +71,7 @@ namespace T3.Operators.Types.Id_ab511978_bad5_4b69_90b2_c028447fe9f7
                         dataStream.Write((float)curve.GetSampledValue((float)sampleIndex / sampleCount));
                     }
                 }
-                Curves.DirtyFlag.Clear();
+                //Curves.DirtyFlag.Clear();
 
                 dataStream.Position = 0;
                 var dataRectangles = new DataRectangle[] { new DataRectangle(dataStream.DataPointer, curveSizeInBytes) };

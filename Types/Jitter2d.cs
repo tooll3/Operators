@@ -73,9 +73,10 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
                 var useFrequencyRelevantTiming = frequency > 0.001f;
 
                 var t = useFrequencyRelevantTiming
-                            ? (float)((time - _lastJumpTime) * frequency / smoothing)
+                            ? (float)((time - _lastJumpTime) * frequency * smoothing)
                             : (float)((time - _lastJumpTime) / smoothing);
 
+                //Log.Debug(" " + t);
                 var tt = MathUtils.SmootherStep(0, 1, t);
                 _offset = Lerp(_jumpStartOffset, _jumpTargetOffset, tt);
             }

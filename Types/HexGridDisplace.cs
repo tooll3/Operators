@@ -28,29 +28,14 @@ namespace T3.Operators.Types.Id_ee398291_674c_409b_aab8_9ca843ce6cef
         [Input(Guid = "e635d5cd-8250-4722-a11a-ffe27a922f3e")]
         public readonly InputSlot<float> LineThickness = new InputSlot<float>();
 
-        [Input(Guid = "dfdeeb3d-ce18-48a6-9f18-a0aea28b2fff")]
-        public readonly InputSlot<float> Width = new InputSlot<float>();
+        [Input(Guid = "228b8705-92c7-467b-ab0f-eee60a618c72")]
+        public readonly InputSlot<float> MixOriginal = new InputSlot<float>();
 
         [Input(Guid = "0c227ab3-3394-40fb-9274-d857a2293d35")]
         public readonly InputSlot<float> Rotation = new InputSlot<float>();
 
-        [Input(Guid = "553b006b-6cab-4a40-915e-dc5038ff5032")]
-        public readonly InputSlot<float> PingPong = new InputSlot<float>();
-
-        [Input(Guid = "995307c3-f7c7-41c5-a1a8-49fe32a54716")]
-        public readonly InputSlot<float> SmoothGradient = new InputSlot<float>();
-
         [Input(Guid = "03afbb91-a64f-48bc-a306-b378a068aca8")]
         public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
-
-        [Input(Guid = "4ed054c5-2a48-4717-9984-a191c26db163")]
-        public readonly InputSlot<float> Bias = new InputSlot<float>();
-
-        [Input(Guid = "f238894d-4b34-47fe-9fe4-e28b630b5e99")]
-        public readonly InputSlot<System.Numerics.Vector4> LineColor = new InputSlot<System.Numerics.Vector4>();
-
-        [Input(Guid = "a519e9b5-2ab3-4a5b-ab01-25109761d0a3")]
-        public readonly InputSlot<T3.Core.Animation.Curve> Progression = new InputSlot<T3.Core.Animation.Curve>();
     }
 }
 
