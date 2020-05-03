@@ -17,7 +17,7 @@ namespace T3.Operators.Types.Id_936e4324_bea2_463a_b196_6064a2d8a6b2
 
         private void Update(EvaluationContext context)
         {
-            var commands = Command.GetCollectedTypedInputs();
+            var commands = Command.CollectedInputs;
 
             // do preparation if needed
             for (int i = 0; i < commands.Count; i++)
@@ -36,6 +36,8 @@ namespace T3.Operators.Types.Id_936e4324_bea2_463a_b196_6064a2d8a6b2
             {
                 commands[i].Value?.RestoreAction?.Invoke(context);
             }
+            
+            Command.DirtyFlag.Clear();
         }
 
         [Input(Guid = "5D73EBE6-9AA0-471A-AE6B-3F5BFD5A0F9C")]
