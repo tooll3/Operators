@@ -5,7 +5,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_64d103ab_773e_456e_8d5a_9e5915b95dcd
 {
-    public class RandomTestBlock : Instance<RandomTestBlock>
+    public class RandomTextBlock : Instance<RandomTextBlock>
     {
         [Output(Guid = "9bd7ec93-fa42-4b62-9bcc-975df32354ad")]
         public readonly Slot<Command> Output = new Slot<Command>();
