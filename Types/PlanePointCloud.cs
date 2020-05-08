@@ -29,8 +29,10 @@ namespace T3.Operators.Types.Id_bd175754_d3fd_4c75_9d40_5023eb1d8db6
         {
             [FieldOffset(0)]
             public SharpDX.Vector3 Pos;
+
             [FieldOffset(12)]
             public int Id;
+
             [FieldOffset(16)]
             public SharpDX.Vector4 Color;
         }
@@ -53,35 +55,34 @@ namespace T3.Operators.Types.Id_bd175754_d3fd_4c75_9d40_5023eb1d8db6
             var size = Size.GetValue(context);
             var end = size * 0.5f;
             var start = -end;
-            var world_T_object = context.WorldTobject;
-            world_T_object.Transpose();
+            var objectToWorld = context.ObjectToWorld;
 
             for (int index = 0; index < numEntries; index++)
             {
                 float x = random.NextFloat(start.X, end.X);
                 float y = random.NextFloat(start.Y, end.Y);
-                var pos = new Vector3(x, y, 0.0f);
-                var world_P = Vector3.Transform(pos, world_T_object); 
+                var posInObject = new Vector3(x, y, 0.0f);
+                var posInWorld = Vector3.Transform(posInObject, objectToWorld);
 
-                bufferData[index].Pos = new Vector3(world_P.X, world_P.Y, world_P.Z);
+                bufferData[index].Pos = new Vector3(posInWorld.X, posInWorld.Y, posInWorld.Z);
                 bufferData[index].Id = _id;
                 bufferData[index].Color = new Vector4(color.X, color.Y, color.Z, color.W);
             }
-            
+
             var stride = 32;
             resourceManager.SetupStructuredBuffer(bufferData, stride * numEntries, stride, ref _buffer);
             resourceManager.CreateStructuredBufferSrv(_buffer, ref PointCloudSrv.Value);
         }
-        
+
         [Input(Guid = "2de69331-00ed-4612-b6c1-f2131390c735")]
         public readonly InputSlot<int> Count = new InputSlot<int>();
 
         [Input(Guid = "4cdbd9dc-7e8a-4c27-b56f-b87a02dbb43c")]
         public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();
-        
+
         [Input(Guid = "74e67e10-02a3-49e7-9c62-6e2063d8a507")]
         public readonly InputSlot<System.Numerics.Vector2> Size = new InputSlot<System.Numerics.Vector2>();
-        
+
         [Input(Guid = "e22efe7b-88e6-4e35-a3eb-7fd80dc2478c")]
         public readonly InputSlot<int> Seed = new InputSlot<int>();
     }

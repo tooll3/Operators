@@ -21,7 +21,7 @@ namespace T3.Operators.Types.Id_a60adc26_d7c6_4615_af78_8d2d6da46b79
 
         private void Update(EvaluationContext context)
         {
-            var bufferContent = new BufferLayout(context.ClipSpaceTcamera, context.CameraTworld, context.WorldTobject);
+            var bufferContent = new BufferLayout(context.CameraToClipSpace, context.WorldToCamera, context.ObjectToWorld);
             ResourceManager.Instance().SetupConstBuffer(bufferContent, ref Buffer.Value);
             Buffer.Value.DebugName = nameof(TransformsConstBuffer);
         }
@@ -29,59 +29,59 @@ namespace T3.Operators.Types.Id_a60adc26_d7c6_4615_af78_8d2d6da46b79
         [StructLayout(LayoutKind.Explicit, Size = 4*4*4*10)]
         public struct BufferLayout
         {
-            public BufferLayout(Matrix clipSpaceTcamera, Matrix cameraTworld, Matrix worldTobject) 
+            public BufferLayout(Matrix cameraToClipSpace, Matrix worldToCamera, Matrix objectToWorld)
             {
-                Matrix cameraTclipSpace = clipSpaceTcamera;
-                cameraTclipSpace.Invert();
-                Matrix worldTcamera = cameraTworld;
-                worldTcamera.Invert();
-                Matrix objectTworld = worldTobject;
-                objectTworld.Invert();
+                Matrix clipSpaceToCamera = cameraToClipSpace;
+                clipSpaceToCamera.Invert();
+                Matrix cameraToWorld = worldToCamera;
+                cameraToWorld.Invert();
+                Matrix worldToObject = objectToWorld;
+                worldToObject.Invert();
                 
-                ClipSpaceTcamera = clipSpaceTcamera;
-                CameraTclipSpace = cameraTclipSpace;
-                CameraTworld = cameraTworld;
-                WorldTcamera = worldTcamera;
-                ClipSpaceTworld = Matrix.Multiply(clipSpaceTcamera, cameraTworld);
-                WorldTclipSpace = Matrix.Multiply(worldTcamera, cameraTclipSpace);
-                WorldTobject = worldTobject;
-                ObjectTworld = objectTworld;
-                CameraTobject = Matrix.Multiply(cameraTworld, worldTobject);
-                ClipSpaceTobject = Matrix.Multiply(clipSpaceTcamera, CameraTobject);
+                CameraToClipSpace = cameraToClipSpace;
+                ClipSpaceToCamera = clipSpaceToCamera;
+                WorldToCamera = worldToCamera;
+                CameraToWorld = cameraToWorld;
+                WorldToClipSpace = Matrix.Multiply(worldToCamera, cameraToClipSpace);
+                ClipSpaceToWorld = Matrix.Multiply(clipSpaceToCamera, cameraToWorld);
+                ObjectToWorld = objectToWorld;
+                WorldToObject = worldToObject;
+                ObjectToCamera = Matrix.Multiply(objectToWorld, worldToCamera);
+                ObjectToClipSpace = Matrix.Multiply(ObjectToCamera, cameraToClipSpace);
 
                 // transpose all as mem layout in hlsl constant buffer is row based
-                ClipSpaceTcamera.Transpose();
-                CameraTclipSpace.Transpose();
-                CameraTworld.Transpose();
-                WorldTcamera.Transpose();
-                ClipSpaceTworld.Transpose();
-                WorldTclipSpace.Transpose();
-                WorldTobject.Transpose();
-                ObjectTworld.Transpose();
-                CameraTobject.Transpose();
-                ClipSpaceTobject.Transpose();
+                CameraToClipSpace.Transpose();
+                ClipSpaceToCamera.Transpose();
+                WorldToCamera.Transpose();
+                CameraToWorld.Transpose();
+                WorldToClipSpace.Transpose();
+                ClipSpaceToWorld.Transpose();
+                ObjectToWorld.Transpose();
+                WorldToObject.Transpose();
+                ObjectToCamera.Transpose();
+                ObjectToClipSpace.Transpose();
             }
 
             [FieldOffset(0)]
-            public Matrix ClipSpaceTcamera;
+            public Matrix CameraToClipSpace;
             [FieldOffset(64)]
-            public Matrix CameraTclipSpace;
+            public Matrix ClipSpaceToCamera;
             [FieldOffset(128)]
-            public Matrix CameraTworld;
+            public Matrix WorldToCamera;
             [FieldOffset(192)]
-            public Matrix WorldTcamera;
+            public Matrix CameraToWorld;
             [FieldOffset(256)]
-            public Matrix ClipSpaceTworld;
+            public Matrix WorldToClipSpace;
             [FieldOffset(320)]
-            public Matrix WorldTclipSpace;
+            public Matrix ClipSpaceToWorld;
             [FieldOffset(384)]
-            public Matrix WorldTobject;
+            public Matrix ObjectToWorld;
             [FieldOffset(448)]
-            public Matrix ObjectTworld;
+            public Matrix WorldToObject;
             [FieldOffset(512)]
-            public Matrix CameraTobject;
+            public Matrix ObjectToCamera;
             [FieldOffset(576)]
-            public Matrix ClipSpaceTobject;
+            public Matrix ObjectToClipSpace;
         }
     }
 }

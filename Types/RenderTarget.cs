@@ -71,10 +71,10 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                 }
             }
 
-            var prevWorldTobject = context.WorldTobject;
-            context.WorldTobject = Matrix.Identity;
+            var prevObjectToWorld = context.ObjectToWorld;
+            context.ObjectToWorld = Matrix.Identity;
             Command.GetValue(context);
-            context.WorldTobject = prevWorldTobject;
+            context.ObjectToWorld = prevObjectToWorld;
 
             deviceContext.Rasterizer.SetViewports(prevViewports);
             deviceContext.OutputMerger.SetTargets(prevDepthStencilView, prevTargets);

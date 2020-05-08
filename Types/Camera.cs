@@ -23,26 +23,25 @@ namespace T3.Operators.Types.Id_746d886c_5ab6_44b1_bb15_f3ce2fadf7e6
             float fov = MathUtil.DegreesToRadians(Fov.GetValue(context));
             float aspectRatio = AspectRatio.GetValue(context);
             System.Numerics.Vector2 clip = NearFarClip.GetValue(context);
-            Matrix clipSpaceTcamera = Matrix.PerspectiveFovRH(fov, aspectRatio, clip.X, clip.Y);
-            clipSpaceTcamera.Transpose();
+            Matrix cameraToClipSpace = Matrix.PerspectiveFovRH(fov, aspectRatio, clip.X, clip.Y);
+
             var pos = Position.GetValue(context);
             Vector3 eye = new Vector3(pos.X, pos.Y, pos.Z);
             var t = Target.GetValue(context);
             Vector3 target = new Vector3(t.X, t.Y, t.Z);
             var u = Up.GetValue(context);
             Vector3 up = new Vector3(u.X, u.Y, u.Z);
-            Matrix cameraTworld = Matrix.LookAtRH(eye, target, up);
-            cameraTworld.Transpose();
+            Matrix worldToCamera = Matrix.LookAtRH(eye, target, up);
 
-            var prevClipSpace = context.ClipSpaceTcamera; 
-            context.ClipSpaceTcamera = clipSpaceTcamera;
+            var prevCameraToClipSpace = context.CameraToClipSpace;
+            context.CameraToClipSpace = cameraToClipSpace;
 
-            var prevCamToWorld = context.CameraTworld;
-            context.CameraTworld = cameraTworld;
+            var prevWorldToCamera = context.WorldToCamera;
+            context.WorldToCamera = worldToCamera;
             Command.GetValue(context);
             
-            context.ClipSpaceTcamera = prevClipSpace;
-            context.CameraTworld = prevCamToWorld;
+            context.CameraToClipSpace = prevCameraToClipSpace;
+            context.WorldToCamera = prevWorldToCamera;
         }
 
         [Input(Guid = "047B8FAE-468C-48A7-8F3A-5FAC8DD5B3C6")]

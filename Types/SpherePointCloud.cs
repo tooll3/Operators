@@ -29,8 +29,10 @@ namespace T3.Operators.Types.Id_491d5fc3_75f4_4ddd_854b_cd1769166fa6
         {
             [FieldOffset(0)]
             public SharpDX.Vector3 Pos;
+
             [FieldOffset(12)]
             public int Id;
+
             [FieldOffset(16)]
             public SharpDX.Vector4 Color;
         }
@@ -51,8 +53,8 @@ namespace T3.Operators.Types.Id_491d5fc3_75f4_4ddd_854b_cd1769166fa6
             var color = Color.GetValue(context);
             var random = new Random(Seed.GetValue(context));
             var radius = Radius.GetValue(context);
-            var world_T_object = context.WorldTobject;
-            world_T_object.Transpose();
+            var objectToWorld = context.ObjectToWorld;
+
             for (int index = 0; index < numEntries; index++)
             {
                 float u = random.NextFloat(0, 1);
@@ -64,32 +66,32 @@ namespace T3.Operators.Types.Id_491d5fc3_75f4_4ddd_854b_cd1769166fa6
                 float sinPhi = (float)Math.Sin(phi);
                 float x = sinPhi * (float)Math.Cos(theta);
                 float y = sinPhi * (float)Math.Sin(theta);
-                
-                var pos = new Vector3(x, y, z);
+
+                var posInObject = new Vector3(x, y, z);
                 // dir *= radius;
-                pos *= random.NextFloat(0.0f, radius);
+                posInObject *= random.NextFloat(0.0f, radius);
 
-                var world_P = Vector3.Transform(pos, world_T_object); 
+                var posInWorld = Vector3.Transform(posInObject, objectToWorld);
 
-                bufferData[index].Pos = new Vector3(world_P.X, world_P.Y, world_P.Z);
+                bufferData[index].Pos = new Vector3(posInWorld.X, posInWorld.Y, posInWorld.Z);
                 bufferData[index].Id = _id;
                 bufferData[index].Color = new Vector4(color.X, color.Y, color.Z, color.W);
             }
-            
+
             var stride = 32;
             resourceManager.SetupStructuredBuffer(bufferData, stride * numEntries, stride, ref _buffer);
             resourceManager.CreateStructuredBufferSrv(_buffer, ref PointCloudSrv.Value);
         }
-        
+
         [Input(Guid = "AD7F8575-A978-4A09-89F8-CF6F6EE8808C")]
         public readonly InputSlot<int> Count = new InputSlot<int>();
 
         [Input(Guid = "57543B8C-4AD6-4B0F-B270-7A81AD8908D9")]
         public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();
-        
+
         [Input(Guid = "E5F8D8C8-4E22-4489-859D-7DED280ECE9F")]
         public readonly InputSlot<float> Radius = new InputSlot<float>();
-        
+
         [Input(Guid = "99924178-BC02-470B-9750-2E0AC9B702B5")]
         public readonly InputSlot<int> Seed = new InputSlot<int>();
     }

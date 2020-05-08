@@ -36,8 +36,7 @@ namespace T3.Operators.Types.Id_e6f2a00d_854e_412e_94a1_a21df91fc988
         {
             System.Numerics.Vector2 size = Size.GetValue(context);
             System.Numerics.Vector2 clip = NearFarClip.GetValue(context);
-            Matrix clipSpaceTcamera = Matrix.OrthoRH(size.X, size.Y, clip.X, clip.Y);
-            clipSpaceTcamera.Transpose();
+            Matrix cameraToClipSpace = Matrix.OrthoRH(size.X, size.Y, clip.X, clip.Y);
             
             var pos = Position.GetValue(context);
             Vector3 eye = new Vector3(pos.X, pos.Y, pos.Z);
@@ -47,10 +46,9 @@ namespace T3.Operators.Types.Id_e6f2a00d_854e_412e_94a1_a21df91fc988
             viewDir.Normalize();
             Vector3 upRef = (Math.Abs(Vector3.Dot(viewDir, Vector3.Up)) > 0.9) ? Vector3.Left : Vector3.Up;
             Vector3 up = Vector3.Cross(upRef, target - eye);
-            Matrix cameraTworld = Matrix.LookAtRH(eye, target, up);
-            cameraTworld.Transpose();
+            Matrix worldToCamera = Matrix.LookAtRH(eye, target, up);
 
-            var bufferContent = new BufferLayout(clipSpaceTcamera, cameraTworld, context.WorldTobject);
+            var bufferContent = new BufferLayout(cameraToClipSpace, worldToCamera, context.ObjectToWorld);
             ResourceManager.Instance().SetupConstBuffer(bufferContent, ref Buffer.Value);
             Buffer.Value.DebugName = nameof(ShadowMapTransformsConstBuffer);
         }
@@ -58,59 +56,59 @@ namespace T3.Operators.Types.Id_e6f2a00d_854e_412e_94a1_a21df91fc988
         [StructLayout(LayoutKind.Explicit, Size = 4*4*4*10)]
         public struct BufferLayout
         {
-            public BufferLayout(Matrix clipSpaceTcamera, Matrix cameraTworld, Matrix worldTobject) 
+            public BufferLayout(Matrix cameraToClipSpace, Matrix worldToCamera, Matrix objectToWorld)
             {
-                Matrix cameraTclipSpace = clipSpaceTcamera;
-                cameraTclipSpace.Invert();
-                Matrix worldTcamera = cameraTworld;
-                worldTcamera.Invert();
-                Matrix objectTworld = worldTobject;
-                objectTworld.Invert();
+                Matrix clipSpaceToCamera = cameraToClipSpace;
+                clipSpaceToCamera.Invert();
+                Matrix cameraToWorld = worldToCamera;
+                cameraToWorld.Invert();
+                Matrix worldToObject = objectToWorld;
+                worldToObject.Invert();
                 
-                ClipSpaceTcamera = clipSpaceTcamera;
-                CameraTclipSpace = cameraTclipSpace;
-                CameraTworld = cameraTworld;
-                WorldTcamera = worldTcamera;
-                ClipSpaceTworld = Matrix.Multiply(clipSpaceTcamera, cameraTworld);
-                WorldTclipSpace = Matrix.Multiply(worldTcamera, cameraTclipSpace);
-                WorldTobject = worldTobject;
-                ObjectTworld = objectTworld;
-                CameraTobject = Matrix.Multiply(cameraTworld, worldTobject);
-                ClipSpaceTobject = Matrix.Multiply(clipSpaceTcamera, CameraTobject);
+                CameraToClipSpace = cameraToClipSpace;
+                ClipSpaceToCamera = clipSpaceToCamera;
+                WorldToCamera = worldToCamera;
+                CameraToWorld = cameraToWorld;
+                WorldToClipSpace = Matrix.Multiply(worldToCamera, cameraToClipSpace);
+                ClipSpaceToWorld = Matrix.Multiply(clipSpaceToCamera, cameraToWorld);
+                ObjectToWorld = objectToWorld;
+                WorldToObject = worldToObject;
+                ObjectToCamera = Matrix.Multiply(objectToWorld, worldToCamera);
+                ObjectToClipSpace = Matrix.Multiply(ObjectToCamera, cameraToClipSpace);
 
                 // transpose all as mem layout in hlsl constant buffer is row based
-                ClipSpaceTcamera.Transpose();
-                CameraTclipSpace.Transpose();
-                CameraTworld.Transpose();
-                WorldTcamera.Transpose();
-                ClipSpaceTworld.Transpose();
-                WorldTclipSpace.Transpose();
-                WorldTobject.Transpose();
-                ObjectTworld.Transpose();
-                CameraTobject.Transpose();
-                ClipSpaceTobject.Transpose();
+                CameraToClipSpace.Transpose();
+                ClipSpaceToCamera.Transpose();
+                WorldToCamera.Transpose();
+                CameraToWorld.Transpose();
+                WorldToClipSpace.Transpose();
+                ClipSpaceToWorld.Transpose();
+                ObjectToWorld.Transpose();
+                WorldToObject.Transpose();
+                ObjectToCamera.Transpose();
+                ObjectToClipSpace.Transpose();
             }
 
             [FieldOffset(0)]
-            public Matrix ClipSpaceTcamera;
+            public Matrix CameraToClipSpace;
             [FieldOffset(64)]
-            public Matrix CameraTclipSpace;
+            public Matrix ClipSpaceToCamera;
             [FieldOffset(128)]
-            public Matrix CameraTworld;
+            public Matrix WorldToCamera;
             [FieldOffset(192)]
-            public Matrix WorldTcamera;
+            public Matrix CameraToWorld;
             [FieldOffset(256)]
-            public Matrix ClipSpaceTworld;
+            public Matrix WorldToClipSpace;
             [FieldOffset(320)]
-            public Matrix WorldTclipSpace;
+            public Matrix ClipSpaceToWorld;
             [FieldOffset(384)]
-            public Matrix WorldTobject;
+            public Matrix WorldToObject;
             [FieldOffset(448)]
-            public Matrix ObjectTworld;
+            public Matrix ObjectToWorld;
             [FieldOffset(512)]
-            public Matrix CameraTobject;
+            public Matrix ObjectToCamera;
             [FieldOffset(576)]
-            public Matrix ClipSpaceTobject;
+            public Matrix ObjectToClipSpace;
         }
     }
 }
