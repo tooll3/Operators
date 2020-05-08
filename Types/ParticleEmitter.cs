@@ -15,7 +15,7 @@ namespace T3.Operators.Types.Id_119f710b_e6be_4eef_af63_13cfc6ba86fd
         public readonly InputSlot<string> ShaderFilename = new InputSlot<string>();
 
         [Input(Guid = "7f5e613e-03f0-48a0-9844-54e78868f7e3")]
-        public readonly InputSlot<T3.Core.Operator.Helper.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.Operator.Helper.ParticleSystem>();
+        public readonly InputSlot<T3.Core.DataTypes.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.DataTypes.ParticleSystem>();
 
         [Input(Guid = "88ad8d03-0281-417f-8830-69ccad5345ad")]
         public readonly MultiInputSlot<SharpDX.Direct3D11.ShaderResourceView> ShaderResources = new MultiInputSlot<SharpDX.Direct3D11.ShaderResourceView>();

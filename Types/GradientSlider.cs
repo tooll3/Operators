@@ -31,7 +31,7 @@ namespace T3.Operators.Types.Id_8211249d_7a26_4ad0_8d84_56da72a5c536
             var gradient = Gradient.GetValue(context);
             
             Color.Value = gradient.Sample(input);
-            OutGradient.Value = gradient.Clone();    //FIXME: This might not be efficient or required
+            OutGradient.Value = gradient.TypedClone();    //FIXME: This might not be efficient or required
         }
 
         [Input(Guid = "EFF10FAD-CF95-4133-91DB-EFC41258CD1B")]

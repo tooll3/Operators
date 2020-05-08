@@ -1,9 +1,6 @@
-using System.Numerics;
-using SharpDX.Direct3D11;
 using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
-using T3.Core.Operator.Helper;
 using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_36cec77e_fd3b_4ec7_ac93_74ee67fb97a2
@@ -26,7 +23,7 @@ namespace T3.Operators.Types.Id_36cec77e_fd3b_4ec7_ac93_74ee67fb97a2
         public readonly InputSlot<float> Lifetime = new InputSlot<float>();
 
         [Input(Guid = "60661094-3f20-410a-8387-62e23b98b4be")]
-        public readonly InputSlot<T3.Core.Operator.Helper.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.Operator.Helper.ParticleSystem>();
+        public readonly InputSlot<T3.Core.DataTypes.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.DataTypes.ParticleSystem>();
 
         [Input(Guid = "69566d1b-fb5b-45c8-abe9-f03ed18fa968")]
         public readonly MultiInputSlot<SharpDX.Direct3D11.ShaderResourceView> ShaderResources = new MultiInputSlot<SharpDX.Direct3D11.ShaderResourceView>();

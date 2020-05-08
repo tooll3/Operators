@@ -12,7 +12,7 @@ namespace T3.Operators.Types.Id_bb617a86_d771_480a_be94_c9cc460252a5
 
 
         [Input(Guid = "49a41a2a-39a4-46fd-ab70-5c8442a6fd61")]
-        public readonly InputSlot<T3.Core.Operator.Helper.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.Operator.Helper.ParticleSystem>();
+        public readonly InputSlot<T3.Core.DataTypes.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.DataTypes.ParticleSystem>();
 
         [Input(Guid = "d133b57d-4e2c-432a-8172-599e7f70e79e")]
         public readonly MultiInputSlot<SharpDX.Direct3D11.ShaderResourceView> ShaderResources = new MultiInputSlot<SharpDX.Direct3D11.ShaderResourceView>();

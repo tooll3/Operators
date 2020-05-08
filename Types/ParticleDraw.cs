@@ -1,4 +1,3 @@
-using T3.Core.Operator.Helper;
 using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
@@ -13,7 +12,7 @@ namespace T3.Operators.Types.Id_98d6089f_50f9_4b4c_ba86_18d19ae9dd17
 
 
         [Input(Guid = "ed0c2c1a-2a20-4d49-a812-80f8d19e447b")]
-        public readonly InputSlot<ParticleSystem> ParticleSystem = new InputSlot<ParticleSystem>();
+        public readonly InputSlot<T3.Core.DataTypes.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.DataTypes.ParticleSystem>();
 
         [Input(Guid = "CD19CC42-4033-4B43-A73C-3E4E50D3095E")]
         public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();

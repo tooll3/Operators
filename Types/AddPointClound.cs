@@ -11,7 +11,7 @@ namespace T3.Operators.Types.Id_557fcca1_5406_4594_9dd2_9122d3b3a1e2
         public readonly Slot<T3.Core.Command> Command = new Slot<T3.Core.Command>();
 
         [Input(Guid = "c138ad9e-5625-4ac1-b6f9-9fff7aba523e")]
-        public readonly InputSlot<T3.Core.Operator.Helper.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.Operator.Helper.ParticleSystem>();
+        public readonly InputSlot<T3.Core.DataTypes.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.DataTypes.ParticleSystem>();
 
         [Input(Guid = "a014d4ca-001f-4a41-a239-63346652ddd5")]
         public readonly InputSlot<int> Count = new InputSlot<int>();

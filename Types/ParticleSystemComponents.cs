@@ -1,8 +1,6 @@
 using SharpDX.Direct3D11;
-using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
-using T3.Core.Operator.Helper;
 using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_c78a26f9_0c0e_4f1e_a2aa_6ca6136c52d0
@@ -84,6 +82,6 @@ namespace T3.Operators.Types.Id_c78a26f9_0c0e_4f1e_a2aa_6ca6136c52d0
         }
 
         [Input(Guid = "E5CEBE45-C1D2-48FA-83AA-E321AEE14912")]
-        public readonly InputSlot<ParticleSystem> ParticleSystem = new InputSlot<ParticleSystem>();
+        public readonly InputSlot<T3.Core.DataTypes.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.DataTypes.ParticleSystem>();
     }
 }

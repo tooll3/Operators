@@ -23,7 +23,7 @@ namespace T3.Operators.Types.Id_afc6379d_c940_4617_9e79_0ae129a2f349
         }
 
         [Input(Guid = "2767954c-6836-402a-af76-d5b1c84c20d3")]
-        public readonly InputSlot<T3.Core.Operator.Helper.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.Operator.Helper.ParticleSystem>();
+        public readonly InputSlot<T3.Core.DataTypes.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.DataTypes.ParticleSystem>();
 
         [Input(Guid = "7e97ad11-385b-44b3-8db1-d48906bb98cb")]
         public readonly InputSlot<SharpDX.Int3> ThreadGroupSize = new InputSlot<SharpDX.Int3>();
