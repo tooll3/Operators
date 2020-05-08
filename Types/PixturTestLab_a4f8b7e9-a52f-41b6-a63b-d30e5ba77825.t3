@@ -1099,30 +1099,50 @@
                   "Id": "5096db57-921f-486f-880b-d56f58917ac8",
                   "NormalizedPosition": 0.0,
                   "Color": {
-                    "R": 0.0,
-                    "G": 0.0,
-                    "B": 0.0,
-                    "A": 0.0
+                    "R": 1.0,
+                    "G": 0.99999,
+                    "B": 0.99999,
+                    "A": 1.0
                   }
                 },
                 {
-                  "Id": "3f384ff8-6fc2-4866-99bb-e7a51beb8599",
-                  "NormalizedPosition": 0.812949657,
+                  "Id": "627017fb-1b5b-40b4-9b8a-b964442f8f50",
+                  "NormalizedPosition": 0.435555547,
                   "Color": {
-                    "R": 1.0,
-                    "G": 0.0,
-                    "B": 1.0,
-                    "A": 1.0
+                    "R": 0.9999939,
+                    "G": 0.99999,
+                    "B": 0.999996066,
+                    "A": 0.395639539
+                  }
+                },
+                {
+                  "Id": "af3b3c1c-280c-42f1-9518-2155f281cb82",
+                  "NormalizedPosition": 0.74666667,
+                  "Color": {
+                    "R": 0.999990761,
+                    "G": 0.99999,
+                    "B": 0.9999992,
+                    "A": 0.07906979
+                  }
+                },
+                {
+                  "Id": "ef739cc3-e8fb-42cc-9cbe-e1f8e4a1099c",
+                  "NormalizedPosition": 0.8622222,
+                  "Color": {
+                    "R": 0.999990642,
+                    "G": 0.99999,
+                    "B": 0.999999344,
+                    "A": 0.06980937
                   }
                 },
                 {
                   "Id": "89ab8a85-4602-4190-ac12-7e64d2ee5888",
-                  "NormalizedPosition": 1.0,
+                  "NormalizedPosition": 0.955555558,
                   "Color": {
-                    "R": 0.0,
-                    "G": 0.0,
+                    "R": 0.99999,
+                    "G": 0.99999,
                     "B": 1.0,
-                    "A": 1.0
+                    "A": 0.0
                   }
                 }
               ]
@@ -1135,7 +1155,13 @@
     {
       "Id": "ce267c17-718e-401b-9499-9741264a8b32"/*RoundedRect*/,
       "SymbolId": "c8590f8f-cca1-434a-a880-67bb91920e1a",
-      "InputValues": [],
+      "InputValues": [
+        {
+          "Id": "8846aa50-e4d0-433c-9e5b-013a93f17f79"/*Feather*/,
+          "Type": "System.Single",
+          "Value": 1.231493
+        }
+      ],
       "Outputs": []
     },
     {
@@ -1147,7 +1173,13 @@
     {
       "Id": "a4b1b93b-1890-45a7-b3e7-690ea6b5e7b3"/*Pulsate*/,
       "SymbolId": "ffed6f9e-2495-4cf3-9cda-740ecec75d10",
-      "InputValues": [],
+      "InputValues": [
+        {
+          "Id": "1154b0a7-e244-43ff-a80b-9d099be85053"/*Speed*/,
+          "Type": "System.Single",
+          "Value": 4.0
+        }
+      ],
       "Outputs": []
     },
     {
@@ -1163,6 +1195,18 @@
           "Id": "cd369755-5062-4934-8f37-e3a5cc9963df"/*RangeInMax*/,
           "Type": "System.Single",
           "Value": 0.0
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "e67922f4-37e4-4901-ad12-412a4b9bc817"/*PerlinNoise*/,
+      "SymbolId": "436e93a8-03c0-4366-8d9a-2245e5bcaa6c",
+      "InputValues": [
+        {
+          "Id": "b7434932-aeea-407e-bb00-22337a21f293"/*Frequency*/,
+          "Type": "System.Single",
+          "Value": 5.78419733
         }
       ],
       "Outputs": []
@@ -1426,6 +1470,12 @@
       "SourceSlotId": "1eb7c5c4-0982-43f4-b14d-524571e3cdda",
       "TargetParentOrChildId": "e2ba6b29-beb0-4cf0-b6c4-c9b7c67fb103",
       "TargetSlotId": "01809b63-4b4a-47be-9588-98d5998ddb0c"
+    },
+    {
+      "SourceParentOrChildId": "89d0cc08-dc85-4285-8a55-ec1f106d1510",
+      "SourceSlotId": "b20573fe-7a7e-48e1-9370-744288ca6e32",
+      "TargetParentOrChildId": "e67922f4-37e4-4901-ad12-412a4b9bc817",
+      "TargetSlotId": "eabbaf77-5f74-4303-9453-6fa44facc5db"
     },
     {
       "SourceParentOrChildId": "367dddf6-59c4-4162-b27b-0c7f3dbb22fb",

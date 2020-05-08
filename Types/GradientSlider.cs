@@ -27,7 +27,7 @@ namespace T3.Operators.Types.Id_8211249d_7a26_4ad0_8d84_56da72a5c536
 
         private void Update(EvaluationContext context)
         {
-            var input = this.Input.GetValue(context);
+            var input = this.SamplePos.GetValue(context);
             var gradient = Gradient.GetValue(context);
             
             Color.Value = gradient.Sample(input);
@@ -38,6 +38,6 @@ namespace T3.Operators.Types.Id_8211249d_7a26_4ad0_8d84_56da72a5c536
         public readonly InputSlot<Gradient> Gradient = new InputSlot<Gradient>();
         
         [Input(Guid = "a4527e01-f19a-4200-85e5-00144f3ce061")]
-        public readonly InputSlot<float> Input = new InputSlot<float>();
+        public readonly InputSlot<float> SamplePos = new InputSlot<float>();
     }
 }
