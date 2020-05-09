@@ -150,8 +150,6 @@ namespace T3.Operators.Types.Id_b536f791_ae9a_45a7_a153_e2f36a65cfb3
             public float Brightness;
         }
 
-        private bool _initialized = false;
-
         [Input(Guid = "DAB66E97-0B79-41CE-B6C7-9B01A123746E")]
         public readonly InputSlot<string> Filepath = new InputSlot<string>();
 
