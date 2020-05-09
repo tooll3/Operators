@@ -12,7 +12,7 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
 {
     public class Jitter2d : Instance<Jitter2d>
     {
-        [Output(Guid = "4f1fa28e-f010-48d5-bef1-51bceac17649", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
+        [Output(Guid = "4f1fa28e-f010-48d5-bef1-51bceac17649", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<Vector2> NewPosition = new Slot<Vector2>();
 
         public Jitter2d()
