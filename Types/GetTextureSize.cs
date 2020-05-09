@@ -37,9 +37,18 @@ namespace T3.Operators.Types.Id_daec568f_f7b4_4d81_a401_34d62462daab
             }
             else
             {
-                Size.Value = new Size2(0,0);
+                Size.Value = context.RequestedResolution;
+                //Size.Value = new Size2(0,0);
             }
         }
+
+        private enum Modes
+        {
+            UseExplicit,
+            UseRequestedFromContext,
+            UseRequestedFromInputTexture,
+        }
+        
 
         [Input(Guid = "8b15d8e1-10c7-41e1-84db-a85e31e0c909")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture = new InputSlot<SharpDX.Direct3D11.Texture2D>();

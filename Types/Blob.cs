@@ -5,7 +5,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_c8590f8f_cca1_434a_a880_67bb91920e1a
 {
-    public class RoundedRect : Instance<RoundedRect>
+    public class Blob : Instance<Blob>
     {
         [Output(Guid = "1d2a7948-4c89-407a-a98f-9810f60ef75e")]
         public readonly Slot<SharpDX.Direct3D11.Texture2D> TextureOutput = new Slot<SharpDX.Direct3D11.Texture2D>();

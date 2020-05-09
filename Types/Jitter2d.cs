@@ -39,12 +39,15 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
                 jump = true;
             }
 
-            var time = EvaluationContext.BeatTime;
-            var activationIndex = (int)(time * frequency);
-            if (frequency > 0.0001f && activationIndex != _lastActivationIndex)
-            {
-                _lastActivationIndex = activationIndex;
-                jump = true;
+            var beatTime = EvaluationContext.BeatTime;
+            var useFrequency = frequency > 0.0001f;
+            if(useFrequency) {
+                var activationIndex = (int)(beatTime * frequency);
+                if (activationIndex != _lastActivationIndex)
+                {
+                    _lastActivationIndex = activationIndex;
+                    jump = true;
+                }
             }
 
             if (jump)
@@ -59,24 +62,28 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
                     var d = _jumpTargetOffset.Length();
                     if (d > limitRange)
                     {
-                        var overshot = Math.Min(d, limitRange) / 2;
-                        var moveTowardsCenter = _jumpTargetOffset * overshot; 
-                        _jumpTargetOffset -= moveTowardsCenter;
+                        //var overshot = Math.Min(d, limitRange) / 2;
+                        var overshot =  Math.Min(d- limitRange, limitRange);
+                        var random = _random.NextDouble() * overshot;
+                        var distanceWithinLimit = limitRange - (float)random;
+                        //var overshot = 0.1f;
+                        //var moveTowardsCenter = -_jumpTargetOffset * overshot;
+                        var normalized = _jumpTargetOffset / d;
+                        _jumpTargetOffset =  normalized * distanceWithinLimit;
                     }
                 }
 
-                _lastJumpTime = time;
+                _lastJumpTime = beatTime;
             }
 
             if (smoothing >= 0.001)
             {
-                var useFrequencyRelevantTiming = frequency > 0.001f;
+                //var useFrequencyRelevantTiming = frequency > 0.001f;
 
-                var t = useFrequencyRelevantTiming
-                            ? (float)((time - _lastJumpTime) * frequency * smoothing)
-                            : (float)((time - _lastJumpTime) / smoothing);
-
-                //Log.Debug(" " + t);
+                var t = useFrequency
+                            ? (float)((beatTime - _lastJumpTime) * frequency / smoothing ).Clamp(0,1)
+                            : (float)((beatTime - _lastJumpTime) / smoothing);
+                
                 var tt = MathUtils.SmootherStep(0, 1, t);
                 _offset = Lerp(_jumpStartOffset, _jumpTargetOffset, tt);
             }
