@@ -32,11 +32,13 @@ namespace T3.Operators.Types.Id_38e88910_6063_41d1_840b_8aeeb0eeccc0
                 Width = resolution.Width;
                 Height = resolution.Height;
             }
-
+            
             [FieldOffset(0)]
-            public float Height;
-            [FieldOffset(4)]
             public float Width;
+
+            [FieldOffset(4)]
+            public float Height;
+            
         }
         
         [Input(Guid = "3BBA98BD-2713-4E5B-B082-20B39392EF9B")]
