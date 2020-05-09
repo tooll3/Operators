@@ -26,7 +26,7 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
             var limitRange = MaxRange.GetValue(context);
             var seed = Seed.GetValue(context);
             var jumpDistance = JumpDistance.GetValue(context);
-            var frequency = Frequency.GetValue(context);
+            var tempo = Tempo.GetValue(context);
             var smoothing = Smoothing.GetValue(context);
             var reset = Reset.GetValue(context);
             var jump = Jump.GetValue(context);
@@ -40,9 +40,9 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
             }
 
             var beatTime = EvaluationContext.BeatTime;
-            var useFrequency = frequency > 0.0001f;
+            var useFrequency = tempo > 0.0001f;
             if(useFrequency) {
-                var activationIndex = (int)(beatTime * frequency);
+                var activationIndex = (int)(beatTime * tempo);
                 if (activationIndex != _lastActivationIndex)
                 {
                     _lastActivationIndex = activationIndex;
@@ -81,7 +81,7 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
                 //var useFrequencyRelevantTiming = frequency > 0.001f;
 
                 var t = useFrequency
-                            ? (float)((beatTime - _lastJumpTime) * frequency / smoothing ).Clamp(0,1)
+                            ? (float)((beatTime - _lastJumpTime) * tempo / smoothing ).Clamp(0,1)
                             : (float)((beatTime - _lastJumpTime) / smoothing);
                 
                 var tt = MathUtils.SmootherStep(0, 1, t);
@@ -119,7 +119,7 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
         public readonly InputSlot<float> MaxRange = new InputSlot<float>();
 
         [Input(Guid = "1DF95BEB-DA6D-4263-8273-7A180FD190F5")]
-        public readonly InputSlot<float> Frequency = new InputSlot<float>();
+        public readonly InputSlot<float> Tempo = new InputSlot<float>();
 
         [Input(Guid = "38086D8A-15E0-4F3E-B161-A46A79FC5CC3")]
         public readonly InputSlot<float> Smoothing = new InputSlot<float>();
