@@ -24,7 +24,7 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
             var modulo = Modulo.GetValue(context);
             var increment = Increment.GetValue(context);
             _rate = Rate.GetValue(context);
-            _smoothing = Blending.GetValue(context);
+            _blending = Blending.GetValue(context);
             var reset = TriggerReset.GetValue(context);
             var jump = TriggerCount.GetValue(context);
 
@@ -54,9 +54,9 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
                 _lastJumpTime = _beatTime;
             }
 
-            if (_smoothing >= 0.001)
+            if (_blending >= 0.001)
             {
-                var t = Fragment / _smoothing;
+                var t = (Fragment / _blending).Clamp(0,1);
                 if (SmoothBlending.GetValue(context))
                     t = MathUtils.SmootherStep(0, 1, t);
 
@@ -82,11 +82,11 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
                 ? (float)((_beatTime - _lastJumpTime) * _rate).Clamp(0, 1)
                 : (float)(_beatTime - _lastJumpTime).Clamp(0, 1);
 
-        private bool UseRate => _rate > 0.0001f;
+        private bool UseRate => _rate > -1;
 
         private float _rate;
         private double _beatTime;
-        private float _smoothing;
+        private float _blending;
 
         private bool _initialized = false;
         private int _lastActivationIndex = 0;
