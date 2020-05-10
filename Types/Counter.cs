@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
@@ -9,40 +10,113 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
 {
     public class Counter : Instance<Counter>
     {
-        [Output (Guid = "c53e3a03-3a6d-4547-abbf-7901b5045539")]
-        public readonly Slot<float> Result = new Slot<float> ();
-        
+        [Output(Guid = "c53e3a03-3a6d-4547-abbf-7901b5045539", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<float> Result = new Slot<float>();
+
         public Counter()
         {
             Result.UpdateAction = Update;
         }
 
-        private void Update (EvaluationContext context)
+        private void Update(EvaluationContext context)
         {
-            if (TriggerReset.GetValue(context))
-            {
-                _value = StartValue.GetValue(context);
-            }
-            
-            
-            var countTriggered = TriggerCount.GetValue(context);
-            //Log.Debug("count.update  Triggered:" + countTriggered);
-            if (countTriggered != _lastCountTriggered)
-            {
-                //Log.Debug("   changed!");
-                if (countTriggered)
-                    _value += Increment.GetValue(context);
-                    
-                _lastCountTriggered = countTriggered;
-            }
-            //_lastCountTriggered = countTriggered;
+            var startPosition = StartValue.GetValue(context);
+            var modulo = Modulo.GetValue(context);
+            var increment = Increment.GetValue(context);
+            _rate = Rate.GetValue(context);
+            _smoothing = Blending.GetValue(context);
+            var reset = TriggerReset.GetValue(context);
+            var jump = TriggerCount.GetValue(context);
 
-            Result.Value = _value;
+            if (!_initialized || reset || float.IsNaN(_count))
+            {
+                _count = 0;
+                _initialized = true;
+                jump = true;
+            }
+
+            _beatTime = EvaluationContext.BeatTime;
+
+            if (UseRate)
+            {
+                var activationIndex = (int)(_beatTime * _rate);
+                if (activationIndex != _lastActivationIndex)
+                {
+                    _lastActivationIndex = activationIndex;
+                    jump = true;
+                }
+            }
+
+            if (jump)
+            {
+                _jumpStartOffset = _count;
+                _jumpTargetOffset = _count + increment;
+                _lastJumpTime = _beatTime;
+            }
+
+            if (_smoothing >= 0.001)
+            {
+                var t = Fragment / _smoothing;
+                if (SmoothBlending.GetValue(context))
+                    t = MathUtils.SmootherStep(0, 1, t);
+
+                _count = MathUtils.Lerp(_jumpStartOffset, _jumpTargetOffset, t);
+            }
+            else
+            {
+                _count = _jumpTargetOffset;
+            }
+
+            if (modulo > 0.001f)
+            {
+                Result.Value = _count % modulo + startPosition;
+            }
+            else
+            {
+                Result.Value = _count + startPosition;
+            }
         }
 
-        private float _value;
-        private bool _lastCountTriggered;
-        
+        public float Fragment =>
+            UseRate
+                ? (float)((_beatTime - _lastJumpTime) * _rate).Clamp(0, 1)
+                : (float)(_beatTime - _lastJumpTime).Clamp(0, 1);
+
+        private bool UseRate => _rate > 0.0001f;
+
+        private float _rate;
+        private double _beatTime;
+        private float _smoothing;
+
+        private bool _initialized = false;
+        private int _lastActivationIndex = 0;
+        private double _lastJumpTime;
+        private float _count;
+        private float _jumpStartOffset;
+        private float _jumpTargetOffset;
+
+        // private void Update (EvaluationContext context)
+        // {
+        //     if (TriggerReset.GetValue(context))
+        //     {
+        //         _value = StartValue.GetValue(context);
+        //     }
+        //     
+        //     
+        //     var countTriggered = TriggerCount.GetValue(context);
+        //     if (countTriggered != _lastCountTriggered)
+        //     {
+        //         if (countTriggered)
+        //             _value += Increment.GetValue(context);
+        //             
+        //         _lastCountTriggered = countTriggered;
+        //     }
+        //
+        //     Result.Value = _value;
+        // }
+        //
+        // private float _value;
+        // private bool _lastCountTriggered;
 
         [Input(Guid = "eefdb8ca-68e7-4e39-b302-22eb8930fb8c")]
         public readonly InputSlot<bool> TriggerCount = new InputSlot<bool>();
@@ -56,5 +130,16 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
         [Input(Guid = "BCA3F7B2-A093-4CB3-89A5-0E2681760607")]
         public readonly InputSlot<float> Increment = new InputSlot<float>();
 
+        [Input(Guid = "73B493CB-91D1-4D4F-B9A8-005017ECAC8F")]
+        public readonly InputSlot<float> Modulo = new InputSlot<float>();
+
+        [Input(Guid = "286CBBFB-796D-499F-93D3-D467512110BE")]
+        public readonly InputSlot<float> Rate = new InputSlot<float>();
+
+        [Input(Guid = "B04D475B-A898-421B-BF26-AE5CF982A351")]
+        public readonly InputSlot<float> Blending = new InputSlot<float>();
+
+        [Input(Guid = "E0C386B9-A987-4D11-9171-2971FA759827")]
+        public readonly InputSlot<bool> SmoothBlending = new InputSlot<bool>();
     }
 }

@@ -23,8 +23,8 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
             var limitRange = MaxRange.GetValue(context);
             var seed = Seed.GetValue(context);
             var jumpDistance = JumpDistance.GetValue(context);
-             _tempo = Rate.GetValue(context);
-             _smoothing = Smoothing.GetValue(context);
+             _rate = Rate.GetValue(context);
+             
             var reset = Reset.GetValue(context);
             var jump = Jump.GetValue(context);
 
@@ -38,8 +38,8 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
 
             _beatTime = EvaluationContext.BeatTime;
             
-            if(UseFrequency) {
-                var activationIndex = (int)(_beatTime * _tempo);
+            if(UseRate) {
+                var activationIndex = (int)(_beatTime * _rate);
                 if (activationIndex != _lastActivationIndex)
                 {
                     _lastActivationIndex = activationIndex;
@@ -69,12 +69,15 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
 
                 _lastJumpTime = _beatTime;
             }
-
-            if (_smoothing >= 0.001)
+            
+            var blending = Blending.GetValue(context);
+            if (blending >= 0.001)
             {
-                var t = Fragment / _smoothing;
-                var tt = MathUtils.SmootherStep(0, 1, t);
-                _offset = Vector2.Lerp(_jumpStartOffset, _jumpTargetOffset, tt);
+                var t = Fragment / blending;
+                if(SmoothBlending.GetValue(context))
+                    t = MathUtils.SmootherStep(0, 1, t);
+                
+                _offset = Vector2.Lerp(_jumpStartOffset, _jumpTargetOffset, t);
             }
             else
             {
@@ -85,17 +88,16 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
         }
 
         public float Fragment =>
-            UseFrequency
-                ? (float)((_beatTime - _lastJumpTime) * _tempo ).Clamp(0,1)
+            UseRate
+                ? (float)((_beatTime - _lastJumpTime) * _rate ).Clamp(0,1)
                 : (float)(_beatTime - _lastJumpTime).Clamp(0,1);
 
         
-        private bool UseFrequency => _tempo > 0.0001f;
+        private bool UseRate => _rate > 0.0001f;
         
-        private float _tempo;
+        private float _rate;
         private double _beatTime;
-        private float _smoothing;
-        
+
         private Random _random = new Random();
         private bool _initialized = false;
         private int _lastActivationIndex = 0;
@@ -117,8 +119,11 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
         public readonly InputSlot<float> Rate = new InputSlot<float>();
 
         [Input(Guid = "38086D8A-15E0-4F3E-B161-A46A79FC5CC3")]
-        public readonly InputSlot<float> Smoothing = new InputSlot<float>();
-        
+        public readonly InputSlot<float> Blending = new InputSlot<float>();
+
+        [Input(Guid = "227D36C5-E1AA-4F3F-AED1-AA92A25DBA8F")]
+        public readonly InputSlot<bool> SmoothBlending = new InputSlot<bool>();
+
         [Input(Guid = "34EA227B-13DB-42DD-ADE5-1B07D2F6BAD5")]
         public readonly InputSlot<int> Seed = new InputSlot<int>();
         
