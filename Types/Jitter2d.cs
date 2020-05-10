@@ -1,9 +1,6 @@
 using System;
 using System.Numerics;
-using System.Security.Claims;
-using System.Security.Policy;
 using T3.Core;
-using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -26,8 +23,8 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
             var limitRange = MaxRange.GetValue(context);
             var seed = Seed.GetValue(context);
             var jumpDistance = JumpDistance.GetValue(context);
-            var tempo = Tempo.GetValue(context);
-            var smoothing = Smoothing.GetValue(context);
+             _tempo = Rate.GetValue(context);
+             _smoothing = Smoothing.GetValue(context);
             var reset = Reset.GetValue(context);
             var jump = Jump.GetValue(context);
 
@@ -39,10 +36,10 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
                 jump = true;
             }
 
-            var beatTime = EvaluationContext.BeatTime;
-            var useFrequency = tempo > 0.0001f;
-            if(useFrequency) {
-                var activationIndex = (int)(beatTime * tempo);
+            _beatTime = EvaluationContext.BeatTime;
+            
+            if(UseFrequency) {
+                var activationIndex = (int)(_beatTime * _tempo);
                 if (activationIndex != _lastActivationIndex)
                 {
                     _lastActivationIndex = activationIndex;
@@ -62,30 +59,22 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
                     var d = _jumpTargetOffset.Length();
                     if (d > limitRange)
                     {
-                        //var overshot = Math.Min(d, limitRange) / 2;
                         var overshot =  Math.Min(d- limitRange, limitRange);
                         var random = _random.NextDouble() * overshot;
                         var distanceWithinLimit = limitRange - (float)random;
-                        //var overshot = 0.1f;
-                        //var moveTowardsCenter = -_jumpTargetOffset * overshot;
                         var normalized = _jumpTargetOffset / d;
                         _jumpTargetOffset =  normalized * distanceWithinLimit;
                     }
                 }
 
-                _lastJumpTime = beatTime;
+                _lastJumpTime = _beatTime;
             }
 
-            if (smoothing >= 0.001)
+            if (_smoothing >= 0.001)
             {
-                //var useFrequencyRelevantTiming = frequency > 0.001f;
-
-                var t = useFrequency
-                            ? (float)((beatTime - _lastJumpTime) * tempo / smoothing ).Clamp(0,1)
-                            : (float)((beatTime - _lastJumpTime) / smoothing);
-                
+                var t = Fragment / _smoothing;
                 var tt = MathUtils.SmootherStep(0, 1, t);
-                _offset = Lerp(_jumpStartOffset, _jumpTargetOffset, tt);
+                _offset = Vector2.Lerp(_jumpStartOffset, _jumpTargetOffset, tt);
             }
             else
             {
@@ -95,16 +84,22 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
             NewPosition.Value = _offset + startPosition;
         }
 
-        public static Vector2 Lerp(Vector2 a, Vector2 b, float t)
-        {
-            return new Vector2(a.X + (b.X - a.X) * t, a.Y + (b.Y - a.Y) * t);
-        }
+        public float Fragment =>
+            UseFrequency
+                ? (float)((_beatTime - _lastJumpTime) * _tempo ).Clamp(0,1)
+                : (float)(_beatTime - _lastJumpTime).Clamp(0,1);
 
+        
+        private bool UseFrequency => _tempo > 0.0001f;
+        
+        private float _tempo;
+        private double _beatTime;
+        private float _smoothing;
+        
         private Random _random = new Random();
         private bool _initialized = false;
         private int _lastActivationIndex = 0;
         private double _lastJumpTime;
-
         private Vector2 _offset;
         private Vector2 _jumpStartOffset;
         private Vector2 _jumpTargetOffset;
@@ -119,7 +114,7 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
         public readonly InputSlot<float> MaxRange = new InputSlot<float>();
 
         [Input(Guid = "1DF95BEB-DA6D-4263-8273-7A180FD190F5")]
-        public readonly InputSlot<float> Tempo = new InputSlot<float>();
+        public readonly InputSlot<float> Rate = new InputSlot<float>();
 
         [Input(Guid = "38086D8A-15E0-4F3E-B161-A46A79FC5CC3")]
         public readonly InputSlot<float> Smoothing = new InputSlot<float>();
