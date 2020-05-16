@@ -45,7 +45,8 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                 return;
             }
 
-            var wasRebuild = UpdateTextures(device, size, TextureFormat.GetValue(context), DepthFormat.GetValue(context));
+            bool generateMips = GenerateMips.GetValue(context);
+            UpdateTextures(device, size, TextureFormat.GetValue(context), DepthFormat.GetValue(context), generateMips);
 
             var deviceContext = device.ImmediateContext;
             var prevViewports = deviceContext.Rasterizer.GetViewports<RawViewportF>();
@@ -74,8 +75,13 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             var prevObjectToWorld = context.ObjectToWorld;
             context.ObjectToWorld = Matrix.Identity;
             Command.GetValue(context);
-            context.ObjectToWorld = prevObjectToWorld;
 
+            if (generateMips)
+            {
+                deviceContext.GenerateMips(_colorBufferSrv);
+            }
+
+            context.ObjectToWorld = prevObjectToWorld;
             deviceContext.Rasterizer.SetViewports(prevViewports);
             deviceContext.OutputMerger.SetTargets(prevDepthStencilView, prevTargets);
 
@@ -90,10 +96,14 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             Output.Value = _colorBuffer;
         }
 
-        private bool UpdateTextures(Device device, Size2 size, Format colorFormat, Format depthFormat)
+        private bool UpdateTextures(Device device, Size2 size, Format colorFormat, Format depthFormat, bool generateMips)
         {
+            int w = Math.Max(size.Width, size.Height);
+            int mipLevels = generateMips ? (int)(Math.Log10(w) / Math.Log10(2)) + 1 : 1;
+            // Log.Debug($"miplevel: {mipLevels}, w: {w}");
             bool colorBufferNeedsUpdate = _colorBuffer == null || _colorBuffer.Description.Width != size.Width ||
-                                          _colorBuffer.Description.Height != size.Height || _colorBuffer.Description.Format != colorFormat;
+                                          _colorBuffer.Description.Height != size.Height || _colorBuffer.Description.Format != colorFormat ||
+                                          _colorBuffer.Description.MipLevels != mipLevels;
 
             if (colorBufferNeedsUpdate)
             {
@@ -111,8 +121,8 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                             Format = colorFormat,
                                             Width = size.Width,
                                             Height = size.Height,
-                                            MipLevels = 1,
-                                            OptionFlags = ResourceOptionFlags.None,
+                                            MipLevels = mipLevels,
+                                            OptionFlags = generateMips ? ResourceOptionFlags.GenerateMipMaps : ResourceOptionFlags.None,
                                             SampleDescription = new SampleDescription(1, 0),
                                             Usage = ResourceUsage.Default
                                         };
@@ -199,5 +209,8 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
         [Input(Guid = "aacafc4d-f47f-4893-9a6e-98db306a8901")]
         public readonly InputSlot<bool> Clear = new InputSlot<bool>();
+
+        [Input(Guid = "f0cf3325-4967-4419-9beb-036cd6dbfd6a")]
+        public readonly InputSlot<bool> GenerateMips = new InputSlot<bool>();
     }
 }
