@@ -5,6 +5,7 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using T3.Core.Animation;
 using T3.Core;
+using T3.Core.DataTypes;
 using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
@@ -16,72 +17,77 @@ namespace T3.Operators.Types.Id_2c53eee7_eb38_449b_ad2a_d7a674952e5b
     public class GradientsToTexture : Instance<GradientsToTexture>
     {
         [Output(Guid = "7ad741ec-274d-493c-994f-1a125b96a6e9")]
-        public readonly Slot<Texture2D> CurveTexture = new Slot<Texture2D>();
+        public readonly Slot<Texture2D> GradientsTexture = new Slot<Texture2D>();
 
         
 
         public GradientsToTexture()
         {
-            CurveTexture.UpdateAction = Update;
+            GradientsTexture.UpdateAction = Update;
         }
-
-        private float[] _floatBuffer = new float[0];
         
         private void Update(EvaluationContext context)
         {
-            
-            if (!Curves.IsConnected)
+            if (!Gradients.IsConnected)
                 return;
             
-            var curveCount = Curves.CollectedInputs.Count;
-            if (curveCount == 0)
+            var gradientsCount = Gradients.CollectedInputs.Count;
+            if (gradientsCount == 0)
                 return;
             
             const int sampleCount = 256;
-            const int entrySizeInBytes = sizeof(float);
-            const int curveSizeInBytes = sampleCount * entrySizeInBytes;
-            int bufferSizeInBytes = curveCount * curveSizeInBytes;
+            const int entrySizeInBytes = sizeof(float) * 4;
+            const int gradientSizeInBytes = sampleCount * entrySizeInBytes;
+            int bufferSizeInBytes = gradientsCount * gradientSizeInBytes;
 
             using (var dataStream = new DataStream(bufferSizeInBytes, true, true))
             {
                 var texDesc = new Texture2DDescription()
                                   {
                                       Width = sampleCount,
-                                      Height = curveCount,
+                                      Height = gradientsCount,
                                       ArraySize = 1,
                                       BindFlags = BindFlags.ShaderResource,
                                       Usage = ResourceUsage.Default,
                                       MipLevels = 1,
                                       CpuAccessFlags = CpuAccessFlags.None,
-                                      Format = Format.R32_Float,
+                                      Format = Format.R32G32B32A32_Float,
                                       SampleDescription = new SharpDX.DXGI.SampleDescription(1, 0),
                                   };
 
-                foreach (var curveInput in Curves.CollectedInputs)
+                foreach (var gradientsInput in Gradients.CollectedInputs)
                 {
-                    var curve = curveInput.GetValue(context);
-                    if (curve == null)
+                    var gradient = gradientsInput.GetValue(context);
+                    if (gradient == null)
                     {
-                        dataStream.Seek(curveSizeInBytes, SeekOrigin.Current);
+                        dataStream.Seek(gradientSizeInBytes, SeekOrigin.Current);
                         continue;
                     }
 
                     for (var sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++)
                     {
-                        dataStream.Write((float)curve.GetSampledValue((float)sampleIndex / sampleCount));
+                        var sampledColor = gradient.Sample((float)sampleIndex / sampleCount);
+                        dataStream.Write(sampledColor.X);
+                        dataStream.Write(sampledColor.Y);
+                        dataStream.Write(sampledColor.Z);
+                        dataStream.Write(sampledColor.W);
                     }
                 }
                 //Curves.DirtyFlag.Clear();
 
                 dataStream.Position = 0;
-                var dataRectangles = new DataRectangle[] { new DataRectangle(dataStream.DataPointer, curveSizeInBytes) };
-                Utilities.Dispose(ref CurveTexture.Value);
-                CurveTexture.Value = new Texture2D(ResourceManager.Instance().Device, texDesc, dataRectangles);
+                var dataRectangles = new DataRectangle[] { new DataRectangle(dataStream.DataPointer, gradientSizeInBytes) };
+                Utilities.Dispose(ref GradientsTexture.Value);
+                GradientsTexture.Value = new Texture2D(ResourceManager.Instance().Device, texDesc, dataRectangles);
             }
         }
 
 
         [Input(Guid = "1a1f3d10-fe5e-43bc-b02b-ad5939ec68ee")]
         public readonly MultiInputSlot<Curve> Curves = new MultiInputSlot<T3.Core.Animation.Curve>();
+        
+        [Input(Guid = "588BE11F-D0DB-4E51-8DBB-92A25408511C")]
+        public readonly MultiInputSlot<Gradient> Gradients = new MultiInputSlot<Gradient>();
+        
     }
 }

@@ -39,6 +39,9 @@ namespace T3.Operators.Types.Id_4cdc0f90_6ce9_4a03_9cd0_efeddee70567
 
         [Input(Guid = "c550629c-b200-4c66-954f-d1d50ef5c542")]
         public readonly InputSlot<T3.Core.DataTypes.Gradient> Ramp = new InputSlot<T3.Core.DataTypes.Gradient>();
+
+        [Input(Guid = "82c7d336-9a0b-40e0-938c-9e2007019b82")]
+        public readonly InputSlot<T3.Core.DataTypes.Gradient> Edge = new InputSlot<T3.Core.DataTypes.Gradient>();
     }
 }
 
