@@ -10,6 +10,9 @@ namespace T3.Operators.Types.Id_c454abd8_62a8_4413_a463_668013a6a5bd
         [Output(Guid = "da8c003a-893f-402e-a8c2-d92b41d4ea00")]
         public readonly Slot<SharpDX.Direct3D11.Texture2D> TextureOutput = new Slot<SharpDX.Direct3D11.Texture2D>();
 
+        [Output(Guid = "5bb98ed6-8d29-428f-b5c3-1953df353c8c")]
+        public readonly Slot<T3.Core.Command> DrawCommand = new Slot<T3.Core.Command>();
+
         [Input(Guid = "34805b11-c0d5-40da-945d-5282fcb48921")]
         public readonly InputSlot<float> MaxSteps = new InputSlot<float>();
 

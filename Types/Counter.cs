@@ -27,6 +27,7 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
             _blending = Blending.GetValue(context);
             var reset = TriggerReset.GetValue(context);
             var jump = TriggerCount.GetValue(context);
+            //var jump = false;
 
             if (!_initialized || reset || float.IsNaN(_count))
             {
@@ -42,6 +43,7 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
                 var activationIndex = (int)(_beatTime * _rate);
                 if (activationIndex != _lastActivationIndex)
                 {
+                    //Log.Debug($"ai {activationIndex}  != {_lastActivationIndex}  rate={_rate} t = {_beatTime} ");
                     _lastActivationIndex = activationIndex;
                     jump = true;
                 }
@@ -49,9 +51,24 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
 
             if (jump)
             {
-                _jumpStartOffset = _count;
-                _jumpTargetOffset = _count + increment;
-                _lastJumpTime = _beatTime;
+                if (modulo > 0.001f)
+                {
+                    _jumpStartOffset = _jumpTargetOffset;
+                    _jumpTargetOffset +=  1;
+                }
+                else
+                {
+                    _jumpStartOffset = _count;
+                    _jumpTargetOffset = _count + increment;
+                }
+
+                // if (_jumpTargetOffset > modulo)
+                // {
+                //     _count = 0;
+                //     _jumpStartOffset = 0;
+                //     _jumpTargetOffset = increment;
+                // }
+                _lastJumpTime = _beatTime; 
             }
 
             if (_blending >= 0.001)
@@ -69,7 +86,7 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
 
             if (modulo > 0.001f)
             {
-                Result.Value = _count % modulo + startPosition;
+                Result.Value = (_count % modulo) * increment + startPosition;
             }
             else
             {
