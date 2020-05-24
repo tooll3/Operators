@@ -25,6 +25,9 @@ namespace T3.Operators.Types.Id_2b20afce_2b54_4bcc_ba0e_e456a0d92833
         [Input(Guid = "c80d3700-ceb6-43d0-9ffd-f4854e67a41d")]
         public readonly InputSlot<SharpDX.Direct3D11.TextureAddressMode> Wrap = new InputSlot<SharpDX.Direct3D11.TextureAddressMode>();
 
+        [Input(Guid = "432c1a23-bf28-4595-923f-6c5a442fa90a")]
+        public readonly InputSlot<SharpDX.DXGI.Format> OutputFormat = new InputSlot<SharpDX.DXGI.Format>();
+
     }
 }
 

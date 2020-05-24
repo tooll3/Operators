@@ -1,0 +1,125 @@
+{
+  "Name": "FakeLight",
+  "Id": "6820b166-1782-43b9-bc5c-6b4f63b16f86",
+  "Namespace": "lib.img.fx.",
+  "Inputs": [
+    {
+      "Id": "00c53b57-7347-4ebc-97d7-1ab48483f09b"/*HeightMap*/,
+      "DefaultValue": null
+    },
+    {
+      "Id": "56eccacb-65ac-4813-ad7e-fad8e581f570"/*LightMap*/,
+      "DefaultValue": null
+    },
+    {
+      "Id": "0212bfb2-9f5f-4d60-aab0-3f9525bd7bfc"/*Impact*/,
+      "DefaultValue": 1.0
+    },
+    {
+      "Id": "4aa128ab-d0a8-42d5-800f-6992959bd0cf"/*Shade*/,
+      "DefaultValue": 0.0
+    },
+    {
+      "Id": "7f0c127b-ee60-44c8-8490-2d3599cde4a2"/*Twist*/,
+      "DefaultValue": 0.0
+    },
+    {
+      "Id": "f93db0c6-c5ed-40da-9677-0c284618f5bb"/*SampleRadius*/,
+      "DefaultValue": 2.0
+    },
+    {
+      "Id": "03298545-a5d6-44d5-bb7c-4747172d2667"/*Direction*/,
+      "DefaultValue": {
+        "X": 0.0,
+        "Y": 0.0
+      }
+    }
+  ],
+  "Children": [
+    {
+      "Id": "7cb20847-8668-45ef-9068-99138d1a2d19"/*_multiImageFxSetup*/,
+      "SymbolId": "a2567844-3314-48de-bda7-7904b5546535",
+      "InputValues": [
+        {
+          "Id": "7f14d0e3-1159-434d-b038-74644948937c"/*ShaderPath*/,
+          "Type": "System.String",
+          "Value": "Resources\\lib\\img\\fx\\image-fx-FakeLight.hlsl"
+        },
+        {
+          "Id": "bcc7fb78-1ac3-46f7-be46-885233420e80"/*FloatParams*/,
+          "Type": "System.Single",
+          "Value": 0.33
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "a6d895fd-16c0-4fa6-83d1-bdbd7dc5c01f"/*Vector2Components*/,
+      "SymbolId": "0946c48b-85d8-4072-8f21-11d17cc6f6cf",
+      "InputValues": [],
+      "Outputs": []
+    }
+  ],
+  "Connections": [
+    {
+      "SourceParentOrChildId": "7cb20847-8668-45ef-9068-99138d1a2d19",
+      "SourceSlotId": "b6bd9c40-1695-46d0-925e-dbaa7882f0ff",
+      "TargetParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "TargetSlotId": "27e1e1b6-89e0-4dca-98e1-5989286f6331"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "0212bfb2-9f5f-4d60-aab0-3f9525bd7bfc",
+      "TargetParentOrChildId": "7cb20847-8668-45ef-9068-99138d1a2d19",
+      "TargetSlotId": "bcc7fb78-1ac3-46f7-be46-885233420e80"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "4aa128ab-d0a8-42d5-800f-6992959bd0cf",
+      "TargetParentOrChildId": "7cb20847-8668-45ef-9068-99138d1a2d19",
+      "TargetSlotId": "bcc7fb78-1ac3-46f7-be46-885233420e80"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "7f0c127b-ee60-44c8-8490-2d3599cde4a2",
+      "TargetParentOrChildId": "7cb20847-8668-45ef-9068-99138d1a2d19",
+      "TargetSlotId": "bcc7fb78-1ac3-46f7-be46-885233420e80"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "f93db0c6-c5ed-40da-9677-0c284618f5bb",
+      "TargetParentOrChildId": "7cb20847-8668-45ef-9068-99138d1a2d19",
+      "TargetSlotId": "bcc7fb78-1ac3-46f7-be46-885233420e80"
+    },
+    {
+      "SourceParentOrChildId": "a6d895fd-16c0-4fa6-83d1-bdbd7dc5c01f",
+      "SourceSlotId": "1cee5adb-8c3c-4575-bdd6-5669c04d55ce",
+      "TargetParentOrChildId": "7cb20847-8668-45ef-9068-99138d1a2d19",
+      "TargetSlotId": "bcc7fb78-1ac3-46f7-be46-885233420e80"
+    },
+    {
+      "SourceParentOrChildId": "a6d895fd-16c0-4fa6-83d1-bdbd7dc5c01f",
+      "SourceSlotId": "305d321d-3334-476a-9fa3-4847912a4c58",
+      "TargetParentOrChildId": "7cb20847-8668-45ef-9068-99138d1a2d19",
+      "TargetSlotId": "bcc7fb78-1ac3-46f7-be46-885233420e80"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "00c53b57-7347-4ebc-97d7-1ab48483f09b",
+      "TargetParentOrChildId": "7cb20847-8668-45ef-9068-99138d1a2d19",
+      "TargetSlotId": "c3da7928-5c0c-4478-9412-fd4b68a094d5"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "56eccacb-65ac-4813-ad7e-fad8e581f570",
+      "TargetParentOrChildId": "7cb20847-8668-45ef-9068-99138d1a2d19",
+      "TargetSlotId": "fc069ee6-7d18-4856-bcf3-1e7c9b8fd4d8"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "03298545-a5d6-44d5-bb7c-4747172d2667",
+      "TargetParentOrChildId": "a6d895fd-16c0-4fa6-83d1-bdbd7dc5c01f",
+      "TargetSlotId": "36f14238-5bb8-4521-9533-f4d1e8fb802b"
+    }
+  ]
+}

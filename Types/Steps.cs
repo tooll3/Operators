@@ -28,14 +28,11 @@ namespace T3.Operators.Types.Id_4cdc0f90_6ce9_4a03_9cd0_efeddee70567
         [Input(Guid = "7ccb8243-a6c6-4d95-a667-cb4abd396caf")]
         public readonly InputSlot<float> SmoothRadius = new InputSlot<float>();
 
-        [Input(Guid = "4326b1bd-6db5-4345-a91e-f7b70cff92b3")]
-        public readonly InputSlot<float> Rotate = new InputSlot<float>();
+        [Input(Guid = "16745545-84e5-4290-a6c1-7df513c6a828")]
+        public readonly InputSlot<System.Numerics.Vector4> Highlight = new InputSlot<System.Numerics.Vector4>();
 
-        [Input(Guid = "5aaeb706-8d19-4c00-b737-474be58a92ed")]
-        public readonly InputSlot<float> LineWidth = new InputSlot<float>();
-
-        [Input(Guid = "2be0aa4a-f599-418f-866d-967c361908a3")]
-        public readonly InputSlot<float> Fade = new InputSlot<float>();
+        [Input(Guid = "7d057162-4fbd-4a78-8869-4dc459253f53")]
+        public readonly InputSlot<int> HighlightIndex = new InputSlot<int>();
 
         [Input(Guid = "c550629c-b200-4c66-954f-d1d50ef5c542")]
         public readonly InputSlot<T3.Core.DataTypes.Gradient> Ramp = new InputSlot<T3.Core.DataTypes.Gradient>();
