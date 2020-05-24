@@ -6,7 +6,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_26a34630_ad46_4bcc_8ff8_ed37fe021f6c
 {
-    public class Displace : Instance<Displace>
+    public class OBSOLETE_Displace : Instance<OBSOLETE_Displace>
     {
         [Output(Guid = "0fd9e62e-e9f8-441d-95e4-84a77e368d84")]
         public readonly Slot<Texture2D> Output = new Slot<Texture2D>();
