@@ -27,6 +27,10 @@ namespace T3.Operators.Types.Id_c2078514_cf1d_439c_a732_0d7b31b5084a
                 ShaderResourceView.Value?.Dispose();
                 ShaderResourceView.Value = new ShaderResourceView(resourceManager.Device, texture); // todo: create via resource manager
             }
+            else
+            {
+                Utilities.Dispose(ref ShaderResourceView.Value);
+            }
         }
 
         [Input(Guid = "{D5AFA102-2F88-431E-9CD4-AF91E41F88F6}")]
