@@ -40,6 +40,10 @@
       <HintPath>..\packages\ManagedBass.Wasapi.3.0.0\lib\netstandard1.4\ManagedBass.Wasapi.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
+    <Reference Include="NAudio, Version=1.10.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\NAudio.1.10.0\lib\net35\NAudio.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -74,6 +78,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Types\ValueToRate.cs" />
+    <Compile Include="Types\MidiInput.cs" />
     <Compile Include="Types\Dailies_May26.cs" />
     <Compile Include="Types\Dalies_May24b.cs" />
     <Compile Include="Types\FakeLight.cs" />
