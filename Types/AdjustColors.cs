@@ -41,5 +41,8 @@ namespace T3.Operators.Types.Id_55411442_d538_48bf_ab78_b8c24c85aa46
         [Input(Guid = "090c56b2-bbed-447e-baa1-5993b4e12ddc")]
         public readonly InputSlot<float> Vignette = new InputSlot<float>();
 
+        [Input(Guid = "689fdfbe-e78d-42f8-af0b-ae8159dec216")]
+        public readonly InputSlot<System.Numerics.Vector4> Background = new InputSlot<System.Numerics.Vector4>();
+
     }
 }

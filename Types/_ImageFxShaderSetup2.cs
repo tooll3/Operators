@@ -28,6 +28,9 @@ namespace T3.Operators.Types.Id_2b20afce_2b54_4bcc_ba0e_e456a0d92833
         [Input(Guid = "432c1a23-bf28-4595-923f-6c5a442fa90a")]
         public readonly InputSlot<SharpDX.DXGI.Format> OutputFormat = new InputSlot<SharpDX.DXGI.Format>();
 
+        [Input(Guid = "499e7ff0-3b6a-414b-be19-03c615931ab8")]
+        public readonly InputSlot<System.Numerics.Vector4> BufferColor = new InputSlot<System.Numerics.Vector4>();
+
     }
 }
 
