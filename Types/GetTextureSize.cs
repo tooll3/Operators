@@ -7,7 +7,7 @@ namespace T3.Operators.Types.Id_daec568f_f7b4_4d81_a401_34d62462daab
 {
     public class GetTextureSize : Instance<GetTextureSize>
     {
-        [Output(Guid = "be16d5d3-4d21-4d5a-9e4c-c7b2779b6bdc")]
+        [Output(Guid = "be16d5d3-4d21-4d5a-9e4c-c7b2779b6bdc", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<SharpDX.Size2> Size = new Slot<SharpDX.Size2>();
 
         
