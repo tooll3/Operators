@@ -16,8 +16,14 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
         [Output(Guid = "01706780-D25B-4C30-A741-8B7B81E04D82", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> Result = new Slot<float>();
 
-        [Input(Guid = "D79F9A16-3A81-4A8B-989F-D4DF1EC6A6E1")]
-        public readonly InputSlot<float> Value = new InputSlot<float>();
+        [Input(Guid = "AAD1E576-F144-423F-83B5-5694B1119C23")]
+        public readonly InputSlot<Vector2> OutputRange = new InputSlot<Vector2>();
+
+        [Input(Guid = "4636D6CF-8233-4281-8840-5BA079B5F1A6")]
+        public readonly InputSlot<float> DefaultMidiValue = new InputSlot<float>();
+
+        [Input(Guid = "3B350FF2-004C-457B-983D-21D11A01D170")]
+        public readonly InputSlot<bool> AllowPresets = new InputSlot<bool>();
 
         [Input(Guid = "7C681EE6-D071-4284-8585-1C3E03A089EA")]
         public readonly InputSlot<bool> TeachTrigger = new InputSlot<bool>();
@@ -31,22 +37,11 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
         [Input(Guid = "DF81B7B3-F39E-4E5D-8B97-F29DD576A76D")]
         public readonly InputSlot<int> Control = new InputSlot<int>();
 
-        [Input(Guid = "AAD1E576-F144-423F-83B5-5694B1119C23")]
-        public readonly InputSlot<Vector2> OutputRange = new InputSlot<Vector2>();
-
-        [Input(Guid = "4636D6CF-8233-4281-8840-5BA079B5F1A6")]
-        public readonly InputSlot<float> DefaultMidiValue = new InputSlot<float>();
-
-        private bool UsePickup = false;
-
-        [Input(Guid = "3B350FF2-004C-457B-983D-21D11A01D170")]
-        public readonly InputSlot<bool> AllowPresets = new InputSlot<bool>();
+        [Input(Guid = "F650985F-00A7-452A-B3E4-69A8E9A78C3F")]
+        public readonly InputSlot<Size2> ControlRange = new InputSlot<Size2>();
 
         [Input(Guid = "6C15E743-9A70-47E7-A0A4-75636817E441")]
         public readonly InputSlot<bool> PrintLogMessages = new InputSlot<bool>();
-
-        [Input(Guid = "F650985F-00A7-452A-B3E4-69A8E9A78C3F")]
-        public readonly InputSlot<Size2> ControlRange = new InputSlot<Size2>();
 
         public MidiInput()
         {
@@ -67,8 +62,6 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
 
         private void Update(EvaluationContext context)
         {
-            var v = Value.GetValue(context);
-
             _trainedDeviceName = Device.GetValue(context);
             _trainedChannel = Channel.GetValue(context);
             _trainedControllerId = Control.GetValue(context);
@@ -109,8 +102,8 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
                         Control.DirtyFlag.Invalidate();
 
                         _trainedDeviceName = _lastMessageDevice.ProductName;
-                        _trainedChannel = (int)_lastMatchingSignal.Channel;
-                        _trainedControllerId = (int)_lastMatchingSignal.ControllerId;
+                        _trainedChannel = _lastMatchingSignal.Channel;
+                        _trainedControllerId = _lastMatchingSignal.ControllerId;
                         _teachingActive = false;
 
                         TeachTrigger.TypedInputValue.Value = false;
@@ -122,7 +115,6 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
                     _lastMatchingSignal = null;
                 }
             }
-
 
             if (_isDefaultValue)
             {
@@ -145,7 +137,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
                 if (logInformation)
                     Log.Debug("Scanning " + deviceInfo.ProductName);
 
-                MidiIn newMidiIn = null;
+                MidiIn newMidiIn;
                 try
                 {
                     newMidiIn = new MidiIn(index);
@@ -155,12 +147,6 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
                     Log.Error(" > " + e.Message + " " + MidiIn.DeviceInfo(index).ProductName);
                     continue;
                 }
-
-                // if (newMidiIn == null)
-                // {
-                //     Log.Error("Could not get device for Id" + index);
-                //     continue;
-                // }
 
                 foreach (var midiInstance in _instances)
                 {
@@ -216,8 +202,8 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
             }
         }
 
-        private bool _onlyAcceptControlChanges = true;
-        private bool _onlyAcceptNotes;
+        private const bool OnlyAcceptControlChanges = true;
+        private const bool OnlyAcceptNotes = false;
 
         private void ErrorReceivedHandler(object sender, MidiInMessageEventArgs msg)
         {
@@ -235,8 +221,8 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
                     return;
 
                 MidiSignal newSignal = null;
-                var acceptControlChanges = !_onlyAcceptNotes; // && _outputMode != OutputModes.MidiSync;
-                var acceptNotes = _onlyAcceptControlChanges; // _inputMode != InputModes.ControlChangesOnly && _outputMode != OutputModes.MidiSync;
+                var acceptControlChanges = !OnlyAcceptNotes; // && _outputMode != OutputModes.MidiSync;
+                var acceptNotes = OnlyAcceptControlChanges; // _inputMode != InputModes.ControlChangesOnly && _outputMode != OutputModes.MidiSync;
 
                 var device = _midiInsWithDevices[midiIn];
 
@@ -244,7 +230,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
                 {
                     if (_printLogMessages)
                         Log.Debug("" + controlEvent + "  ControlValue :" + controlEvent.ControllerValue);
-                    
+
                     newSignal = new MidiSignal()
                                     {
                                         Channel = controlEvent.Channel,
@@ -312,16 +298,12 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
         private static List<MidiInput> _instances = new List<MidiInput>();
         private static Dictionary<MidiIn, MidiInCapabilities> _midiInsWithDevices = new Dictionary<MidiIn, MidiInCapabilities>();
 
-        private bool _gotSyncSignal = false;
-
         private class MidiSignal
         {
             public int Channel;
             public int ControllerId;
             public int ControllerValue;
         }
-
-        private Vector2 _outputRange;
 
         #region implement IMidiInput ------------------------------
         public string GetDevice()
