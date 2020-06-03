@@ -52,6 +52,9 @@ namespace T3.Operators.Types.Id_4f89b41b_1643_442b_bec8_9f9ef2173baa
         [Input(Guid = "6b0bdd9a-248d-410f-9b0e-de20df937775")]
         public readonly InputSlot<float> MixOriginal = new InputSlot<float>();
 
+        [Input(Guid = "54252e04-8f91-4ea5-91a6-f1f66f6da0a6")]
+        public readonly InputSlot<float> Feather = new InputSlot<float>();
+
         [Input(Guid = "fd22eaf6-ed3c-4e63-985c-3a3756ecaef2")]
         public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
     }
