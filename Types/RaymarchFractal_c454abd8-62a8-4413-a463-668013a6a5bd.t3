@@ -611,7 +611,7 @@
         {
           "Id": "ceeae47b-d792-471d-a825-49e22749b7b9"/*InputString*/,
           "Type": "System.String",
-          "Value": "\np.x %= 0.4;\np.y %= 0.3;\np.z %= 1;\nd=dBox(p, float3(1,1,1)*0.1); \n//d = length( p - float3(0,0,0)) /4;"
+          "Value": "p.x %= 0.4;\np.y %= 0.3;\np.z %= 1;\nd=dBox(p, float3(1,1,1)*0.1); \n//d = length( p - float3(0,0,0)) /4;"
         }
       ],
       "Outputs": []
@@ -678,6 +678,30 @@
           "Id": "b6bf6fe1-6733-46c0-a274-fab2a950f606"/*WobbleSpeed*/,
           "Type": "System.Single",
           "Value": 0.6666666
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "aa6712c4-ff7c-4fc7-9796-c819c6bbea7f"/*String*/,
+      "SymbolId": "5880cbc3-a541-4484-a06a-0e6f77cdbe8e",
+      "InputValues": [
+        {
+          "Id": "ceeae47b-d792-471d-a825-49e22749b7b9"/*InputString*/,
+          "Type": "System.String",
+          "Value": "asdfasdf\n\nI am not sure if we actually need this."
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "4f37f026-8b85-47b3-bd5d-2191582eede9"/*String*/,
+      "SymbolId": "5880cbc3-a541-4484-a06a-0e6f77cdbe8e",
+      "InputValues": [
+        {
+          "Id": "ceeae47b-d792-471d-a825-49e22749b7b9"/*InputString*/,
+          "Type": "System.String",
+          "Value": "Original?"
         }
       ],
       "Outputs": []
@@ -755,6 +779,12 @@
       "SourceSlotId": "dd9d8718-addc-49b1-bd33-aac22b366f94",
       "TargetParentOrChildId": "3d64e060-b61f-4420-8545-96d598a4c6df",
       "TargetSlotId": "de8297ae-c7d8-414a-8825-d0ff9c2e3d78"
+    },
+    {
+      "SourceParentOrChildId": "aa6712c4-ff7c-4fc7-9796-c819c6bbea7f",
+      "SourceSlotId": "dd9d8718-addc-49b1-bd33-aac22b366f94",
+      "TargetParentOrChildId": "4f37f026-8b85-47b3-bd5d-2191582eede9",
+      "TargetSlotId": "ceeae47b-d792-471d-a825-49e22749b7b9"
     },
     {
       "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",

@@ -43,7 +43,7 @@ namespace T3.Operators.Types.Id_8171c2f5_96df_41f6_884c_dbd004ae8a17
             }
             catch (Exception e)
             {
-                Log.Warning("Failed to parse number format");
+                Log.Warning("Failed to convert number:" + e.Message);
             }
 
             Result.Value = result;

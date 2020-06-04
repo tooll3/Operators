@@ -29,11 +29,10 @@ namespace T3.Operators.Types.Id_b7910fc6_c3b2_4daf_93cd_010dcfe22a57
             {
                 Result.Value= Regex.Replace(content, pattern, replace, RegexOptions.Multiline| RegexOptions.Singleline);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Log.Error($"'{pattern}' is an incorrect search pattern");
             }
-             
         }
         
         [Input(Guid = "3ca66cbd-a16a-479c-b858-84732e5023ad")]

@@ -13,7 +13,7 @@ namespace T3.Operators.Types.Id_0db15e2d_b457_44d7_bb58_ace0a0708073
         [Output(Guid = "b5627217-63cf-49c6-b864-3f9af74b7a94")]
         public readonly Slot<string> Result = new Slot<string>();
 
-        [Output(Guid = "D6234491-B051-4387-895A-6FA8C3C8AC37")]
+        [Output(Guid = "D6234491-B051-4387-895A-6FA8C3C8AC37", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<string> OutFilepath = new Slot<string>();
 
         public WriteToFile()
@@ -27,6 +27,7 @@ namespace T3.Operators.Types.Id_0db15e2d_b457_44d7_bb58_ace0a0708073
             var filepath = Filepath.GetValue(context);
             if (content != _lastContent)
             {
+                Log.Debug("Writing file " + filepath);
                 try
                 {
                     File.WriteAllText(filepath, content);
@@ -37,6 +38,10 @@ namespace T3.Operators.Types.Id_0db15e2d_b457_44d7_bb58_ace0a0708073
                 }
                 
                 _lastContent = content;
+            }
+            else
+            {
+                Log.Debug("Just updating???");
             }
 
             Result.Value = Content.GetValue(context);
