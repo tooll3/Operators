@@ -37,6 +37,9 @@ namespace T3.Operators.Types.Id_c8590f8f_cca1_434a_a880_67bb91920e1a
 
         [Input(Guid = "9786d2b3-2cff-40fb-8ab7-d96f3ac3dd76")]
         public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
+
+        [Input(Guid = "8232e748-5fc2-488d-8559-ac9ff621f95d")]
+        public readonly InputSlot<float> Rotate = new InputSlot<float>();
     }
 }
 
