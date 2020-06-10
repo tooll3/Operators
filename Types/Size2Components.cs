@@ -17,11 +17,15 @@ namespace T3.Operators.Types.Id_f86358e0_2573_4acd_9a90_e95108e8a4da
         [Output(Guid = "894E22A0-B3D0-425E-9BB9-A0CBB821D4DE")]
         public readonly Slot<int> Length = new Slot<int>();
 
+        [Output(Guid = "DD31C09B-CB39-44FF-9CC8-2AEDEC4E758B")]
+        public readonly Slot<float> AspectRatio = new Slot<float>();
+
         public Size2Components()
         {
             Width.UpdateAction = Update;
             Height.UpdateAction = Update;
             Length.UpdateAction = Update;
+            AspectRatio.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)
@@ -30,6 +34,7 @@ namespace T3.Operators.Types.Id_f86358e0_2573_4acd_9a90_e95108e8a4da
             Width.Value = r.Width;
             Height.Value = r.Height;
             Length.Value = r.Width * r.Height;
+            AspectRatio.Value = (float)r.Width / (r).Height;
         }
         
         [Input(Guid = "425BA347-D82A-49EC-B8B4-D0F8F7E3A504")]

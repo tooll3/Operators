@@ -28,9 +28,10 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
             var reset = Reset.GetValue(context);
             var jump = Jump.GetValue(context);
 
-            if (!_initialized || reset || float.IsNaN(_offset.X) || float.IsNaN(_offset.Y))
+            if (!_initialized || reset || float.IsNaN(_offset.X) || float.IsNaN(_offset.Y) || seed != _seed)
             {
                 _random = new Random(seed);
+                _seed = seed;
                 _offset = Vector2.Zero;
                 _initialized = true;
                 jump = true;
@@ -94,7 +95,8 @@ namespace T3.Operators.Types.Id_23794a1f_372d_484b_ac31_9470d0e77819
 
         
         private bool UseRate => _rate > 0.0001f;
-        
+
+        private int _seed = 0;
         private float _rate;
         private double _beatTime;
 

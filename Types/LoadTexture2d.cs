@@ -1,5 +1,7 @@
-﻿using SharpDX.Direct3D11;
+﻿using System;
+using SharpDX.Direct3D11;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -36,16 +38,23 @@ namespace T3.Operators.Types.Id_0b3436db_e283_436e_ba85_2f3a1de76a9d
             var resourceManager = ResourceManager.Instance();
             if (Path.DirtyFlag.IsDirty)
             {
-                string imagePath = Path.GetValue(context);
-                (_textureResId, _srvResId) = resourceManager.CreateTextureFromFile(imagePath, () =>
-                                                                                              {
-                                                                                                  Texture.DirtyFlag.Invalidate();
-                                                                                                  ShaderResourceView.DirtyFlag.Invalidate();
-                                                                                              });
-                if (resourceManager.Resources.TryGetValue(_textureResId, out var resource1) && resource1 is TextureResource textureResource)
-                    Texture.Value = textureResource.Texture;
-                if (resourceManager.Resources.TryGetValue(_srvResId, out var resource2) && resource2 is ShaderResourceViewResource srvResource)
-                    ShaderResourceView.Value = srvResource.ShaderResourceView;
+                    string imagePath = Path.GetValue(context);
+                try
+                {
+                    (_textureResId, _srvResId) = resourceManager.CreateTextureFromFile(imagePath, () =>
+                                                                                                  {
+                                                                                                      Texture.DirtyFlag.Invalidate();
+                                                                                                      ShaderResourceView.DirtyFlag.Invalidate();
+                                                                                                  });
+                    if (resourceManager.Resources.TryGetValue(_textureResId, out var resource1) && resource1 is TextureResource textureResource)
+                        Texture.Value = textureResource.Texture;
+                    if (resourceManager.Resources.TryGetValue(_srvResId, out var resource2) && resource2 is ShaderResourceViewResource srvResource)
+                        ShaderResourceView.Value = srvResource.ShaderResourceView;
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"Filed to create texture from file '{imagePath}':" + e.Message);
+                }
             }
             else
             {
@@ -58,6 +67,6 @@ namespace T3.Operators.Types.Id_0b3436db_e283_436e_ba85_2f3a1de76a9d
         }
 
         [Input(Guid = "{76CC3811-4AE0-48B2-A119-890DB5A4EEB2}")]
-        public readonly InputSlot<string> Path = new InputSlot<string>();
+        public readonly InputSlot<string> Path = new InputSlot<string>();        
     }
 }

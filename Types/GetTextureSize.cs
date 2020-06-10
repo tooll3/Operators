@@ -10,10 +10,13 @@ namespace T3.Operators.Types.Id_daec568f_f7b4_4d81_a401_34d62462daab
         [Output(Guid = "be16d5d3-4d21-4d5a-9e4c-c7b2779b6bdc", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<SharpDX.Size2> Size = new Slot<SharpDX.Size2>();
 
+        [Output(Guid = "895C3BDD-38A8-4613-A8B2-503EC9D493C8", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<System.Numerics.Vector2> SizeFloat = new Slot<System.Numerics.Vector2>();
         
         public GetTextureSize()
         {
             Size.UpdateAction = Update;
+            SizeFloat.UpdateAction = Update;
             //Size.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
@@ -40,6 +43,7 @@ namespace T3.Operators.Types.Id_daec568f_f7b4_4d81_a401_34d62462daab
                 Size.Value = context.RequestedResolution;
                 //Size.Value = new Size2(0,0);
             }
+            SizeFloat.Value = new System.Numerics.Vector2(Size.Value.Width, Size.Value.Height);
         }
 
         private enum Modes
