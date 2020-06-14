@@ -17,7 +17,8 @@ namespace T3.Operators.Types.Id_1677fd74_6e54_479a_b478_c2ac77288f9c
 
         private void Update(EvaluationContext context)
         {
-            var hue = Hue.GetValue(context)*360f; // + Saturation.GetValue(context);
+            var hue = (Hue.GetValue(context) % 1) *360f; // + Saturation.GetValue(context);
+            
             var sat = Saturation.GetValue(context);// + Saturation.GetValue(context);
             var brightness = Brightness.GetValue(context);// + Saturation.GetValue(context);
 
