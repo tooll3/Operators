@@ -30,6 +30,9 @@ namespace T3.Operators.Types.Id_6820b166_1782_43b9_bc5c_6b4f63b16f86
 
         [Input(Guid = "03298545-a5d6-44d5-bb7c-4747172d2667")]
         public readonly InputSlot<System.Numerics.Vector2> Direction = new InputSlot<System.Numerics.Vector2>();
+
+        [Input(Guid = "3c615aa0-61b7-43c5-bea3-8d1110b4f5cd")]
+        public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
     }
 }
 
