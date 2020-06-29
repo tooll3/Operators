@@ -8,7 +8,6 @@ namespace T3.Operators.Types.Id_d7ca8763_ad6e_42dd_bb02_ee0a0abb2565
 {
     public class ListAppender : Instance<ListAppender>
     {
-
         [Output(Guid = "b435c25e-358e-4c89-b48e-feace1049476")]
         public readonly Slot<System.Collections.Generic.List<string>> OutputList = new Slot<System.Collections.Generic.List<string>>();
 
@@ -27,6 +26,8 @@ namespace T3.Operators.Types.Id_d7ca8763_ad6e_42dd_bb02_ee0a0abb2565
             
             for (int i = 0; i < count; i++)
             {
+                DirtyFlag.InvalidationRefFrame++;
+                Input.Invalidate();
                 OutputList.Value.Add(Input.GetValue(context));
             }
         }
@@ -36,7 +37,5 @@ namespace T3.Operators.Types.Id_d7ca8763_ad6e_42dd_bb02_ee0a0abb2565
 
         [Input(Guid = "869b79a2-40d0-42a3-a0a7-b00579888543")]
         public readonly InputSlot<int> Count = new InputSlot<int>();
-        
-        
     }
 }

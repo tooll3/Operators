@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Linq;
 using SharpDX.Direct3D11;
 using T3.Core.Logging;
 using T3.Core.Operator;
@@ -25,10 +26,10 @@ namespace T3.Operators.Types.Id_9eafb45c_2d1c_4110_aa64_cdef1b27e1a1
         {
             Index.UpdateAction = Update;
             IndexUNorm.UpdateAction = Update;
-            IndexUNorm.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
+            // IndexUNorm.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
             Count.UpdateAction = UpdateCount;
             Element.UpdateAction = Update;
-            Element.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
+            // Element.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
         }
 
         public void UpdateCount(EvaluationContext context)
@@ -46,8 +47,11 @@ namespace T3.Operators.Types.Id_9eafb45c_2d1c_4110_aa64_cdef1b27e1a1
             if (Input.Value.Count > 0)
             {
                 Index.Value = _index;
+                Index.DirtyFlag.Clear();
                 IndexUNorm.Value = (float)_index / (Input.Value.Count - 1);
+                IndexUNorm.DirtyFlag.Clear();
                 Element.Value = Input.Value[_index];
+                Element.DirtyFlag.Clear();
             }
 
             if (++_index == Input.Value.Count)
