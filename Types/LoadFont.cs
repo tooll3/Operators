@@ -1,15 +1,15 @@
 using System;
-using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
+using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
+using T3.Operators.Utils.BmFont;
 
 namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
 {
@@ -31,6 +31,9 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
         [Input(Guid = "43A65A57-35B1-4816-8F1D-8A192F908603")]
         public readonly InputSlot<Vector4> Shadow = new InputSlot<Vector4>();
 
+        [Input(Guid = "5008E9B4-083A-4494-8F7C-50FE5D80FC35")]
+        public readonly InputSlot<float> Size = new InputSlot<float>();
+        
         [Input(Guid = "E05E143E-8D4C-4DE7-8C9C-7FA7755009D3")]
         public readonly InputSlot<float> Spacing = new InputSlot<float>();
 
@@ -46,15 +49,24 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
         [Input(Guid = "E43BC887-D425-4F9C-8A86-A32C761DE0CC")]
         public readonly InputSlot<int> HorizontalAlign = new InputSlot<int>();
 
-        [Output(Guid = "973aebfa-e15d-4943-a9b8-91e6702329d0")]
-        public readonly Slot<string> Result = new Slot<string>();
+        // Outputs
+
+        [Output(Guid = "3D2F53A3-F1F0-489B-B20B-BADB09CDAEBE")]
+        public readonly Slot<SharpDX.Direct3D11.Buffer> Buffer = new Slot<SharpDX.Direct3D11.Buffer>();
+
+        [Output(Guid = "A0ECA9CE-35AA-497D-B5C9-CDE52A7C8D58")]
+        public readonly Slot<int> VertexCount = new Slot<int>();
+
+        // [Output(Guid = "973aebfa-e15d-4943-a9b8-91e6702329d0")]
+        // public readonly Slot<string> Result = new Slot<string>();
 
         public LoadFont()
         {
-            Result.UpdateAction = Update;
+            Buffer.UpdateAction = Update;
+            //Result.UpdateAction = Update;
         }
 
-        private BmFont.Font _font = null;
+        private Font _font = null;
         private bool _openedOnce = false;
 
         private void Update(EvaluationContext context)
@@ -64,14 +76,14 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
             if (!_openedOnce && (Filepath.DirtyFlag.IsDirty || _font == null))
             {
                 var filepath = Filepath.GetValue(context);
-                Log.Debug(File.ReadAllText(filepath));
+                //Log.Debug(File.ReadAllText(filepath));
 
-                XmlSerializer serializer = new XmlSerializer(typeof(BmFont.Font));
+                var serializer = new XmlSerializer(typeof(Font));
                 _openedOnce = true;
                 try
                 {
                     var stream = new FileStream(filepath, FileMode.Open);
-                    _font = (BmFont.Font)serializer.Deserialize(stream);
+                    _font = (Font)serializer.Deserialize(stream);
                     Log.Debug("loaded font with character count:" + _font.Chars.Length);
                     stream.Close();
                 }
@@ -90,65 +102,30 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
         private float _slant;
         private int _horizontalAlign;
         private int _verticalAlign;
+        private float _size;
 
         private float _lastWidth;
 
         private void UpdateMesh(EvaluationContext context)
         {
-            var somethingChanged = false;
-
-            if (Text.DirtyFlag.IsDirty)
-            {
-                _text = Text.GetValue(context);
-                if (_text == "")
-                    _text = " "; // prevent crash error
-
-                somethingChanged = true;
-            }
-
-            if (VerticalAlign.DirtyFlag.IsDirty)
-            {
-                _horizontalAlign = (int)HorizontalAlign.GetValue(context);
-                somethingChanged = true;
-            }
-
-            if (VerticalAlign.DirtyFlag.IsDirty)
-            {
-                _verticalAlign = (int)VerticalAlign.GetValue(context);
-                somethingChanged = true;
-            }
-
-            if (Spacing.DirtyFlag.IsDirty)
-            {
-                _characterSpacing = Spacing.GetValue(context);
-                somethingChanged = true;
-            }
-
-            if (Slant.DirtyFlag.IsDirty)
-            {
-                _slant = Slant.GetValue(context);
-                somethingChanged = true;
-            }
-
-            if (LineHeight.DirtyFlag.IsDirty)
-            {
-                _lineHeight = LineHeight.GetValue(context);
-                somethingChanged = true;
-            }
-
-            if (!somethingChanged)
-            {
+            _text = Text.GetValue(context);
+            if (string.IsNullOrEmpty(_text))
                 return;
-            }
 
-            var numCharactersInText = _text.Length;
+            _horizontalAlign = (int)HorizontalAlign.GetValue(context);
+            _verticalAlign = (int)VerticalAlign.GetValue(context);
+            _characterSpacing = Spacing.GetValue(context);
+            _slant = Slant.GetValue(context);
+            _lineHeight = LineHeight.GetValue(context);
+            _size = Size.GetValue(context);
+
             var numLinesInText = _text.Split('\n').Length;
 
             var normal = new Vector3(0.0f, 0.0f, -1.0f);
             var color = Color.GetValue(context);
             var tangent = new Vector3(1.0f, 0.0f, 0.0f);
             var binormal = new Vector3(0.0f, -1.0f, 0.0f);
-            
+
             var fontFile = _font;
             float textureWidth = fontFile.Common.ScaleW;
             float textureHeight = fontFile.Common.ScaleH;
@@ -165,11 +142,15 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
                     break;
             }
 
-            const float scale = 0.01f;
+            //const float scale = 0.01f;
             var maxWidth = float.NegativeInfinity;
             var lineWidth = float.NaN;
 
-            for (int charIndex = 0; charIndex < _text.Length; ++charIndex)
+            if (_bufferContent == null || _bufferContent.Length != _text.Length)
+                _bufferContent = new BufferLayout[_text.Length];
+
+            uint outputIndex = 0;
+            for (var charIndex = 0; charIndex < _text.Length; charIndex++, outputIndex++)
             {
                 // Compute line width for horizontal Alignment                    
                 if (float.IsNaN(lineWidth))
@@ -190,6 +171,7 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
                         {
                             continue;
                         }
+
                         var kerning2 = 0.0f;
 
                         if (charIndex + lookAheadIndex < _text.Length - 1 && _text[charIndex + lookAheadIndex + 1] != '\n')
@@ -253,13 +235,31 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
                 // float uRight = (charInfo.X + charInfo.Width)/textureWidth;
                 // float vBottom = (charInfo.Y + charInfo.Height)/textureHeight;
 
-                var sizeWidth = charInfo.Width * scale;
-                var sizeHeight = charInfo.Height * scale;
-                var x = cursorX + charInfo.XOffset;
-                var y = cursorY + charInfo.YOffset;
+                var sizeWidth = charInfo.Width * _size;
+                var sizeHeight = charInfo.Height * _size;
+                var x = (cursorX + charInfo.XOffset) * _size;
+                var y = (cursorY - charInfo.YOffset) * _size;
 
-                Log.Debug($"{charToDraw} => {sizeHeight:0.00}x{sizeHeight:0.00}  @ {x:0.000}  {y:0.000}");
-                
+                //Log.Debug($"{charToDraw} => {sizeHeight:0.00}x{sizeHeight:0.00}  @ {x:0.000}  {y:0.000}");
+                _bufferContent[outputIndex] = new BufferLayout()
+                                                  {
+                                                      Position = new Vector3(x, y, 0),
+                                                      Size = sizeHeight,
+                                                      Orientation = new Vector3(0, 1, 0),
+                                                      AspectRatio = sizeWidth / sizeHeight,
+                                                      Color = color,
+                                                      UvMinMax = new Vector4(
+                                                                             charInfo.X / textureWidth, //uLeft = 
+                                                                             charInfo.Y / textureHeight, //vTop = 
+                                                                             (charInfo.X + charInfo.Width) / textureWidth, //uRight 
+                                                                             (charInfo.Y + charInfo.Height) /
+                                                                             textureHeight //vBottom                              
+                                                                            ),
+                                                      BirthTime = (float)context.TimeInBars,
+                                                      Speed = 0,
+                                                      Id = outputIndex,
+                                                  };
+
                 var kerning = 0.0f;
                 if (charIndex < _text.Length - 1)
                 {
@@ -272,35 +272,46 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
                 cursorX += _characterSpacing;
                 // numTriangles += 2;
             }
+            ResourceManager.Instance().SetupStructuredBuffer(_bufferContent, ref Buffer.Value);
+            Buffer.Value.DebugName = nameof(LoadFont);
+
+            VertexCount.Value = _text.Length * 6;
 
             _lastWidth = maxWidth;
         }
-        
-        
+
         private BufferLayout[] _bufferContent;
 
         // Must be multiple of 16
         [StructLayout(LayoutKind.Explicit, Size = 32)]
         public struct BufferLayout
         {
-            public BufferLayout(Vector2 pos, Vector2 uv, float highlight)
-            {
-                Pos = pos;
-                Uv = uv;
-                Highlight = highlight;
-            }
-
             [FieldOffset(0)]
-            public Vector2 Pos;
-            
-            [FieldOffset(2*4)]
-            public Vector2 Uv;
-            
-            [FieldOffset(4*4)]
-            public float Highlight;
-        }       
-        
+            public Vector3 Position;
+
+            [FieldOffset(3 * 4)]
+            public float Size;
+
+            [FieldOffset(4 * 4)]
+            public Vector3 Orientation;
+
+            [FieldOffset(7 * 4)]
+            public float AspectRatio;
+
+            [FieldOffset(8 * 4)]
+            public Vector4 Color;
+
+            [FieldOffset(12 * 4)]
+            public Vector4 UvMinMax;
+
+            [FieldOffset(16 * 4)]
+            public float BirthTime;
+
+            [FieldOffset(17 * 4)]
+            public float Speed;
+
+            [FieldOffset(18 * 4)]
+            public uint Id;
+        }
     }
 }
-
-
