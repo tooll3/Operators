@@ -67,19 +67,17 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
         }
 
         private Font _font = null;
-        private bool _openedOnce = false;
 
         private void Update(EvaluationContext context)
         {
             //var triggerUpdate = TriggerUpdate.GetValue(context);
 
-            if (!_openedOnce && (Filepath.DirtyFlag.IsDirty || _font == null))
+            if (Filepath.DirtyFlag.IsDirty || _font == null)
             {
                 var filepath = Filepath.GetValue(context);
                 //Log.Debug(File.ReadAllText(filepath));
 
                 var serializer = new XmlSerializer(typeof(Font));
-                _openedOnce = true;
                 try
                 {
                     var stream = new FileStream(filepath, FileMode.Open);
@@ -110,6 +108,9 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
         {
             _text = Text.GetValue(context);
             if (string.IsNullOrEmpty(_text))
+                return;
+
+            if (_font == null)
                 return;
 
             _horizontalAlign = (int)HorizontalAlign.GetValue(context);
