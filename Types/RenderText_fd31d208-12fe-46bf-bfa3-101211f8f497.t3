@@ -27,6 +27,33 @@
     {
       "Id": "50c9ab21-39f4-4e92-b5a7-ad9e60ae6ec3"/*FontPath*/,
       "DefaultValue": "Resources\\fonts\\Roboto-Black.fnt"
+    },
+    {
+      "Id": "d89c518c-a862-4f46-865b-0380350b7417"/*Size*/,
+      "DefaultValue": 0.0
+    },
+    {
+      "Id": "eaf9dc37-e70f-4197-895c-b5607456b4a2"/*LineHeight*/,
+      "DefaultValue": 1.0
+    },
+    {
+      "Id": "835d7f17-9de4-4612-a2f0-01c1346cdf1a"/*Spacing*/,
+      "DefaultValue": 0.0
+    },
+    {
+      "Id": "de0fed7d-d2af-4424-baf3-81606e26559f"/*Position*/,
+      "DefaultValue": {
+        "X": 0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "Id": "ae7f7e83-fa18-44fd-b639-3bd0dbd3ac06"/*VerticalAlign*/,
+      "DefaultValue": 0
+    },
+    {
+      "Id": "82cc31ff-3307-4b6d-be70-16e471c2ffc9"/*HorizontalAlign*/,
+      "DefaultValue": 0
     }
   ],
   "Children": [
@@ -371,8 +398,9 @@
       "Outputs": []
     },
     {
-      "Id": "143c7600-57f9-4e58-8185-04293704d041"/*LoadFont*/,
+      "Id": "143c7600-57f9-4e58-8185-04293704d041"/*_RenderFontBuffer*/,
       "SymbolId": "c5707b79-859b-4d53-92e0-cbed53aae648",
+      "Name": "_RenderFontBuffer",
       "InputValues": [
         {
           "Id": "f2dd87b1-7f37-4b02-871b-b2e35972f246"/*Text*/,
@@ -405,6 +433,11 @@
           }
         },
         {
+          "Id": "5008e9b4-083a-4494-8f7c-50fe5d80fc35"/*Size*/,
+          "Type": "System.Single",
+          "Value": 0.07803333
+        },
+        {
           "Id": "e05e143e-8d4c-4de7-8c9c-7fa7755009d3"/*Spacing*/,
           "Type": "System.Single",
           "Value": -1.67333329
@@ -428,11 +461,6 @@
           "Id": "e43bc887-d425-4f9c-8a86-a32c761de0cc"/*HorizontalAlign*/,
           "Type": "System.Int32",
           "Value": 1
-        },
-        {
-          "Id": "5008e9b4-083a-4494-8f7c-50fe5d80fc35"/*Size*/,
-          "Type": "System.Single",
-          "Value": 0.07803333
         }
       ],
       "Outputs": []
@@ -521,6 +549,42 @@
       "SourceSlotId": "a0eca9ce-35aa-497d-b5c9-cde52a7c8d58",
       "TargetParentOrChildId": "0f61fb31-eab8-401d-83b6-ce5bc54409fe",
       "TargetSlotId": "8716b11a-ef71-437e-9930-bb747da818a7"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "ae7f7e83-fa18-44fd-b639-3bd0dbd3ac06",
+      "TargetParentOrChildId": "143c7600-57f9-4e58-8185-04293704d041",
+      "TargetSlotId": "14829eac-ba59-4d31-90dc-53c7fc56cc30"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "d89c518c-a862-4f46-865b-0380350b7417",
+      "TargetParentOrChildId": "143c7600-57f9-4e58-8185-04293704d041",
+      "TargetSlotId": "5008e9b4-083a-4494-8f7c-50fe5d80fc35"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "eaf9dc37-e70f-4197-895c-b5607456b4a2",
+      "TargetParentOrChildId": "143c7600-57f9-4e58-8185-04293704d041",
+      "TargetSlotId": "9eb4e13f-0fe3-4ed9-9df1-814f075a05da"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "de0fed7d-d2af-4424-baf3-81606e26559f",
+      "TargetParentOrChildId": "143c7600-57f9-4e58-8185-04293704d041",
+      "TargetSlotId": "c4f03392-ff7e-4b4a-8740-f93a581b2b6b"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "835d7f17-9de4-4612-a2f0-01c1346cdf1a",
+      "TargetParentOrChildId": "143c7600-57f9-4e58-8185-04293704d041",
+      "TargetSlotId": "e05e143e-8d4c-4de7-8c9c-7fa7755009d3"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "82cc31ff-3307-4b6d-be70-16e471c2ffc9",
+      "TargetParentOrChildId": "143c7600-57f9-4e58-8185-04293704d041",
+      "TargetSlotId": "e43bc887-d425-4f9c-8a86-a32c761de0cc"
     },
     {
       "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
