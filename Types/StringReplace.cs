@@ -7,12 +7,12 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_b7910fc6_c3b2_4daf_93cd_010dcfe22a57
 {
-    public class ReplaceString : Instance<ReplaceString>
+    public class StringReplace : Instance<StringReplace>
     {
         [Output(Guid = "15672e8f-c483-432e-8ced-f2bd18c1be67")]
         public readonly Slot<string> Result = new Slot<string>();
 
-        public ReplaceString()
+        public StringReplace()
         {
             Result.UpdateAction = Update;
         }

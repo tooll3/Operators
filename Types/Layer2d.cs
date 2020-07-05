@@ -25,10 +25,13 @@ namespace T3.Operators.Types.Id_d8c5330f_59b5_4907_b845_a02def3042fa
         public readonly InputSlot<System.Numerics.Vector2> Position = new InputSlot<System.Numerics.Vector2>();
 
         [Input(Guid = "4618d8e0-2718-4373-a071-88ec1843b0c8")]
-        public readonly InputSlot<System.Numerics.Vector2> Size = new InputSlot<System.Numerics.Vector2>();
+        public readonly InputSlot<System.Numerics.Vector2> Stretch = new InputSlot<System.Numerics.Vector2>();
 
         [Input(Guid = "da0941c9-c700-4552-9d8a-799bf7a08826")]
         public readonly InputSlot<float> Rotate = new InputSlot<float>();
+
+        [Input(Guid = "38f34034-b36f-4351-84e1-1a4f96e03fc6")]
+        public readonly InputSlot<float> Size = new InputSlot<float>();
 
     }
 }

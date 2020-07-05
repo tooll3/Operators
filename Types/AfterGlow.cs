@@ -13,9 +13,6 @@ namespace T3.Operators.Types.Id_d75de240_28a1_48cc_9b8f_388272188023
         [Output(Guid = "36d50979-ceae-4087-886e-eeaf1b33d73b")]
         public readonly Slot<T3.Core.Command> CombinedLayers = new Slot<T3.Core.Command>();
 
-        [Output(Guid = "5ce2a0cf-f9b7-4d86-b7a2-43a0d9e3d7ca")]
-        public readonly Slot<float> ContrastOffset = new Slot<float>();
-
         [Input(Guid = "4a83673a-c0ec-4dba-9ce0-b71cb2ee0849")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Image = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 

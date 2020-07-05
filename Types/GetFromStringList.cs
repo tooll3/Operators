@@ -10,6 +10,10 @@ namespace T3.Operators.Types.Id_ef357e66_24e9_4f54_8d86_869db74602f4
         [Output(Guid = "467bb46e-3391-48a7-b0eb-f7fd9d77b60f")]
         public readonly Slot<string> Selected = new Slot<string>();
 
+        [Output(Guid = "83009BD4-5257-44A2-8091-92B7D2FA5E35")]
+        public readonly Slot<int> Count = new Slot<int>();
+
+        
         public GetFromStringList()
         {
             Selected.UpdateAction = Update;
@@ -21,10 +25,12 @@ namespace T3.Operators.Types.Id_ef357e66_24e9_4f54_8d86_869db74602f4
             if (list == null)
             { 
                 Selected.Value= string.Empty;
+                Count.Value = 0;
                 return;
             }
 
             var count = list.Count;
+            Count.Value = count;
             if (count == 0)
             {
                 Selected.Value = string.Empty;
