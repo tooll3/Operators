@@ -35,6 +35,7 @@ namespace T3.Operators.Types.Id_000e08d0_669f_48df_9083_7aa0a43bbc05
         {
             var deviceContext = _d3dDevice.ImmediateContext;
             bool enabled = Enabled.GetValue(context);
+            bool logToConsole = LogToConsole.GetValue(context);
 
             if (enabled && _readyToMeasure)
             {
@@ -63,12 +64,19 @@ namespace T3.Operators.Types.Id_000e08d0_669f_48df_9083_7aa0a43bbc05
 
                 if (dataFetched && !disjointData.Disjoint)
                 {
-                    float duration = (float)(timeStampframeEnd - timeStampframeBegin) / disjointData.Frequency;
-                    Log.Debug($"Subtree took: {duration}s on GPU.");
+                    float durationInS = (float)(timeStampframeEnd - timeStampframeBegin) / disjointData.Frequency;
+                    int usDuration = (int)(durationInS * 1000f * 1000f);
+                    if (logToConsole)
+                    {
+                        Log.Debug($"Subtree took: {usDuration}us on GPU.");
+                    }
+                    LastMeasureInUS = usDuration;
                     _readyToMeasure = true;
                 }
             }
         }
+
+        public int LastMeasureInUS { get; private set; }
 
         private readonly Device _d3dDevice;
         private GpuQuery _queryTimeStampDisjoint;
@@ -81,5 +89,8 @@ namespace T3.Operators.Types.Id_000e08d0_669f_48df_9083_7aa0a43bbc05
 
         [Input(Guid = "0c7ec1ae-e8d0-4acb-8050-44768f827b56")]
         public readonly InputSlot<bool> Enabled = new InputSlot<bool>();
+
+        [Input(Guid = "e430cc80-9003-4a56-af5d-f5820434c074")]
+        public readonly InputSlot<bool> LogToConsole = new InputSlot<bool>();
     }
 }
