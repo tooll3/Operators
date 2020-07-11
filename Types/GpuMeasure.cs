@@ -70,13 +70,13 @@ namespace T3.Operators.Types.Id_000e08d0_669f_48df_9083_7aa0a43bbc05
                     {
                         Log.Debug($"Subtree took: {usDuration}us on GPU.");
                     }
-                    LastMeasureInUS = usDuration;
+                    LastMeasureInMicroSeconds = usDuration;
                     _readyToMeasure = true;
                 }
             }
         }
 
-        public int LastMeasureInUS { get; private set; }
+        public int LastMeasureInMicroSeconds { get; private set; }
 
         private readonly Device _d3dDevice;
         private GpuQuery _queryTimeStampDisjoint;
