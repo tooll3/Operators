@@ -17,7 +17,7 @@ namespace T3.Operators.Types.Id_4cdc0f90_6ce9_4a03_9cd0_efeddee70567
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Image = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
         [Input(Guid = "dc99dcb5-481e-4b43-afdf-ad6d318ed24f")]
-        public readonly InputSlot<float> Copies = new InputSlot<float>();
+        public readonly InputSlot<float> Count = new InputSlot<float>();
 
         [Input(Guid = "85d5e801-f9f2-41d6-9d7b-3fbfda781fca")]
         public readonly InputSlot<float> Bias = new InputSlot<float>();

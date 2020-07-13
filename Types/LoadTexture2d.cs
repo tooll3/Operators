@@ -62,8 +62,15 @@ namespace T3.Operators.Types.Id_0b3436db_e283_436e_ba85_2f3a1de76a9d
                 resourceManager.CreateShaderResourceView(_textureResId, "", ref ShaderResourceView.Value);
             }
 
-            if (ShaderResourceView.Value != null)
-                resourceManager.Device.ImmediateContext.GenerateMips(ShaderResourceView.Value);
+            try
+            {
+                if (ShaderResourceView.Value != null)
+                    resourceManager.Device.ImmediateContext.GenerateMips(ShaderResourceView.Value);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed to generate mipmaps for texture {Path.GetValue(context)}:" + e);
+            }
         }
 
         [Input(Guid = "{76CC3811-4AE0-48B2-A119-890DB5A4EEB2}")]
