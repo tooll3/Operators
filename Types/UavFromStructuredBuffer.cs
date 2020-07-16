@@ -29,7 +29,7 @@ namespace T3.Operators.Types.Id_0b5b14bf_c850_493a_afb1_72643926e214
 
             var symbolChild = Parent.Symbol.Children.Single(c => c.Id == SymbolChildId);
             UnorderedAccessView.Value.DebugName = symbolChild.ReadableName;
-            Log.Info($"{symbolChild.ReadableName} updated with ref {UnorderedAccessView.DirtyFlag.Reference}");
+            // Log.Info($"{symbolChild.ReadableName} updated with ref {UnorderedAccessView.DirtyFlag.Reference}");
         }
 
         [Input(Guid = "5d888f13-0ad8-4034-99ca-da36c8fb261c")]
