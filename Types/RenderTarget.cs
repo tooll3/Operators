@@ -121,7 +121,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                     var colorDesc = new Texture2DDescription()
                                         {
                                             ArraySize = 1,
-                                            BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                                            BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource | BindFlags.UnorderedAccess,
                                             CpuAccessFlags = CpuAccessFlags.None,
                                             Format = colorFormat,
                                             Width = size.Width,
