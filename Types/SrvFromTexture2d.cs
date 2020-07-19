@@ -1,5 +1,7 @@
-﻿using System;
+using System;
+using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
+using SharpDX.DXGI;
 using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
@@ -25,7 +27,25 @@ namespace T3.Operators.Types.Id_c2078514_cf1d_439c_a732_0d7b31b5084a
             if (texture != null)
             {
                 ShaderResourceView.Value?.Dispose();
-                ShaderResourceView.Value = new ShaderResourceView(resourceManager.Device, texture); // todo: create via resource manager
+                if ((texture.Description.BindFlags & BindFlags.DepthStencil) > 0)
+                {
+                    // it's a depth stencil texture, so we need to set the format explicitly
+                    var desc = new ShaderResourceViewDescription()
+                                   {
+                                       Format = Format.R32_Float,
+                                       Dimension = ShaderResourceViewDimension.Texture2D,
+                                       Texture2D = new ShaderResourceViewDescription.Texture2DResource
+                                                       {
+                                                           MipLevels = 1,
+                                                           MostDetailedMip = 0
+                                                       }
+                                   };
+                    ShaderResourceView.Value = new ShaderResourceView(resourceManager.Device, texture, desc);
+                }
+                else
+                {
+                    ShaderResourceView.Value = new ShaderResourceView(resourceManager.Device, texture); // todo: create via resource manager
+                }
             }
             else
             {
