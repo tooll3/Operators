@@ -104,7 +104,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
         private bool UpdateTextures(Device device, Size2 size, Format colorFormat, Format depthFormat, bool generateMips)
         {
             int w = Math.Max(size.Width, size.Height);
-            int mipLevels = generateMips ? (int)(Math.Log10(w) / Math.Log10(2)) + 1 : 1;
+            int mipLevels = generateMips ? (int)MathUtils.Log2(w) + 1 : 1;
             // Log.Debug($"miplevel: {mipLevels}, w: {w}");
             bool colorBufferNeedsUpdate = _colorBuffer == null || _colorBuffer.Description.Width != size.Width ||
                                           _colorBuffer.Description.Height != size.Height || _colorBuffer.Description.Format != colorFormat ||
