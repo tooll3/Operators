@@ -164,9 +164,9 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                     var depthDesc = new Texture2DDescription()
                                         {
                                             ArraySize = 1,
-                                            BindFlags = BindFlags.DepthStencil,
+                                            BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource,
                                             CpuAccessFlags = CpuAccessFlags.None,
-                                            Format = depthFormat,
+                                            Format = Format.R32_Typeless,
                                             Width = size.Width,
                                             Height = size.Height,
                                             MipLevels = 1,
@@ -175,7 +175,12 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                             Usage = ResourceUsage.Default
                                         };
                     _depthBuffer = new Texture2D(device, depthDesc);
-                    _depthBufferDsv = new DepthStencilView(device, _depthBuffer);
+                    var depthViewDesc = new DepthStencilViewDescription()
+                                            {
+                                                Format = Format.D32_Float,
+                                                Dimension = DepthStencilViewDimension.Texture2D
+                                            };
+                    _depthBufferDsv = new DepthStencilView(device, _depthBuffer, depthViewDesc);
                     _wasCleared = false;
                 }
                 catch
