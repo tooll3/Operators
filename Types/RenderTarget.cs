@@ -18,11 +18,15 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
     public class RenderTarget : Instance<RenderTarget>
     {
         [Output(Guid = "7A4C4FEB-BE2F-463E-96C6-CD9A6BAD77A2")]
-        public readonly Slot<Texture2D> Output = new Slot<Texture2D>();
+        public readonly Slot<Texture2D> ColorBuffer = new Slot<Texture2D>();
 
+        [Output(Guid = "8bb0b18f-4fad-4348-a4fa-95b40c4167a4")]
+        public readonly Slot<Texture2D> DepthBuffer = new Slot<Texture2D>();
+        
         public RenderTarget()
         {
-            Output.UpdateAction = Update;
+            ColorBuffer.UpdateAction = Update;
+            DepthBuffer.UpdateAction = Update;
         }
 
         private const int MaximumTexture2DSize = SharpDX.Direct3D11.Resource.MaximumTexture2DSize;
@@ -93,7 +97,8 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
             prevDepthStencilView?.Dispose();
 
-            Output.Value = _colorBuffer;
+            ColorBuffer.Value = _colorBuffer;
+            DepthBuffer.Value = _depthBuffer;
         }
 
         private bool UpdateTextures(Device device, Size2 size, Format colorFormat, Format depthFormat, bool generateMips)
