@@ -1,7 +1,3 @@
-using SharpDX.Direct3D11;
-using SharpDX.Direct3D11;
-using System;
-using System;
 using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
