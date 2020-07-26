@@ -56,7 +56,7 @@ namespace T3.Operators.Types.Id_94a85a93_7d5c_401c_930c_c3a97a32932f
             csStage.SetConstantBuffer(0, _parameterConstBuffer);
             csStage.SetUnorderedAccessView(0, uav1);
 
-            const int numBufferElements = 512 * 512 * 2;
+            const int numBufferElements = 2 << 17;//512 * 512 * 2;
             const int bitonicBlockSize = 1024;
 
             if (_level <= bitonicBlockSize)
@@ -105,6 +105,10 @@ namespace T3.Operators.Types.Id_94a85a93_7d5c_401c_930c_c3a97a32932f
                 _level = 2;
             }
 
+            csStage.SetUnorderedAccessView(0, null);
+            csStage.SetUnorderedAccessView(1, null);
+            csStage.SetShaderResource(0, null);
+            csStage.SetShaderResource(1, null);
             csStage.SetConstantBuffer(0, prevConstBuffer);
             csStage.Set(prevShader);
         }
