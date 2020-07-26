@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
@@ -10,14 +11,24 @@ using Utilities = T3.Core.Utilities;
 
 namespace T3.Operators.Types.Id_6fae395d_c3a0_4693_a3dc_8959cda5a92b
 {
-    public class RandomIntBuffer : Instance<RandomIntBuffer>
+    public class RandomParticleIndexBuffer : Instance<RandomParticleIndexBuffer>
     {
         [Output(Guid = "72f61c86-36bf-49cc-9263-0dcd9d617aa2")]
         public readonly Slot<SharpDX.Direct3D11.Buffer> Buffer = new Slot<SharpDX.Direct3D11.Buffer>();
 
-        public RandomIntBuffer()
+        public RandomParticleIndexBuffer()
         {
             Buffer.UpdateAction = UpdateBuffer;
+        }
+
+
+        [StructLayout(LayoutKind.Explicit, Size = 8)]
+        struct ParticleIndex
+        {
+            [FieldOffset(0)]
+            public int index;
+            [FieldOffset(4)]
+            public float squaredDistToCamera;
         }
 
         private void UpdateBuffer(EvaluationContext context)
@@ -29,18 +40,19 @@ namespace T3.Operators.Types.Id_6fae395d_c3a0_4693_a3dc_8959cda5a92b
 
             if (_data == null || count != _data.Length)
             {
-                _data = new int[count];
+                _data = new ParticleIndex[count];
                 var random = new Random(0);
                 for (int i = 0; i < count; i++)
                 {
-                    _data[i] = random.Next(0, 100000);
+                    _data[i].index = i;
+                    _data[i].squaredDistToCamera = random.Next(0, 100000);
                 }
             }
 
             ResourceManager.Instance().SetupStructuredBuffer(_data, ref Buffer.Value);
         }
 
-        private int[] _data;
+        private ParticleIndex[] _data;
 
         [Input(Guid = "26c21fa9-3788-42b5-a6ce-68f8907e98f3")]
         public readonly InputSlot<int> Count = new InputSlot<int>();
