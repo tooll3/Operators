@@ -7,12 +7,12 @@ namespace T3.Operators.Types.Id_b724ea74_d5d7_4928_9cd1_7a7850e4e179
 {
     public class SampleCurve : Instance<SampleCurve>
     {
-        [Output(Guid = "1A20C791-A1FE-4A14-A9CF-615691948F2D")]
-        public readonly Slot<Curve> CurveOutput = new Slot<Curve>();
-        
         [Output(Guid = "fc51bee8-091c-4c66-a7df-12f6f69e3783")]
         public readonly Slot<float> Result = new Slot<float>();
         
+        [Output(Guid = "1A20C791-A1FE-4A14-A9CF-615691948F2D")]
+        public readonly Slot<Curve> CurveOutput = new Slot<Curve>();
+
         public SampleCurve()
         {
             Result.UpdateAction = Update;

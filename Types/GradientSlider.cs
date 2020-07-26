@@ -8,8 +8,6 @@ namespace T3.Operators.Types.Id_8211249d_7a26_4ad0_8d84_56da72a5c536
 {
     public class GradientSlider : Instance<GradientSlider>
     {
-        [Output(Guid = "8c950a47-9642-4ad5-8bed-a7ea5acd27b6")]
-        public readonly Slot<float> Result = new Slot<float>();
         
         [Output(Guid = "963611E7-F55E-4C94-96E6-34E195558A2B")]
         public readonly Slot<Vector4> Color = new Slot<Vector4>();
@@ -20,7 +18,6 @@ namespace T3.Operators.Types.Id_8211249d_7a26_4ad0_8d84_56da72a5c536
 
         public GradientSlider()
         {
-            Result.UpdateAction = Update;
             Color.UpdateAction = Update;
             OutGradient.UpdateAction = Update;
         }
