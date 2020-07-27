@@ -29,19 +29,14 @@ namespace T3.Operators.Types.Id_94a85a93_7d5c_401c_930c_c3a97a32932f
             }
 
             var uav1 = BufferUav.GetValue(context);
-            if (uav1 == null)
-            {
-                return;
-            }
-
             var uav2 = BufferUav2.GetValue(context);
-            if (uav2 == null)
-            {
-                return;
-            }
-
             var srv1 = BufferSrv.GetValue(context);
             var srv2 = BufferSrv2.GetValue(context);
+            bool spreadOverFrames = SpreadOverFrames.GetValue(context);
+            if (uav1 == null || uav2 == null)
+            {
+                return;
+            }
 
             var resourceManager = ResourceManager.Instance();
             var device = resourceManager.Device;
@@ -56,53 +51,97 @@ namespace T3.Operators.Types.Id_94a85a93_7d5c_401c_930c_c3a97a32932f
             csStage.SetConstantBuffer(0, _parameterConstBuffer);
             csStage.SetUnorderedAccessView(0, uav1);
 
-            const int numBufferElements = 2 << 17;//512 * 512 * 2;
+            const int numBufferElements = 4096; //512 * 512 * 2;
             const int bitonicBlockSize = 1024;
 
-            if (_level <= bitonicBlockSize)
-                // for (int level = 2; level <= bitonicBlockSize; level <<= 1)
+            if (spreadOverFrames)
             {
-                Int4 sortParams = new Int4(_level, _level, bitonicBlockSize, numBufferElements / bitonicBlockSize);
-                resourceManager.SetupConstBuffer(sortParams, ref _parameterConstBuffer);
-                deviceContext.Dispatch(numBufferElements / bitonicBlockSize, 1, 1);
+                if (_level <= bitonicBlockSize)
+                    // for (int level = 2; level <= bitonicBlockSize; level <<= 1)
+                {
+                    Int4 sortParams = new Int4(_level, _level, bitonicBlockSize, numBufferElements / bitonicBlockSize);
+                    resourceManager.SetupConstBuffer(sortParams, ref _parameterConstBuffer);
+                    deviceContext.Dispatch(numBufferElements / bitonicBlockSize, 1, 1);
+                }
+                else
+                {
+                    const int matWidth = bitonicBlockSize;
+                    const int matHeight = numBufferElements / bitonicBlockSize;
+                    // Then sort the rows and columns for the levels > than the block size
+                    // Transpose. Sort the Columns. Transpose. Sort the Rows.
+                    // for (int level = (bitonicBlockSize * 2); level <= numBufferElements; level <<= 1)
+                    // {
+                    csStage.Set(transposeShader);
+                    csStage.SetShaderResource(0, null);
+                    csStage.SetUnorderedAccessView(0, null);
+                    csStage.SetShaderResource(0, srv1);
+                    csStage.SetUnorderedAccessView(0, uav2);
+                    Int4 param = new Int4(_level / bitonicBlockSize, (_level & ~numBufferElements) / bitonicBlockSize, matWidth, matHeight);
+                    resourceManager.SetupConstBuffer(param, ref _parameterConstBuffer);
+                    deviceContext.Dispatch(matWidth / 32, matHeight / 32, 1);
+
+                    csStage.Set(sortShader);
+                    deviceContext.Dispatch(numBufferElements / bitonicBlockSize, 1, 1);
+
+                    csStage.Set(transposeShader);
+                    csStage.SetShaderResource(0, null);
+                    csStage.SetUnorderedAccessView(0, null);
+                    csStage.SetShaderResource(0, srv2);
+                    csStage.SetUnorderedAccessView(0, uav1);
+                    param = new Int4(bitonicBlockSize, _level, matHeight, matWidth);
+                    resourceManager.SetupConstBuffer(param, ref _parameterConstBuffer);
+                    deviceContext.Dispatch(matHeight / 32, matWidth / 32, 1);
+
+                    csStage.Set(sortShader);
+                    deviceContext.Dispatch(numBufferElements / bitonicBlockSize, 1, 1);
+                }
+
+                _level <<= 1;
+                if (_level > numBufferElements)
+                {
+                    _level = 2;
+                }
             }
             else
             {
+                // single frame sort
+                for (int level = 2; level <= bitonicBlockSize; level <<= 1)
+                {
+                    Int4 sortParams = new Int4(level, level, bitonicBlockSize, numBufferElements / bitonicBlockSize);
+                    resourceManager.SetupConstBuffer(sortParams, ref _parameterConstBuffer);
+                    deviceContext.Dispatch(numBufferElements / bitonicBlockSize, 1, 1);
+                }
+
                 const int matWidth = bitonicBlockSize;
                 const int matHeight = numBufferElements / bitonicBlockSize;
                 // Then sort the rows and columns for the levels > than the block size
                 // Transpose. Sort the Columns. Transpose. Sort the Rows.
-                // for (int level = (bitonicBlockSize * 2); level <= numBufferElements; level <<= 1)
-                // {
-                csStage.Set(transposeShader);
-                csStage.SetShaderResource(0, null);
-                csStage.SetUnorderedAccessView(0, null);
-                csStage.SetShaderResource(0, srv1);
-                csStage.SetUnorderedAccessView(0, uav2);
-                Int4 param = new Int4(_level / bitonicBlockSize, (_level & ~numBufferElements) / bitonicBlockSize, matWidth, matHeight);
-                resourceManager.SetupConstBuffer(param, ref _parameterConstBuffer);
-                deviceContext.Dispatch(matWidth / 32, matHeight / 32, 1);
+                for (int level = (bitonicBlockSize * 2); level <= numBufferElements; level <<= 1)
+                {
+                    csStage.Set(transposeShader);
+                    csStage.SetShaderResource(0, null);
+                    csStage.SetUnorderedAccessView(0, null);
+                    csStage.SetShaderResource(0, srv1);
+                    csStage.SetUnorderedAccessView(0, uav2);
+                    Int4 param = new Int4(level / bitonicBlockSize, (level & ~numBufferElements) / bitonicBlockSize, matWidth, matHeight);
+                    resourceManager.SetupConstBuffer(param, ref _parameterConstBuffer);
+                    deviceContext.Dispatch(matWidth / 32, matHeight / 32, 1);
 
-                csStage.Set(sortShader);
-                deviceContext.Dispatch(numBufferElements / bitonicBlockSize, 1, 1);
+                    csStage.Set(sortShader);
+                    deviceContext.Dispatch(numBufferElements / bitonicBlockSize, 1, 1);
 
-                csStage.Set(transposeShader);
-                csStage.SetShaderResource(0, null);
-                csStage.SetUnorderedAccessView(0, null);
-                csStage.SetShaderResource(0, srv2);
-                csStage.SetUnorderedAccessView(0, uav1);
-                param = new Int4(bitonicBlockSize, _level, matHeight, matWidth);
-                resourceManager.SetupConstBuffer(param, ref _parameterConstBuffer);
-                deviceContext.Dispatch(matHeight / 32, matWidth / 32, 1);
+                    csStage.Set(transposeShader);
+                    csStage.SetShaderResource(0, null);
+                    csStage.SetUnorderedAccessView(0, null);
+                    csStage.SetShaderResource(0, srv2);
+                    csStage.SetUnorderedAccessView(0, uav1);
+                    param = new Int4(bitonicBlockSize, level, matHeight, matWidth);
+                    resourceManager.SetupConstBuffer(param, ref _parameterConstBuffer);
+                    deviceContext.Dispatch(matHeight / 32, matWidth / 32, 1);
 
-                csStage.Set(sortShader);
-                deviceContext.Dispatch(numBufferElements / bitonicBlockSize, 1, 1);
-            }
-
-            _level <<= 1;
-            if (_level > numBufferElements)
-            {
-                _level = 2;
+                    csStage.Set(sortShader);
+                    deviceContext.Dispatch(numBufferElements / bitonicBlockSize, 1, 1);
+                }
             }
 
             csStage.SetUnorderedAccessView(0, null);
@@ -157,6 +196,9 @@ namespace T3.Operators.Types.Id_94a85a93_7d5c_401c_930c_c3a97a32932f
 
         [Input(Guid = "5dfdc602-00c9-4125-b49d-ca15c769f43e")]
         public readonly InputSlot<SharpDX.Direct3D11.ShaderResourceView> BufferSrv2 = new InputSlot<SharpDX.Direct3D11.ShaderResourceView>();
+
+        [Input(Guid = "8c4e6ec3-5de6-4477-9ea1-6a5fd173e784")]
+        public readonly InputSlot<bool> SpreadOverFrames = new InputSlot<bool>();
 
         private int _level = 2;
     }
