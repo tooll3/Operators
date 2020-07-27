@@ -45,7 +45,7 @@ namespace T3.Operators.Types.Id_6fae395d_c3a0_4693_a3dc_8959cda5a92b
                 for (int i = 0; i < count; i++)
                 {
                     _data[i].index = i;
-                    _data[i].squaredDistToCamera = random.Next(0, 100000);
+                    _data[i].squaredDistToCamera = random.Next(-10000, 10000);
                 }
             }
 
