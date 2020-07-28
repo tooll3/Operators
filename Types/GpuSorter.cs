@@ -51,7 +51,7 @@ namespace T3.Operators.Types.Id_94a85a93_7d5c_401c_930c_c3a97a32932f
             csStage.SetConstantBuffer(0, _parameterConstBuffer);
             csStage.SetUnorderedAccessView(0, uav1);
 
-            const int numBufferElements = 4096; //512 * 512 * 2;
+            const int numBufferElements = 32*1024; //512 * 512 * 2;
             const int bitonicBlockSize = 1024;
 
             if (spreadOverFrames)
