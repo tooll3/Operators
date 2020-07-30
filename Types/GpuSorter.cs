@@ -51,8 +51,8 @@ namespace T3.Operators.Types.Id_94a85a93_7d5c_401c_930c_c3a97a32932f
             csStage.SetConstantBuffer(0, _parameterConstBuffer);
             csStage.SetUnorderedAccessView(0, uav1);
 
-            const int numBufferElements = 32*1024; //512 * 512 * 2;
-            const int bitonicBlockSize = 1024;
+            int numBufferElements = uav1.Description.Buffer.ElementCount; //;32*1024; //512 * 512 * 2;
+            int bitonicBlockSize = 1024;
 
             if (spreadOverFrames)
             {
@@ -65,8 +65,8 @@ namespace T3.Operators.Types.Id_94a85a93_7d5c_401c_930c_c3a97a32932f
                 }
                 else
                 {
-                    const int matWidth = bitonicBlockSize;
-                    const int matHeight = numBufferElements / bitonicBlockSize;
+                    int matWidth = bitonicBlockSize;
+                    int matHeight = numBufferElements / bitonicBlockSize;
                     // Then sort the rows and columns for the levels > than the block size
                     // Transpose. Sort the Columns. Transpose. Sort the Rows.
                     // for (int level = (bitonicBlockSize * 2); level <= numBufferElements; level <<= 1)
@@ -112,8 +112,8 @@ namespace T3.Operators.Types.Id_94a85a93_7d5c_401c_930c_c3a97a32932f
                     deviceContext.Dispatch(numBufferElements / bitonicBlockSize, 1, 1);
                 }
 
-                const int matWidth = bitonicBlockSize;
-                const int matHeight = numBufferElements / bitonicBlockSize;
+                int matWidth = bitonicBlockSize;
+                int matHeight = numBufferElements / bitonicBlockSize;
                 // Then sort the rows and columns for the levels > than the block size
                 // Transpose. Sort the Columns. Transpose. Sort the Rows.
                 for (int level = (bitonicBlockSize * 2); level <= numBufferElements; level <<= 1)
