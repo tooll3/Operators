@@ -1,6 +1,7 @@
 ﻿using System;
 using SharpDX;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -15,10 +16,24 @@ namespace T3.Operators.Types.Id_284d2183_197d_47fd_b130_873cced78b1c
         public Transform()
         {
             Output.UpdateAction = Update;
+            _updateCallback = DrawTransformGizmo;
+        }
+
+        private static void DrawTransformGizmo(Transform transform, EvaluationContext context)
+        {
+            var s = transform.Scale.GetValue(context);
+            var r = transform.Rotation.GetValue(context);
+            float yaw = MathUtil.DegreesToRadians(r.Y);
+            float pitch = MathUtil.DegreesToRadians(r.X);
+            float roll = MathUtil.DegreesToRadians(r.Z);
+            var t = transform.Translation.GetValue(context);
+            // Log.Debug($"{t}");
         }
 
         private void Update(EvaluationContext context)
         {
+            _updateCallback?.Invoke(this, context);
+
             var s = Scale.GetValue(context);
             var r = Rotation.GetValue(context);
             float yaw = MathUtil.DegreesToRadians(r.Y);
