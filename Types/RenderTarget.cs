@@ -181,6 +181,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                                 Dimension = DepthStencilViewDimension.Texture2D
                                             };
                     _depthBufferDsv = new DepthStencilView(device, _depthBuffer, depthViewDesc);
+                    Log.Debug("new depth stencil view");
                     _wasCleared = false;
                 }
                 catch
