@@ -1,38 +1,33 @@
 ﻿using System;
 using SharpDX;
 using T3.Core;
-using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Interfaces;
 using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_284d2183_197d_47fd_b130_873cced78b1c
 {
-    public class Transform : Instance<Transform>
+    public class Transform : Instance<Transform>, ITransformable
     {
         [Output(Guid = "2D329133-29B9-4F56-B5A6-5FF7D83638FA", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
+        // implementation of ITransformable
+        System.Numerics.Vector3 ITransformable.Translation { get => Translation.Value; set => Translation.TypedInputValue.Value = value; }
+        System.Numerics.Vector3 ITransformable.Rotation { get => Rotation.Value; set => Rotation.TypedInputValue.Value = value; }
+        System.Numerics.Vector3 ITransformable.Scale { get => Scale.Value; set => Scale.TypedInputValue.Value = value; }
+        public Action<ITransformable, EvaluationContext> TransformCallback { get; set; }
+
+        
         public Transform()
         {
             Output.UpdateAction = Update;
-            _updateCallback = DrawTransformGizmo;
-        }
-
-        private static void DrawTransformGizmo(Transform transform, EvaluationContext context)
-        {
-            var s = transform.Scale.GetValue(context);
-            var r = transform.Rotation.GetValue(context);
-            float yaw = MathUtil.DegreesToRadians(r.Y);
-            float pitch = MathUtil.DegreesToRadians(r.X);
-            float roll = MathUtil.DegreesToRadians(r.Z);
-            var t = transform.Translation.GetValue(context);
-            // Log.Debug($"{t}");
         }
 
         private void Update(EvaluationContext context)
         {
-            _updateCallback?.Invoke(this, context);
+            TransformCallback?.Invoke(this, context);
 
             var s = Scale.GetValue(context);
             var r = Rotation.GetValue(context);
@@ -57,5 +52,6 @@ namespace T3.Operators.Types.Id_284d2183_197d_47fd_b130_873cced78b1c
         public readonly InputSlot<System.Numerics.Vector3> Rotation = new InputSlot<System.Numerics.Vector3>();
         [Input(Guid = "DA4CD6C8-2307-45DA-9258-49C578025AA8")]
         public readonly InputSlot<System.Numerics.Vector3> Scale = new InputSlot<System.Numerics.Vector3>();
+
     }
 }
