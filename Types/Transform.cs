@@ -14,9 +14,9 @@ namespace T3.Operators.Types.Id_284d2183_197d_47fd_b130_873cced78b1c
         public readonly Slot<Command> Output = new Slot<Command>();
 
         // implementation of ITransformable
-        System.Numerics.Vector3 ITransformable.Translation { get => Translation.Value; set => Translation.TypedInputValue.Value = value; }
-        System.Numerics.Vector3 ITransformable.Rotation { get => Rotation.Value; set => Rotation.TypedInputValue.Value = value; }
-        System.Numerics.Vector3 ITransformable.Scale { get => Scale.Value; set => Scale.TypedInputValue.Value = value; }
+        System.Numerics.Vector3 ITransformable.Translation { get => Translation.Value; set => Translation.SetTypedInputValue(value); }
+        System.Numerics.Vector3 ITransformable.Rotation { get => Rotation.Value; set => Rotation.SetTypedInputValue(value); }
+        System.Numerics.Vector3 ITransformable.Scale { get => Scale.Value; set => Scale.SetTypedInputValue(value); }
         public Action<ITransformable, EvaluationContext> TransformCallback { get; set; }
 
         
