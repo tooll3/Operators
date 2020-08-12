@@ -19,6 +19,9 @@ namespace T3.Operators.Types.Id_c6911113_9411_4706_ad16_9e7bf58ad6c6
         [Input(Guid = "7d0e8a44-367c-4eb0-8fa3-d26a67a5ec35")]
         public readonly InputSlot<Texture2D> Texture = new InputSlot<Texture2D>();
 
+        [Input(Guid = "d9e528ba-0aa1-42b2-8169-984d7a340228")]
+        public readonly InputSlot<int> EmitCountPerFrame = new InputSlot<int>();
+
     }
 }
 
