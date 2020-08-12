@@ -6,12 +6,12 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_94a5de3b_ee6a_43d3_8d21_7b8fe94b042b
 {
-    public class Float2ToVector3 : Instance<Float2ToVector3>
+    public class Float3ToVector3 : Instance<Float3ToVector3>
     {
         [Output(Guid = "AEDAEAD8-CCF0-43F0-9188-A79AF8D45250")]
         public readonly Slot<System.Numerics.Vector3> Result = new Slot<System.Numerics.Vector3>();
 
-        public Float2ToVector3()
+        public Float3ToVector3()
         {
             Result.UpdateAction = Update;
         }

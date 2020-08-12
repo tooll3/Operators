@@ -22,6 +22,12 @@ namespace T3.Operators.Types.Id_c6911113_9411_4706_ad16_9e7bf58ad6c6
         [Input(Guid = "d9e528ba-0aa1-42b2-8169-984d7a340228")]
         public readonly InputSlot<int> EmitCountPerFrame = new InputSlot<int>();
 
+        [Input(Guid = "ddac1768-0073-4158-9929-9c309d902429")]
+        public readonly InputSlot<System.Numerics.Vector2> LifeTime = new InputSlot<System.Numerics.Vector2>();
+
+        [Input(Guid = "2735e77e-ac99-4290-81b3-9b6a51c9a299")]
+        public readonly InputSlot<int> EmitterId = new InputSlot<int>();
+
     }
 }
 

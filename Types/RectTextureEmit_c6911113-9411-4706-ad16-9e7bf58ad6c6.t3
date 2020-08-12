@@ -14,6 +14,17 @@
     {
       "Id": "d9e528ba-0aa1-42b2-8169-984d7a340228"/*EmitCountPerFrame*/,
       "DefaultValue": 500
+    },
+    {
+      "Id": "ddac1768-0073-4158-9929-9c309d902429"/*LifeTime*/,
+      "DefaultValue": {
+        "X": 0.0,
+        "Y": 0.0
+      }
+    },
+    {
+      "Id": "2735e77e-ac99-4290-81b3-9b6a51c9a299"/*EmitterId*/,
+      "DefaultValue": 0
     }
   ],
   "Children": [
@@ -97,6 +108,30 @@
         }
       ],
       "Outputs": []
+    },
+    {
+      "Id": "c2dbfdf2-aa7a-456a-94b0-dde47922ff39"/*ParamConstBuffer*/,
+      "SymbolId": "c30542d5-609c-452a-9168-78964a3a0927",
+      "InputValues": [],
+      "Outputs": []
+    },
+    {
+      "Id": "3a78efe0-08c5-4f15-b1ea-5e78de5a5fee"/*Vector2ToFloat2*/,
+      "SymbolId": "0946c48b-85d8-4072-8f21-11d17cc6f6cf",
+      "InputValues": [],
+      "Outputs": []
+    },
+    {
+      "Id": "e2f6da1a-d5c9-45f7-9080-fc935b9b5a15"/*FloatsToBuffer*/,
+      "SymbolId": "724da755-2d0c-42ab-8335-8c88ec5fb078",
+      "InputValues": [],
+      "Outputs": []
+    },
+    {
+      "Id": "c3888584-619d-45e5-8a7f-2a7d835ff29b"/*IntToFloat*/,
+      "SymbolId": "17db8a36-079d-4c83-8a2a-7ea4c1aa49e6",
+      "InputValues": [],
+      "Outputs": []
     }
   ],
   "Connections": [
@@ -105,6 +140,12 @@
       "SourceSlotId": "e81c99ce-fcee-4e7c-a1c7-0aa3b352b7e1",
       "TargetParentOrChildId": "00000000-0000-0000-0000-000000000000",
       "TargetSlotId": "4efe1aa1-fc4c-495d-a25d-bcffe6491611"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "ddac1768-0073-4158-9929-9c309d902429",
+      "TargetParentOrChildId": "3a78efe0-08c5-4f15-b1ea-5e78de5a5fee",
+      "TargetSlotId": "36f14238-5bb8-4521-9533-f4d1e8fb802b"
     },
     {
       "SourceParentOrChildId": "87acea3b-ec66-4edc-8277-dc40368edd2e",
@@ -155,6 +196,12 @@
       "TargetSlotId": "3ac041c8-2c75-425a-9935-ed6db5da5cd2"
     },
     {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "2735e77e-ac99-4290-81b3-9b6a51c9a299",
+      "TargetParentOrChildId": "c3888584-619d-45e5-8a7f-2a7d835ff29b",
+      "TargetSlotId": "01809b63-4b4a-47be-9588-98d5998ddb0c"
+    },
+    {
       "SourceParentOrChildId": "4b3f2bd8-2eb4-4c4f-9e36-bd30d5456e79",
       "SourceSlotId": "35c0e513-812f-49e2-96fa-17541751c19b",
       "TargetParentOrChildId": "c8f47aed-64df-4920-a849-efa19d842761",
@@ -175,6 +222,12 @@
     {
       "SourceParentOrChildId": "3ebbe7cd-3e42-4103-93d1-dd179fa68667",
       "SourceSlotId": "c1829f6f-8be2-4a14-bc9c-5ab88ab3f588",
+      "TargetParentOrChildId": "c8f47aed-64df-4920-a849-efa19d842761",
+      "TargetSlotId": "34cf06fe-8f63-4f14-9c59-35a2c021b817"
+    },
+    {
+      "SourceParentOrChildId": "e2f6da1a-d5c9-45f7-9080-fc935b9b5a15",
+      "SourceSlotId": "f5531ffb-dbde-45d3-af2a-bd90bcbf3710",
       "TargetParentOrChildId": "c8f47aed-64df-4920-a849-efa19d842761",
       "TargetSlotId": "34cf06fe-8f63-4f14-9c59-35a2c021b817"
     },
@@ -201,6 +254,24 @@
       "SourceSlotId": "dc71f39f-3fba-4fc6-b8ef-ce57c82bf78e",
       "TargetParentOrChildId": "c8f47aed-64df-4920-a849-efa19d842761",
       "TargetSlotId": "88938b09-d5a7-437c-b6e1-48a5b375d756"
+    },
+    {
+      "SourceParentOrChildId": "3a78efe0-08c5-4f15-b1ea-5e78de5a5fee",
+      "SourceSlotId": "1cee5adb-8c3c-4575-bdd6-5669c04d55ce",
+      "TargetParentOrChildId": "e2f6da1a-d5c9-45f7-9080-fc935b9b5a15",
+      "TargetSlotId": "49556d12-4cd1-4341-b9d8-c356668d296c"
+    },
+    {
+      "SourceParentOrChildId": "3a78efe0-08c5-4f15-b1ea-5e78de5a5fee",
+      "SourceSlotId": "305d321d-3334-476a-9fa3-4847912a4c58",
+      "TargetParentOrChildId": "e2f6da1a-d5c9-45f7-9080-fc935b9b5a15",
+      "TargetSlotId": "49556d12-4cd1-4341-b9d8-c356668d296c"
+    },
+    {
+      "SourceParentOrChildId": "c3888584-619d-45e5-8a7f-2a7d835ff29b",
+      "SourceSlotId": "db1073a1-b9d8-4d52-bc5c-7ae8c0ee1ac3",
+      "TargetParentOrChildId": "e2f6da1a-d5c9-45f7-9080-fc935b9b5a15",
+      "TargetSlotId": "49556d12-4cd1-4341-b9d8-c356668d296c"
     }
   ]
 }
