@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using System.Security.Policy;
 using T3.Core;
 using T3.Core.Operator;
@@ -9,8 +10,8 @@ namespace T3.Operators.Types.Id_50aab941_0a29_474a_affd_13a74ea0c780
 {
     public class PerlinNoise3 : Instance<PerlinNoise3>
     {
-        [Output(Guid = "fd0361e0-ce71-4c57-b217-1fdb082ecd45")]
-        public readonly Slot<float> Result = new Slot<float>();
+        [Output(Guid = "1666BC49-4DAE-4CB0-900B-80B50F913117")]
+        public readonly Slot<Vector3> Result = new Slot<Vector3>();
 
         public PerlinNoise3()
         {
@@ -23,13 +24,13 @@ namespace T3.Operators.Types.Id_50aab941_0a29_474a_affd_13a74ea0c780
             var seed = Seed.GetValue(context);
             var period = Frequency.GetValue(context);
             var octaves = Octaves.GetValue(context);
-            //var zoom = Zoom.GetValue(context);
             var rangeMin = RangeMin.GetValue(context);
             var rangeMax = RangeMax.GetValue(context);
 
-            //var noiseSum = ComputePerlinNoise(value, period, octaves, seed);
-            var noiseSum  = MathUtils.PerlinNoise(value, period, octaves, seed);
-            Result.Value = (noiseSum + 1f) * 0.5f * (rangeMax - rangeMin) + rangeMin;
+            Result.Value  = new Vector3(
+                                          (MathUtils.PerlinNoise(value, period, octaves, seed) + 1f) * 0.5f * (rangeMax - rangeMin) + rangeMin,
+                                          (MathUtils.PerlinNoise(value, period, octaves, seed+123) + 1f) * 0.5f * (rangeMax - rangeMin) + rangeMin,
+                                          (MathUtils.PerlinNoise(value, period, octaves, seed+234) + 1f) * 0.5f * (rangeMax - rangeMin) + rangeMin);
         }
 
 
