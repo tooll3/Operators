@@ -23,6 +23,10 @@ namespace T3.Operators.Types.Id_746d886c_5ab6_44b1_bb15_f3ce2fadf7e6
         {
             float fov = MathUtil.DegreesToRadians(Fov.GetValue(context));
             float aspectRatio = AspectRatio.GetValue(context);
+            if (aspectRatio < 0.0001f)
+            {
+                aspectRatio = (float)context.RequestedResolution.Width / context.RequestedResolution.Height;
+            }
             System.Numerics.Vector2 clip = NearFarClip.GetValue(context);
             Matrix cameraToClipSpace = Matrix.PerspectiveFovRH(fov, aspectRatio, clip.X, clip.Y);
 
