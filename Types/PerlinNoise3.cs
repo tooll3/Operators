@@ -5,14 +5,14 @@ using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
 
-namespace T3.Operators.Types.Id_436e93a8_03c0_4366_8d9a_2245e5bcaa6c
+namespace T3.Operators.Types.Id_50aab941_0a29_474a_affd_13a74ea0c780
 {
-    public class PerlinNoise : Instance<PerlinNoise>
+    public class PerlinNoise3 : Instance<PerlinNoise3>
     {
-        [Output(Guid = "4a62f8ae-cb15-4e63-ad8d-749bdf24982c")]
+        [Output(Guid = "fd0361e0-ce71-4c57-b217-1fdb082ecd45")]
         public readonly Slot<float> Result = new Slot<float>();
 
-        public PerlinNoise()
+        public PerlinNoise3()
         {
             Result.UpdateAction = Update;
         }
@@ -33,22 +33,22 @@ namespace T3.Operators.Types.Id_436e93a8_03c0_4366_8d9a_2245e5bcaa6c
         }
 
 
-        [Input(Guid = "eabbaf77-5f74-4303-9453-6fa44facc5db")]
+        [Input(Guid = "deddfbee-386d-4f8f-9339-ec6c01908a11")]
         public readonly InputSlot<float> Value = new InputSlot<float>();
 
-        [Input(Guid = "bd43ee20-1ff1-4c49-ac87-87ca4a1fe66f")]
+        [Input(Guid = "1cd2174e-aeb2-4258-8395-a9cc16f276b5")]
         public readonly InputSlot<int> Seed = new InputSlot<int>();
 
-        [Input(Guid = "B7434932-AEEA-407E-BB00-22337A21F293")]
+        [Input(Guid = "03df41a8-3d72-47b1-b854-81e6e59e7cb4")]
         public readonly InputSlot<float> Frequency = new InputSlot<float>();
 
-        [Input(Guid = "C6286F1C-00A3-40AF-94DD-66375ED0343F")]
+        [Input(Guid = "2693cb7d-33b3-4a0c-929f-e6911d2d4a0c")]
         public readonly InputSlot<int> Octaves = new InputSlot<int>();
         
-        [Input(Guid = "B112705E-3EC3-4904-B978-BC784D9B2F94")]
+        [Input(Guid = "f5d7cf84-6d7e-478e-96e2-cf20c0a2510e")]
         public readonly InputSlot<float> RangeMin = new InputSlot<float>();
 
-        [Input(Guid = "557AE817-EC36-4866-8FED-64490E9255BE")]
+        [Input(Guid = "635a6831-5a07-48b2-a300-55e1b985bd51")]
         public readonly InputSlot<float> RangeMax = new InputSlot<float>();
     }
 }

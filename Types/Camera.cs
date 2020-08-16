@@ -30,19 +30,34 @@ namespace T3.Operators.Types.Id_746d886c_5ab6_44b1_bb15_f3ce2fadf7e6
             System.Numerics.Vector2 clip = NearFarClip.GetValue(context);
             Matrix cameraToClipSpace = Matrix.PerspectiveFovRH(fov, aspectRatio, clip.X, clip.Y);
 
-            var pos = Position.GetValue(context);
-            Vector3 eye = new Vector3(pos.X, pos.Y, pos.Z);
-            var t = Target.GetValue(context);
-            Vector3 target = new Vector3(t.X, t.Y, t.Z);
-            var u = Up.GetValue(context);
-            Vector3 up = new Vector3(u.X, u.Y, u.Z);
+            var positionValue = Position.GetValue(context);
+            Vector3 eye = new Vector3(positionValue.X, positionValue.Y, positionValue.Z);
+            var targetValue = Target.GetValue(context);
+            Vector3 target = new Vector3(targetValue.X, targetValue.Y, targetValue.Z);
+            var upValue = Up.GetValue(context);
+            Vector3 up = new Vector3(upValue.X, upValue.Y, upValue.Z);
             Matrix worldToCamera = Matrix.LookAtRH(eye, target, up);
 
-            var prevCameraToClipSpace = context.CameraToClipSpace;
-            context.CameraToClipSpace = cameraToClipSpace;
+            //var worldToCamera = Matrix.LookAtLH(position, target, new Vector3(0, 1, 0));
+            var rollRotation = Matrix.RotationAxis(new Vector3(0, 0, 1), -(float)Roll.GetValue(context));
 
+            var pOffset = PositionOffset.GetValue(context);
+            var additionalTranslation = Matrix.Translation(pOffset.X, pOffset.Y, pOffset.Z);
+
+            var rOffset = RotationOffset.GetValue(context);
+            var additionalRotation = Matrix.RotationYawPitchRoll(MathUtil.DegreesToRadians(rOffset.Y),
+                                                                 MathUtil.DegreesToRadians(rOffset.X),
+                                                                 MathUtil.DegreesToRadians(rOffset.Z));
+            
+            
+            var worldToCamera2= worldToCamera * rollRotation * additionalTranslation * additionalRotation;
+            
             var prevWorldToCamera = context.WorldToCamera;
-            context.WorldToCamera = worldToCamera;
+            var prevCameraToClipSpace = context.CameraToClipSpace;
+            
+            context.WorldToCamera = worldToCamera2;
+            context.CameraToClipSpace = cameraToClipSpace;
+            
             Command.GetValue(context);
             
             context.CameraToClipSpace = prevCameraToClipSpace;
@@ -85,7 +100,13 @@ namespace T3.Operators.Types.Id_746d886c_5ab6_44b1_bb15_f3ce2fadf7e6
         public readonly InputSlot<float> Fov = new InputSlot<float>();
         [Input(Guid = "764CA304-FC86-48A9-9C82-A04FAC7EADB2")]
         public readonly InputSlot<float> Roll = new InputSlot<float>();
+        
+        
+        [Input(Guid = "FEE19916-846F-491A-A2EE-1E7B1AC8E533")]
+        public readonly InputSlot<System.Numerics.Vector3> PositionOffset = new InputSlot<System.Numerics.Vector3>();
 
-
+        
+        [Input(Guid = "D4D0F046-297B-440A-AEF8-C2F0426EF4F5")]
+        public readonly InputSlot<System.Numerics.Vector3> RotationOffset = new InputSlot<System.Numerics.Vector3>();
     }
 }
