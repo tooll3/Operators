@@ -24,6 +24,9 @@ namespace T3.Operators.Types.Id_b89c5923_cc58_4d7a_8dce_eb1f8cdfc6e8
 
         [Input(Guid = "08a058b0-9889-49d3-87a0-a1a98278eb06")]
         public readonly InputSlot<int> BlendMode = new InputSlot<int>();
+
+        [Input(Guid = "a4630612-743f-4396-8e2f-982052d508f4")]
+        public readonly InputSlot<bool> EnableDepthTest = new InputSlot<bool>();
     }
 }
 
