@@ -33,6 +33,9 @@ namespace T3.Operators.Types.Id_73a55607_c892_4a85_946b_e37354c4c0e4
         [Input(Guid = "981e17e2-6f92-4651-90a5-7c6ee4f04438")]
         public readonly InputSlot<float> RoundShading = new InputSlot<float>();
 
+        [Input(Guid = "152e24c1-6743-4636-ac30-533a33b22bbc")]
+        public readonly InputSlot<float> NearPlane = new InputSlot<float>();
+
     }
 }
 
