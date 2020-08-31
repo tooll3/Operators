@@ -7,7 +7,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_c6fce5e7_391e_4d08_bdc2_4c4960a2296e
 {
-    public class ParticleUpdate : Instance<ParticleUpdate>
+    public class CurlNoiseWithGizmo : Instance<CurlNoiseWithGizmo>
     {
         [Output(Guid = "A2FC8C88-2DD2-4099-A76E-B252032F41CC")]
         public readonly Slot<Command> Command = new Slot<Command>();

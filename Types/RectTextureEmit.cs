@@ -30,6 +30,9 @@ namespace T3.Operators.Types.Id_c6911113_9411_4706_ad16_9e7bf58ad6c6
         [Input(Guid = "2735e77e-ac99-4290-81b3-9b6a51c9a299")]
         public readonly InputSlot<int> EmitterId = new InputSlot<int>();
 
+        [Input(Guid = "685ade87-f447-421d-af32-3098026f311b")]
+        public readonly InputSlot<System.Numerics.Vector3> Velocity = new InputSlot<System.Numerics.Vector3>();
+
     }
 }
 
