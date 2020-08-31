@@ -21,6 +21,9 @@ namespace T3.Operators.Types.Id_557fcca1_5406_4594_9dd2_9122d3b3a1e2
 
         [Input(Guid = "9f98e4a1-a612-4b81-9233-b8f6f34fdd3b")]
         public readonly InputSlot<int> EmitterId = new InputSlot<int>();
+
+        [Input(Guid = "8786fd97-d4b2-4b51-a55c-1f614888f446")]
+        public readonly InputSlot<string> AddParticleShader = new InputSlot<string>();
     }
 }
 

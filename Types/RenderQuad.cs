@@ -7,7 +7,7 @@ namespace T3.Operators.Types.Id_b89c5923_cc58_4d7a_8dce_eb1f8cdfc6e8
 {
     public class RenderQuad : Instance<RenderQuad>
     {
-        [Output(Guid = "1ff16183-13b9-4c8f-a82a-77e8be0c641b")]
+        [Output(Guid = "1ff16183-13b9-4c8f-a82a-77e8be0c641b", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<T3.Core.Command> Output = new Slot<T3.Core.Command>();
 
         [Input(Guid = "307e2b98-a337-4636-969f-a19841b11511")]
