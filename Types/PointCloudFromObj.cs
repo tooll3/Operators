@@ -29,11 +29,20 @@ namespace T3.Operators.Types.Id_73f152ac_12d9_4ae9_856a_9a74637fd6f6
             [FieldOffset(0)]
             public SharpDX.Vector3 Pos;
 
+            [FieldOffset(12)]
+            public int EmitterId;
+
             [FieldOffset(16)]
             public SharpDX.Vector3 Normal;
 
+            [FieldOffset(28)]
+            public float FaceArea;
+
             [FieldOffset(32)]
             public SharpDX.Vector2 TexCoord;
+
+            [FieldOffset(40)]
+            public float Cdf;
         }
 
         struct Face
@@ -139,24 +148,52 @@ namespace T3.Operators.Types.Id_73f152ac_12d9_4ae9_856a_9a74637fd6f6
 
                     int numVertexEntries = faces.Count * 3;
                     var bufferData = new VertexEntry[numVertexEntries];
+                    float areaSum = 0.0f;
                     for (int i = 0, faceIndex = 0; faceIndex < faces.Count; faceIndex++)
                     {
                         Face face = faces[faceIndex];
-                        
-                        bufferData[i].Pos = vertices[face.V0];
+
+                        // calc area of triangle
+                        Vector3 v0 = vertices[face.V0];
+                        Vector3 v1 = vertices[face.V1];
+                        Vector3 v2 = vertices[face.V2];
+                        Vector3 baseDir = (v1 - v0);
+                        float a = baseDir.Length();
+                        baseDir.Normalize();
+
+                        Vector3 heightStart = v0 + Vector3.Dot(v2 - v0, baseDir) * baseDir;
+                        float b = (v2 - heightStart).Length();
+                        float faceArea = a * b * 0.5f;
+                        areaSum += faceArea;
+
+                        bufferData[i].Pos = v0;
                         bufferData[i].Normal = normals[face.V0n];
                         bufferData[i].TexCoord = texCoords[face.V0t];
-                        i++;
-                        
-                        bufferData[i].Pos = vertices[face.V1];
-                        bufferData[i].Normal = normals[face.V1n];
-                        bufferData[i].TexCoord = texCoords[face.V1t];
+                        bufferData[i].FaceArea = faceArea;
                         i++;
 
-                        bufferData[i].Pos = vertices[face.V2];
+                        bufferData[i].Pos = v1;
+                        bufferData[i].Normal = normals[face.V1n];
+                        bufferData[i].TexCoord = texCoords[face.V1t];
+                        bufferData[i].FaceArea = faceArea;
+                        i++;
+
+                        bufferData[i].Pos = v2;
                         bufferData[i].Normal = normals[face.V2n];
                         bufferData[i].TexCoord = texCoords[face.V2t];
+                        bufferData[i].FaceArea = faceArea;
                         i++;
+                    }
+
+                    // normalize face area to 1
+                    float sumReci = 1.0f / areaSum;
+                    float cdf = 0.0f;
+                    for (int i = 0; i < bufferData.Length; i+=3)
+                    {
+                        cdf += bufferData[i].FaceArea * sumReci;
+                        bufferData[i].Cdf = cdf;
+                        bufferData[i + 1].Cdf = cdf;
+                        bufferData[i + 2].Cdf = cdf;
                     }
 
                     int stride = 48;
