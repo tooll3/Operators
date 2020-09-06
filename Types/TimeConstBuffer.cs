@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.Direct3D11;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -22,24 +23,27 @@ namespace T3.Operators.Types.Id_de8bc97a_8ef0_4d4a_9ffa_88046a2daf40
 
         private void Update(EvaluationContext context)
         {
+            //Log.Debug("LastFrame duration:" + EvaluationContext.LastFrameDuration);
             var bufferContent = new TimeBufferLayout(
                                                      (float)EvaluationContext.GlobalTimeInBars, 
                                                      (float)context.TimeInBars, 
                                                      (float)EvaluationContext.RunTimeInSecs,
-                                                     (float)EvaluationContext.BeatTime);
+                                                     (float)EvaluationContext.BeatTime,
+                                                     (float)EvaluationContext.LastFrameDuration);
             ResourceManager.Instance().SetupConstBuffer(bufferContent, ref Buffer.Value);
             Buffer.Value.DebugName = nameof(TimeConstBuffer);
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        [StructLayout(LayoutKind.Explicit, Size = 32)]
         public struct TimeBufferLayout
         {
-            public TimeBufferLayout(float globalTime, float time, float runTime, float beatTime)
+            public TimeBufferLayout(float globalTime, float time, float runTime, float beatTime, float lastFrameDuration)
             {
                 GlobalTime = globalTime;
                 Time = time;
                 RunTime = runTime;
                 BeatTime = beatTime;
+                LastFrameDuration = lastFrameDuration;
             }
 
             [FieldOffset(0)]
@@ -50,6 +54,9 @@ namespace T3.Operators.Types.Id_de8bc97a_8ef0_4d4a_9ffa_88046a2daf40
             public float RunTime;
             [FieldOffset(12)]
             public float BeatTime;
+            [FieldOffset(16)]
+            public float LastFrameDuration;
+
         }       
     }
 }
