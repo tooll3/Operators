@@ -19,7 +19,7 @@ namespace T3.Operators.Types.Id_eb68addb_ec59_416f_8608_ff9d2319f3a3
         {
             int count = Count.GetValue(context);
             Int3 groupSize = ThreadGroupSize.GetValue(context);
-            DispatchCount.Value = (groupSize.X > 0) ? new Int3(count / groupSize.X, 1, 1) : Int3.Zero;
+            DispatchCount.Value = (groupSize.X > 0) ? new Int3(count / groupSize.X+1, 1, 1) : Int3.Zero;
         }
 
         [Input(Guid = "3979e440-7888-4249-9975-74b21c6b813c")]
