@@ -148,6 +148,40 @@
       "SymbolId": "81ff4731-e244-4995-b03d-5544d9211d83",
       "InputValues": [],
       "Outputs": []
+    },
+    {
+      "Id": "19fb2014-f262-4db7-9f65-13632b6cbe62"/*LoadTexture2d*/,
+      "SymbolId": "0b3436db-e283-436e-ba85-2f3a1de76a9d",
+      "InputValues": [
+        {
+          "Id": "76cc3811-4ae0-48b2-a119-890db5a4eeb2"/*Path*/,
+          "Type": "System.String",
+          "Value": "Resources\\proj-partial\\meshes\\particle-bridge-lightmap.jpg"
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "34512aed-d63e-4348-8a4d-320e67a6eacd"/*SamplerStateOp*/,
+      "SymbolId": "9515d59d-0bd5-406b-96da-6a5f60215700",
+      "InputValues": [
+        {
+          "Id": "e7c95fd5-14d1-434f-a140-f22ef69076ab"/*AddressU*/,
+          "Type": "SharpDX.Direct3D11.TextureAddressMode",
+          "Value": "Clamp"
+        },
+        {
+          "Id": "fdeb503f-09c6-48d1-8853-7426f68cdec3"/*AddressV*/,
+          "Type": "SharpDX.Direct3D11.TextureAddressMode",
+          "Value": "Clamp"
+        },
+        {
+          "Id": "93d8bf26-5067-4ccc-b4cb-e03970686462"/*AddressW*/,
+          "Type": "SharpDX.Direct3D11.TextureAddressMode",
+          "Value": "Clamp"
+        }
+      ],
+      "Outputs": []
     }
   ],
   "Connections": [
@@ -272,6 +306,12 @@
       "TargetSlotId": "34cf06fe-8f63-4f14-9c59-35a2c021b817"
     },
     {
+      "SourceParentOrChildId": "34512aed-d63e-4348-8a4d-320e67a6eacd",
+      "SourceSlotId": "0e45c596-c80f-4927-941f-e3199401aa10",
+      "TargetParentOrChildId": "61721c35-4ada-4459-978e-49e72465d9e8",
+      "TargetSlotId": "4047c9e7-1edb-4c71-b85c-c1b87058c81c"
+    },
+    {
       "SourceParentOrChildId": "5e23fc8b-4fe4-4fbf-877f-a47dc719fca6",
       "SourceSlotId": "dbf61091-a9a7-4ad2-9dc1-68afdc3ea9fd",
       "TargetParentOrChildId": "61721c35-4ada-4459-978e-49e72465d9e8",
@@ -292,6 +332,12 @@
     {
       "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
       "SourceSlotId": "27ed0afb-b4d3-4212-8ae6-32e1f7bc14cb",
+      "TargetParentOrChildId": "61721c35-4ada-4459-978e-49e72465d9e8",
+      "TargetSlotId": "88938b09-d5a7-437c-b6e1-48a5b375d756"
+    },
+    {
+      "SourceParentOrChildId": "19fb2014-f262-4db7-9f65-13632b6cbe62",
+      "SourceSlotId": "a4a46c04-ff03-48ce-83c9-0c0baa0f72e7",
       "TargetParentOrChildId": "61721c35-4ada-4459-978e-49e72465d9e8",
       "TargetSlotId": "88938b09-d5a7-437c-b6e1-48a5b375d756"
     },
