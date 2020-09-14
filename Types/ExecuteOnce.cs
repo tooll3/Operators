@@ -1,4 +1,4 @@
-﻿using T3.Core;
+using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
@@ -11,6 +11,9 @@ namespace T3.Operators.Types.Id_7a09136e_18b2_46b7_afff_8ef999e3965d
         [Output(Guid = "5D73EBE6-9AA0-471A-AE6B-3F5BFD5A0F9C")]
         public readonly Slot<Command> Output = new Slot<Command>();
 
+        [Output(Guid = "cf2cc2a9-9db1-47ca-b68f-b894140d8481")]
+        public readonly Slot<bool> OutputTrigger = new Slot<bool>();
+
         public ExecuteOnce()
         {
             Output.UpdateAction = Update;
@@ -18,6 +21,7 @@ namespace T3.Operators.Types.Id_7a09136e_18b2_46b7_afff_8ef999e3965d
 
         private void Update(EvaluationContext context)
         {
+            OutputTrigger.Value = Trigger.DirtyFlag.IsDirty;
             if (Trigger.DirtyFlag.IsDirty)
             {
                 Log.Info("ExecuteOnce triggered");
