@@ -8,6 +8,13 @@ namespace T3.Operators.Types.Id_d8c5330f_59b5_4907_b845_a02def3042fa
 {
     public class Layer2d : Instance<Layer2d>
     {
+        enum BlendModes
+        {
+            Normal,
+            Additive,
+            Multiply
+        }        
+        
         [Output(Guid = "e4a8d926-7abd-4d2a-82a1-b7d140cb457f")]
         public readonly Slot<Command> Output = new Slot<Command>();
 
@@ -18,7 +25,7 @@ namespace T3.Operators.Types.Id_d8c5330f_59b5_4907_b845_a02def3042fa
         [Input(Guid = "ed4f8c30-7b71-4649-97e6-710a718039b0")]
         public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();
 
-        [Input(Guid = "c8d0e44e-acd1-4045-b565-e1ce0b722e70")]
+        [Input(Guid = "c8d0e44e-acd1-4045-b565-e1ce0b722e70", MappedType = typeof(BlendModes))]
         public readonly InputSlot<int> BlendMode = new InputSlot<int>();
 
         [Input(Guid = "a384be77-c5fc-47b3-9ec3-960db9f9bae9")]

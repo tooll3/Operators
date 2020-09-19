@@ -27,6 +27,9 @@ namespace T3.Operators.Types.Id_51130e6c_53b2_4294_a3cf_b0fa15584acf
 
         [Input(Guid = "471e3836-cdb5-44a1-a16c-94090dc970b9")]
         public readonly InputSlot<bool> Emit = new InputSlot<bool>();
+
+        [Input(Guid = "30dbeb68-ddc8-48ca-9d51-d7bca870eae0")]
+        public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture = new InputSlot<SharpDX.Direct3D11.Texture2D>();
     }
 }
 

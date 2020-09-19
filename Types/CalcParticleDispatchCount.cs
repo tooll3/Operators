@@ -18,6 +18,9 @@ namespace T3.Operators.Types.Id_afc6379d_c940_4617_9e79_0ae129a2f349
         private void Update(EvaluationContext context)
         {
             var particleSystem = ParticleSystem.GetValue(context);
+            if (particleSystem == null)
+                return;
+            
             var groupSize = ThreadGroupSize.GetValue(context);
             DispatchCount.Value = (groupSize.X > 0) ? new Int3(particleSystem.MaxCount / groupSize.X, 1, 1) : Int3.Zero;
         }
