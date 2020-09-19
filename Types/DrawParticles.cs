@@ -36,6 +36,12 @@ namespace T3.Operators.Types.Id_73a55607_c892_4a85_946b_e37354c4c0e4
         [Input(Guid = "152e24c1-6743-4636-ac30-533a33b22bbc")]
         public readonly InputSlot<float> NearPlane = new InputSlot<float>();
 
+        [Input(Guid = "3cb3866f-48d0-4824-9302-73a92ba6b132")]
+        public readonly InputSlot<T3.Core.DataTypes.Gradient> ColorOverLife = new InputSlot<T3.Core.DataTypes.Gradient>();
+
+        [Input(Guid = "98d353fe-e65e-4ccb-aa79-502dfde30fba")]
+        public readonly InputSlot<SharpDX.Direct3D11.Texture2D> ColorForDirection = new InputSlot<SharpDX.Direct3D11.Texture2D>();
+
     }
 }
 

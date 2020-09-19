@@ -82,9 +82,6 @@ namespace T3.Operators.Types.Id_2c53eee7_eb38_449b_ad2a_d7a674952e5b
             }
         }
 
-
-        [Input(Guid = "1a1f3d10-fe5e-43bc-b02b-ad5939ec68ee")]
-        public readonly MultiInputSlot<Curve> Curves = new MultiInputSlot<T3.Core.Animation.Curve>();
         
         [Input(Guid = "588BE11F-D0DB-4E51-8DBB-92A25408511C")]
         public readonly MultiInputSlot<Gradient> Gradients = new MultiInputSlot<Gradient>();

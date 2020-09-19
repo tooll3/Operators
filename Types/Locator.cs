@@ -11,6 +11,9 @@ namespace T3.Operators.Types.Id_348652c3_abf5_4fe9_873b_89d1acaaf0ff
         [Output(Guid = "357c4c25-2b08-4470-84b1-9707a3d8e56e")]
         public readonly Slot<Command> Output = new Slot<Command>();
 
+        [Output(Guid = "7599cf50-cbb6-49ce-bb41-9f709b593b0b")]
+        public readonly Slot<System.Numerics.Vector3> Pos = new Slot<System.Numerics.Vector3>();
+
 
         [Input(Guid = "53aeef4f-37f8-40a6-b552-cb35f5fb887c")]
         public readonly InputSlot<Vector3> Translation = new InputSlot<Vector3>();

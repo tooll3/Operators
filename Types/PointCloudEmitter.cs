@@ -30,6 +30,15 @@ namespace T3.Operators.Types.Id_51130e6c_53b2_4294_a3cf_b0fa15584acf
 
         [Input(Guid = "30dbeb68-ddc8-48ca-9d51-d7bca870eae0")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture = new InputSlot<SharpDX.Direct3D11.Texture2D>();
+
+        [Input(Guid = "c43aaa99-9dde-4e7c-9aa9-f551f0a652cb")]
+        public readonly InputSlot<float> LifeTime = new InputSlot<float>();
+
+        [Input(Guid = "d52312e1-08f4-4e91-9635-315ad01f11a9")]
+        public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();
+
+        [Input(Guid = "e9f5ee44-7f0a-4202-b75d-d2c76d18adcc")]
+        public readonly InputSlot<float> Size = new InputSlot<float>();
     }
 }
 
