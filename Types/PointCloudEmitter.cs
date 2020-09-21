@@ -39,6 +39,9 @@ namespace T3.Operators.Types.Id_51130e6c_53b2_4294_a3cf_b0fa15584acf
 
         [Input(Guid = "e9f5ee44-7f0a-4202-b75d-d2c76d18adcc")]
         public readonly InputSlot<float> Size = new InputSlot<float>();
+
+        [Input(Guid = "eccf1221-6775-42e0-8f79-ae5c6c38cb48")]
+        public readonly InputSlot<float> Seed = new InputSlot<float>();
     }
 }
 

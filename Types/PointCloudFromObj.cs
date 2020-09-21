@@ -79,8 +79,17 @@ namespace T3.Operators.Types.Id_73f152ac_12d9_4ae9_856a_9a74637fd6f6
         {
             var resourceManager = ResourceManager.Instance();
             string path = Path.GetValue(context);
-            if (string.IsNullOrEmpty(path) || !(new FileInfo(path).Exists))
+
+            try
+            {
+                if (string.IsNullOrEmpty(path) || !(new FileInfo(path).Exists))
+                    return;
+            }
+            catch (Exception e)
+            {
+                Log.Warning("Failed to load object path:" + path + "\\n" + e);
                 return;
+            }
 
             var vertices = new List<SharpDX.Vector3>();
             var texCoords = new List<SharpDX.Vector2>();
@@ -188,7 +197,7 @@ namespace T3.Operators.Types.Id_73f152ac_12d9_4ae9_856a_9a74637fd6f6
                     // normalize face area to 1
                     float sumReci = 1.0f / areaSum;
                     float cdf = 0.0f;
-                    for (int i = 0; i < bufferData.Length; i+=3)
+                    for (int i = 0; i < bufferData.Length; i += 3)
                     {
                         cdf += bufferData[i].FaceArea * sumReci;
                         bufferData[i].Cdf = cdf;
