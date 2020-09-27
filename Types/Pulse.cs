@@ -1,4 +1,5 @@
 using System;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -20,12 +21,14 @@ namespace T3.Operators.Types.Id_5952d7b4_29ac_41fb_9324_287392d55048
             var bang = Trigger.GetValue(context);
             if (bang != _lastBang)
             {
-                if(bang)
-                    _lastTriggerTime = (float)EvaluationContext.GlobalTimeInSecs;
+                if (bang)
+                {
+                    _lastTriggerTime = (float)EvaluationContext.BeatTime;
+                }
                 _lastBang = bang;
             }
 
-            var timeSinceTrigger = (float)EvaluationContext.GlobalTimeInSecs - _lastTriggerTime;
+            var timeSinceTrigger = (float)EvaluationContext.BeatTime - _lastTriggerTime;
             if (timeSinceTrigger < 0)
                 timeSinceTrigger = 0;
             Result.Value = Math.Max(Amplitude.GetValue(context) - timeSinceTrigger * Decay.GetValue(context),0);

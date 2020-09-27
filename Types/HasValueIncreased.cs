@@ -20,7 +20,8 @@ namespace T3.Operators.Types.Id_c513c58d_e45c_408d_a0b8_250c9af31545
         private void Update(EvaluationContext context)
         {
             var v = Value.GetValue(context);
-            var hasIncreased = v > _lastValue;// + Threshold.GetValue(context);;
+            var increase = v > _lastValue + Threshold.GetValue(context);
+            var hasIncreased = increase;
             if (hasIncreased != _lastIncreased)
             {
                 _lastIncreased = hasIncreased;

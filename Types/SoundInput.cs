@@ -13,13 +13,13 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
 {
     public class SoundInput : Instance<SoundInput>
     {
-        [Output(Guid = "B3EFDF25-4692-456D-AA48-563CFB0B9DEB", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
+        [Output(Guid = "B3EFDF25-4692-456D-AA48-563CFB0B9DEB", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<List<float>> FftBuffer = new Slot<List<float>>();
 
-        [Output(Guid = "b438986f-6ef9-40d5-8a2c-b00c01578ebc", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
+        [Output(Guid = "b438986f-6ef9-40d5-8a2c-b00c01578ebc", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> Result = new Slot<float>();
 
-        [Output(Guid = "D7D2A87C-4231-4F8B-904F-6E5F5D01B1D8", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
+        [Output(Guid = "D7D2A87C-4231-4F8B-904F-6E5F5D01B1D8", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> AvailableData = new Slot<float>();
 
         public SoundInput()
@@ -36,10 +36,10 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
 
             _analyzer.SetDeviceIndex((int)Input1.GetValue(context));
 
-            if (_analyzer.SpectrumData.Count < 16)
-                return;
+            //if (_analyzer.SpectrumData.Count < 16)
+            //    return;
 
-            Result.Value = _analyzer.SpectrumData[2];
+            //Result.Value = _analyzer.SpectrumData[2];
             FftBuffer.Value = _analyzer.FftBuffer.ToList();
             AvailableData.Value = _analyzer.AvailableData;
         }
@@ -88,6 +88,7 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
             if (!enable)
             {
                 BassWasapi.Stop();
+                //BassWasapi.Free();
                 _timer.Stop();
                 _timer.IsEnabled = false;
                 return;
@@ -154,10 +155,10 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
 
         private void TimerUpdateEventHandler(object sender, EventArgs e)
         {
-            AvailableData = BassWasapi.GetData(null, (int)DataFlags.Available);
+            BassWasapi.GetData(null, (int)DataFlags.Available);
             
             // get FFT data. Return value is -1 on error
-            var ret = BassWasapi.GetData(FftBuffer, (int)DataFlags.FFT512);
+            var ret = BassWasapi.GetData(FftBuffer, (int)DataFlags.FFT1024);    // Note: The DataFlags seems to be offset by one (FFT256 only fills 128 entries)
             if (ret < 0)
                 return;
             
@@ -165,33 +166,33 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
             var b0 = 0;
 
             // Compute the spectrum data, the code is taken from a bass_wasapi sample.
-            SpectrumData.Clear();
-            for (x = 0; x < SpectrumLineCount; x++)
-            {
-                float peak = 0;
-                var b1 = (int)Math.Pow(2, x * 10.0 / (SpectrumLineCount - 1));
-
-                if (b1 > FftBuffer.Length - 2)
-                    b1 = FftBuffer.Length - 2;
-
-                if (b1 <= b0)
-                    b1 = b0 + 1;
-
-                for (; b0 < b1; b0++)
-                {
-                    if (peak < FftBuffer[1 + b0])
-                        peak = FftBuffer[1 + b0];
-                }
-
-                var y = (int)(Math.Sqrt(peak) * 3 * 255 - 4);
-                if (y > 255)
-                    y = 255;
-
-                if (y < 0)
-                    y = 0;
-
-                SpectrumData.Add(y);
-            }
+            // SpectrumData.Clear();
+            // for (x = 0; x < SpectrumLineCount; x++)
+            // {
+            //     float peak = 0;
+            //     var b1 = (int)Math.Pow(2, x * 10.0 / (SpectrumLineCount - 1));
+            //
+            //     if (b1 > FftBuffer.Length - 2)
+            //         b1 = FftBuffer.Length - 2;
+            //
+            //     if (b1 <= b0)
+            //         b1 = b0 + 1;
+            //
+            //     for (; b0 < b1; b0++)
+            //     {
+            //         if (peak < FftBuffer[1 + b0])
+            //             peak = FftBuffer[1 + b0];
+            //     }
+            //
+            //     var y = (int)(Math.Sqrt(peak) * 3 * 255 - 4);
+            //     if (y > 255)
+            //         y = 255;
+            //
+            //     if (y < 0)
+            //         y = 0;
+            //
+            //     SpectrumData.Add(y);
+            // }
 
             // Get audio level
             var level = BassWasapi.GetLevel();
@@ -205,7 +206,7 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
 
             // Required, because some programs hang the output. If the output hangs for a 75ms
             // this piece of code re initializes the output so it doesn't make a glitched sound for long.
-            if (_hangCounter > 10)
+            if (_hangCounter > 120)
             {
                 Log.Warning("Looks like sound got lost. Trying to restart.");
                 _hangCounter = 0;
@@ -235,8 +236,8 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
         private int _deviceIndex;
         private readonly DispatcherTimer _timer = new DispatcherTimer(); //timer that refreshes the display
 
-        public readonly List<float> SpectrumData = new List<float>();
-        public readonly float[] FftBuffer = new float[512];
+        //public readonly List<float> SpectrumData = new List<float>();
+        public readonly float[] FftBuffer = new float[1024];
 
         private readonly WasapiProcedure _wasapiProcedure;
         public float RightLevel;
