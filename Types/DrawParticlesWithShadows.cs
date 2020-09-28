@@ -11,9 +11,8 @@ namespace T3.Operators.Types.Id_b1ffe4dd_d734_4392_a644_7c587979066e
         [Output(Guid = "09cbb463-d3bf-46d8-867f-3fe3dbc3a79b")]
         public readonly Slot<Command> Output = new Slot<Command>();
 
-
         [Input(Guid = "11e59dd7-1197-433c-a0aa-cf2acad6d33a")]
-        public readonly InputSlot<ParticleSystem> ParticleSystem = new InputSlot<ParticleSystem>();
+        public readonly InputSlot<T3.Core.DataTypes.ParticleSystem> ParticleSystem = new InputSlot<T3.Core.DataTypes.ParticleSystem>();
 
         [Input(Guid = "77f344db-32c0-4f86-b56e-7db51a68723b")]
         public readonly InputSlot<float> Size = new InputSlot<float>();
@@ -23,6 +22,9 @@ namespace T3.Operators.Types.Id_b1ffe4dd_d734_4392_a644_7c587979066e
 
         [Input(Guid = "6b704357-289a-4830-a1f9-e5d936aded62")]
         public readonly InputSlot<System.Numerics.Vector3> LightPosition = new InputSlot<System.Numerics.Vector3>();
+
+        [Input(Guid = "f83171f4-8e18-4a83-9bd1-5829545ffaaa")]
+        public readonly InputSlot<System.Numerics.Vector3> LightTarget = new InputSlot<System.Numerics.Vector3>();
 
         [Input(Guid = "9d76f7ed-ce58-4632-b499-2165dde90c86")]
         public readonly InputSlot<float> LightIntensity = new InputSlot<float>();
@@ -44,9 +46,6 @@ namespace T3.Operators.Types.Id_b1ffe4dd_d734_4392_a644_7c587979066e
 
         [Input(Guid = "3b14fc1e-3b56-4498-9da3-8b7cfba3a8ca")]
         public readonly InputSlot<System.Numerics.Vector3> LightPos = new InputSlot<System.Numerics.Vector3>();
-
-        [Input(Guid = "f83171f4-8e18-4a83-9bd1-5829545ffaaa")]
-        public readonly InputSlot<System.Numerics.Vector3> LightTarget = new InputSlot<System.Numerics.Vector3>();
 
     }
 }
