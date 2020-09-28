@@ -78,9 +78,8 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
             var prevObjectToWorld = context.ObjectToWorld;
             var prevWorldToCamera = context.WorldToCamera;
-            context.ObjectToWorld = Matrix.Identity;
-            context.WorldToCamera = Matrix.LookAtRH( new Vector3(0,0,2.41f), Vector3.Zero, Vector3.Up);
             
+            context.SetDefaultCamera();            
             Command.GetValue(context);
 
             if (generateMips)
