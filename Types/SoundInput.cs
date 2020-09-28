@@ -162,8 +162,8 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
             if (ret < 0)
                 return;
             
-            int x;
-            var b0 = 0;
+            // int x;
+            // var b0 = 0;
 
             // Compute the spectrum data, the code is taken from a bass_wasapi sample.
             // SpectrumData.Clear();

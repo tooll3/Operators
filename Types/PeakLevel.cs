@@ -71,7 +71,7 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
             Result.Value = _lastPeak;
         }
 
-        private float _lastPeak;
+        private float _lastPeak = 0;
         private float _averageLevel;
         private float _energy;
         private double _lastPeakTime = double.NegativeInfinity;
