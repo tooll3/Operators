@@ -9,7 +9,7 @@
     },
     {
       "Id": "0a4f49d0-8b4b-47f1-a2cf-134ebb62cb74"/*Size*/,
-      "DefaultValue": 0.0
+      "DefaultValue": 1.0
     },
     {
       "Id": "610ac5df-aa5b-4967-8f06-a3e071ce1225"/*Color*/,
@@ -30,7 +30,7 @@
     },
     {
       "Id": "b7cff360-cbb6-4d28-98a1-dd0fd31145f7"/*LightIntensity*/,
-      "DefaultValue": 0.0
+      "DefaultValue": 1.0
     },
     {
       "Id": "1b9b4455-d510-4151-93c6-e03a5eb325b8"/*LightDecay*/,
@@ -38,7 +38,7 @@
     },
     {
       "Id": "981e17e2-6f92-4651-90a5-7c6ee4f04438"/*RoundShading*/,
-      "DefaultValue": 0.0
+      "DefaultValue": 1.0
     },
     {
       "Id": "152e24c1-6743-4636-ac30-533a33b22bbc"/*NearPlane*/,
@@ -195,43 +195,6 @@
       "Outputs": []
     },
     {
-      "Id": "7a36ac4f-d71f-46db-aa25-bdbf0c3a5d6a"/*RenderTargetBlendDesc*/,
-      "SymbolId": "38ee7546-8d7d-463c-aeea-e482d7ca3f30",
-      "InputValues": [
-        {
-          "Id": "7f535169-8f65-4186-866d-59c2b89d7da2"/*BlendEnabled*/,
-          "Type": "System.Boolean",
-          "Value": true
-        },
-        {
-          "Id": "56c398ce-fe71-47eb-a33f-11eec8f82e79"/*SourceBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "One"
-        },
-        {
-          "Id": "8dc53fe4-79bb-43e4-9d4a-4e06f9a3214c"/*DestinationBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "One"
-        },
-        {
-          "Id": "f56e4281-356a-451a-88f1-9cd8ad95d1a5"/*BlendOperation*/,
-          "Type": "SharpDX.Direct3D11.BlendOperation",
-          "Value": "Add"
-        },
-        {
-          "Id": "2632af70-5a05-429c-8123-fe280adea655"/*SourceAlphaBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "One"
-        },
-        {
-          "Id": "acc5550b-18ed-4dba-8e69-d5228e2ad850"/*DestinationAlphaBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "One"
-        }
-      ],
-      "Outputs": []
-    },
-    {
       "Id": "6cca94bb-4b91-42f6-939c-ae7633230add"/*DrawInstancedIndirect*/,
       "SymbolId": "c676b9c7-06d7-4ee0-8ffc-9bee96c5dc18",
       "InputValues": [],
@@ -247,73 +210,6 @@
       "Id": "c2e7fda3-551c-4cd4-99fb-f78dc6886f0b"/*ParticleSystemComponents*/,
       "SymbolId": "c78a26f9-0c0e-4f1e-a2aa-6ca6136c52d0",
       "InputValues": [],
-      "Outputs": []
-    },
-    {
-      "Id": "f465ce80-8cd0-4c83-b06b-1bf14ee2f207"/*GpuMeasure*/,
-      "SymbolId": "000e08d0-669f-48df-9083-7aa0a43bbc05",
-      "InputValues": [
-        {
-          "Id": "0c7ec1ae-e8d0-4acb-8050-44768f827b56"/*Enabled*/,
-          "Type": "System.Boolean",
-          "Value": true
-        },
-        {
-          "Id": "e430cc80-9003-4a56-af5d-f5820434c074"/*LogToConsole*/,
-          "Type": "System.Boolean",
-          "Value": false
-        }
-      ],
-      "Outputs": []
-    },
-    {
-      "Id": "fa358247-1ab0-4ce3-b47e-a67a5b693d9f"/*Default blending*/,
-      "SymbolId": "38ee7546-8d7d-463c-aeea-e482d7ca3f30",
-      "Name": "Default blending",
-      "InputValues": [
-        {
-          "Id": "7f535169-8f65-4186-866d-59c2b89d7da2"/*BlendEnabled*/,
-          "Type": "System.Boolean",
-          "Value": true
-        },
-        {
-          "Id": "56c398ce-fe71-47eb-a33f-11eec8f82e79"/*SourceBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "SourceAlpha"
-        },
-        {
-          "Id": "8dc53fe4-79bb-43e4-9d4a-4e06f9a3214c"/*DestinationBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "InverseSourceColor"
-        },
-        {
-          "Id": "f56e4281-356a-451a-88f1-9cd8ad95d1a5"/*BlendOperation*/,
-          "Type": "SharpDX.Direct3D11.BlendOperation",
-          "Value": "Add"
-        },
-        {
-          "Id": "2632af70-5a05-429c-8123-fe280adea655"/*SourceAlphaBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "One"
-        },
-        {
-          "Id": "acc5550b-18ed-4dba-8e69-d5228e2ad850"/*DestinationAlphaBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "One"
-        }
-      ],
-      "Outputs": []
-    },
-    {
-      "Id": "08198abf-e651-45d4-b27c-ccfc463665d3"/*DepthStencilStateOp*/,
-      "SymbolId": "04858a08-f0fe-4536-9152-686659f0ab58",
-      "InputValues": [
-        {
-          "Id": "956b735b-c38a-4e8e-8186-caf4d36d4d20"/*IsEnabled*/,
-          "Type": "System.Boolean",
-          "Value": true
-        }
-      ],
       "Outputs": []
     },
     {
@@ -420,18 +316,6 @@
     {
       "Id": "ade2634d-16d0-4dd2-938b-a5caf99a60a8"/*SrvFromTexture2d*/,
       "SymbolId": "c2078514-cf1d-439c-a732-0d7b31b5084a",
-      "InputValues": [],
-      "Outputs": []
-    },
-    {
-      "Id": "f0114ba6-5144-4d13-ace2-c59d1aaf29cb"/*LoadTexture2d*/,
-      "SymbolId": "0b3436db-e283-436e-ba85-2f3a1de76a9d",
-      "InputValues": [],
-      "Outputs": []
-    },
-    {
-      "Id": "80a0dbd5-e3a7-44fc-b6df-85dc0d61bb6c"/*Raster*/,
-      "SymbolId": "4f89b41b-1643-442b-bec8-9f9ef2173baa",
       "InputValues": [],
       "Outputs": []
     },
