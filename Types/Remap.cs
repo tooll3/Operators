@@ -1,4 +1,5 @@
 using System;
+using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -26,19 +27,35 @@ namespace T3.Operators.Types.Id_f0acd1a4_7a98_43ab_a807_6d1bd3e92169
 
             var factor = (value - inMin) / (inMax - inMin);
             var v = factor * (outMax - outMin) + outMin;
-            if (clamp)
+
+            switch ((Modes)Mode.GetValue(context))
             {
-                if (v > outMax)
+                case Modes.Clamped:
                 {
-                    v = outMax;
+                    
+                    var min = Math.Min(outMin, outMax);
+                    var max = Math.Max(outMin, outMax);
+                    v = MathUtils.Clamp(v, min, max);
+                    break;
                 }
-                else if (v < outMin)
+                case Modes.Modulo:
                 {
-                    v = outMin;
+                    
+                    var min = Math.Min(outMin, outMax);
+                    var max = Math.Max(outMin, outMax);
+                    v = MathUtils.Fmod(v, max- min);
                 }
+                    break;
             }
 
             Result.Value = v;
+        }
+
+        private enum Modes
+        {
+            Normal,
+            Clamped,
+            Modulo,
         }
 
         [Input(Guid = "40606d4e-acaf-4f23-a845-16f0eb9b73cf")]
@@ -58,5 +75,8 @@ namespace T3.Operators.Types.Id_f0acd1a4_7a98_43ab_a807_6d1bd3e92169
 
         [Input(Guid = "413C8072-7E0A-46C9-A48E-87272AB72CCB")]
         public readonly InputSlot<bool> Clamp = new InputSlot<bool>();
+        
+        [Input(Guid = "406F6476-EB25-4493-AAEA-3899E84DE50F", MappedType = typeof(Modes))]
+        public readonly InputSlot<int> Mode = new InputSlot<int>();        
     }
 }
