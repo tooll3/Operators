@@ -5,6 +5,7 @@ using T3.Core.Operator.Slots;
 using System;
 using System.Linq;
 using T3.Core;
+using T3.Core.Logging;
 
 namespace T3.Operators.Types.Id_4def850e_3627_46d8_ae2b_58b513843885
 {
@@ -40,12 +41,20 @@ namespace T3.Operators.Types.Id_4def850e_3627_46d8_ae2b_58b513843885
             for (var index = 0; index < list.Count; index++)
             {
                 var v = list[index];
-                var smoothed = MathUtils.Lerp(v, _averagedValues[index], smoothing);
-                _averagedValues[index] = smoothed;
+                if (double.IsNaN(v))
+                    v = 0;
                 
+                var smoothed = MathUtils.Lerp(v, _averagedValues[index], smoothing);
+                if (float.IsNaN(smoothed) || float.IsInfinity(smoothed))
+                {
+                    smoothed = 0;
+                }
+                
+                _averagedValues[index] = smoothed;
+
                 _output[index] =  (v - smoothed).Clamp(0, 1000) * mixAboveAverage
-                    + v *mixCurrent
-                    + smoothed * mixAverage;
+                                  + v *mixCurrent
+                                  + smoothed * mixAverage;
             }
 
             Output.Value = _output;

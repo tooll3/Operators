@@ -44,7 +44,7 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
             // }
             var decayRate =  Decay.GetValue(context);
             var minTimeBetweenBeats = MinTimeBetweenPeaks.GetValue(context);
-            _averageLevel = MathUtils.Lerp(value, _averageLevel,  0.96f).Clamp(0.001f, 1000);    // very long smoothing to normalize level
+            _averageLevel = MathUtils.Lerp(value, _averageLevel,  SmoothAverageLevel.GetValue(context)).Clamp(0.001f, 1000);    // very long smoothing to normalize level
             
             var normalizedValue = value / _averageLevel /3;
             _energy +=  (float)Math.Pow(normalizedValue,3);
@@ -68,10 +68,10 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
             }
 
             MovingSum.Value = _energy;
-            Result.Value = _lastPeak;
+            Result.Value = _averageLevel;
         }
 
-        private float _lastPeak = 0;
+        //private float _lastPeak = 0;
         private float _averageLevel;
         private float _energy;
         private double _lastPeakTime = double.NegativeInfinity;
@@ -90,5 +90,8 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
         [Input(Guid = "D38D54B4-D15C-40C3-A5F1-6546F444965C")]
         public readonly InputSlot<float> MinTimeBetweenPeaks = new InputSlot<float>();
 
+        [Input(Guid = "D6FC243B-D6C6-4EFE-9878-87A0E9562E7B")]
+        public readonly InputSlot<float> SmoothAverageLevel = new InputSlot<float>();
+        
     }
 }
