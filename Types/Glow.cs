@@ -8,8 +8,12 @@ namespace T3.Operators.Types.Id_d392d4af_4c78_4f4a_bc3f_4c54c8c73538
 {
     public class Glow : Instance<Glow>
     {
+        [Output(Guid = "2ce1453b-432b-4d12-8fb7-d883e3d0c136")]
+        public readonly Slot<SharpDX.Direct3D11.Texture2D> ImgOutput = new Slot<SharpDX.Direct3D11.Texture2D>();
+        
         [Output(Guid = "78523193-3df8-4189-88c0-46091d53892e")]
         public readonly Slot<Command> Output = new Slot<Command>();
+
 
 
         [Input(Guid = "f6bdd487-c16e-4fb0-bfba-b3801f121314")]
