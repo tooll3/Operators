@@ -142,77 +142,6 @@
       "Outputs": []
     },
     {
-      "Id": "1f383c04-33e9-471b-8df5-a391bc4a8193"/*BlendStateOp*/,
-      "SymbolId": "064ca51f-47ab-4cb7-95f2-e537b68e137e",
-      "InputValues": [
-        {
-          "Id": "3ca79807-00c9-471a-ac44-525a05740fed"/*AlphaToCoverageEnable*/,
-          "Type": "System.Boolean",
-          "Value": false
-        },
-        {
-          "Id": "873ad863-dec6-4b4b-9d81-89d5fa11beec"/*IndependentBlendEnable*/,
-          "Type": "System.Boolean",
-          "Value": false
-        }
-      ],
-      "Outputs": []
-    },
-    {
-      "Id": "229f2802-8b01-4081-83fb-89201d3b7ec5"/*OutputMergerStage*/,
-      "SymbolId": "5efaf208-ba62-42ce-b3df-059b37fc1382",
-      "InputValues": [
-        {
-          "Id": "ccee2ec3-586f-4396-8b20-cc99484e1b64"/*BlendFactor*/,
-          "Type": "System.Numerics.Vector4",
-          "Value": {
-            "X": 1.0,
-            "Y": 1.0,
-            "Z": 1.0,
-            "W": 1.0
-          }
-        },
-        {
-          "Id": "03166157-1e18-4513-8af5-398c6f4fcb1e"/*BlendSampleMask*/,
-          "Type": "System.Int32",
-          "Value": 1
-        }
-      ],
-      "Outputs": []
-    },
-    {
-      "Id": "2c8bb1ec-209b-4011-a3b3-032781a7ce32"/*RenderTargetBlendDesc*/,
-      "SymbolId": "38ee7546-8d7d-463c-aeea-e482d7ca3f30",
-      "InputValues": [
-        {
-          "Id": "7f535169-8f65-4186-866d-59c2b89d7da2"/*BlendEnabled*/,
-          "Type": "System.Boolean",
-          "Value": true
-        },
-        {
-          "Id": "56c398ce-fe71-47eb-a33f-11eec8f82e79"/*SourceBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "SourceAlpha"
-        },
-        {
-          "Id": "8dc53fe4-79bb-43e4-9d4a-4e06f9a3214c"/*DestinationBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "One"
-        },
-        {
-          "Id": "2632af70-5a05-429c-8123-fe280adea655"/*SourceAlphaBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "SourceAlpha"
-        },
-        {
-          "Id": "acc5550b-18ed-4dba-8e69-d5228e2ad850"/*DestinationAlphaBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "One"
-        }
-      ],
-      "Outputs": []
-    },
-    {
       "Id": "167ddb73-2f9d-402d-acd2-ccbbb6183ac7"/*DrawInstancedIndirect*/,
       "SymbolId": "c676b9c7-06d7-4ee0-8ffc-9bee96c5dc18",
       "InputValues": [],
@@ -354,33 +283,6 @@
       "Outputs": []
     },
     {
-      "Id": "baf3f4cf-b864-4283-9301-bdff0d588665"/*RenderTargetBlendDesc*/,
-      "SymbolId": "38ee7546-8d7d-463c-aeea-e482d7ca3f30",
-      "InputValues": [
-        {
-          "Id": "56c398ce-fe71-47eb-a33f-11eec8f82e79"/*SourceBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "SourceAlpha"
-        },
-        {
-          "Id": "8dc53fe4-79bb-43e4-9d4a-4e06f9a3214c"/*DestinationBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "InverseSourceAlpha"
-        },
-        {
-          "Id": "2632af70-5a05-429c-8123-fe280adea655"/*SourceAlphaBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "SourceAlpha"
-        },
-        {
-          "Id": "acc5550b-18ed-4dba-8e69-d5228e2ad850"/*DestinationAlphaBlend*/,
-          "Type": "SharpDX.Direct3D11.BlendOption",
-          "Value": "SourceAlpha"
-        }
-      ],
-      "Outputs": []
-    },
-    {
       "Id": "11001920-ae00-446a-820e-f2c3fc97640e"/*RasterizerStateOp*/,
       "SymbolId": "c7283335-ef57-46ad-9538-abbade65845a",
       "InputValues": [
@@ -410,18 +312,6 @@
       "SourceSlotId": "e81c99ce-fcee-4e7c-a1c7-0aa3b352b7e1",
       "TargetParentOrChildId": "00000000-0000-0000-0000-000000000000",
       "TargetSlotId": "b73347d9-9d9f-4929-b9df-e2d6db722856"
-    },
-    {
-      "SourceParentOrChildId": "baf3f4cf-b864-4283-9301-bdff0d588665",
-      "SourceSlotId": "228e1dc2-944e-4235-bf2d-2eb3f895858c",
-      "TargetParentOrChildId": "1f383c04-33e9-471b-8df5-a391bc4a8193",
-      "TargetSlotId": "63d0e4e8-fa00-4059-a11b-6a31e66757dc"
-    },
-    {
-      "SourceParentOrChildId": "1f383c04-33e9-471b-8df5-a391bc4a8193",
-      "SourceSlotId": "6ef6c44b-ee22-4c64-9910-4f7595c41897",
-      "TargetParentOrChildId": "229f2802-8b01-4081-83fb-89201d3b7ec5",
-      "TargetSlotId": "e0bc9cf8-42c8-4632-b958-7a96f6d03ba2"
     },
     {
       "SourceParentOrChildId": "fac5a9f3-e068-4638-929e-08580add0d7b",
