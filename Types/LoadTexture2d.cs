@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Mime;
 using SharpDX.Direct3D11;
 using T3.Core;
 using T3.Core.Logging;
@@ -26,10 +27,10 @@ namespace T3.Operators.Types.Id_0b3436db_e283_436e_ba85_2f3a1de76a9d
 
         private void UpdateShaderResourceView(EvaluationContext context)
         {
-            if (Texture.DirtyFlag.IsDirty)
+            if (Texture.DirtyFlag.IsDirty || ShaderResourceView.DirtyFlag.IsDirty)
             {
                 UpdateTexture(context);
-                Texture.DirtyFlag.Clear();
+                //Texture.DirtyFlag.Clear();
             }
         }
 
@@ -37,8 +38,8 @@ namespace T3.Operators.Types.Id_0b3436db_e283_436e_ba85_2f3a1de76a9d
         {
             var resourceManager = ResourceManager.Instance();
             if (Path.DirtyFlag.IsDirty)
-            {
-                    string imagePath = Path.GetValue(context);
+            { 
+                string imagePath = Path.GetValue(context);
                 try
                 {
                     (_textureResId, _srvResId) = resourceManager.CreateTextureFromFile(imagePath, () =>
@@ -71,6 +72,9 @@ namespace T3.Operators.Types.Id_0b3436db_e283_436e_ba85_2f3a1de76a9d
             {
                 Log.Error($"Failed to generate mipmaps for texture {Path.GetValue(context)}:" + e);
             }
+
+            Texture.DirtyFlag.Clear();
+            ShaderResourceView.DirtyFlag.Clear();
         }
 
         [Input(Guid = "{76CC3811-4AE0-48B2-A119-890DB5A4EEB2}")]
