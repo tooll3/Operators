@@ -16,15 +16,18 @@ namespace T3.Operators.Types.Id_59b810f1_7849_40a7_ae10_7e8008685311
         [Output(Guid = "00027a91-db2f-4eed-a340-3cdf692be853")]
         public readonly Slot<SharpDX.Direct3D11.ShaderResourceView> PointBufferSrv = new Slot<SharpDX.Direct3D11.ShaderResourceView>();
         
+        [Output(Guid = "0A3AE6BF-B720-4CF6-B683-65D9BFADB777")]
+        public readonly Slot<Buffer> OutBuffer = new Slot<Buffer>();
+
         
         [Output(Guid = "36FD3A40-6416-4BCB-9FAC-9CD9221BEBA8")]
         public readonly Slot<int> Length = new Slot<int>();
-
-
+        
         public PointsToBuffer()
         {
             PointBufferSrv.UpdateAction = Update;
             Length.UpdateAction = Update;
+            OutBuffer.UpdateAction = Update;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 16)]

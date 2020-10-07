@@ -15,9 +15,13 @@ namespace T3.Operators.Types.Id_8c41b312_6628_411c_a61d_604413b73a72
         [Output(Guid = "2A1FCDF6-9416-45B2-96CA-A9D6D2692278")]
         public readonly Slot<ShaderResourceView> ShaderResourceView = new Slot<ShaderResourceView>();
 
+        [Output(Guid = "E96EED5C-AE63-49B7-8ADD-2A818E4A2B89")]
+        public readonly Slot<int> ElementCount = new Slot<int>();
+        
         public SrvFromStructuredBuffer()
         {
             ShaderResourceView.UpdateAction = Update;
+            ElementCount.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)
@@ -32,17 +36,20 @@ namespace T3.Operators.Types.Id_8c41b312_6628_411c_a61d_604413b73a72
                     return;
                 }
                 ShaderResourceView.Value?.Dispose();
+
+                var elementCount = buffer.Description.SizeInBytes / buffer.Description.StructureByteStride;
                 var desc = new ShaderResourceViewDescription()
-                           {
-                               Dimension = ShaderResourceViewDimension.ExtendedBuffer,
-                               Format = Format.Unknown,
-                               BufferEx = new ShaderResourceViewDescription.ExtendedBufferResource()
-                                          {
-                                              FirstElement = 0,
-                                              ElementCount = buffer.Description.SizeInBytes / buffer.Description.StructureByteStride
-                                          }
-                           };
+                               {
+                                   Dimension = ShaderResourceViewDimension.ExtendedBuffer,
+                                   Format = Format.Unknown,
+                                   BufferEx = new ShaderResourceViewDescription.ExtendedBufferResource()
+                                                  {
+                                                      FirstElement = 0,
+                                                      ElementCount = elementCount
+                                                  }
+                               };
                 ShaderResourceView.Value = new ShaderResourceView(resourceManager.Device, buffer, desc); // todo: create via resource manager
+                ElementCount.Value = elementCount;
             }
         }
 

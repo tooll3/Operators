@@ -24,8 +24,13 @@ namespace T3.Operators.Types.Id_0b5b14bf_c850_493a_afb1_72643926e214
         {
             var resourceManager = ResourceManager.Instance();
             var buffer = Buffer.GetValue(context);
+            if (buffer == null)
+                return;
+            
             var bufferFlags = BufferFlags.GetValue(context);
             resourceManager.CreateStructuredBufferUav(buffer, bufferFlags, ref UnorderedAccessView.Value);
+            if (UnorderedAccessView.Value == null)
+                return;
 
             var symbolChild = Parent.Symbol.Children.Single(c => c.Id == SymbolChildId);
             UnorderedAccessView.Value.DebugName = symbolChild.ReadableName;
