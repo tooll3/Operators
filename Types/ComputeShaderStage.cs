@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using SharpDX;
 using SharpDX.Direct3D11;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -70,6 +71,10 @@ namespace T3.Operators.Types.Id_8bef116d_7d1c_4c1b_b902_25c1d5e925a9
                     csStage.SetUnorderedAccessView(0, _uavs[0]);
                 else
                     csStage.SetUnorderedAccessViews(0, _uavs, new[] { counter });
+            }
+            else if (_uavs.Length == 3)
+            {
+                csStage.SetUnorderedAccessViews(0, _uavs, new[] { counter, -1, -1 });
             }
             else
             {

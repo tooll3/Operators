@@ -23,25 +23,43 @@ namespace T3.Operators.Types.Id_73f152ac_12d9_4ae9_856a_9a74637fd6f6
             PointCloudSrv.UpdateAction = Update;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 48)]
+        [StructLayout(LayoutKind.Explicit, Size = 108)]
         struct VertexEntry
         {
             [FieldOffset(0)]
-            public SharpDX.Vector3 Pos;
+            public SharpDX.Vector3 Pos0;
 
             [FieldOffset(12)]
+            public SharpDX.Vector3 Pos1;
+
+            [FieldOffset(24)]
+            public SharpDX.Vector3 Pos2;
+
+            [FieldOffset(36)]
+            public SharpDX.Vector2 TexCoord0;
+
+            [FieldOffset(44)]
+            public SharpDX.Vector2 TexCoord1;
+
+            [FieldOffset(52)]
+            public SharpDX.Vector2 TexCoord2;
+
+            [FieldOffset(60)]
+            public SharpDX.Vector3 Normal0;
+
+            [FieldOffset(72)]
+            public SharpDX.Vector3 Normal1;
+
+            [FieldOffset(84)]
+            public SharpDX.Vector3 Normal2;
+
+            [FieldOffset(96)]
             public int EmitterId;
 
-            [FieldOffset(16)]
-            public SharpDX.Vector3 Normal;
-
-            [FieldOffset(28)]
+            [FieldOffset(100)]
             public float FaceArea;
 
-            [FieldOffset(32)]
-            public SharpDX.Vector2 TexCoord;
-
-            [FieldOffset(40)]
+            [FieldOffset(104)]
             public float Cdf;
         }
 
@@ -155,7 +173,7 @@ namespace T3.Operators.Types.Id_73f152ac_12d9_4ae9_856a_9a74637fd6f6
                         }
                     }
 
-                    int numVertexEntries = faces.Count * 3;
+                    int numVertexEntries = faces.Count;
                     var bufferData = new VertexEntry[numVertexEntries];
                     float areaSum = 0.0f;
                     for (int i = 0, faceIndex = 0; faceIndex < faces.Count; faceIndex++)
@@ -175,21 +193,15 @@ namespace T3.Operators.Types.Id_73f152ac_12d9_4ae9_856a_9a74637fd6f6
                         float faceArea = a * b * 0.5f;
                         areaSum += faceArea;
 
-                        bufferData[i].Pos = v0;
-                        bufferData[i].Normal = normals[face.V0n];
-                        bufferData[i].TexCoord = texCoords[face.V0t];
-                        bufferData[i].FaceArea = faceArea;
-                        i++;
-
-                        bufferData[i].Pos = v1;
-                        bufferData[i].Normal = normals[face.V1n];
-                        bufferData[i].TexCoord = texCoords[face.V1t];
-                        bufferData[i].FaceArea = faceArea;
-                        i++;
-
-                        bufferData[i].Pos = v2;
-                        bufferData[i].Normal = normals[face.V2n];
-                        bufferData[i].TexCoord = texCoords[face.V2t];
+                        bufferData[i].Pos0 = v0;
+                        bufferData[i].Pos1 = v1;
+                        bufferData[i].Pos2 = v2;
+                        bufferData[i].Normal0 = normals[face.V0n];
+                        bufferData[i].Normal1 = normals[face.V1n];
+                        bufferData[i].Normal2 = normals[face.V2n];
+                        bufferData[i].TexCoord0 = texCoords[face.V0t];
+                        bufferData[i].TexCoord1 = texCoords[face.V1t];
+                        bufferData[i].TexCoord2 = texCoords[face.V2t];
                         bufferData[i].FaceArea = faceArea;
                         i++;
                     }
@@ -197,15 +209,13 @@ namespace T3.Operators.Types.Id_73f152ac_12d9_4ae9_856a_9a74637fd6f6
                     // normalize face area to 1
                     float sumReci = 1.0f / areaSum;
                     float cdf = 0.0f;
-                    for (int i = 0; i < bufferData.Length; i += 3)
+                    for (int i = 0; i < bufferData.Length; i++)
                     {
                         cdf += bufferData[i].FaceArea * sumReci;
                         bufferData[i].Cdf = cdf;
-                        bufferData[i + 1].Cdf = cdf;
-                        bufferData[i + 2].Cdf = cdf;
                     }
 
-                    int stride = 48;
+                    int stride = 108;
                     resourceManager.SetupStructuredBuffer(bufferData, stride * numVertexEntries, stride, ref Buffer);
                     Buffer.DebugName = nameof(PointCloudFromObj);
                     resourceManager.CreateStructuredBufferSrv(Buffer, ref PointCloudSrv.Value);

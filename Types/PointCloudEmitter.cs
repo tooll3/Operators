@@ -39,6 +39,9 @@ namespace T3.Operators.Types.Id_51130e6c_53b2_4294_a3cf_b0fa15584acf
 
         [Input(Guid = "eccf1221-6775-42e0-8f79-ae5c6c38cb48")]
         public readonly InputSlot<float> Seed = new InputSlot<float>();
+
+        [Input(Guid = "c694ba46-1862-44e6-8d44-664f015f8dc1")]
+        public readonly InputSlot<SharpDX.Direct3D11.Buffer> buffer = new InputSlot<SharpDX.Direct3D11.Buffer>();
     }
 }
 

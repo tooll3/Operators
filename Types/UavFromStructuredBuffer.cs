@@ -32,13 +32,17 @@ namespace T3.Operators.Types.Id_0b5b14bf_c850_493a_afb1_72643926e214
             if (UnorderedAccessView.Value == null)
                 return;
 
-            var symbolChild = Parent.Symbol.Children.Single(c => c.Id == SymbolChildId);
-            UnorderedAccessView.Value.DebugName = symbolChild.ReadableName;
-            // Log.Info($"{symbolChild.ReadableName} updated with ref {UnorderedAccessView.DirtyFlag.Reference}");
+            if (UnorderedAccessView.Value != null)
+            {
+                var symbolChild = Parent.Symbol.Children.Single(c => c.Id == SymbolChildId);
+                UnorderedAccessView.Value.DebugName = symbolChild.ReadableName;
+                // Log.Info($"{symbolChild.ReadableName} updated with ref {UnorderedAccessView.DirtyFlag.Reference}");
+            }
         }
 
         [Input(Guid = "5d888f13-0ad8-4034-99ca-da36c8fb261c")]
         public readonly InputSlot<SharpDX.Direct3D11.Buffer> Buffer = new InputSlot<SharpDX.Direct3D11.Buffer>();
+
         [Input(Guid = "13B85721-7126-47BB-AB4F-096EAE59E412")]
         public readonly InputSlot<UnorderedAccessViewBufferFlags> BufferFlags = new InputSlot<UnorderedAccessViewBufferFlags>();
     }
