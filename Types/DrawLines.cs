@@ -5,7 +5,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_836f211f_b387_417c_8316_658e0dc6e117
 {
-    public class DrawGPoints : Instance<DrawGPoints>
+    public class DrawLines : Instance<DrawLines>
     {
         [Output(Guid = "73ebf863-ba71-421c-bee7-312f13c5eff0")]
         public readonly Slot<Command> Output = new Slot<Command>();
