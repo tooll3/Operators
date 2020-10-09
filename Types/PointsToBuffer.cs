@@ -15,7 +15,7 @@ namespace T3.Operators.Types.Id_59b810f1_7849_40a7_ae10_7e8008685311
     {
         [Output(Guid = "00027a91-db2f-4eed-a340-3cdf692be853")]
         public readonly Slot<SharpDX.Direct3D11.ShaderResourceView> PointBufferSrv = new Slot<SharpDX.Direct3D11.ShaderResourceView>();
-        
+        //
         [Output(Guid = "0A3AE6BF-B720-4CF6-B683-65D9BFADB777")]
         public readonly Slot<Buffer> OutBuffer = new Slot<Buffer>();
 
@@ -27,7 +27,7 @@ namespace T3.Operators.Types.Id_59b810f1_7849_40a7_ae10_7e8008685311
         {
             PointBufferSrv.UpdateAction = Update;
             Length.UpdateAction = Update;
-            OutBuffer.UpdateAction = Update;
+            // OutBuffer.UpdateAction = Update;
         }
 
         [StructLayout(LayoutKind.Explicit, Size = 16)]
@@ -63,12 +63,13 @@ namespace T3.Operators.Types.Id_59b810f1_7849_40a7_ae10_7e8008685311
             }
 
             var stride = 16;
-            resourceManager.SetupStructuredBuffer(_bufferData, stride * pointArray.Length, stride, ref OutBuffer.Value);
+            resourceManager.SetupStructuredBuffer(_bufferData, stride * pointArray.Length, stride, ref _buffer);
             //resourceManager.SetupStructuredBuffer(pointArray, stride * pointArray.Length, stride, ref pointArray);
-            resourceManager.CreateStructuredBufferSrv(OutBuffer.Value, ref PointBufferSrv.Value);
+            resourceManager.CreateStructuredBufferSrv(_buffer, ref PointBufferSrv.Value);
+            //PointBufferSrv.
         }
 
-        // private Buffer _buffer;
+        private Buffer _buffer;
         private BufferEntry[] _bufferData = new BufferEntry[0];
 
 

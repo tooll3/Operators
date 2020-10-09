@@ -19,8 +19,8 @@ namespace T3.Operators.Types.Id_836f211f_b387_417c_8316_658e0dc6e117
         [Input(Guid = "c10f9c6c-9923-42c6-848d-6b98097acc67")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture_ = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
-        [Input(Guid = "13f33c50-ebf1-44ef-81b8-823ce5d74784")]
-        public readonly InputSlot<SharpDX.Direct3D11.Buffer> PointsGBuffer = new InputSlot<SharpDX.Direct3D11.Buffer>();
+        [Input(Guid = "19bc41a5-4a30-4588-84d6-aa2ef1b3b99b")]
+        public readonly InputSlot<SharpDX.Direct3D11.ShaderResourceView> PointsBuffer = new InputSlot<SharpDX.Direct3D11.ShaderResourceView>();
     }
 }
 
