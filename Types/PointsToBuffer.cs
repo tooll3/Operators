@@ -63,12 +63,12 @@ namespace T3.Operators.Types.Id_59b810f1_7849_40a7_ae10_7e8008685311
             }
 
             var stride = 16;
-            resourceManager.SetupStructuredBuffer(_bufferData, stride * pointArray.Length, stride, ref _buffer);
+            resourceManager.SetupStructuredBuffer(_bufferData, stride * pointArray.Length, stride, ref OutBuffer.Value);
             //resourceManager.SetupStructuredBuffer(pointArray, stride * pointArray.Length, stride, ref pointArray);
-            resourceManager.CreateStructuredBufferSrv(_buffer, ref PointBufferSrv.Value);
+            resourceManager.CreateStructuredBufferSrv(OutBuffer.Value, ref PointBufferSrv.Value);
         }
 
-        private Buffer _buffer;
+        // private Buffer _buffer;
         private BufferEntry[] _bufferData = new BufferEntry[0];
 
 
