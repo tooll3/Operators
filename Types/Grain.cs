@@ -22,6 +22,12 @@ namespace T3.Operators.Types.Id_b5102fba_f05b_43fc_aa1d_613fe1d68ad2
 
         [Input(Guid = "d24cce46-dd3f-4047-a33f-50abbca89cc4")]
         public readonly InputSlot<float> Exponent = new InputSlot<float>();
+
+        [Input(Guid = "87a78859-5f0c-41af-8564-ac691b8f1950")]
+        public readonly InputSlot<float> Brightness = new InputSlot<float>();
+
+        [Input(Guid = "f1334f45-4335-4198-9b6e-ab9e8384aa32")]
+        public readonly InputSlot<float> Speed = new InputSlot<float>();
     }
 }
 
