@@ -78,6 +78,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
             var prevObjectToWorld = context.ObjectToWorld;
             var prevWorldToCamera = context.WorldToCamera;
+            var prevCameraToClipSpace = context.CameraToClipSpace;
             
             context.SetDefaultCamera();            
             Command.GetValue(context);
@@ -89,6 +90,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
             context.ObjectToWorld = prevObjectToWorld;
             context.WorldToCamera = prevWorldToCamera;
+            context.CameraToClipSpace = prevCameraToClipSpace;
             deviceContext.Rasterizer.SetViewports(prevViewports);
             deviceContext.OutputMerger.SetTargets(prevDepthStencilView, prevTargets);
 
