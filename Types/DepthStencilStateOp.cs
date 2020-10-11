@@ -30,7 +30,8 @@ namespace T3.Operators.Types.Id_04858a08_f0fe_4536_9152_686659f0ab58
                 {
                     IsDepthEnabled = IsEnabled.GetValue(context),
                     DepthWriteMask = DepthWriteMask.All,
-                    DepthComparison = Comparison.Less,
+                    DepthComparison = Comparison.GetValue(context),
+                    
                 };
                 
                 DepthState.Value = new DepthStencilState(ResourceManager.Instance().Device, depthStencilStateDescription);
@@ -44,6 +45,9 @@ namespace T3.Operators.Types.Id_04858a08_f0fe_4536_9152_686659f0ab58
 
         [Input(Guid = "956B735B-C38A-4E8E-8186-CAF4D36D4D20")]
         public readonly InputSlot<bool> IsEnabled = new InputSlot<bool>();
+        
+        [Input(Guid = "27F1F703-7333-49E5-A024-4606E34E8427")]
+        public readonly InputSlot<Comparison> Comparison = new InputSlot<Comparison>(SharpDX.Direct3D11.Comparison.Less);
         
     }
 }
