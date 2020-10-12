@@ -22,8 +22,8 @@ namespace T3.Operators.Types.Id_13d23535_dfa5_458e_93e3_158d83e0188b
         [Input(Guid = "989ab883-907f-4685-b4ae-69c517b86831")]
         public readonly InputSlot<System.Numerics.Vector3> PlaneNormal = new InputSlot<System.Numerics.Vector3>();
 
-        [Input(Guid = "ecaa38f4-66bb-4c09-b54d-b42520ad74e1")]
-        public readonly InputSlot<float> PlaneDist = new InputSlot<float>();
+        [Input(Guid = "03708185-bb00-477f-861e-1689c3b0aea1")]
+        public readonly InputSlot<System.Numerics.Vector3> PlanePos = new InputSlot<System.Numerics.Vector3>();
     }
 }
 
