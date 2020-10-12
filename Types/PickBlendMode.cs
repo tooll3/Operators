@@ -22,6 +22,9 @@ namespace T3.Operators.Types.Id_fd9bffd3_5c57_462f_8761_85f94c5a629b
         [Input(Guid = "ee1bf2d2-50a2-496e-b728-d94ffbbd9e5d")]
         public readonly InputSlot<bool> EnableDepthTest = new InputSlot<bool>();
 
+        [Input(Guid = "db45e025-74c0-495c-a81c-6fd25845903b")]
+        public readonly InputSlot<bool> EnableZWrite = new InputSlot<bool>();
+
         enum BlendModes
         {
             Normal,

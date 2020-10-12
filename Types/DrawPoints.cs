@@ -21,6 +21,15 @@ namespace T3.Operators.Types.Id_ffd94e5a_bc98_4e70_84d8_cce831e6925f
 
         [Input(Guid = "850e3a32-11ba-4ad2-a2b1-6164f077ddd6")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture_ = new InputSlot<SharpDX.Direct3D11.Texture2D>();
+
+        [Input(Guid = "814fc516-250f-4383-8f20-c2a358bbe4e1")]
+        public readonly InputSlot<bool> EnableZWrite = new InputSlot<bool>();
+
+        [Input(Guid = "7acc95ad-d317-42fc-97f8-85f48d7e516f")]
+        public readonly InputSlot<bool> EnableZTest = new InputSlot<bool>();
+
+        [Input(Guid = "8fab9161-48d4-43b0-a18f-5942b7071a49")]
+        public readonly InputSlot<int> BlendMode = new InputSlot<int>();
     }
 }
 
