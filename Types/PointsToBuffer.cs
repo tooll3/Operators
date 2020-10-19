@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using SharpDX;
+using SharpDX.Direct3D11;
 using T3.Core;
 using T3.Core.DataTypes;
 using T3.Core.Logging;
@@ -13,11 +14,13 @@ namespace T3.Operators.Types.Id_59b810f1_7849_40a7_ae10_7e8008685311
 {
     public class PointsToBuffer : Instance<PointsToBuffer>
     {
-        [Output(Guid = "00027a91-db2f-4eed-a340-3cdf692be853")]
-        public readonly Slot<SharpDX.Direct3D11.ShaderResourceView> PointBufferSrv = new Slot<SharpDX.Direct3D11.ShaderResourceView>();
+
         // //
         // [Output(Guid = "0A3AE6BF-B720-4CF6-B683-65D9BFADB777")]
         // public readonly Slot<Buffer> OutBuffer = new Slot<Buffer>();
+
+        [Output(Guid = "293E44BF-58C8-4D97-AAA1-AFD40D182AA0")]
+        public readonly Slot<BufferWithViews> OutBuffer = new Slot<BufferWithViews>();
 
         
         [Output(Guid = "36FD3A40-6416-4BCB-9FAC-9CD9221BEBA8")]
@@ -25,8 +28,9 @@ namespace T3.Operators.Types.Id_59b810f1_7849_40a7_ae10_7e8008685311
         
         public PointsToBuffer()
         {
-            PointBufferSrv.UpdateAction = Update;
+
             Length.UpdateAction = Update;
+            OutBuffer.UpdateAction = Update;
             // OutBuffer.UpdateAction = Update;
         }
 
@@ -63,15 +67,17 @@ namespace T3.Operators.Types.Id_59b810f1_7849_40a7_ae10_7e8008685311
             }
 
             var stride = 16;
+
+            _bufferWithViews.Buffer = _buffer;
             resourceManager.SetupStructuredBuffer(_bufferData, stride * pointArray.Length, stride, ref _buffer);
-            //resourceManager.SetupStructuredBuffer(pointArray, stride * pointArray.Length, stride, ref pointArray);
-            resourceManager.CreateStructuredBufferSrv(_buffer, ref PointBufferSrv.Value);
-            //PointBufferSrv.
+            resourceManager.CreateStructuredBufferSrv(_buffer, ref _bufferWithViews.Srv);
+            resourceManager.CreateStructuredBufferUav(_buffer, UnorderedAccessViewBufferFlags.None, ref _bufferWithViews.Uav);
+            OutBuffer.Value = _bufferWithViews;
         }
 
         private Buffer _buffer;
         private BufferEntry[] _bufferData = new BufferEntry[0];
-
+        private BufferWithViews _bufferWithViews = new BufferWithViews();
 
         [Input(Guid = "6fddc26b-31e2-41f1-b86c-0b71d898801a")]
         public readonly InputSlot<SharpDX.Vector4[]> PointArray = new InputSlot<SharpDX.Vector4[]>();

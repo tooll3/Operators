@@ -8,11 +8,11 @@ namespace T3.Operators.Types.Id_dd586355_64b3_4e96_af6d_b4927595dee7
     public class AddNoise : Instance<AddNoise>
     {
 
-        [Output(Guid = "9e73ace4-b94c-4bd3-91e5-5bfdac427760")]
-        public readonly Slot<SharpDX.Direct3D11.ShaderResourceView> OutBuffer2 = new Slot<SharpDX.Direct3D11.ShaderResourceView>();
+        [Output(Guid = "bea6aa18-e751-4ce7-b7d7-b7a026c8e019")]
+        public readonly Slot<T3.Core.DataTypes.BufferWithViews> Output = new Slot<T3.Core.DataTypes.BufferWithViews>();
 
-        [Input(Guid = "ab4f41b6-a6c0-44b8-af91-24d1b133b256")]
-        public readonly InputSlot<SharpDX.Direct3D11.ShaderResourceView> PointsA = new InputSlot<SharpDX.Direct3D11.ShaderResourceView>();
+        [Input(Guid = "3f5abde2-66e1-4b04-9bff-5a19a58aab86")]
+        public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> Points = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
 
         [Input(Guid = "5894156a-cc31-4236-908c-de0e5385fd84")]
         public readonly InputSlot<float> Amount = new InputSlot<float>();
