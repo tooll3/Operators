@@ -8,8 +8,8 @@ namespace T3.Operators.Types.Id_3ee8f66d_68df_43c1_b0eb_407259bf7e86
     public class GridGPoints : Instance<GridGPoints>
     {
 
-        [Output(Guid = "bb0ef759-9746-4f99-8641-ae6173e789ad")]
-        public readonly Slot<SharpDX.Direct3D11.ShaderResourceView> OutBuffer2 = new Slot<SharpDX.Direct3D11.ShaderResourceView>();
+        [Output(Guid = "eb8c79d4-d147-419c-a606-4bbe7b71933f")]
+        public readonly Slot<T3.Core.DataTypes.BufferWithViews> OutBuffer = new Slot<T3.Core.DataTypes.BufferWithViews>();
 
         [Input(Guid = "72eda38f-fc49-4b1f-b7c0-97e07bee4f7c")]
         public readonly InputSlot<int> CountX = new InputSlot<int>();

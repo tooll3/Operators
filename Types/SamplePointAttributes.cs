@@ -8,13 +8,13 @@ namespace T3.Operators.Types.Id_b3de7a93_e921_4e43_8a56_6c84b2d18b74
     public class SamplePointAttributes : Instance<SamplePointAttributes>
     {
 
-        [Output(Guid = "c0d516e4-f39f-41c0-9e63-38e5728b3840")]
-        public readonly Slot<SharpDX.Direct3D11.ShaderResourceView> OutBuffer2 = new Slot<SharpDX.Direct3D11.ShaderResourceView>();
+        [Output(Guid = "bdc65f4c-6eac-44bf-af39-6655605b8fae")]
+        public readonly Slot<T3.Core.DataTypes.BufferWithViews> OutBuffer = new Slot<T3.Core.DataTypes.BufferWithViews>();
 
-        [Input(Guid = "d156d55f-8847-4dea-a33c-525b0a43992f")]
-        public readonly InputSlot<SharpDX.Direct3D11.ShaderResourceView> SourcePoints = new InputSlot<SharpDX.Direct3D11.ShaderResourceView>();
+        [Input(Guid = "d42b8adc-f1d6-4f32-94a3-24802630d763")]
+        public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> GPoints = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
 
-        [Input(Guid = "2b5ee35d-bb00-4dd1-abdc-c4584c7ce7c5", MappedType = typeof(Attributes))]
+        [Input(Guid = "2b5ee35d-bb00-4dd1-abdc-c4584c7ce7c5")]
         public readonly InputSlot<int> Brightness = new InputSlot<int>();
 
         [Input(Guid = "ce9c0841-a1f3-4f5d-9cd8-636390112ece")]
@@ -23,7 +23,7 @@ namespace T3.Operators.Types.Id_b3de7a93_e921_4e43_8a56_6c84b2d18b74
         [Input(Guid = "62e68350-739a-4220-bb84-70b33ea1baf0")]
         public readonly InputSlot<float> BrightnessOffset = new InputSlot<float>();
 
-        [Input(Guid = "f5f424a1-42a4-4429-8d99-47a7c6176400", MappedType = typeof(Attributes))]
+        [Input(Guid = "f5f424a1-42a4-4429-8d99-47a7c6176400")]
         public readonly InputSlot<int> Red = new InputSlot<int>();
 
         [Input(Guid = "1531e949-fe17-4718-9ac6-4dc3884c23fc")]
@@ -32,7 +32,7 @@ namespace T3.Operators.Types.Id_b3de7a93_e921_4e43_8a56_6c84b2d18b74
         [Input(Guid = "022f5d7d-b9fc-4c4f-8b7e-84aaedbfdd29")]
         public readonly InputSlot<float> RedOffset = new InputSlot<float>();
 
-        [Input(Guid = "d87c9071-2636-4136-b488-410591be47c6", MappedType = typeof(Attributes))]
+        [Input(Guid = "d87c9071-2636-4136-b488-410591be47c6")]
         public readonly InputSlot<int> Green = new InputSlot<int>();
 
         [Input(Guid = "6b05ba32-f445-4403-aaba-160c7876b03b")]
@@ -41,7 +41,7 @@ namespace T3.Operators.Types.Id_b3de7a93_e921_4e43_8a56_6c84b2d18b74
         [Input(Guid = "f6b64f46-ce50-43cb-bc83-e1a3822067db")]
         public readonly InputSlot<float> GreenOffset = new InputSlot<float>();
 
-        [Input(Guid = "c631114f-9ebc-4ea6-b6e5-4c999144e36c", MappedType = typeof(Attributes))]
+        [Input(Guid = "c631114f-9ebc-4ea6-b6e5-4c999144e36c")]
         public readonly InputSlot<int> Blue = new InputSlot<int>();
 
         [Input(Guid = "d4a0385e-1dfb-4af0-bf52-5fab61f713bb")]

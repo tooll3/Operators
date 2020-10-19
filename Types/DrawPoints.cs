@@ -10,8 +10,8 @@ namespace T3.Operators.Types.Id_ffd94e5a_bc98_4e70_84d8_cce831e6925f
         [Output(Guid = "b73347d9-9d9f-4929-b9df-e2d6db722856")]
         public readonly Slot<Command> Output = new Slot<Command>();
 
-        [Input(Guid = "0a8776c5-eca9-4d8a-9eca-61fee6d8d5ac")]
-        public readonly InputSlot<SharpDX.Direct3D11.ShaderResourceView> PointsBuffer1 = new InputSlot<SharpDX.Direct3D11.ShaderResourceView>();
+        [Input(Guid = "5df18658-ef86-4c0f-8bb4-4ac3fbbf9a33")]
+        public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> GPoints = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
 
         [Input(Guid = "cc442161-e9ca-40ea-be3b-f87189d4e155")]
         public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();

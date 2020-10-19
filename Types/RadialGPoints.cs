@@ -8,8 +8,8 @@ namespace T3.Operators.Types.Id_3352d3a1_ab04_4d0a_bb43_da69095b73fd
     public class RadialGPoints : Instance<RadialGPoints>
     {
 
-        [Output(Guid = "48d483b7-813f-4680-9e76-20e171dbf53f")]
-        public readonly Slot<SharpDX.Direct3D11.ShaderResourceView> OutBuffer2 = new Slot<SharpDX.Direct3D11.ShaderResourceView>();
+        [Output(Guid = "d7605a96-adc6-4a2b-9ba4-33adef3b7f4c")]
+        public readonly Slot<T3.Core.DataTypes.BufferWithViews> OutBuffer = new Slot<T3.Core.DataTypes.BufferWithViews>();
 
         [Input(Guid = "b654ffe2-d46e-4a62-89b3-a9692d5c6481")]
         public readonly InputSlot<int> Count = new InputSlot<int>();
