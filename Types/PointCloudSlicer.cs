@@ -19,11 +19,8 @@ namespace T3.Operators.Types.Id_13d23535_dfa5_458e_93e3_158d83e0188b
         [Input(Guid = "cad42998-190e-467a-b882-8b805fc693e3")]
         public readonly InputSlot<SharpDX.Direct3D11.ShaderResourceView> Data = new InputSlot<SharpDX.Direct3D11.ShaderResourceView>();
 
-        [Input(Guid = "989ab883-907f-4685-b4ae-69c517b86831")]
-        public readonly InputSlot<System.Numerics.Vector3> PlaneNormal = new InputSlot<System.Numerics.Vector3>();
-
-        [Input(Guid = "03708185-bb00-477f-861e-1689c3b0aea1")]
-        public readonly InputSlot<System.Numerics.Vector3> PlanePos = new InputSlot<System.Numerics.Vector3>();
+        [Input(Guid = "da7abd8c-9bdb-47ff-9171-543ea3d490ab")]
+        public readonly InputSlot<float> Scale = new InputSlot<float>();
     }
 }
 
