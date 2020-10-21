@@ -158,7 +158,7 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
             BassWasapi.GetData(null, (int)DataFlags.Available);
             
             // get FFT data. Return value is -1 on error
-            var ret = BassWasapi.GetData(FftBuffer, (int)DataFlags.FFT512);    // Note: The DataFlags seems to be offset by one (FFT256 only fills 128 entries)
+            var ret = BassWasapi.GetData(FftBuffer, (int)DataFlags.FFT1024);    // Note: The DataFlags seems to be offset by one (FFT256 only fills 128 entries)
             if (ret < 0)
                 return;
             
@@ -244,7 +244,7 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
         public float LeftLevel;
         private int _lastLevel;
         private int _hangCounter;
-        private const int FftSize = 512;
+        private const int FftSize = 1024;
 
         private readonly List<string> _deviceList = new List<string>();
         private bool _initialized;
