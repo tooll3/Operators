@@ -16,6 +16,10 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
         [Output(Guid = "01706780-D25B-4C30-A741-8B7B81E04D82", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> Result = new Slot<float>();
 
+        [Output(Guid = "D7114289-4B1D-47E9-B5C1-DCDC8A371087", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<List<float>> Range = new Slot<List<float>>();
+
+        
         [Input(Guid = "AAD1E576-F144-423F-83B5-5694B1119C23")]
         public readonly InputSlot<Vector2> OutputRange = new InputSlot<Vector2>();
 
@@ -46,9 +50,9 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
         public MidiInput()
         {
             Result.UpdateAction = Update;
-
+            Range.UpdateAction = Update;
             CloseMidiDevices();
-            _instances.Add(this);
+            Instances.Add(this);
             ScanAndRegisterToMidiDevices();
         }
 
@@ -60,6 +64,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
             UnregisterHandlersForInstance(this);
         }
 
+        
         private void Update(EvaluationContext context)
         {
             _trainedDeviceName = Device.GetValue(context);
@@ -74,18 +79,26 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
             var teachTrigger = !TeachTrigger.GetValue(context);
             var teachJustTriggered = !teachTrigger && !_oldTeachTrigger;
             _oldTeachTrigger = !teachTrigger;
+            var controlRangeSize = (_controlRange.Height - _controlRange.Width).Clamp(1, 128);
+
+            if ( _valuesForControlRange == null || _valuesForControlRange.Count != controlRangeSize)
+            {
+                _valuesForControlRange = new List<float>(controlRangeSize);
+                _valuesForControlRange.AddRange(new float[controlRangeSize]); //initialize list values
+            }
+            
             if (teachJustTriggered)
             {
                 CloseMidiDevices();
                 ScanAndRegisterToMidiDevices(logInformation: true);
                 _teachingActive = true;
-                _lastMatchingSignal = null;
+                _lastMatchingSignals.Clear();
                 _currentControllerValue = 0;
             }
 
-            if (_lastMatchingSignal != null)
+            lock (this)
             {
-                lock (this)
+                foreach(var signal in _lastMatchingSignals)
                 {
                     if (_teachingActive)
                     {
@@ -93,27 +106,38 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
                         Device.Input.IsDefault = false;
                         Device.DirtyFlag.Invalidate();
 
-                        Channel.TypedInputValue.Value = _lastMatchingSignal.Channel;
+                        Channel.TypedInputValue.Value = signal.Channel;
                         Channel.Input.IsDefault = false;
                         Channel.DirtyFlag.Invalidate();
 
-                        Control.TypedInputValue.Value = _lastMatchingSignal.ControllerId;
+                        Control.TypedInputValue.Value = signal.ControllerId;
                         Control.Input.IsDefault = false;
                         Control.DirtyFlag.Invalidate();
 
                         _trainedDeviceName = _lastMessageDevice.ProductName;
-                        _trainedChannel = _lastMatchingSignal.Channel;
-                        _trainedControllerId = _lastMatchingSignal.ControllerId;
+                        _trainedChannel = signal.Channel;
+                        _trainedControllerId = signal.ControllerId;
                         _teachingActive = false;
 
                         TeachTrigger.TypedInputValue.Value = false;
                     }
 
-                    _currentControllerValue = _lastMatchingSignal.ControllerValue;
-                    _currentControllerId = _lastMatchingSignal.ControllerId;
+                    _currentControllerValue = signal.ControllerValue;
+                    _currentControllerId = signal.ControllerId;
+                    
+                    var isWithinControlRange = 
+                        signal.ControllerId >=  _controlRange.Width &&
+                        signal.ControllerId < _controlRange.Height;
+                        
+                    if (isWithinControlRange)
+                    {
+                        var index = signal.ControllerId - _controlRange.Width;
+                        _valuesForControlRange[index] = signal.ControllerValue;
+                    }
+
                     _isDefaultValue = false;
-                    _lastMatchingSignal = null;
                 }
+                _lastMatchingSignals.Clear();
             }
 
             if (_isDefaultValue)
@@ -126,9 +150,10 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
             Result.Value = UseControlRange
                                ? _currentControllerId
                                : MathUtils.Remap(_currentControllerValue, 0, 127, outRange.X, outRange.Y);
+            Range.Value = _valuesForControlRange;
         }
 
-        public static void ScanAndRegisterToMidiDevices(bool logInformation = false)
+        private static void ScanAndRegisterToMidiDevices(bool logInformation = false)
         {
             for (int index = 0; index < MidiIn.NumberOfDevices; index++)
             {
@@ -148,22 +173,22 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
                     continue;
                 }
 
-                foreach (var midiInstance in _instances)
+                foreach (var midiInstance in Instances)
                 {
                     newMidiIn.MessageReceived += midiInstance.MessageReceivedHandler;
                     newMidiIn.ErrorReceived += midiInstance.ErrorReceivedHandler;
                 }
 
                 newMidiIn.Start();
-                _midiInsWithDevices[newMidiIn] = deviceInfo;
+                MidiInsWithDevices[newMidiIn] = deviceInfo;
             }
         }
 
         private static void CloseMidiDevices()
         {
-            foreach (var midiIn in _midiInsWithDevices.Keys)
+            foreach (var midiIn in MidiInsWithDevices.Keys)
             {
-                foreach (var midiInputInstance in _instances)
+                foreach (var midiInputInstance in Instances)
                 {
                     midiIn.MessageReceived -= midiInputInstance.MessageReceivedHandler;
                     midiIn.ErrorReceived -= midiInputInstance.ErrorReceivedHandler;
@@ -181,29 +206,27 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
                 }
             }
 
-            _midiInsWithDevices.Clear();
+            MidiInsWithDevices.Clear();
         }
 
         private static void UnregisterHandlersForInstance(MidiInput instance)
         {
-            if (!_instances.Contains(instance))
+            if (!Instances.Contains(instance))
                 return;
 
-            foreach (var midiIn in _midiInsWithDevices.Keys)
+            foreach (var midiIn in MidiInsWithDevices.Keys)
             {
                 midiIn.MessageReceived -= instance.MessageReceivedHandler;
                 midiIn.ErrorReceived -= instance.ErrorReceivedHandler;
             }
 
-            _instances.Remove(instance);
-            if (_instances.Count == 0)
+            Instances.Remove(instance);
+            if (Instances.Count == 0)
             {
                 CloseMidiDevices();
             }
         }
 
-        private const bool OnlyAcceptControlChanges = true;
-        private const bool OnlyAcceptNotes = false;
 
         private void ErrorReceivedHandler(object sender, MidiInMessageEventArgs msg)
         {
@@ -213,20 +236,19 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
         {
             lock (this)
             {
-                var midiIn = sender as MidiIn;
-                if (midiIn == null || msg.MidiEvent == null)
+                if (!(sender is MidiIn midiIn) || msg.MidiEvent == null)
                     return;
 
-                if (!_midiInsWithDevices.ContainsKey(midiIn))
+                if (!MidiInsWithDevices.ContainsKey(midiIn))
                     return;
 
                 MidiSignal newSignal = null;
-                var acceptControlChanges = !OnlyAcceptNotes; // && _outputMode != OutputModes.MidiSync;
-                var acceptNotes = OnlyAcceptControlChanges; // _inputMode != InputModes.ControlChangesOnly && _outputMode != OutputModes.MidiSync;
+                //var acceptControlChanges = !OnlyAcceptNotes; // && _outputMode != OutputModes.MidiSync;
+                //var acceptNotes = OnlyAcceptControlChanges; // _inputMode != InputModes.ControlChangesOnly && _outputMode != OutputModes.MidiSync;
 
-                var device = _midiInsWithDevices[midiIn];
+                var device = MidiInsWithDevices[midiIn];
 
-                if (acceptControlChanges && msg.MidiEvent is ControlChangeEvent controlEvent)
+                if (msg.MidiEvent is ControlChangeEvent controlEvent)
                 {
                     if (_printLogMessages)
                         Log.Debug("" + controlEvent + "  ControlValue :" + controlEvent.ControllerValue);
@@ -239,28 +261,31 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
                                     };
                 }
 
-                if (acceptNotes && msg.MidiEvent is NoteEvent noteEvent)
+                if (msg.MidiEvent is NoteEvent noteEvent)
                 {
-                    if (noteEvent.CommandCode == MidiCommandCode.NoteOn)
+                    switch (noteEvent.CommandCode)
                     {
-                        if (_printLogMessages)
-                            Log.Debug("" + noteEvent + "  ControlValue :" + noteEvent.NoteNumber);
+                        case MidiCommandCode.NoteOn:
+                        {
+                            if (_printLogMessages)
+                                Log.Debug("" + noteEvent + "  ControlValue :" + noteEvent.NoteNumber);
 
-                        newSignal = new MidiSignal()
-                                        {
-                                            Channel = noteEvent.Channel,
-                                            ControllerId = noteEvent.NoteNumber,
-                                            ControllerValue = noteEvent.Velocity,
-                                        };
-                    }
-                    else if (noteEvent.CommandCode == MidiCommandCode.NoteOff)
-                    {
-                        newSignal = new MidiSignal()
-                                        {
-                                            Channel = noteEvent.Channel,
-                                            ControllerId = noteEvent.NoteNumber,
-                                            ControllerValue = 0,
-                                        };
+                            newSignal = new MidiSignal()
+                                            {
+                                                Channel = noteEvent.Channel,
+                                                ControllerId = noteEvent.NoteNumber,
+                                                ControllerValue = noteEvent.Velocity,
+                                            };
+                            break;
+                        }
+                        case MidiCommandCode.NoteOff:
+                            newSignal = new MidiSignal()
+                                            {
+                                                Channel = noteEvent.Channel,
+                                                ControllerId = noteEvent.NoteNumber,
+                                                ControllerValue = 0,
+                                            };
+                            break;
                     }
                 }
                 else if (msg.MidiEvent.CommandCode == MidiCommandCode.TimingClock
@@ -284,9 +309,11 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
 
                     if (_teachingActive || (matchesDevice && matchesChannel && matchesController))
                     {
-                        _lastMatchingSignal = newSignal;
+                        _lastMatchingSignals.Add(newSignal);;
                         _lastMessageDevice = device;
                         _isDefaultValue = false;
+                        
+
                     }
                 }
             }
@@ -294,9 +321,10 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
 
         private Size2 _controlRange;
         private bool UseControlRange => _controlRange.Width > 0 || _controlRange.Height > 0;
+        private List<float> _valuesForControlRange;
 
-        private static List<MidiInput> _instances = new List<MidiInput>();
-        private static Dictionary<MidiIn, MidiInCapabilities> _midiInsWithDevices = new Dictionary<MidiIn, MidiInCapabilities>();
+        private static readonly List<MidiInput> Instances = new List<MidiInput>();
+        private static readonly Dictionary<MidiIn, MidiInCapabilities> MidiInsWithDevices = new Dictionary<MidiIn, MidiInCapabilities>();
 
         private class MidiSignal
         {
@@ -340,14 +368,14 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
         private bool _allowPresets;
         #endregion
 
-        private bool _printLogMessages = false;
+        private bool _printLogMessages;
         private bool _isDefaultValue = true;
         private bool _oldTeachTrigger;
         private bool _teachingActive;
-        private String _trainedDeviceName;
+        private string _trainedDeviceName;
         private int _trainedChannel = -1;
         private int _trainedControllerId = -1;
-        private MidiSignal _lastMatchingSignal;
+        private readonly List<MidiSignal> _lastMatchingSignals = new List<MidiSignal>(10);
         private MidiInCapabilities _lastMessageDevice;
 
         private float _currentControllerValue;

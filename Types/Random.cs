@@ -17,6 +17,7 @@ namespace T3.Operators.Types.Id_10673c38_8c7e_4aa1_8dcd_3f2711c709b5
         private void Update(EvaluationContext context)
         {
             var random = new System.Random(Seed.GetValue(context));
+            var firstIsGarbage = (float)random.NextDouble();
             Result.Value = (float)random.NextDouble();
         }
 
