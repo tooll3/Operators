@@ -19,7 +19,6 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
         [Output(Guid = "D7114289-4B1D-47E9-B5C1-DCDC8A371087", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<List<float>> Range = new Slot<List<float>>();
 
-        
         [Input(Guid = "AAD1E576-F144-423F-83B5-5694B1119C23")]
         public readonly InputSlot<Vector2> OutputRange = new InputSlot<Vector2>();
 
@@ -64,7 +63,6 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
             UnregisterHandlersForInstance(this);
         }
 
-        
         private void Update(EvaluationContext context)
         {
             _trainedDeviceName = Device.GetValue(context);
@@ -81,12 +79,12 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
             _oldTeachTrigger = !teachTrigger;
             var controlRangeSize = (_controlRange.Height - _controlRange.Width).Clamp(1, 128);
 
-            if ( _valuesForControlRange == null || _valuesForControlRange.Count != controlRangeSize)
+            if (_valuesForControlRange == null || _valuesForControlRange.Count != controlRangeSize)
             {
                 _valuesForControlRange = new List<float>(controlRangeSize);
                 _valuesForControlRange.AddRange(new float[controlRangeSize]); //initialize list values
             }
-            
+
             if (teachJustTriggered)
             {
                 CloseMidiDevices();
@@ -98,7 +96,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
 
             lock (this)
             {
-                foreach(var signal in _lastMatchingSignals)
+                foreach (var signal in _lastMatchingSignals)
                 {
                     if (_teachingActive)
                     {
@@ -124,11 +122,11 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
 
                     _currentControllerValue = signal.ControllerValue;
                     _currentControllerId = signal.ControllerId;
-                    
-                    var isWithinControlRange = 
-                        signal.ControllerId >=  _controlRange.Width &&
+
+                    var isWithinControlRange =
+                        signal.ControllerId >= _controlRange.Width &&
                         signal.ControllerId < _controlRange.Height;
-                        
+
                     if (isWithinControlRange)
                     {
                         var index = signal.ControllerId - _controlRange.Width;
@@ -137,6 +135,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
 
                     _isDefaultValue = false;
                 }
+
                 _lastMatchingSignals.Clear();
             }
 
@@ -227,7 +226,6 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
             }
         }
 
-
         private void ErrorReceivedHandler(object sender, MidiInMessageEventArgs msg)
         {
         }
@@ -243,8 +241,6 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
                     return;
 
                 MidiSignal newSignal = null;
-                //var acceptControlChanges = !OnlyAcceptNotes; // && _outputMode != OutputModes.MidiSync;
-                //var acceptNotes = OnlyAcceptControlChanges; // _inputMode != InputModes.ControlChangesOnly && _outputMode != OutputModes.MidiSync;
 
                 var device = MidiInsWithDevices[midiIn];
 
@@ -253,12 +249,15 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
                     if (_printLogMessages)
                         Log.Debug("" + controlEvent + "  ControlValue :" + controlEvent.ControllerValue);
 
-                    newSignal = new MidiSignal()
-                                    {
-                                        Channel = controlEvent.Channel,
-                                        ControllerId = (int)controlEvent.Controller,
-                                        ControllerValue = (int)controlEvent.ControllerValue,
-                                    };
+                    if (!UseControlRange)
+                    {
+                        newSignal = new MidiSignal()
+                                        {
+                                            Channel = controlEvent.Channel,
+                                            ControllerId = (int)controlEvent.Controller,
+                                            ControllerValue = (int)controlEvent.ControllerValue,
+                                        };
+                    }
                 }
 
                 if (msg.MidiEvent is NoteEvent noteEvent)
@@ -309,11 +308,10 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
 
                     if (_teachingActive || (matchesDevice && matchesChannel && matchesController))
                     {
-                        _lastMatchingSignals.Add(newSignal);;
+                        _lastMatchingSignals.Add(newSignal);
+                        ;
                         _lastMessageDevice = device;
                         _isDefaultValue = false;
-                        
-
                     }
                 }
             }
