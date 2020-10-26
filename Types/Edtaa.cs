@@ -19,7 +19,6 @@ namespace T3.Operators.Types.Id_afcd4aad_8c8d_4e59_8e8e_a8c12d312200
 
         private uint _textureResId;
         private uint _srvResId;
-        
 
         public Edtaa()
         {
@@ -162,7 +161,24 @@ namespace T3.Operators.Types.Id_afcd4aad_8c8d_4e59_8e8e_a8c12d312200
                                 color.Red = f;
                                 color.Blue = f;
                                 color.Green = f;
-                                color.Alpha = 1;
+                                float alpha = 1 - _data[i];
+                                {
+                                    // do alpha dilatation
+                                    const int range = 1;
+                                    int xs = Math.Max(x - range, 0);
+                                    int xe = Math.Min(x + range, width - 1);
+                                    int ys = Math.Max(y - range, 0);
+                                    int ye = Math.Min(y + range, height - 1);
+                                    for (int yy = ys; yy <= ye; yy++)
+                                    {
+                                        for (int xx = xs; xx <= xe; xx++)
+                                        {
+                                            alpha = Math.Max(alpha, 1 - _data[yy*width + xx]);
+                                        }
+                                    }
+                                }
+
+                                color.Alpha = alpha;// * 0.8f; // > 0.0f ? 0.5f : 0;
 
                                 destinationStream.Write(color.ToRgba());
                             }
@@ -501,9 +517,9 @@ namespace T3.Operators.Types.Id_afcd4aad_8c8d_4e59_8e8e_a8c12d312200
             // Texture.DirtyFlag.Clear();
             // ShaderResourceView.DirtyFlag.Clear();
         }
-        
+
         [Input(Guid = "7b091198-57c7-40b3-8b96-2ab8018c9f6f")]
-        public readonly  InputSlot<SharpDX.Direct3D11.Texture2D> InputImage = new InputSlot<Texture2D>();
+        public readonly InputSlot<SharpDX.Direct3D11.Texture2D> InputImage = new InputSlot<Texture2D>();
 
         [Input(Guid = "1b3b0049-1ba2-4341-ae4e-cfdd4ddc7d20")]
         public readonly InputSlot<SharpDX.Direct3D11.ShaderResourceView> InputImageSrv = new InputSlot<SharpDX.Direct3D11.ShaderResourceView>();
