@@ -17,8 +17,6 @@ namespace T3.Operators.Types.Id_afcd4aad_8c8d_4e59_8e8e_a8c12d312200
         [Output(Guid = "aa16dd79-5311-4d97-a939-9a8ea82f5996")]
         public readonly Slot<Texture2D> Output = new Slot<Texture2D>();
 
-        private uint _textureResId;
-        private uint _srvResId;
 
         public Edtaa()
         {
