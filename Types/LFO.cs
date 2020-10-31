@@ -1,15 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using SharpDX;
 using T3.Core;
-using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
-using T3.Operators.Types.Id_58aa74af_32aa_4c46_8bb5_5811f16bf7f8;
-using T3.Operators.Types.Id_c3a18346_930c_4242_9e42_aa9b3a439395;
 
 namespace T3.Operators.Types.Id_c5e39c67_256f_4cb9_a635_b62a0d9c796c
 {
@@ -25,67 +18,78 @@ namespace T3.Operators.Types.Id_c5e39c67_256f_4cb9_a635_b62a0d9c796c
 
         private void Update(EvaluationContext context)
         {
-            LastFraction = GetFraction(context);
-            var bias = Bias.GetValue(context);
-            var shape = (Shapes)Shape.GetValue(context);
-            var biased = CalcNormalizedValueForFraction(LastFraction, shape, bias);
-
-            Result.Value = biased * Amplitude.GetValue(context) + Offset.GetValue(context);
-        }
-
-        public float CalcNormalizedValueForFraction(float fraction, Shapes shape, float bias)
-        {
-            float r;
-            switch (shape)
-            {
-                case Shapes.Ramp:
-                    r = fraction;
-                    break;
-                case Shapes.Saw:
-                    r = 1 - fraction;
-                    break;
-                case Shapes.Sine:
-                    r = (float)Math.Sin(fraction * 2 * 3.141578f) / 2 + 0.5f;
-                    break;
-                case Shapes.Square:
-                    r = fraction > 0.5f ? 1 : 0;
-                    break;
-                case Shapes.ZigZag:
-                    r = fraction < 0.5f
-                            ? (fraction * 2)
-                            : (1 - (fraction - 0.5f) * 2);
-                    break;
-                default:
-                    r = 0;
-                    break;
-            }
-
-            var biased = bias >= 0
-                             ? (float)Math.Pow(r, bias + 1)
-                             : 1 - (float)Math.Pow(1 - r, 1 - bias);
-            return biased;
-        }
-
-        public float GetFraction(EvaluationContext context)
-        {
+            _phase = Phase.GetValue(context);
+            _bias = Bias.GetValue(context);
+            _shape = (Shapes)Shape.GetValue(context);
+            _ratio = Ratio.GetValue(context);
             var time = OverrideTime.IsConnected
                            ? OverrideTime.GetValue(context)
                            : EvaluationContext.BeatTime;
-
+            
             var rate = Rate.GetValue(context);
-            var phase = Phase.GetValue(context);
-            return (float)((time * rate + phase) % 1f / Ratio.GetValue(context)).Clamp(0f, 1f);
+
+            var t = time * rate;
+            LastFraction =(float)MathUtils.Fmod(t,1);
+            
+            var normalizedValue = CalcNormalizedValueForFraction(t);
+            Result.Value = normalizedValue * Amplitude.GetValue(context) + Offset.GetValue(context);
         }
 
+        public float CalcNormalizedValueForFraction(double t)
+        {
+            var fraction = CalcFraction(t);
+            var value = MapShapes[(int)_shape](fraction);
+            var biased = SchlickBias(value, _bias);
+            return biased;
+        }
+
+        private float CalcFraction(double t)
+        {
+            return ((float)MathUtils.Fmod(t + _phase, 1) / _ratio).Clamp(0,1);
+        } 
+
+        public void CalcNormalizedValueForFraction(float[] fractions, ref float[] values)
+        {
+            var fn = MapShapes[(int)_shape];
+            for (var index = 0; index < fractions.Length; index++)
+            {
+                var mapped = MathUtils.Fmod(fractions[index] + _phase, 1); 
+                values[index] = SchlickBias(fn(mapped), _bias);
+            }
+        }
+
+
+        private float SchlickBias(float x, float bias)
+        {
+            return x / ((1 / bias - 2) * (1 - x) + 1);
+        }
+
+
+        private delegate float MappingFunction(float fraction);
+        private static readonly MappingFunction[] MapShapes =
+            {
+                f => f, // 0:Ramp
+                f => 1 - f, // 1:Saw,
+                f => (float)Math.Sin(f * 2 * 3.141592f)/ 2 +0.5f, // 2:Sine
+                f => f > 0.5f ? 1 : 0, // 3: Square
+                f => f < 0.5f ? (f * 2) : (1 - (f - 0.5f) * 2), //4: ZigZag
+            };
+
+        private Shapes _shape;
+        private float _bias;
+        private float _phase;
+        private float _ratio = 1;
+
+        
         public float LastFraction;
 
         public enum Shapes
         {
-            Ramp,
-            Saw,
-            Sine,
-            Square,
-            ZigZag,
+            Ramp = 0,
+            Saw = 1,
+            Sine = 2,
+            Square = 3,
+            ZigZag = 4,
         }
 
         [Input(Guid = "4C38C34C-D992-47F1-BCB5-9BD13FC6474B", MappedType = typeof(Shapes))]
