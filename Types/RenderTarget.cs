@@ -6,6 +6,7 @@ using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using T3.Core;
 using T3.Core.Animation;
+using T3.Core.DataTypes;
 using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
@@ -33,6 +34,13 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
         private void Update(EvaluationContext context)
         {
+            if (TextureReference.IsConnected)
+            {
+                var reference = TextureReference.GetValue(context);
+                reference.ColorTexture = _colorBuffer;
+                reference.DepthTexture = _depthBuffer;
+            }
+            
             var resourceManager = ResourceManager.Instance();
             var device = resourceManager.Device;
             var clear = Clear.GetValue(context);
@@ -228,5 +236,9 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
         [Input(Guid = "f0cf3325-4967-4419-9beb-036cd6dbfd6a")]
         public readonly InputSlot<bool> GenerateMips = new InputSlot<bool>();
+        
+        [Input(Guid = "07AD28AD-FF5F-4CA9-B7BB-F7F8B16A6434")]
+        public readonly InputSlot<RenderTargetReference> TextureReference = new InputSlot<RenderTargetReference>();
+
     }
 }
