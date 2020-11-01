@@ -34,12 +34,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
         private void Update(EvaluationContext context)
         {
-            if (TextureReference.IsConnected)
-            {
-                var reference = TextureReference.GetValue(context);
-                reference.ColorTexture = _colorBuffer;
-                reference.DepthTexture = _depthBuffer;
-            }
+
             
             var resourceManager = ResourceManager.Instance();
             var device = resourceManager.Device;
@@ -88,7 +83,15 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             var prevWorldToCamera = context.WorldToCamera;
             var prevCameraToClipSpace = context.CameraToClipSpace;
             
-            context.SetDefaultCamera();            
+            context.SetDefaultCamera();
+            
+            if (TextureReference.IsConnected)
+            {
+                var reference = TextureReference.GetValue(context);
+                reference.ColorTexture = _colorBuffer;
+                reference.DepthTexture = _depthBuffer;
+            }
+            
             Command.GetValue(context);
 
             if (generateMips)
