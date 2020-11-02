@@ -32,7 +32,7 @@ namespace T3.Operators.Types.Id_61ec6355_bd7d_4abb_aa44_b01b7d658e23
         private void UpdateShaderResourceView(EvaluationContext context)
         {
             var url = Url.GetValue(context);
-            if (url != _url)
+            if (url != _url && !string.IsNullOrEmpty(url))
             {
                 if (_webRequest == null)
                 {
@@ -49,13 +49,6 @@ namespace T3.Operators.Types.Id_61ec6355_bd7d_4abb_aa44_b01b7d658e23
                     }
                 }
             }
-
-            // if (_imageUpdated)
-            // {
-            //     Log.Debug("Invalidating...", SymbolChildId);
-            //     Texture.DirtyFlag.Invalidate();
-            //     _imageUpdated = false;
-            // }
 
             Texture.Value = _image;
         }
