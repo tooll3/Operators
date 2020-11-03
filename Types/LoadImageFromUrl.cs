@@ -8,7 +8,6 @@ using T3.Core.Operator.Slots;
 using System.IO;
 using System.Net;
 using SharpDX.WIC;
-using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace T3.Operators.Types.Id_61ec6355_bd7d_4abb_aa44_b01b7d658e23
 {
@@ -19,9 +18,6 @@ namespace T3.Operators.Types.Id_61ec6355_bd7d_4abb_aa44_b01b7d658e23
 
         [Output(Guid = "a843ab64-0b99-4c4f-9644-cc9bb771981d")]
         public readonly Slot<ShaderResourceView> ShaderResourceView = new Slot<ShaderResourceView>();
-
-        private uint _textureResId;
-        private uint _srvResId;
 
         public LoadImageFromUrl()
         {
@@ -34,6 +30,7 @@ namespace T3.Operators.Types.Id_61ec6355_bd7d_4abb_aa44_b01b7d658e23
             var url = Url.GetValue(context);
             if (url != _url && !string.IsNullOrEmpty(url))
             {
+                _url = url;
                 if (_webRequest == null)
                 {
                     Dispose();
@@ -65,8 +62,9 @@ namespace T3.Operators.Types.Id_61ec6355_bd7d_4abb_aa44_b01b7d658e23
                                                                         var response = req.EndGetResponse(iAsyncResult);
                                                                         responseAction(response);
                                                                     }
-                                                                    catch (Exception)
+                                                                    catch (Exception e)
                                                                     {
+                                                                        Log.Error("Request failed " + e.Message, SymbolChildId);
                                                                     }
 
                                                                     _webRequest = null;
@@ -125,10 +123,9 @@ namespace T3.Operators.Types.Id_61ec6355_bd7d_4abb_aa44_b01b7d658e23
             }
         }
 
-        private bool _imageUpdated = false;
         private WebRequest _webRequest;
         private Texture2D _image;
-        private string _url = string.Empty;
+        private string _url;
 
         [Input(Guid = "21b2e219-0b2a-4323-b288-f39ed791e676")]
         public readonly InputSlot<string> Url = new InputSlot<string>();
