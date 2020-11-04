@@ -34,8 +34,6 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
         private void Update(EvaluationContext context)
         {
-
-            
             var resourceManager = ResourceManager.Instance();
             var device = resourceManager.Device;
             var clear = Clear.GetValue(context);
@@ -114,7 +112,9 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             prevDepthStencilView?.Dispose();
 
             ColorBuffer.Value = _colorBuffer;
+            ColorBuffer.DirtyFlag.Clear();
             DepthBuffer.Value = _depthBuffer;
+            DepthBuffer.DirtyFlag.Clear();
         }
 
         private bool UpdateTextures(Device device, Size2 size, Format colorFormat, Format depthFormat, bool generateMips)
