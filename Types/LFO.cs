@@ -47,18 +47,8 @@ namespace T3.Operators.Types.Id_c5e39c67_256f_4cb9_a635_b62a0d9c796c
         {
             return ((float)MathUtils.Fmod(t + _phase, 1) / _ratio).Clamp(0,1);
         } 
-
-        public void CalcNormalizedValueForFraction(float[] fractions, ref float[] values)
-        {
-            var fn = MapShapes[(int)_shape];
-            for (var index = 0; index < fractions.Length; index++)
-            {
-                var mapped = MathUtils.Fmod(fractions[index] + _phase, 1); 
-                values[index] = SchlickBias(fn(mapped), _bias);
-            }
-        }
-
-
+        
+        
         private float SchlickBias(float x, float bias)
         {
             return x / ((1 / bias - 2) * (1 - x) + 1);
@@ -70,7 +60,7 @@ namespace T3.Operators.Types.Id_c5e39c67_256f_4cb9_a635_b62a0d9c796c
             {
                 f => f, // 0:Ramp
                 f => 1 - f, // 1:Saw,
-                f => (float)Math.Sin(f * 2 * 3.141592f)/ 2 +0.5f, // 2:Sine
+                f => (float)Math.Sin((f + 0.25) * 2 * 3.141592f)/ 2 +0.5f, // 2:Wave
                 f => f > 0.5f ? 1 : 0, // 3: Square
                 f => f < 0.5f ? (f * 2) : (1 - (f - 0.5f) * 2), //4: ZigZag
             };
@@ -87,7 +77,7 @@ namespace T3.Operators.Types.Id_c5e39c67_256f_4cb9_a635_b62a0d9c796c
         {
             Ramp = 0,
             Saw = 1,
-            Sine = 2,
+            Wave = 2,
             Square = 3,
             ZigZag = 4,
         }
