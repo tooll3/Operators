@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using Microsoft.Win32;
 using T3.Core;
+using T3.Core.DataTypes;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -13,7 +14,7 @@ namespace T3.Operators.Types.Id_796a5efb_2ccf_4cae_b01c_d3f20a070181
     public class LinearPoints : Instance<LinearPoints>
     {
         [Output(Guid = "A67DF589-3C51-49A7-805D-5CC0657D491C")]
-        public readonly Slot<SharpDX.Vector4[]> Result = new Slot<SharpDX.Vector4[]>();
+        public readonly Slot<Point[]> Result = new Slot<Point[]>();
 
         public LinearPoints()
         {
@@ -27,7 +28,7 @@ namespace T3.Operators.Types.Id_796a5efb_2ccf_4cae_b01c_d3f20a070181
 
             var count = countX * countY;
             if (_points.Length != count)
-                _points = new SharpDX.Vector4[count];
+                _points = new T3.Core.DataTypes.Point[count];
 
             var startP = Start.GetValue(context);
             var endP = Scale.GetValue(context);
@@ -40,7 +41,7 @@ namespace T3.Operators.Types.Id_796a5efb_2ccf_4cae_b01c_d3f20a070181
                     for (var x = 0; x < countX; x++)
                     {
                         var fX =x / (float)countX;
-                        _points[index] = SharpDX.Vector4.Lerp( startPoint, endPoint, fX);
+                        _points[index].Position = SharpDX.Vector4.Lerp( startPoint, endPoint, fX);
                         index++;
                     }
 
@@ -48,7 +49,7 @@ namespace T3.Operators.Types.Id_796a5efb_2ccf_4cae_b01c_d3f20a070181
         }
 
 
-        private SharpDX.Vector4[] _points = new Vector4[0];
+        private Point[] _points = new T3.Core.DataTypes.Point[0];
 
 
 

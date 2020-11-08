@@ -16,7 +16,7 @@ namespace T3.Operators.Types.Id_bdd982c4_dfc4_48d6_888a_f067081dbe8e
     public class MixPoints : Instance<MixPoints>
     {
         [Output(Guid = "5bf5f55e-9099-4413-b17a-f49d042cb4ca")]
-        public readonly Slot<SharpDX.Vector4[]> Result = new Slot<SharpDX.Vector4[]>();
+        public readonly Slot<T3.Core.DataTypes.Point[]> Result = new Slot<T3.Core.DataTypes.Point[]>();
 
         public MixPoints()
         {
@@ -37,7 +37,7 @@ namespace T3.Operators.Types.Id_bdd982c4_dfc4_48d6_888a_f067081dbe8e
 
             //var count = countX * countY;
             if (_points.Length != listA.Length)
-                _points = new SharpDX.Vector4[listA.Length];
+                _points = new T3.Core.DataTypes.Point[listA.Length];
 
             var factor = Factor.GetValue(context);
             var mode = (Modes)Mode.GetValue(context);
@@ -68,7 +68,10 @@ namespace T3.Operators.Types.Id_bdd982c4_dfc4_48d6_888a_f067081dbe8e
                         {
                             var pB1 = listB[bIndex < listB.Length - 1 ? bIndex  : listB.Length-1];
                             var pB2 = listB[bIndex < listB.Length - 2 ? bIndex + 1 : listB.Length - 1];
-                            var pB = Vector4.Lerp(pB1, pB2, fraction);
+                            var pB = new T3.Core.DataTypes.Point()
+                                         {
+                                             Position =Vector4.Lerp(pB1.Position, pB2.Position, fraction) 
+                                         }; 
                             ComputeStep(index, pA, pB);
                         }
                         catch (Exception)
@@ -82,20 +85,20 @@ namespace T3.Operators.Types.Id_bdd982c4_dfc4_48d6_888a_f067081dbe8e
             
             Result.Value = _points;
 
-            void ComputeStep(int index, Vector4 pA, Vector4 pB)
+            void ComputeStep(int index, T3.Core.DataTypes.Point pA, T3.Core.DataTypes.Point pB)
             {
                 switch (mode)
                 {
                     case Modes.Add:
-                        _points[index] = pA + pB;
+                        _points[index].Position = pA.Position + pB.Position;
                         break;
 
                     case Modes.Multiply:
-                        _points[index] = pA * pB;
+                        _points[index].Position = pA.Position * pB.Position;
                         break;
 
                     case Modes.Blend:
-                        _points[index] = Vector4.Lerp(pA, pB, factor);
+                        _points[index].Position = Vector4.Lerp(pA.Position, pB.Position, factor);
                         break;
                 }
             }
@@ -103,7 +106,7 @@ namespace T3.Operators.Types.Id_bdd982c4_dfc4_48d6_888a_f067081dbe8e
 
 
         private const float Pi2 = (float)Math.PI * 2;
-        private SharpDX.Vector4[] _points = new Vector4[0];
+        private T3.Core.DataTypes.Point[] _points = new T3.Core.DataTypes.Point[0];
 
         enum Modes
         {
@@ -119,10 +122,10 @@ namespace T3.Operators.Types.Id_bdd982c4_dfc4_48d6_888a_f067081dbe8e
         }
         
         [Input(Guid = "57F1D1D3-B437-4761-A5F5-0520CF820F58")]
-        public readonly InputSlot<Vector4[]> A = new InputSlot<Vector4[]>();
+        public readonly InputSlot<T3.Core.DataTypes.Point[]> A = new InputSlot<T3.Core.DataTypes.Point[]>();
         
         [Input(Guid = "3119875E-A6EA-4D19-B536-513459A0DB98")]
-        public readonly InputSlot<Vector4[]> B = new InputSlot<Vector4[]>();
+        public readonly InputSlot<T3.Core.DataTypes.Point[]> B = new InputSlot<T3.Core.DataTypes.Point[]>();
         
         [Input(Guid = "e8e8d26f-ccd1-4c15-b215-9c5bcfc133fb", MappedType = typeof(Modes))]
         public readonly InputSlot<int> Mode = new InputSlot<int>();

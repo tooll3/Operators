@@ -34,12 +34,12 @@ namespace T3.Operators.Types.Id_59b810f1_7849_40a7_ae10_7e8008685311
             // OutBuffer.UpdateAction = Update;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 16)]
-        struct BufferEntry
-        {
-            [FieldOffset(0)]
-            public SharpDX.Vector4 Point;
-        }
+        // [StructLayout(LayoutKind.Explicit, Size = 16)]
+        // struct BufferEntry
+        // {
+        //     [FieldOffset(0)]
+        //     public SharpDX.Vector4 Point;
+        // }
 
 
         private void Update(EvaluationContext context)
@@ -57,13 +57,13 @@ namespace T3.Operators.Types.Id_59b810f1_7849_40a7_ae10_7e8008685311
             var resourceManager = ResourceManager.Instance();
             if (_bufferData.Length != pointArray.Length)
             {
-                _bufferData = new BufferEntry[pointArray.Length];
+                _bufferData = new T3.Core.DataTypes.Point[pointArray.Length];
             }
             
 
             for (int index = 0; index < pointArray.Length; index++)
             {
-                _bufferData[index].Point = pointArray[index];
+                _bufferData[index] = pointArray[index];
             }
 
             var stride = 16;
@@ -76,10 +76,10 @@ namespace T3.Operators.Types.Id_59b810f1_7849_40a7_ae10_7e8008685311
         }
 
         private Buffer _buffer;
-        private BufferEntry[] _bufferData = new BufferEntry[0];
+        private T3.Core.DataTypes.Point[] _bufferData = new T3.Core.DataTypes.Point[0];
         private BufferWithViews _bufferWithViews = new BufferWithViews();
 
         [Input(Guid = "6fddc26b-31e2-41f1-b86c-0b71d898801a")]
-        public readonly InputSlot<SharpDX.Vector4[]> PointArray = new InputSlot<SharpDX.Vector4[]>();
+        public readonly InputSlot<T3.Core.DataTypes.Point[]> PointArray = new InputSlot<T3.Core.DataTypes.Point[]>();
     }
 }

@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
 using System.Numerics;
-using Microsoft.Win32;
 using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
-using Vector4 = SharpDX.Vector4;
 
 namespace T3.Operators.Types.Id_a3bc1b8c_6bd9_4117_880e_afb9765e3104
 {
     public class NoisePoints : Instance<NoisePoints>
     {
         [Output(Guid = "25c89e66-e8ee-4600-9d2f-009b7d9e75ca")]
-        public readonly Slot<SharpDX.Vector4[]> Result = new Slot<SharpDX.Vector4[]>();
+        public readonly Slot<T3.Core.DataTypes.Point[]> Result = new Slot<T3.Core.DataTypes.Point[]>();
 
         public NoisePoints()
         {
@@ -24,7 +20,7 @@ namespace T3.Operators.Types.Id_a3bc1b8c_6bd9_4117_880e_afb9765e3104
         {
             var count = Count.GetValue(context).Clamp(1, 10000);
             if (_points.Length != count)
-                _points = new SharpDX.Vector4[count];
+                _points = new T3.Core.DataTypes.Point[count];
 
             var scale = Scale.GetValue(context);
             var frequency = Frequency.GetValue(context);
@@ -37,11 +33,12 @@ namespace T3.Operators.Types.Id_a3bc1b8c_6bd9_4117_880e_afb9765e3104
             for (var x = 0; x < count; x++)
             {
                 var fX = x / (float)count;
-                _points[index] = new Vector4(
-                                             MathUtils.PerlinNoise(phase +   0.234f + fX, frequency, 2, seed) * amplitude * scale.X,
-                                             MathUtils.PerlinNoise(phase + 110.637f + fX, frequency, 2, seed) * amplitude * scale.Y,
-                                             MathUtils.PerlinNoise(phase + 241.221f + fX, frequency, 2, seed) * amplitude * scale.Z,
-                                             thickness);
+                var position = new SharpDX.Vector4(
+                                           MathUtils.PerlinNoise(phase +   0.234f + fX, frequency, 2, seed) * amplitude * scale.X,
+                                           MathUtils.PerlinNoise(phase + 110.637f + fX, frequency, 2, seed) * amplitude * scale.Y,
+                                           MathUtils.PerlinNoise(phase + 241.221f + fX, frequency, 2, seed) * amplitude * scale.Z,
+                                           thickness);
+                _points[index].Position = position;
                 index++;
             }
 
@@ -49,7 +46,7 @@ namespace T3.Operators.Types.Id_a3bc1b8c_6bd9_4117_880e_afb9765e3104
             Result.Value = _points;
         }
 
-        private SharpDX.Vector4[] _points = new Vector4[0];
+        private T3.Core.DataTypes.Point[] _points = new T3.Core.DataTypes.Point[0];
 
         [Input(Guid = "52953760-435e-4f11-8e65-c9d46bc40076")]
         public readonly InputSlot<Vector3> Scale = new InputSlot<Vector3>();

@@ -13,7 +13,7 @@ namespace T3.Operators.Types.Id_a38626d8_3145_4aa9_820f_ca16b3411985
     public class RadialPoints : Instance<RadialPoints>
     {
         [Output(Guid = "58c8870e-0931-4881-a923-3405d1be9a5e")]
-        public readonly Slot<SharpDX.Vector4[]> Result = new Slot<SharpDX.Vector4[]>();
+        public readonly Slot<T3.Core.DataTypes.Point[]> Result = new Slot<T3.Core.DataTypes.Point[]>();
 
         public RadialPoints()
         {
@@ -24,7 +24,7 @@ namespace T3.Operators.Types.Id_a38626d8_3145_4aa9_820f_ca16b3411985
         {
             var count = Count.GetValue(context).Clamp(1, 10000);
             if (_points.Length != count)
-                _points = new SharpDX.Vector4[count];
+                _points = new T3.Core.DataTypes.Point[count];
 
             var axis = Axis.GetValue(context);
             var center = Center.GetValue(context);
@@ -45,7 +45,7 @@ namespace T3.Operators.Types.Id_a38626d8_3145_4aa9_820f_ca16b3411985
                 var v = Vector3.UnitX * length; 
                 var rot = Quaternion.CreateFromAxisAngle(axis,angelInRads);
                 var vInAxis = Vector3.Transform(v, rot) + Vector3.Lerp(center, center + offset, f);
-                _points[index] = new Vector4(
+                _points[index].Position = new Vector4(
                                              vInAxis.X,
                                              vInAxis.Y,
                                              vInAxis.Z,
@@ -58,7 +58,7 @@ namespace T3.Operators.Types.Id_a38626d8_3145_4aa9_820f_ca16b3411985
             Result.Value = _points;
         }
 
-        private SharpDX.Vector4[] _points = new Vector4[0];
+        private T3.Core.DataTypes.Point[] _points = new T3.Core.DataTypes.Point[0];
 
         [Input(Guid = "cb697476-36df-44ae-bd1d-138cc49467c2")]
         public readonly InputSlot<int> Count = new InputSlot<int>();
