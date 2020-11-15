@@ -38,6 +38,9 @@ namespace T3.Operators.Types.Id_f9d453d1_04d9_43ef_9189_50008f93bcc2
         [Input(Guid = "4109af01-5c9a-4a9f-af7f-87fbcdcece3d")]
         public readonly InputSlot<System.Numerics.Vector2> Offset = new InputSlot<System.Numerics.Vector2>();
 
+        [Input(Guid = "806221f8-6e31-45ec-b62e-5baac6c1fd54")]
+        public readonly InputSlot<float> DisplaceOffset = new InputSlot<float>();
+
     }
 }
 
