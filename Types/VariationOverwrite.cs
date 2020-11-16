@@ -5,23 +5,31 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_eeab67a7_5e52_4b85_a993_a728bed78278
 {
-    public class VariationSetup : Instance<VariationSetup>
+    public class VariationOverwrite : Instance<VariationOverwrite>
     {
         [Output(Guid = "c02198ca-0839-45e7-894d-f3d7a1b05fe4")]
         public readonly Slot<float> Result = new Slot<float>();
 
-        public VariationSetup()
+        public VariationOverwrite()
         {
             Result.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)
         {
-            var setup = context.VariationSetup;
-            setup.Index1 = Index1.GetValue(context);
-            setup.Index2 = Index2.GetValue(context);
-            setup.Weight = Weight.GetValue(context);
+            var overwrites = context.VariationOverwrites;
+            // var id = new Variator.VariationId(Guid.Empty, Guid.Empty);
+            if (!overwrites.TryGetValue(Variator.VariationId.EmptySet, out var entry))
+            {
+                entry = new VariationSelector();
+                overwrites.Add(Variator.VariationId.EmptySet, entry);
+            }
+
+            entry.Index1 = Index1.GetValue(context);
+            entry.Index2 = Index2.GetValue(context);
+            entry.Weight = Weight.GetValue(context);
             Result.Value = Input.GetValue(context);
+            overwrites.Remove(Variator.VariationId.EmptySet);
         }
         
         [Input(Guid = "0ec56e2d-8cdc-4378-97fb-9f0020312c90")]
