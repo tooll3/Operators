@@ -16,6 +16,9 @@ namespace T3.Operators.Types.Id_10507c42_1240_47cc_9569_5e3f1c733e99
 
         [Input(Guid = "5b9dcd2e-36b6-46f3-bded-0cba148cf628")]
         public readonly InputSlot<bool> Update = new InputSlot<bool>();
+
+        [Input(Guid = "79080698-1097-4178-b7da-7d10fd86be28")]
+        public readonly InputSlot<float> MixOriginal = new InputSlot<float>();
     }
 }
 
