@@ -28,6 +28,9 @@ namespace T3.Operators.Types.Id_5f846187_e109_45d1_97e0_ae95e3e7d9ba
 
         [Input(Guid = "7f73e109-b13a-4114-b2a5-fe9e86270893")]
         public readonly InputSlot<System.Numerics.Vector3> AmountDistribution = new InputSlot<System.Numerics.Vector3>();
+
+        [Input(Guid = "41ee0e65-e2dc-4bf7-af40-bc90517c6c23")]
+        public readonly InputSlot<float> RotLookupDistance = new InputSlot<float>();
     }
 }
 
