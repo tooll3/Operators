@@ -1,0 +1,64 @@
+{
+  "Name": "SortPixelGlitch",
+  "Id": "cbbb011c-f2bc-460e-86d0-48e49ed377fd",
+  "Namespace": "lib.img.fx",
+  "Inputs": [
+    {
+      "Id": "c1be39f5-9516-4a25-a57d-20aa56d68fa7"/*Texture2d*/,
+      "DefaultValue": null
+    },
+    {
+      "Id": "2d1c82aa-1c1b-4202-99eb-811541b74ab9"/*Range*/,
+      "DefaultValue": 0.0
+    },
+    {
+      "Id": "6b7ee425-d1a7-47da-bca3-16dce9be5742"/*RangeExtend*/,
+      "DefaultValue": 0.0
+    }
+  ],
+  "Children": [
+    {
+      "Id": "672c8bea-031d-42dc-9f65-49a0ad329ef8"/*_ImageFxShaderSetup2*/,
+      "SymbolId": "2b20afce-2b54-4bcc-ba0e-e456a0d92833",
+      "InputValues": [
+        {
+          "Id": "16dce9bc-02d9-48f8-b07e-94a9af48d27b"/*Source*/,
+          "Type": "System.String",
+          "Value": "Resources\\lib\\img\\fx\\img-fx-SortPixelsGlitch.hlsl"
+        },
+        {
+          "Id": "c80d3700-ceb6-43d0-9ffd-f4854e67a41d"/*Wrap*/,
+          "Type": "SharpDX.Direct3D11.TextureAddressMode",
+          "Value": "Clamp"
+        }
+      ],
+      "Outputs": []
+    }
+  ],
+  "Connections": [
+    {
+      "SourceParentOrChildId": "672c8bea-031d-42dc-9f65-49a0ad329ef8",
+      "SourceSlotId": "36e01dc9-0680-4af5-9329-0ac6a5f78f8c",
+      "TargetParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "TargetSlotId": "5d93420b-af9c-45bb-8f48-0318b2718d88"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "c1be39f5-9516-4a25-a57d-20aa56d68fa7",
+      "TargetParentOrChildId": "672c8bea-031d-42dc-9f65-49a0ad329ef8",
+      "TargetSlotId": "36abde68-0d79-4fb6-b8ce-ac8a27b66850"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "2d1c82aa-1c1b-4202-99eb-811541b74ab9",
+      "TargetParentOrChildId": "672c8bea-031d-42dc-9f65-49a0ad329ef8",
+      "TargetSlotId": "8e9b8826-5870-4db6-93c2-9fb469cfeec9"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "6b7ee425-d1a7-47da-bca3-16dce9be5742",
+      "TargetParentOrChildId": "672c8bea-031d-42dc-9f65-49a0ad329ef8",
+      "TargetSlotId": "8e9b8826-5870-4db6-93c2-9fb469cfeec9"
+    }
+  ]
+}
