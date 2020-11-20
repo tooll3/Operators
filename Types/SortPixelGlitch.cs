@@ -20,5 +20,8 @@ namespace T3.Operators.Types.Id_cbbb011c_f2bc_460e_86d0_48e49ed377fd
         [Input(Guid = "6b7ee425-d1a7-47da-bca3-16dce9be5742")]
         public readonly InputSlot<float> RangeExtend = new InputSlot<float>();
 
+        [Input(Guid = "d52690ff-be34-42a9-af59-923f2731f023")]
+        public readonly InputSlot<float> TestParam = new InputSlot<float>();
+
     }
 }
