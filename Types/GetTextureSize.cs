@@ -13,6 +13,10 @@ namespace T3.Operators.Types.Id_daec568f_f7b4_4d81_a401_34d62462daab
         [Output(Guid = "895C3BDD-38A8-4613-A8B2-503EC9D493C8", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<System.Numerics.Vector2> SizeFloat = new Slot<System.Numerics.Vector2>();
         
+        [Output(Guid = "E54A3185-2E19-466B-9A1E-52A05A947FCD", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<int> TotalSize = new Slot<int>();
+
+
         public GetTextureSize()
         {
             Size.UpdateAction = Update;
@@ -38,6 +42,7 @@ namespace T3.Operators.Types.Id_daec568f_f7b4_4d81_a401_34d62462daab
             else if (texture != null)
             {
                 Size.Value = new Size2(texture.Description.Width, texture.Description.Height);
+                //texture.Description.
             }
             else
             {
@@ -45,6 +50,7 @@ namespace T3.Operators.Types.Id_daec568f_f7b4_4d81_a401_34d62462daab
                 //Size.Value = new Size2(0,0);
             }
             SizeFloat.Value = new System.Numerics.Vector2(Size.Value.Width, Size.Value.Height);
+            TotalSize.Value = Size.Value.Width * Size.Value.Height;
         }
 
         private enum Modes

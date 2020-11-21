@@ -14,14 +14,20 @@ namespace T3.Operators.Types.Id_cbbb011c_f2bc_460e_86d0_48e49ed377fd
         [Input(Guid = "c1be39f5-9516-4a25-a57d-20aa56d68fa7")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture2d = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
-        [Input(Guid = "2d1c82aa-1c1b-4202-99eb-811541b74ab9")]
-        public readonly InputSlot<float> Range = new InputSlot<float>();
+        [Input(Guid = "0a861871-a6d5-41f1-932d-639ca1afcaf7")]
+        public readonly InputSlot<float> MaxSteps = new InputSlot<float>();
 
-        [Input(Guid = "6b7ee425-d1a7-47da-bca3-16dce9be5742")]
-        public readonly InputSlot<float> RangeExtend = new InputSlot<float>();
+        [Input(Guid = "f3d77ff3-bd0c-4d36-93c3-5bb6cbc5397d")]
+        public readonly InputSlot<float> Threshold = new InputSlot<float>();
 
-        [Input(Guid = "d52690ff-be34-42a9-af59-923f2731f023")]
-        public readonly InputSlot<float> TestParam = new InputSlot<float>();
+        [Input(Guid = "f2eaa551-64f8-475f-b80a-a2b659393157")]
+        public readonly InputSlot<float> Extend = new InputSlot<float>();
+
+        [Input(Guid = "cf4d392f-426a-4451-b752-25009e843a63")]
+        public readonly InputSlot<float> GradientBias = new InputSlot<float>();
+
+        [Input(Guid = "0d589063-aadf-47e5-8eb0-1c9beba104d0")]
+        public readonly InputSlot<System.Numerics.Vector4> BackgroundColor = new InputSlot<System.Numerics.Vector4>();
 
     }
 }
