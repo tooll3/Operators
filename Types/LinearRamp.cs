@@ -13,12 +13,6 @@ namespace T3.Operators.Types.Id_2c3d2c26_ac45_42e9_8f13_6ea338333568
         [Input(Guid = "d6e157fb-5300-4a9a-aea8-8b0ea0104ea3")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Image = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
-        [Input(Guid = "4a54d674-cd99-49bd-b079-061b26a44ed5")]
-        public readonly InputSlot<System.Numerics.Vector4> Fill = new InputSlot<System.Numerics.Vector4>();
-
-        [Input(Guid = "2c095b96-a489-43cd-90d3-009661f28c8b")]
-        public readonly InputSlot<System.Numerics.Vector4> Background = new InputSlot<System.Numerics.Vector4>();
-
         [Input(Guid = "abf3456d-35bc-49ec-9aa6-c5571fbb209a")]
         public readonly InputSlot<System.Numerics.Vector2> Center = new InputSlot<System.Numerics.Vector2>();
 

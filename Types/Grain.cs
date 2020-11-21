@@ -28,6 +28,9 @@ namespace T3.Operators.Types.Id_b5102fba_f05b_43fc_aa1d_613fe1d68ad2
 
         [Input(Guid = "f1334f45-4335-4198-9b6e-ab9e8384aa32")]
         public readonly InputSlot<float> Speed = new InputSlot<float>();
+
+        [Input(Guid = "edb719cd-be40-4758-9c13-98cf14d1a5c5")]
+        public readonly InputSlot<float> Scale = new InputSlot<float>();
     }
 }
 
