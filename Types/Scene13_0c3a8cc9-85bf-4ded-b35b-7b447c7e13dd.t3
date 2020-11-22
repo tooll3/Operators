@@ -740,21 +740,31 @@
               "Interpolation": "Linear",
               "Steps": [
                 {
-                  "Id": "1cc3eae7-e988-4fe5-822c-9cce009a6163",
-                  "NormalizedPosition": 0.0,
+                  "Id": "93b16800-79be-4ddb-9c83-837178d14e0d",
+                  "NormalizedPosition": 0.014423077,
                   "Color": {
                     "R": 1.0,
-                    "G": 0.0,
+                    "G": 0.99999,
+                    "B": 1.0,
+                    "A": 0.0
+                  }
+                },
+                {
+                  "Id": "1cc3eae7-e988-4fe5-822c-9cce009a6163",
+                  "NormalizedPosition": 0.0432692319,
+                  "Color": {
+                    "R": 1.0,
+                    "G": 0.99999,
                     "B": 1.0,
                     "A": 1.0
                   }
                 },
                 {
-                  "Id": "471bda00-04c0-4611-a3af-0a018e03aae3",
+                  "Id": "f4dcdc02-3ae9-4cd0-9ae3-9ea420c19a82",
                   "NormalizedPosition": 1.0,
                   "Color": {
-                    "R": 0.0,
-                    "G": 0.0,
+                    "R": 0.99999,
+                    "G": 0.99999,
                     "B": 1.0,
                     "A": 1.0
                   }
@@ -1539,6 +1549,31 @@
       "SymbolId": "40528e34-732e-4653-bbcf-eeea36c3c4cf",
       "InputValues": [],
       "Outputs": []
+    },
+    {
+      "Id": "3ac940eb-500e-4156-aa39-1cecc374d212"/*ImageLevels*/,
+      "SymbolId": "592a2b6f-d4e3-43e0-9e73-034cca3b3900",
+      "InputValues": [
+        {
+          "Id": "1224b62e-5fca-41e9-a388-4c13c1458d56"/*Center*/,
+          "Type": "System.Numerics.Vector2",
+          "Value": {
+            "X": 0.806,
+            "Y": 0.0
+          }
+        },
+        {
+          "Id": "48e80f45-9685-4ded-aa1c-d05e16658c5a"/*Width*/,
+          "Type": "System.Single",
+          "Value": 0.1
+        },
+        {
+          "Id": "f1084d72-f8b8-4723-82be-e1e98880faf3"/*Rotation*/,
+          "Type": "System.Single",
+          "Value": -90.0
+        }
+      ],
+      "Outputs": []
     }
   ],
   "Connections": [
@@ -1655,6 +1690,12 @@
       "SourceSlotId": "7a4c4feb-be2f-463e-96c6-cd9a6bad77a2",
       "TargetParentOrChildId": "38c352aa-b475-4527-8b47-da5745173a13",
       "TargetSlotId": "08206117-24fa-4900-b095-acd3a5ddd58d"
+    },
+    {
+      "SourceParentOrChildId": "75d09c96-0e2c-43b7-9b31-fd1478505e99",
+      "SourceSlotId": "7a4c4feb-be2f-463e-96c6-cd9a6bad77a2",
+      "TargetParentOrChildId": "3ac940eb-500e-4156-aa39-1cecc374d212",
+      "TargetSlotId": "f434bac8-b7d8-4787-adf2-1782d6588da8"
     },
     {
       "SourceParentOrChildId": "75d09c96-0e2c-43b7-9b31-fd1478505e99",

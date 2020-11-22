@@ -9,6 +9,7 @@ using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
+using Quaternion = SharpDX.Quaternion;
 using Vector4 = SharpDX.Vector4;
 
 namespace T3.Operators.Types.Id_bdd982c4_dfc4_48d6_888a_f067081dbe8e
@@ -70,8 +71,10 @@ namespace T3.Operators.Types.Id_bdd982c4_dfc4_48d6_888a_f067081dbe8e
                             var pB2 = listB[bIndex < listB.Length - 2 ? bIndex + 1 : listB.Length - 1];
                             var pB = new T3.Core.DataTypes.Point()
                                          {
-                                             Position =Vector4.Lerp(pB1.Position, pB2.Position, fraction) 
-                                         }; 
+                                             Position =Vector4.Lerp(pB1.Position, pB2.Position, fraction),
+                                             Orientation =  Quaternion.Identity,
+                                         };
+                            pB.Position.W = 1;
                             ComputeStep(index, pA, pB);
                         }
                         catch (Exception)

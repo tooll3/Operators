@@ -19,8 +19,8 @@ namespace T3.Operators.Types.Id_836f211f_b387_417c_8316_658e0dc6e117
         [Input(Guid = "df158fcf-3042-48cf-8383-7bf4c1bcb8a6")]
         public readonly InputSlot<float> Size = new InputSlot<float>();
 
-        [Input(Guid = "850a2d9a-303f-4393-90d2-798fe2638b1c")]
-        public readonly InputSlot<float> FogRate = new InputSlot<float>();
+        [Input(Guid = "5b736790-1cc8-4e17-8705-f80d241b91f8")]
+        public readonly InputSlot<float> FogDistance = new InputSlot<float>();
 
         [Input(Guid = "5ab5501c-8ec1-4c54-9c9a-1f7b66b4d9ac")]
         public readonly InputSlot<float> FogBias = new InputSlot<float>();

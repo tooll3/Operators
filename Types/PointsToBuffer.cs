@@ -66,7 +66,7 @@ namespace T3.Operators.Types.Id_59b810f1_7849_40a7_ae10_7e8008685311
                 _bufferData[index] = pointArray[index];
             }
 
-            var stride = 16;
+            var stride = 32;
 
             _bufferWithViews.Buffer = _buffer;
             resourceManager.SetupStructuredBuffer(_bufferData, stride * pointArray.Length, stride, ref _buffer);

@@ -53,8 +53,8 @@ namespace T3.Operators.Types.Id_cbbb011c_f2bc_460e_86d0_48e49ed377fd
         [Input(Guid = "96bdee59-d3b7-4d93-939c-85cab836d6e5")]
         public readonly InputSlot<float> FadeStreaks = new InputSlot<float>();
 
-        [Input(Guid = "e1ef3ee4-3899-4d93-b6aa-6987c0539f92")]
-        public readonly InputSlot<float> Noise = new InputSlot<float>();
+        [Input(Guid = "ec8f4ff1-6b7a-4050-8086-2565c8f5d3fb")]
+        public readonly InputSlot<float> LumaBias = new InputSlot<float>();
 
     }
 }
