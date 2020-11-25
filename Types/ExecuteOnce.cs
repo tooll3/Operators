@@ -17,6 +17,7 @@ namespace T3.Operators.Types.Id_7a09136e_18b2_46b7_afff_8ef999e3965d
         public ExecuteOnce()
         {
             Output.UpdateAction = Update;
+            OutputTrigger.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)

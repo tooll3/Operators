@@ -5,7 +5,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_51130e6c_53b2_4294_a3cf_b0fa15584acf
 {
-    public class PointCloudEmitter : Instance<PointCloudEmitter>
+    public class EmitFromMesh : Instance<EmitFromMesh>
     {
         [Output(Guid = "5a3b555d-630d-428f-8e6a-c0f70514f85b")]
         public readonly Slot<T3.Core.Command> Command = new Slot<T3.Core.Command>();
