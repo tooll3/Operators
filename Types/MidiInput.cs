@@ -11,7 +11,117 @@ using Vector2 = System.Numerics.Vector2;
 
 namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
 {
-    public class MidiInput : Instance<MidiInput>, IDisposable
+    
+    public static class MidiConnectionManager
+    {
+
+        public static void RegisterConsumer(IMidiConsumer consumer)
+        {
+            CloseMidiDevices();
+            MidiConsumers.Add(consumer);
+            ScanAndRegisterToMidiDevices();
+        }
+        
+        public static void UnregisterConsumer(IMidiConsumer consumer)
+        {
+            if (!MidiConsumers.Contains(consumer))
+                return;
+
+            foreach (var midiIn in MidiInsWithDevices.Keys)
+            {
+                midiIn.MessageReceived -= consumer.MessageReceivedHandler;
+                midiIn.ErrorReceived -= consumer.ErrorReceivedHandler;
+            }
+
+            MidiConsumers.Remove(consumer);
+            if (MidiConsumers.Count == 0)
+            {
+                CloseMidiDevices();
+            }
+        }
+
+        public static void Rescan()
+        {
+            CloseMidiDevices();
+            ScanAndRegisterToMidiDevices(logInformation: true);
+        }
+        
+        
+        public interface IMidiConsumer
+        {
+            void MessageReceivedHandler(object sender, MidiInMessageEventArgs msg);
+            void ErrorReceivedHandler(object sender, MidiInMessageEventArgs msg);
+        }
+        
+        public static MidiInCapabilities GetDescriptionForMidiIn(MidiIn midiIn)
+        {
+            MidiInsWithDevices.TryGetValue(midiIn,  out  var description);
+            return description;
+        }
+
+        
+        private static void ScanAndRegisterToMidiDevices(bool logInformation = false)
+        {
+            for (int index = 0; index < MidiIn.NumberOfDevices; index++)
+            {
+                var deviceInfo = MidiIn.DeviceInfo(index);
+
+                if (logInformation)
+                    Log.Debug("Scanning " + deviceInfo.ProductName);
+
+                MidiIn newMidiIn;
+                try
+                {
+                    newMidiIn = new MidiIn(index);
+                }
+                catch (NAudio.MmException e)
+                {
+                    Log.Error(" > " + e.Message + " " + MidiIn.DeviceInfo(index).ProductName);
+                    continue;
+                }
+
+                foreach (var midiConsumer in MidiConsumers)
+                {
+                    newMidiIn.MessageReceived += midiConsumer.MessageReceivedHandler;
+                    newMidiIn.ErrorReceived += midiConsumer.ErrorReceivedHandler;
+                }
+
+                newMidiIn.Start();
+                MidiInsWithDevices[newMidiIn] = deviceInfo;
+            }
+        }
+
+        private static void CloseMidiDevices()
+        {
+            foreach (var midiInputDevice in MidiInsWithDevices.Keys)
+            {
+                foreach (var midiConsumer in MidiConsumers)
+                {
+                    midiInputDevice.MessageReceived -= midiConsumer.MessageReceivedHandler;
+                    midiInputDevice.ErrorReceived -= midiConsumer.ErrorReceivedHandler;
+                }
+
+                try
+                {
+                    midiInputDevice.Stop();
+                    midiInputDevice.Close();
+                    midiInputDevice.Dispose();
+                }
+                catch (Exception e)
+                {
+                    Log.Debug("exception: " + e);
+                }
+            }
+
+            MidiInsWithDevices.Clear();
+        }
+        
+        private static readonly List<IMidiConsumer> MidiConsumers = new List<IMidiConsumer>();
+        private static readonly Dictionary<MidiIn, MidiInCapabilities> MidiInsWithDevices = new Dictionary<MidiIn, MidiInCapabilities>();
+    }
+    
+
+    public class MidiInput : Instance<MidiInput>, IDisposable, MidiConnectionManager.IMidiConsumer
     {
         [Output(Guid = "01706780-D25B-4C30-A741-8B7B81E04D82", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> Result = new Slot<float>();
@@ -50,9 +160,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
         {
             Result.UpdateAction = Update;
             Range.UpdateAction = Update;
-            CloseMidiDevices();
-            Instances.Add(this);
-            ScanAndRegisterToMidiDevices();
+            MidiConnectionManager.RegisterConsumer(this);
         }
 
         protected override void Dispose(bool isDisposing)
@@ -60,7 +168,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
             if (!isDisposing)
                 return;
 
-            UnregisterHandlersForInstance(this);
+            MidiConnectionManager.UnregisterConsumer(this);
         }
 
         private void Update(EvaluationContext context)
@@ -87,8 +195,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
 
             if (teachJustTriggered)
             {
-                CloseMidiDevices();
-                ScanAndRegisterToMidiDevices(logInformation: true);
+                MidiConnectionManager.Rescan();
                 _teachingActive = true;
                 _lastMatchingSignals.Clear();
                 _currentControllerValue = 0;
@@ -152,97 +259,20 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
             Range.Value = _valuesForControlRange;
         }
 
-        private static void ScanAndRegisterToMidiDevices(bool logInformation = false)
-        {
-            for (int index = 0; index < MidiIn.NumberOfDevices; index++)
-            {
-                var deviceInfo = MidiIn.DeviceInfo(index);
-
-                if (logInformation)
-                    Log.Debug("Scanning " + deviceInfo.ProductName);
-
-                MidiIn newMidiIn;
-                try
-                {
-                    newMidiIn = new MidiIn(index);
-                }
-                catch (NAudio.MmException e)
-                {
-                    Log.Error(" > " + e.Message + " " + MidiIn.DeviceInfo(index).ProductName);
-                    continue;
-                }
-
-                foreach (var midiInstance in Instances)
-                {
-                    newMidiIn.MessageReceived += midiInstance.MessageReceivedHandler;
-                    newMidiIn.ErrorReceived += midiInstance.ErrorReceivedHandler;
-                }
-
-                newMidiIn.Start();
-                MidiInsWithDevices[newMidiIn] = deviceInfo;
-            }
-        }
-
-        private static void CloseMidiDevices()
-        {
-            foreach (var midiIn in MidiInsWithDevices.Keys)
-            {
-                foreach (var midiInputInstance in Instances)
-                {
-                    midiIn.MessageReceived -= midiInputInstance.MessageReceivedHandler;
-                    midiIn.ErrorReceived -= midiInputInstance.ErrorReceivedHandler;
-                }
-
-                try
-                {
-                    midiIn.Stop();
-                    midiIn.Close();
-                    midiIn.Dispose();
-                }
-                catch (Exception e)
-                {
-                    Log.Debug("exception: " + e);
-                }
-            }
-
-            MidiInsWithDevices.Clear();
-        }
-
-        private static void UnregisterHandlersForInstance(MidiInput instance)
-        {
-            if (!Instances.Contains(instance))
-                return;
-
-            foreach (var midiIn in MidiInsWithDevices.Keys)
-            {
-                midiIn.MessageReceived -= instance.MessageReceivedHandler;
-                midiIn.ErrorReceived -= instance.ErrorReceivedHandler;
-            }
-
-            Instances.Remove(instance);
-            if (Instances.Count == 0)
-            {
-                CloseMidiDevices();
-            }
-        }
-
-        private void ErrorReceivedHandler(object sender, MidiInMessageEventArgs msg)
+        public void ErrorReceivedHandler(object sender, MidiInMessageEventArgs msg)
         {
         }
 
-        private void MessageReceivedHandler(object sender, MidiInMessageEventArgs msg)
+        public void MessageReceivedHandler(object sender, MidiInMessageEventArgs msg)
         {
             lock (this)
             {
                 if (!(sender is MidiIn midiIn) || msg.MidiEvent == null)
                     return;
-
-                if (!MidiInsWithDevices.ContainsKey(midiIn))
-                    return;
-
+                
                 MidiSignal newSignal = null;
 
-                var device = MidiInsWithDevices[midiIn];
+                var device = MidiConnectionManager.GetDescriptionForMidiIn(midiIn);
 
                 if (msg.MidiEvent is ControlChangeEvent controlEvent)
                 {
@@ -322,7 +352,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
         private List<float> _valuesForControlRange;
 
         private static readonly List<MidiInput> Instances = new List<MidiInput>();
-        private static readonly Dictionary<MidiIn, MidiInCapabilities> MidiInsWithDevices = new Dictionary<MidiIn, MidiInCapabilities>();
+        //private static readonly Dictionary<MidiIn, MidiInCapabilities> MidiInsWithDevices = new Dictionary<MidiIn, MidiInCapabilities>();
 
         private class MidiSignal
         {
