@@ -35,6 +35,12 @@ namespace T3.Operators.Types.Id_2d0cd5e6_361a_43c3_8daa_3be2c301dbc4
         [Input(Guid = "7e80cad4-2a66-480e-8f4f-5d037d8e98bc")]
         public readonly InputSlot<float> R_xThreshold = new InputSlot<float>();
 
+        [Input(Guid = "12529c32-ead2-421c-a6d4-f638275bfaed")]
+        public readonly InputSlot<float> G_xStates = new InputSlot<float>();
+
+        [Input(Guid = "ae3e61d5-a6d0-445e-bcb8-26aa4d301ff5")]
+        public readonly InputSlot<bool> UseMooreRegion = new InputSlot<bool>();
+
         [Input(Guid = "4b34b3cf-967c-44d2-9b97-251de312f9cf")]
         public readonly InputSlot<float> Scale = new InputSlot<float>();
 

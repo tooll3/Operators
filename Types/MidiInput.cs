@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -12,9 +13,8 @@ using Vector2 = System.Numerics.Vector2;
 namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
 {
     
-    public static class MidiConnectionManager
+    public static class MidiInConnectionManager
     {
-
         public static void RegisterConsumer(IMidiConsumer consumer)
         {
             CloseMidiDevices();
@@ -59,6 +59,12 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
             return description;
         }
 
+        public static MidiIn GetMidiInForProductNameHash(int hash)
+        {
+            MidiInsByDeviceIdHash.TryGetValue(hash, out var midiIn);
+            return midiIn;
+        }
+
         
         private static void ScanAndRegisterToMidiDevices(bool logInformation = false)
         {
@@ -88,6 +94,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
 
                 newMidiIn.Start();
                 MidiInsWithDevices[newMidiIn] = deviceInfo;
+                MidiInsByDeviceIdHash[deviceInfo.ProductName.GetHashCode()] = newMidiIn;
             }
         }
 
@@ -114,14 +121,18 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
             }
 
             MidiInsWithDevices.Clear();
+            MidiInsByDeviceIdHash.Clear();
         }
         
         private static readonly List<IMidiConsumer> MidiConsumers = new List<IMidiConsumer>();
         private static readonly Dictionary<MidiIn, MidiInCapabilities> MidiInsWithDevices = new Dictionary<MidiIn, MidiInCapabilities>();
+        private static readonly Dictionary<int, MidiIn> MidiInsByDeviceIdHash = new Dictionary<int, MidiIn>();
     }
     
+    
+    
 
-    public class MidiInput : Instance<MidiInput>, IDisposable, MidiConnectionManager.IMidiConsumer
+    public class MidiInput : Instance<MidiInput>, IDisposable, MidiInConnectionManager.IMidiConsumer
     {
         [Output(Guid = "01706780-D25B-4C30-A741-8B7B81E04D82", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> Result = new Slot<float>();
@@ -160,7 +171,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
         {
             Result.UpdateAction = Update;
             Range.UpdateAction = Update;
-            MidiConnectionManager.RegisterConsumer(this);
+            MidiInConnectionManager.RegisterConsumer(this);
         }
 
         protected override void Dispose(bool isDisposing)
@@ -168,7 +179,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
             if (!isDisposing)
                 return;
 
-            MidiConnectionManager.UnregisterConsumer(this);
+            MidiInConnectionManager.UnregisterConsumer(this);
         }
 
         private void Update(EvaluationContext context)
@@ -195,7 +206,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
 
             if (teachJustTriggered)
             {
-                MidiConnectionManager.Rescan();
+                MidiInConnectionManager.Rescan();
                 _teachingActive = true;
                 _lastMatchingSignals.Clear();
                 _currentControllerValue = 0;
@@ -272,7 +283,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
                 
                 MidiSignal newSignal = null;
 
-                var device = MidiConnectionManager.GetDescriptionForMidiIn(midiIn);
+                var device = MidiInConnectionManager.GetDescriptionForMidiIn(midiIn);
 
                 if (msg.MidiEvent is ControlChangeEvent controlEvent)
                 {
