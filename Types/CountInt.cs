@@ -10,7 +10,7 @@ namespace T3.Operators.Types.Id_0e1d5f4b_3ba0_4e71_aa26_7308b6df214d
 {
     public class CountInt : Instance<CountInt>
     {
-        [Output(Guid = "2E172F90-3995-4B16-AF33-9957BE07323B")]
+        [Output(Guid = "2E172F90-3995-4B16-AF33-9957BE07323B", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<int> Result = new Slot<int>();
 
         public CountInt()

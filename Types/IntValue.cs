@@ -7,8 +7,8 @@ namespace T3.Operators.Types.Id_cc07b314_4582_4c2c_84b8_bb32f59fc09b
 {
     public class IntValue : Instance<IntValue>
     {
-        [Output(Guid = "9f10edf1-b5f2-4873-ab48-8417fd176d35")]
-        public readonly Slot<float> Result = new Slot<float>();
+        [Output(Guid = "8A65B34B-40BE-4DBF-812C-D4C663464C7F")]
+        public readonly Slot<int> Result = new Slot<int>();
 
         public IntValue()
         {
@@ -17,10 +17,10 @@ namespace T3.Operators.Types.Id_cc07b314_4582_4c2c_84b8_bb32f59fc09b
 
         private void Update(EvaluationContext context)
         {
-            Result.Value = Float.GetValue(context);
+            Result.Value = Int.GetValue(context);
         }
         
-        [Input(Guid = "92c9a175-ad44-49bd-9ab1-16ec89f69116")]
-        public readonly InputSlot<float> Float = new InputSlot<float>();
+        [Input(Guid = "4515C98E-05BC-4186-8773-4D2B31A8C323")]
+        public readonly InputSlot<int> Int = new InputSlot<int>();
     }
 }
