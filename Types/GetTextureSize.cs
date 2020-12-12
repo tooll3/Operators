@@ -26,7 +26,7 @@ namespace T3.Operators.Types.Id_daec568f_f7b4_4d81_a401_34d62462daab
 
         private void Update(EvaluationContext context)
         {
-            var fallbackSize = FallbackSize.GetValue(context);
+            var fallbackSize = OverrideSize.GetValue(context);
             
             var useContext = fallbackSize.Width < 0 || fallbackSize.Height < 0;
             
@@ -65,6 +65,6 @@ namespace T3.Operators.Types.Id_daec568f_f7b4_4d81_a401_34d62462daab
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture = new InputSlot<SharpDX.Direct3D11.Texture2D>();
         
         [Input(Guid = "52b2f067-5619-4d8d-a982-58668a8dc6a4")]
-        public readonly InputSlot<SharpDX.Size2> FallbackSize = new InputSlot<SharpDX.Size2>();
+        public readonly InputSlot<SharpDX.Size2> OverrideSize = new InputSlot<SharpDX.Size2>();
     }
 }
