@@ -20,6 +20,9 @@ namespace T3.Operators.Types.Id_53d3eebd_4ead_4965_b26d_10a8bbd48182
         [Input(Guid = "97b76d02-e735-4e93-88ad-5c9b8766a63c")]
         public readonly InputSlot<float> FocusDistance = new InputSlot<float>();
 
+        [Input(Guid = "1592e94b-a20d-463c-baec-5fb5dfa85532")]
+        public readonly InputSlot<System.Numerics.Vector4> BackgroundColor = new InputSlot<System.Numerics.Vector4>();
+
     }
 }
 

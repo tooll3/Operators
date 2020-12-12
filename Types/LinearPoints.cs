@@ -7,6 +7,7 @@ using T3.Core.DataTypes;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
+using Quaternion = SharpDX.Quaternion;
 using Vector4 = SharpDX.Vector4;
 
 namespace T3.Operators.Types.Id_796a5efb_2ccf_4cae_b01c_d3f20a070181
@@ -42,6 +43,7 @@ namespace T3.Operators.Types.Id_796a5efb_2ccf_4cae_b01c_d3f20a070181
                     {
                         var fX =x / (float)countX;
                         _points[index].Position = SharpDX.Vector4.Lerp( startPoint, endPoint, fX);
+                        _points[index].Orientation = Quaternion.Identity;
                         index++;
                     }
 
