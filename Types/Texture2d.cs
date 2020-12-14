@@ -3,6 +3,7 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -24,6 +25,11 @@ namespace T3.Operators.Types.Id_f52db9a4_fde9_49ca_9ef7_131825c34e65
         private void UpdateTexture(EvaluationContext context)
         {
             Size2 size = Size.GetValue(context);
+            if (size.Height <= 0 || size.Width <= 0)
+            {
+                Log.Warning($"Requested invalid texture resolution: {size}");
+                return;
+            }
 
             var texDesc = new Texture2DDescription
                           {

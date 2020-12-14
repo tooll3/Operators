@@ -29,5 +29,14 @@ namespace T3.Operators.Types.Id_2b6981f8_f66c_4132_9f37_6536d477ed65
         [Input(Guid = "e04158d1-a693-4536-abed-29e799e2e03c")]
         public readonly InputSlot<int> SlowDown = new InputSlot<int>();
 
+        [Input(Guid = "23f2e60e-7312-4cce-b1fa-58b0102d6d15")]
+        public readonly InputSlot<float> Lambda = new InputSlot<float>();
+
+        [Input(Guid = "5d663ff2-4729-46a8-b4d0-df3c76dd32d8")]
+        public readonly InputSlot<bool> Isotropic = new InputSlot<bool>();
+
+        [Input(Guid = "8cd7a146-4e65-4ef3-9cad-94231077386f")]
+        public readonly InputSlot<bool> ResetOnChange = new InputSlot<bool>();
+
     }
 }
