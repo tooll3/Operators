@@ -11,7 +11,7 @@ namespace T3.Operators.Types.Id_0eff6d8b_0fca_420d_839c_3e90dff76cb8
         public readonly Slot<Texture2D> ImgOutput = new Slot<Texture2D>();
 
         [Input(Guid = "f164e165-6ea1-4ca6-9604-80f240d721a4")]
-        public readonly InputSlot<float> InitialRotation = new InputSlot<float>();
+        public readonly InputSlot<float> Spin = new InputSlot<float>();
 
         [Input(Guid = "84bf834b-e21c-479b-9544-44a887af8981")]
         public readonly InputSlot<float> TrailEngery = new InputSlot<float>();
@@ -54,6 +54,21 @@ namespace T3.Operators.Types.Id_0eff6d8b_0fca_420d_839c_3e90dff76cb8
 
         [Input(Guid = "2f57d137-4ba4-4a92-8d92-38d70f2df4a7")]
         public readonly InputSlot<float> SnapToAnglesAmount = new InputSlot<float>();
+
+        [Input(Guid = "6be28291-4420-481a-a338-e74b431db011")]
+        public readonly InputSlot<int> ComputeSteps = new InputSlot<int>();
+
+        [Input(Guid = "a326bc60-e383-4de5-8e64-c08508002116")]
+        public readonly InputSlot<float> BRatio = new InputSlot<float>();
+
+        [Input(Guid = "dd6729d5-2625-457b-8e00-21da06c5e5c0")]
+        public readonly InputSlot<float> BTrail = new InputSlot<float>();
+
+        [Input(Guid = "718ffca4-0d50-4bd1-8502-344627a73f30")]
+        public readonly InputSlot<float> BMoveDistance = new InputSlot<float>();
+
+        [Input(Guid = "fc87c40a-489c-4838-b9cb-72922ab99608")]
+        public readonly InputSlot<float> BRotate = new InputSlot<float>();
 
 
     }
