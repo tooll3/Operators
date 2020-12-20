@@ -82,7 +82,12 @@ namespace T3.Operators.Types.Id_8bef116d_7d1c_4c1b_b902_25c1d5e925a9
             }
 
             Int3 dispatchCount = Dispatch.GetValue(context);
-            deviceContext.Dispatch(dispatchCount.X, dispatchCount.Y, dispatchCount.Z);
+            int count = DispatchCallCount.GetValue(context).Clamp(1, 10);
+
+            for (int i = 0; i < count; i++)
+            {
+                deviceContext.Dispatch(dispatchCount.X, dispatchCount.Y, dispatchCount.Z);
+            }
 
             // unbind resources
             for (int i = 0; i < _uavs.Length; i++)
@@ -121,5 +126,9 @@ namespace T3.Operators.Types.Id_8bef116d_7d1c_4c1b_b902_25c1d5e925a9
 
         [Input(Guid = "0105aca4-5fd5-40c8-82a5-e919bb7dd507")]
         public readonly InputSlot<int> UavBufferCount = new InputSlot<int>();
+        
+        [Input(Guid = "1495157D-601F-4054-84E2-29EBEBB461D8")]
+        public readonly InputSlot<int> DispatchCallCount = new InputSlot<int>();
+
     }
 }
