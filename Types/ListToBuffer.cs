@@ -31,14 +31,28 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
 
         private void Update(EvaluationContext context)
         {
-            var totalElementCount = 0;
             var listsCollectedInputs = Lists.CollectedInputs.Select(c => c.GetValue(context));
-            
+
+            var totalSizeInBytes = 0;
             foreach (var xxx in listsCollectedInputs)
             {
                 Log.Debug("Found " + xxx);
-                //totalElementCount+= xxx.Elements.count; //<--- doesn't work of course
+                totalSizeInBytes += xxx.TotalSizeInBytes;
             }
+
+            using (var data = new DataStream(totalSizeInBytes, true, true))
+            {
+                foreach (var xxx in listsCollectedInputs)
+                {
+                    xxx.WriteToStream(data);
+                }
+                data.Position = 0;
+
+                var firstInputList = listsCollectedInputs.FirstOrDefault();
+                var elementSizeInBytes = firstInputList?.ElementSizeInBytes ?? 0; // todo: add check that all inputs have same type
+                ResourceManager.Instance().SetupStructuredBuffer(data, totalSizeInBytes, elementSizeInBytes, ref _buffer);
+            }
+
             // var pointArray = Lists.GetValue(context);
             // if (pointArray == null || pointArray.Length == 0)
             // {
