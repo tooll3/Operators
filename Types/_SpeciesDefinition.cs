@@ -1,13 +1,18 @@
 using System.Numerics;
 using System.Runtime.InteropServices;
+using SharpDX.Direct3D11;
+using T3.Core;
 //using SharpDX;
 using T3.Core.DataTypes;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
 
+
 namespace T3.Operators.Types.Id_924b8cc0_5b4b_41d0_a71b_b26465683910
 {
+    using BreedList = StructuredList<_SpeciesDefinition.Breed>;
+
     public class _SpeciesDefinition : Instance<_SpeciesDefinition>
     {
         [Output(Guid = "55498833-FF69-489F-AFE6-D54150920C56")]
@@ -59,16 +64,16 @@ namespace T3.Operators.Types.Id_924b8cc0_5b4b_41d0_a71b_b26465683910
             public float _padding;
         }
         
-        public class BreedList : StructuredList
-        {
-            public BreedList(int count) : base(typeof(Breed))
-            {
-                _typedElements = new Breed[count];
-            }
-        
-            public Breed[] _typedElements { get; }
-            public override object Elements => _typedElements;
-        }
+        // public class BreedList : StructuredList
+        // {
+        //     public BreedList(int count) : base(typeof(Breed))
+        //     {
+        //         _typedElements = new Breed[count];
+        //     }
+        //
+        //     public Breed[] _typedElements { get; }
+        //     public override object Elements => _typedElements;
+        // }
         
         private BreedList _breeds = new BreedList(1);
         
