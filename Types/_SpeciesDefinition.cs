@@ -25,8 +25,8 @@ namespace T3.Operators.Types.Id_924b8cc0_5b4b_41d0_a71b_b26465683910
         
         private void Update(EvaluationContext context)
         {
-            _breeds._typedElements[0].ComfortZones = ComfortZones.GetValue(context);
-            _breeds._typedElements[0].BaseRotation = BaseRotation.GetValue(context);
+            _breeds.TypedElements[0].ComfortZones = ComfortZones.GetValue(context);
+            _breeds.TypedElements[0].BaseRotation = BaseRotation.GetValue(context);
             OutBuffer.Value = _breeds;
         }
         
