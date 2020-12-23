@@ -70,6 +70,9 @@ namespace T3.Operators.Types.Id_4edc34ed_36f4_4f24_837f_4cc5696b2baa
         [Input(Guid = "289c00c2-0718-4cd9-98bc-9d8303221760")]
         public readonly InputSlot<float> BRotate = new InputSlot<float>();
 
+        [Input(Guid = "ae4938aa-43c2-443b-8ace-9dbd2045b448")]
+        public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> BreedsBuffer = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
+
 
     }
 }

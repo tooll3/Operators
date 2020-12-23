@@ -36,10 +36,10 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
             var totalSizeInBytes = 0;
             foreach (var xxx in listsCollectedInputs)
             {
-                Log.Debug("Found " + xxx);
                 totalSizeInBytes += xxx.TotalSizeInBytes;
             }
 
+            var resourceManager = ResourceManager.Instance();
             using (var data = new DataStream(totalSizeInBytes, true, true))
             {
                 foreach (var xxx in listsCollectedInputs)
@@ -50,42 +50,16 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
 
                 var firstInputList = listsCollectedInputs.FirstOrDefault();
                 var elementSizeInBytes = firstInputList?.ElementSizeInBytes ?? 0; // todo: add check that all inputs have same type
-                ResourceManager.Instance().SetupStructuredBuffer(data, totalSizeInBytes, elementSizeInBytes, ref _buffer);
+                resourceManager.SetupStructuredBuffer(data, totalSizeInBytes, elementSizeInBytes, ref _buffer);
             }
 
-            // var pointArray = Lists.GetValue(context);
-            // if (pointArray == null || pointArray.Length == 0)
-            // {
-            //     Length.Value = 0;
-            //     Log.Warning("Invalid input for PointsToBuffer");
-            //     return;
-            // }
-            //
-            // Length.Value = pointArray.Length;
-            //
-            // var resourceManager = ResourceManager.Instance();
-            // if (_bufferData.Length != pointArray.Length)
-            // {
-            //     _bufferData = new T3.Core.DataTypes.Point[pointArray.Length];
-            // }
-            //
-            //
-            // for (int index = 0; index < pointArray.Length; index++)
-            // {
-            //     _bufferData[index] = pointArray[index];
-            // }
-            //
-            // var stride = 32;
-            //
-            // _bufferWithViews.Buffer = _buffer;
-            // resourceManager.SetupStructuredBuffer(_bufferData, stride * pointArray.Length, stride, ref _buffer);
-            // resourceManager.CreateStructuredBufferSrv(_buffer, ref _bufferWithViews.Srv);
-            // resourceManager.CreateStructuredBufferUav(_buffer, UnorderedAccessViewBufferFlags.None, ref _bufferWithViews.Uav);
-            // OutBuffer.Value = _bufferWithViews;
+            _bufferWithViews.Buffer = _buffer;
+            resourceManager.CreateStructuredBufferSrv(_buffer, ref _bufferWithViews.Srv);
+            resourceManager.CreateStructuredBufferUav(_buffer, UnorderedAccessViewBufferFlags.None, ref _bufferWithViews.Uav);
+            OutBuffer.Value = _bufferWithViews;
         }
 
         private Buffer _buffer;
-        private T3.Core.DataTypes.Point[] _bufferData = new T3.Core.DataTypes.Point[0];
         private BufferWithViews _bufferWithViews = new BufferWithViews();
 
         [Input(Guid = "08F181BB-9777-497C-871D-BCC1FF252F2F")]
