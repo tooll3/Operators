@@ -32,7 +32,8 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
         private void Update(EvaluationContext context)
         {
             var listsCollectedInputs = Lists.CollectedInputs.Select(c => c.GetValue(context));
-
+            Lists.DirtyFlag.Clear();
+            
             var totalSizeInBytes = 0;
             foreach (var xxx in listsCollectedInputs)
             {
@@ -42,9 +43,9 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
             var resourceManager = ResourceManager.Instance();
             using (var data = new DataStream(totalSizeInBytes, true, true))
             {
-                foreach (var xxx in listsCollectedInputs)
+                foreach (var i in listsCollectedInputs)
                 {
-                    xxx.WriteToStream(data);
+                    i.WriteToStream(data);
                 }
                 data.Position = 0;
 
