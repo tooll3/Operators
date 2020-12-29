@@ -51,7 +51,15 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
 
                 var firstInputList = listsCollectedInputs.FirstOrDefault();
                 var elementSizeInBytes = firstInputList?.ElementSizeInBytes ?? 0; // todo: add check that all inputs have same type
-                resourceManager.SetupStructuredBuffer(data, totalSizeInBytes, elementSizeInBytes, ref _buffer);
+                try
+                {
+                    resourceManager.SetupStructuredBuffer(data, totalSizeInBytes, elementSizeInBytes, ref _buffer);
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Failed to setup structured buffer " + e.Message, SymbolChildId);
+                    return;
+                }
             }
 
             _bufferWithViews.Buffer = _buffer;
