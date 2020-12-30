@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.Direct3D11;
 using T3.Core;
@@ -35,17 +34,23 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
             Lists.DirtyFlag.Clear();
             
             var totalSizeInBytes = 0;
-            foreach (var xxx in listsCollectedInputs)
+            foreach (var entry in listsCollectedInputs)
             {
-                totalSizeInBytes += xxx.TotalSizeInBytes;
+                if (entry == null)
+                    continue;
+                
+                totalSizeInBytes += entry.TotalSizeInBytes;
             }
 
             var resourceManager = ResourceManager.Instance();
             using (var data = new DataStream(totalSizeInBytes, true, true))
             {
-                foreach (var i in listsCollectedInputs)
+                foreach (var entry in listsCollectedInputs)
                 {
-                    i.WriteToStream(data);
+                    if (entry == null)
+                        continue;
+                    
+                    entry.WriteToStream(data);
                 }
                 data.Position = 0;
 
