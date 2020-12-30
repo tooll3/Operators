@@ -25,11 +25,11 @@ namespace T3.Operators.Types.Id_6b8db50a_383c_486c_8065_3aefe8c85576
             _boids.TypedElements[0].AlignmentDrive = AlignmentDrive.GetValue(context);
             _boids.TypedElements[0].SeparationRadius = SeparationRadius.GetValue(context);
             _boids.TypedElements[0].SeparationDrive = SeparationDrive.GetValue(context);
-            _boids.TypedElements[0].TestString = "Blah";
+            _boids.TypedElements[0].MaxSpeed = MaxSpeed.GetValue(context);
             OutBuffer.Value = _boids;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 16 * 4)]
+        [StructLayout(LayoutKind.Explicit, Size = 8 * 4)]
         public struct Boid
         {
             [FieldOffset(0 * 4)]
@@ -51,7 +51,7 @@ namespace T3.Operators.Types.Id_6b8db50a_383c_486c_8065_3aefe8c85576
             public float SeparationDrive;
 
             [FieldOffset(6 * 4)]
-            public float _padding1;
+            public float MaxSpeed;
 
             [FieldOffset(7 * 4)]
             public string TestString;
@@ -76,5 +76,8 @@ namespace T3.Operators.Types.Id_6b8db50a_383c_486c_8065_3aefe8c85576
 
         [Input(Guid = "CBB63479-1A21-4427-9441-2E1DC73D3F3C")]
         public readonly InputSlot<float> SeparationDrive = new InputSlot<float>();
+        
+        [Input(Guid = "0EF87235-EA06-406A-B291-5808BD947D8C")]
+        public readonly InputSlot<float> MaxSpeed = new InputSlot<float>();
     }
 }
