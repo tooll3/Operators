@@ -30,8 +30,14 @@ namespace T3.Operators.Types.Id_bc489196_9a30_4580_af6f_dc059f226da1
             if (srv == null)
                 return;
 
-            ElementCount.Value = srv.Description.Buffer.ElementCount;
-            //Buffer.Value = srv.Resource.;
+            try
+            {
+                ElementCount.Value = srv.Description.Buffer.ElementCount;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Failed to get SRVProperties: " + e.Message, SymbolChildId);
+            }
         }
 
         [Input(Guid = "E79473F4-3FD2-467E-ACDA-B27EF7DAE6A9")]

@@ -30,7 +30,7 @@ namespace T3.Operators.Types.Id_0b99ab8b_5d61_49da_9851_9ad723cad3ae
 
         private void Update(EvaluationContext context)
         {
-            var connectedLists = Lists.CollectedInputs.Select(c => c.GetValue(context)).ToList();
+            var connectedLists = Lists.CollectedInputs.Select(c => c.GetValue(context)).Where(c => c != null).ToList();
             Lists.DirtyFlag.Clear();
             
             if (connectedLists.Count == 0)

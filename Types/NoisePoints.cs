@@ -33,12 +33,12 @@ namespace T3.Operators.Types.Id_a3bc1b8c_6bd9_4117_880e_afb9765e3104
             for (var x = 0; x < count; x++)
             {
                 var fX = x / (float)count;
-                var position = new SharpDX.Vector4(
+                var position = new Vector3(
                                            MathUtils.PerlinNoise(phase +   0.234f + fX, frequency, 2, seed) * amplitude * scale.X,
                                            MathUtils.PerlinNoise(phase + 110.637f + fX, frequency, 2, seed) * amplitude * scale.Y,
-                                           MathUtils.PerlinNoise(phase + 241.221f + fX, frequency, 2, seed) * amplitude * scale.Z,
-                                           thickness);
+                                           MathUtils.PerlinNoise(phase + 241.221f + fX, frequency, 2, seed) * amplitude * scale.Z);
                 _points[index].Position = position;
+                _points[index].W = thickness;
                 index++;
             }
 

@@ -62,6 +62,9 @@ namespace T3.Operators.Types.Id_b3de7a93_e921_4e43_8a56_6c84b2d18b74
         [Input(Guid = "9c53bca4-57fc-495f-ba07-02278c023680")]
         public readonly InputSlot<System.Numerics.Vector3> TextureRotate = new InputSlot<System.Numerics.Vector3>();
 
+        [Input(Guid = "d5c1a82b-5633-446e-9836-a735a55c7a91")]
+        public readonly InputSlot<SharpDX.Direct3D11.TextureAddressMode> TextureMode = new InputSlot<SharpDX.Direct3D11.TextureAddressMode>();
+
 
         private enum Attributes
         {

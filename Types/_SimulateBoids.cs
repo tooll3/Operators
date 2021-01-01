@@ -28,6 +28,9 @@ namespace T3.Operators.Types.Id_4f8c54a3_d146_4f7c_8628_17697b0201c9
         [Input(Guid = "cf868ea8-6a73-4c93-b435-b4e3a1a95167")]
         public readonly InputSlot<float> RestoreLayout = new InputSlot<float>();
 
+        [Input(Guid = "01b6ac2b-be17-467c-bb64-69dc04194134")]
+        public readonly InputSlot<float> EffectLayer = new InputSlot<float>();
+
 
     }
 }

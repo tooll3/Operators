@@ -23,15 +23,21 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
         
         public ListToBuffer()
         {
-            Length.UpdateAction = Update;
             OutBuffer.UpdateAction = Update;
+            Length.UpdateAction = Update;
         }
 
 
         private void Update(EvaluationContext context)
         {
-            var listsCollectedInputs = Lists.CollectedInputs.Select(c => c.GetValue(context));
+            var listsCollectedInputs = Lists.CollectedInputs.Select(c => c.GetValue(context)).Where(c => c != null).ToList();
             Lists.DirtyFlag.Clear();
+
+            if (listsCollectedInputs.Count == 0)
+            {
+                OutBuffer.Value = null;
+                return;
+            }
             
             var totalSizeInBytes = 0;
             foreach (var entry in listsCollectedInputs)
@@ -41,16 +47,14 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
                 
                 totalSizeInBytes += entry.TotalSizeInBytes;
             }
+            
 
             var resourceManager = ResourceManager.Instance();
             using (var data = new DataStream(totalSizeInBytes, true, true))
             {
                 foreach (var entry in listsCollectedInputs)
                 {
-                    if (entry == null)
-                        continue;
-                    
-                    entry.WriteToStream(data);
+                    entry?.WriteToStream(data);
                 }
                 data.Position = 0;
 
