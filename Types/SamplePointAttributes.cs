@@ -68,14 +68,14 @@ namespace T3.Operators.Types.Id_b3de7a93_e921_4e43_8a56_6c84b2d18b74
 
         private enum Attributes
         {
-            NotUsed,
-            For_X,
-            For_Y,
-            For_Z,
-            For_W,
-            Rotate_X,
-            Rotate_Y,
-            Rotate_Z,
+            NotUsed =0,
+            For_X = 1,
+            For_Y =2,
+            For_Z =3,
+            For_W =4,
+            Rotate_X =5,
+            Rotate_Y =6 ,
+            Rotate_Z =7,
         }
     }
 }

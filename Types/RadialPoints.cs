@@ -47,8 +47,8 @@ namespace T3.Operators.Types.Id_a38626d8_3145_4aa9_820f_ca16b3411985
             var thickness = W.GetValue(context);
             var thicknessOffset = WOffset.GetValue(context);
 
-            var angelInRads = StartAngel.GetValue(context) * MathUtils.ToRad;
-            var deltaAngle = Cycles.GetValue(context) * MathUtils.Pi2 / (pointCount- circleOffset);
+            var angelInRads = StartAngel.GetValue(context) * MathUtils.ToRad + (float)Math.PI/2;
+            var deltaAngle = -Cycles.GetValue(context) * MathUtils.Pi2 / (pointCount- circleOffset);
             
             for (var index = 0; index < pointCount; index++)
             {
