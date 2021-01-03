@@ -39,6 +39,12 @@ namespace T3.Operators.Types.Id_836f211f_b387_417c_8316_658e0dc6e117
 
         [Input(Guid = "c9cf2182-1297-463c-b5c1-d4ee7ad0895c")]
         public readonly InputSlot<bool> EnableDepthWrite = new InputSlot<bool>();
+
+        [Input(Guid = "092fc56a-65f8-425d-ae32-359839256a43")]
+        public readonly InputSlot<int> UseWFor = new InputSlot<int>();
+
+        [Input(Guid = "28f85ae9-ebae-4300-8aa0-738c6327cc44")]
+        public readonly InputSlot<float> TransitionProgress = new InputSlot<float>();
     }
 }
 
