@@ -1,4 +1,5 @@
 using System;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -20,7 +21,10 @@ namespace T3.Operators.Types.Id_e6072ecf_30d2_4c52_afa1_3b195d61617b
         {
             string variableName = Variable.GetValue(context);
             if (context.Variables.TryGetValue(variableName, out float value))
+            {
+                // Log.Debug($"{variableName} : {value}");
                 Result.Value = value;
+            }
         }
 
         [Input(Guid = "015d1ea0-ea51-4038-893a-4af2f8584631")]
