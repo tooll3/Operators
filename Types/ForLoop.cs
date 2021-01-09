@@ -22,7 +22,7 @@ namespace T3.Operators.Types.Id_4a6fcc72_c703_4290_8e4a_2f90805cefa8
             float end = End.GetValue(context);
             for (float i = 0f; i < end; i += 1.0f)
             {
-                context.Variables[variableName] = i;
+                context.FloatVariables[variableName] = i;
 
                 DirtyFlag.InvalidationRefFrame++;
                 Command.Invalidate();
