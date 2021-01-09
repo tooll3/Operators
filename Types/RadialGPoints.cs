@@ -40,6 +40,9 @@ namespace T3.Operators.Types.Id_3352d3a1_ab04_4d0a_bb43_da69095b73fd
 
         [Input(Guid = "526cf26b-6cf6-4cba-be2a-4819c2a422bf")]
         public readonly InputSlot<float> WOffset = new InputSlot<float>();
+
+        [Input(Guid = "76124db6-4b89-4d7c-bd25-2ebf95b1c141")]
+        public readonly InputSlot<bool> CloseCircle = new InputSlot<bool>();
     }
 }
 

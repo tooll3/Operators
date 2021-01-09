@@ -31,12 +31,18 @@ namespace T3.Operators.Types.Id_8b285708_3f20_4957_9eb2_bb40e0d320ee
 
             context.IteratedList = list;
 
+            foreach (var initCommand in SetupCommands.CollectedInputs)
+            {
+                initCommand.Invalidate();
+                initCommand.GetValue(context);
+            }
+            
             for (int index = 0; index < list.NumElements; index++)
             {
                 context.IteratedListIndex = index;
                 context.FloatVariables["iterator"] = index;
                 DirtyFlag.InvalidationRefFrame++;
-                foreach (var c in SubTree.CollectedInputs)
+                foreach (var c in IterateCommands.CollectedInputs)
                 {
                     c.Invalidate();
                     c.GetValue(context);
@@ -50,7 +56,10 @@ namespace T3.Operators.Types.Id_8b285708_3f20_4957_9eb2_bb40e0d320ee
         [Input(Guid = "A5E1551B-697E-4316-A95E-315A39B69C76")]
         public readonly InputSlot<StructuredList> List = new InputSlot<StructuredList>();
 
+        [Input(Guid = "452B30A4-D0B8-43CC-B5D2-B6D338CA4DEB")]
+        public readonly MultiInputSlot<Command> SetupCommands = new MultiInputSlot<Command>();
+
         [Input(Guid = "1D09C5E2-19D1-4622-A06D-4FFD3124343C")]
-        public readonly MultiInputSlot<Command> SubTree = new MultiInputSlot<Command>();
+        public readonly MultiInputSlot<Command> IterateCommands = new MultiInputSlot<Command>();
     }
 }
