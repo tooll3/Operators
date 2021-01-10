@@ -1,4 +1,5 @@
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -15,12 +16,24 @@ namespace T3.Operators.Types.Id_46420979_1e56_4de3_a6ca_0447be1b9813
             Output.UpdateAction = Update;
         }
 
+        private int _callsSinceLastRefresh;
+        
         private void Update(EvaluationContext context)
         {
+            _callsSinceLastRefresh++;
+            
             var repeatCount = RepeatCount.GetValue(context).Clamp(0, 100);
             if (repeatCount <= 0)
                 return;
 
+            var skipFrames = SkipFrameCount.GetValue(context).Clamp(0,10000);
+            if (_callsSinceLastRefresh <= skipFrames)
+            {
+                return;
+            }
+
+            _callsSinceLastRefresh = 0;
+            
             var commands = Command.CollectedInputs;
 
             // do preparation if needed
@@ -52,5 +65,9 @@ namespace T3.Operators.Types.Id_46420979_1e56_4de3_a6ca_0447be1b9813
 
         [Input(Guid = "FB4C2356-5FA9-4BEB-A909-805323D5F7C1")]
         public readonly InputSlot<int> RepeatCount = new InputSlot<int>();
+        
+        [Input(Guid = "4CA4CF19-975E-479A-BD43-C49C96CE51B6")]
+        public readonly InputSlot<int> SkipFrameCount = new InputSlot<int>();
+
     }
 }
