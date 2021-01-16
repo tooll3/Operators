@@ -31,8 +31,11 @@ namespace T3.Operators.Types.Id_42cb88bc_beb8_4d89_ac99_44b77be5f03e
         [Input(Guid = "6c36bf68-e22f-419d-9ec0-f60a83d6a560")]
         public readonly InputSlot<int> BlendMode = new InputSlot<int>();
 
-        [Input(Guid = "bfdbe2b3-080e-4c63-9c90-8216041911ab")]
-        public readonly InputSlot<SharpDX.Direct3D11.ShaderResourceView> GeometryBuffer = new InputSlot<SharpDX.Direct3D11.ShaderResourceView>();
+        [Input(Guid = "38602e09-d6fa-4d15-b0a1-f85b64732d19")]
+        public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> MeshVertices = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
+
+        [Input(Guid = "306d9177-d2de-44f8-a424-a5c67958b1f6")]
+        public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> MeshIndices = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
     }
 }
 

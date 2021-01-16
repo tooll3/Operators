@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using SharpDX;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -25,7 +26,12 @@ namespace T3.Operators.Types.Id_73f152ac_12d9_4ae9_856a_9a74637fd6f6
         {
             var resourceManager = ResourceManager.Instance();
             string path = Path.GetValue(context);
-            var mesh = new ObjMesh(path);
+            var mesh = ObjMesh.LoadFromFile(path);
+            if (mesh == null)
+            {
+                Log.Warning($"Could not load {path}");
+                return;
+            }
 
             float areaSum = 0.0f;
             
@@ -76,6 +82,10 @@ namespace T3.Operators.Types.Id_73f152ac_12d9_4ae9_856a_9a74637fd6f6
             Buffer.DebugName = nameof(PointCloudFromObj);
             resourceManager.CreateStructuredBufferSrv(Buffer, ref PointCloudSrv.Value);            
         }
+        
+        
+        
+        
         
         [StructLayout(LayoutKind.Explicit, Size = 108)]
         private struct FaceEntry

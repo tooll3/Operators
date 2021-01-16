@@ -14,11 +14,6 @@ namespace T3.Operators.Types.Id_59b810f1_7849_40a7_ae10_7e8008685311
 {
     public class PointsToBuffer : Instance<PointsToBuffer>
     {
-
-        // //
-        // [Output(Guid = "0A3AE6BF-B720-4CF6-B683-65D9BFADB777")]
-        // public readonly Slot<Buffer> OutBuffer = new Slot<Buffer>();
-
         [Output(Guid = "293E44BF-58C8-4D97-AAA1-AFD40D182AA0")]
         public readonly Slot<BufferWithViews> OutBuffer = new Slot<BufferWithViews>();
 
@@ -29,18 +24,9 @@ namespace T3.Operators.Types.Id_59b810f1_7849_40a7_ae10_7e8008685311
         public PointsToBuffer()
         {
 
-            Length.UpdateAction = Update;
             OutBuffer.UpdateAction = Update;
-            // OutBuffer.UpdateAction = Update;
+            Length.UpdateAction = Update;
         }
-
-        // [StructLayout(LayoutKind.Explicit, Size = 16)]
-        // struct BufferEntry
-        // {
-        //     [FieldOffset(0)]
-        //     public SharpDX.Vector4 Point;
-        // }
-
 
         private void Update(EvaluationContext context)
         {
