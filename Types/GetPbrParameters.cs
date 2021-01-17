@@ -10,17 +10,17 @@ namespace T3.Operators.Types.Id_ca4fe8c4_cf61_4196_84e4_d69dc8869a25
         [Output(Guid = "3D2EBD10-2670-46B7-8F1A-9475A81A516D", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<Buffer> PbrParameterBuffer = new Slot<Buffer>();
 
-        [Output(Guid = "D17FEEDB-CFDB-4B84-A399-45DA88239B61")]
-        public readonly Slot<Texture2D> AlbedoColorMap = new Slot<Texture2D>();
+        [Output(Guid = "7C3D08E2-85E2-442A-9196-0E946571DA5A", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<ShaderResourceView> AlbedoColorMap = new Slot<ShaderResourceView>();
 
-        [Output(Guid = "C6CD0808-1D86-4BE6-AE62-6E14EB9FC098")]
-        public readonly Slot<Texture2D> EmissiveColorMap = new Slot<Texture2D>();
+        [Output(Guid = "B6BAD091-131A-49F3-8ACC-7011A4919435", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<ShaderResourceView> EmissiveColorMap = new Slot<ShaderResourceView>();
 
-        [Output(Guid = "FC442DD7-9E70-4D16-BDBE-68C9DCDC2EA9")]
-        public readonly Slot<Texture2D> RoughnessSpecularMetallicOcclusionMap = new Slot<Texture2D>();
+        [Output(Guid = "B48F674B-2B5A-4501-992E-26E07A247DDF", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<ShaderResourceView> RoughnessSpecularMetallicOcclusionMap = new Slot<ShaderResourceView>();
 
-        [Output(Guid = "9F2A2455-FBB6-42B6-AACC-B85229C674D1")]
-        public readonly Slot<Texture2D> NormalMap = new Slot<Texture2D>();
+        [Output(Guid = "B815BF49-0E44-4DB0-BF32-9C7D188D6AA2", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<ShaderResourceView> NormalMap = new Slot<ShaderResourceView>();
 
         public GetPbrParameters()
         {

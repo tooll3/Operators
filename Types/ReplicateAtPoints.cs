@@ -19,9 +19,6 @@ namespace T3.Operators.Types.Id_42cb88bc_beb8_4d89_ac99_44b77be5f03e
         [Input(Guid = "0af05ab4-0d77-4f01-a79b-691f58f702ef")]
         public readonly InputSlot<float> Size = new InputSlot<float>();
 
-        [Input(Guid = "cc20eb7e-8522-4da0-8459-5cb800607d16")]
-        public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture_ = new InputSlot<SharpDX.Direct3D11.Texture2D>();
-
         [Input(Guid = "dd511aab-0472-4109-9c10-cc1ab5042499")]
         public readonly InputSlot<bool> EnableZWrite = new InputSlot<bool>();
 
