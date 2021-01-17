@@ -42,15 +42,16 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
                 if (_vertexBufferData.Length != verticesCount)
                     _vertexBufferData = new PbrVertex[verticesCount];
 
-                for (var index = 0; index < verticesCount; index++)
+                for (var vertexIndex = 0; vertexIndex < verticesCount; vertexIndex++)
                 {
-                    var vertex = mesh.DistinctVertices[index];
-                    _vertexBufferData[index] = new PbrVertex
+                    
+                    var vertex = mesh.DistinctVertices[vertexIndex];
+                    _vertexBufferData[vertexIndex] = new PbrVertex
                                                    {
-                                                       Position = mesh.Vertices[vertex.PositionIndex],
+                                                       Position = mesh.Positions[vertex.PositionIndex],
                                                        Normal = mesh.Normals[vertex.NormalIndex],
-                                                       Tangent = default,
-                                                       Bitangent = default,
+                                                       Tangent = mesh.VertexTangents[vertexIndex],
+                                                       Bitangent = mesh.VertexBinormals[vertexIndex],
                                                        Texcoord = mesh.TexCoords[vertex.TextureCoordsIndex]
                                                    };
                 }

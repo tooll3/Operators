@@ -43,9 +43,9 @@ namespace T3.Operators.Types.Id_73f152ac_12d9_4ae9_856a_9a74637fd6f6
                 var face = mesh.Faces[faceIndex];
 
                 // calc area of triangle
-                Vector3 v0 = mesh.Vertices[face.V0];
-                Vector3 v1 = mesh.Vertices[face.V1];
-                Vector3 v2 = mesh.Vertices[face.V2];
+                Vector3 v0 = mesh.Positions[face.V0];
+                Vector3 v1 = mesh.Positions[face.V1];
+                Vector3 v2 = mesh.Positions[face.V2];
                 Vector3 baseDir = (v1 - v0);
                 float a = baseDir.Length();
                 baseDir.Normalize();
