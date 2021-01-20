@@ -26,6 +26,16 @@ namespace T3.Operators.Types.Id_9c67a8c8_839f_4f67_a949_08cb38b9dffd
         [Input(Guid = "81962c9b-2fcd-432a-b2e7-c31b743ecd02")]
         public readonly InputSlot<float> Range = new InputSlot<float>();
 
+        [Input(Guid = "f3ca8d13-4e24-4718-a59c-6a1b9a2a3c04")]
+        public readonly InputSlot<bool> IsEnabled = new InputSlot<bool>();
+
+        
+        [Input(Guid = "B5EE1E4B-3C8C-48DF-BBCF-AAC614DE6EC9")]
+        public readonly InputSlot<EvaluationContext.GizmoVisibility> ShowGizmo = new InputSlot<EvaluationContext.GizmoVisibility>();
+        
+        [Input(Guid = "3babb43d-afe6-4c34-a4c6-950d1e3971cc")]
+        public readonly InputSlot<float> GizmoSize = new InputSlot<float>();
+
     }
 }
 

@@ -266,7 +266,7 @@ namespace T3.Operators.Types.Id_59a0458e_2f3a_4856_96cd_32936f783cc5
             var outRange = OutputRange.GetValue(context);
             Result.Value = UseControlRange
                                ? _currentControllerId
-                               : MathUtils.Remap(_currentControllerValue, 0, 127, outRange.X, outRange.Y);
+                               : MathUtils.RemapAndClamp(_currentControllerValue, 0, 127, outRange.X, outRange.Y);
             Range.Value = _valuesForControlRange;
         }
 

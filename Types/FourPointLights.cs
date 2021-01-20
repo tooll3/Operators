@@ -15,6 +15,9 @@ namespace T3.Operators.Types.Id_d062c1c2_a7d1_4d4d_a9b1_e0e96df02385
         [Input(Guid = "30d72726-f818-4dd4-b9e6-c4c5c3509ff0")]
         public readonly InputSlot<Command> Command = new InputSlot<Command>();
 
+        [Input(Guid = "8fa9a503-76fb-4f48-b613-02cadc3c27b9")]
+        public readonly InputSlot<float> Size = new InputSlot<float>();
+
     }
 }
 

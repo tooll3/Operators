@@ -55,7 +55,7 @@ namespace T3.Operators.Types.Id_0ed2bee3_641f_4b08_8685_df1506e9af3c
             {
                 WhitePixelTexture = CreateFallBackTexture(new Vector4(1, 1, 1, 1));
                 BlackPixelTexture = CreateFallBackTexture(new Vector4(0, 0, 0, 0));
-                RSMOFallbackTexture = CreateFallBackTexture(new Vector4(0, 0, 0, 0));
+                RSMOFallbackTexture = CreateFallBackTexture(new Vector4(0, 1, 0, 0));
                 NormalFallbackTexture = CreateFallBackTexture(new Vector4(0.5f, 0.5f, 1, 0));
                 WasInitialized = true;
             }
