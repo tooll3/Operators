@@ -32,36 +32,11 @@ namespace T3.Operators.Types.Id_eff2ffff_dc39_4b90_9b1c_3c0a9a0108c6
         public MouseInput()
         {
             Position.UpdateAction = Update;
-            //Size.DirtyFlag.Trigger = DirtyFlagTrigger.Always;
+            IsLeftButtonDown.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)
         {
-            // var fallbackSize = OverrideSize.GetValue(context);
-            //
-            // var useContext = fallbackSize.Width < 0 || fallbackSize.Height < 0;
-            //
-            // var texture = Texture.GetValue(context);
-            // if (useContext)
-            // {
-            //     Size.Value = context.RequestedResolution;
-            // }
-            // else if (fallbackSize.Width > 0 && fallbackSize.Height > 0)
-            // {
-            //     Size.Value = fallbackSize;
-            // }
-            // else if (texture != null)
-            // {
-            //     Size.Value = new Size2(texture.Description.Width, texture.Description.Height);
-            //     //texture.Description.
-            // }
-            // else
-            // {
-            //     Size.Value = context.RequestedResolution;
-            //     //Size.Value = new Size2(0,0);
-            // }
-            //SizeFloat.Value = new System.Numerics.Vector2(Size.Value.Width, Size.Value.Height);
-            //TotalSize.Value = Size.Value.Width * Size.Value.Height;
             Position.Value = _lastPosition;
             IsLeftButtonDown.Value = _isLeftButtonDown;
         }
