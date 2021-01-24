@@ -1,15 +1,12 @@
-using System.Runtime.InteropServices;
-using SharpDX;
 using SharpDX.Direct3D11;
-using SharpDX.DXGI;
 using T3.Core;
-using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
-using T3.Operators.Types.Id_01458940_287f_4d31_9906_998efa9a2641;
+using T3.Core.Rendering;
 using Utilities = T3.Core.Utilities;
 using Vector4 = System.Numerics.Vector4;
+
 
 namespace T3.Operators.Types.Id_0ed2bee3_641f_4b08_8685_df1506e9af3c
 {
@@ -23,43 +20,10 @@ namespace T3.Operators.Types.Id_0ed2bee3_641f_4b08_8685_df1506e9af3c
             Output.UpdateAction = Update;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = PbrMaterialParams.Stride)]
-        struct PbrMaterialParams
-        {
-            [FieldOffset(0)]
-            public Vector4 BaseColor;
-
-            [FieldOffset(4 * 4)]
-            public Vector4 EmissiveColor;
-
-            [FieldOffset(8 * 4)]
-            public float Roughness;
-
-            [FieldOffset(9 * 4)]
-            public float Specular;
-
-            [FieldOffset(10 * 4)]
-            public float Metal;
-
-            [FieldOffset(11 * 4)]
-            private float __padding;
-
-            public const int Stride = 12 * 4;
-        }
-
         private Buffer _parameterBuffer = null;
 
         private void Update(EvaluationContext context)
         {
-            if (!WasInitialized)
-            {
-                WhitePixelTexture = CreateFallBackTexture(new Vector4(1, 1, 1, 1));
-                BlackPixelTexture = CreateFallBackTexture(new Vector4(0, 0, 0, 0));
-                RSMOFallbackTexture = CreateFallBackTexture(new Vector4(0, 1, 0, 0));
-                NormalFallbackTexture = CreateFallBackTexture(new Vector4(0.5f, 0.5f, 1, 0));
-                WasInitialized = true;
-            }
-
             // Parameters
             var parameterBufferContent = new PbrMaterialParams
                                              {
@@ -73,43 +37,29 @@ namespace T3.Operators.Types.Id_0ed2bee3_641f_4b08_8685_df1506e9af3c
             ResourceManager.Instance().SetupConstBuffer(parameterBufferContent, ref _parameterBuffer);
 
             // Textures
-            //context.PbrMaterialTextures.AlbedoColorMap = BaseColorMap.GetValue(context) ?? WhitePixelTexture;
             var resourceManager = ResourceManager.Instance();
             var device = resourceManager.Device;
 
-            //if (BaseColorMap.DirtyFlag.IsDirty)
-            //{
-                Utilities.Dispose(ref _baseColorMapSrv);
-                var tex = BaseColorMap.GetValue(context) ?? WhitePixelTexture;
-                _baseColorMapSrv = new ShaderResourceView(device, tex);
-                context.PbrMaterialTextures.AlbedoColorMap = _baseColorMapSrv;
-            //}
+            Utilities.Dispose(ref _baseColorMapSrv);
+            var tex = BaseColorMap.GetValue(context) ?? PbrContextSettings.WhitePixelTexture;
+            _baseColorMapSrv = new ShaderResourceView(device, tex);
+            context.PbrMaterialTextures.AlbedoColorMap = _baseColorMapSrv;
 
-            //if (NormalMap.DirtyFlag.IsDirty)
-            //{
-                Utilities.Dispose(ref _normalMapSrv);
-                var tex2 = NormalMap.GetValue(context) ?? NormalFallbackTexture;
-                _normalMapSrv = new ShaderResourceView(device, tex2);
-                context.PbrMaterialTextures.NormalMap = _normalMapSrv;
-            //}
+            Utilities.Dispose(ref _normalMapSrv);
+            var tex2 = NormalMap.GetValue(context) ?? PbrContextSettings.NormalFallbackTexture;
+            _normalMapSrv = new ShaderResourceView(device, tex2);
+            context.PbrMaterialTextures.NormalMap = _normalMapSrv;
 
-            //if (RoughnessSpecularMetallicOcclusionMap.DirtyFlag.IsDirty)
-            //{
-                Utilities.Dispose(ref _rsmoMapSrv);
-                var tex3 = RoughnessSpecularMetallicOcclusionMap.GetValue(context) ?? RSMOFallbackTexture;
-                _rsmoMapSrv = new ShaderResourceView(device, tex3);
-                context.PbrMaterialTextures.RoughnessSpecularMetallicOcclusionMap = _rsmoMapSrv;
-            //}
+            Utilities.Dispose(ref _rsmoMapSrv);
+            var tex3 = RoughnessSpecularMetallicOcclusionMap.GetValue(context) ?? PbrContextSettings.RsmoFallbackTexture;
+            _rsmoMapSrv = new ShaderResourceView(device, tex3);
+            context.PbrMaterialTextures.RoughnessSpecularMetallicOcclusionMap = _rsmoMapSrv;
 
-            //if (EmissiveColorMap.DirtyFlag.IsDirty)
-            //{
-                Utilities.Dispose(ref _emissiveColorMapSrv);
-                var tex4 = EmissiveColorMap.GetValue(context) ?? WhitePixelTexture;
-                _emissiveColorMapSrv = new ShaderResourceView(device, tex4);
-                context.PbrMaterialTextures.EmissiveColorMap = _emissiveColorMapSrv;
-            //}
+            Utilities.Dispose(ref _emissiveColorMapSrv);
+            var tex4 = EmissiveColorMap.GetValue(context) ?? PbrContextSettings.WhitePixelTexture;
+            _emissiveColorMapSrv = new ShaderResourceView(device, tex4);
+            context.PbrMaterialTextures.EmissiveColorMap = _emissiveColorMapSrv;
 
-            // Evaluate sub tree
             var previousParameters = context.FogParameters;
             context.PbrMaterialParams = _parameterBuffer;
             SubTree.GetValue(context);
@@ -120,38 +70,6 @@ namespace T3.Operators.Types.Id_0ed2bee3_641f_4b08_8685_df1506e9af3c
         private ShaderResourceView _rsmoMapSrv;
         private ShaderResourceView _normalMapSrv;
         private ShaderResourceView _emissiveColorMapSrv;
-
-        private static Texture2D CreateFallBackTexture(Vector4 c)
-        {
-            var resourceManager = ResourceManager.Instance();
-            var device = resourceManager.Device;
-
-            var colorDesc = new Texture2DDescription()
-                                {
-                                    ArraySize = 1,
-                                    BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource | BindFlags.UnorderedAccess,
-                                    CpuAccessFlags = CpuAccessFlags.None,
-                                    Format = Format.R16G16B16A16_Float,
-                                    Width = 1,
-                                    Height = 1,
-                                    MipLevels = 0,
-                                    OptionFlags = ResourceOptionFlags.None,
-                                    SampleDescription = new SampleDescription(1, 0),
-                                    Usage = ResourceUsage.Default
-                                };
-
-            var colorBuffer = new Texture2D(device, colorDesc);
-            //_colorBufferSrv = new ShaderResourceView(device, _colorBuffer);
-            var colorBufferRtv = new RenderTargetView(device, colorBuffer);
-            device.ImmediateContext.ClearRenderTargetView(colorBufferRtv, new Color(c.X, c.Y, c.Z, c.W));
-            return colorBuffer;
-        }
-
-        private static Texture2D WhitePixelTexture;
-        private static Texture2D BlackPixelTexture;
-        private static Texture2D RSMOFallbackTexture;
-        private static Texture2D NormalFallbackTexture;
-        private static bool WasInitialized = false;
 
         [Input(Guid = "2a585a23-b60c-4c8b-8cfa-9ab2a8b04c7a")]
         public readonly InputSlot<Command> SubTree = new InputSlot<Command>();
