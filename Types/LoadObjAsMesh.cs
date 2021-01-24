@@ -28,7 +28,7 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
             var path = Path.GetValue(context);
             var mesh = ObjMesh.LoadFromFile(path);
 
-            if (mesh == null || mesh.DistinctVertices.Count == 0)
+            if (mesh == null || mesh.DistinctDistinctVertices.Count == 0)
             {
                 Log.Warning($"Can't read file {path}");
                 return;
@@ -38,14 +38,14 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
 
             // Create Vertex buffer
             {
-                var verticesCount = mesh.DistinctVertices.Count;
+                var verticesCount = mesh.DistinctDistinctVertices.Count;
                 if (_vertexBufferData.Length != verticesCount)
                     _vertexBufferData = new PbrVertex[verticesCount];
 
                 for (var vertexIndex = 0; vertexIndex < verticesCount; vertexIndex++)
                 {
                     
-                    var vertex = mesh.DistinctVertices[vertexIndex];
+                    var vertex = mesh.DistinctDistinctVertices[vertexIndex];
                     _vertexBufferData[vertexIndex] = new PbrVertex
                                                    {
                                                        Position = mesh.Positions[vertex.PositionIndex],
