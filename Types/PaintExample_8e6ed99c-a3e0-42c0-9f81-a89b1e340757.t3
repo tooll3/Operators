@@ -2,7 +2,12 @@
   "Name": "PaintExample",
   "Id": "8e6ed99c-a3e0-42c0-9f81-a89b1e340757",
   "Namespace": "user.pixtur.examples",
-  "Inputs": [],
+  "Inputs": [
+    {
+      "Id": "cc4b0b55-59c9-4898-b4ad-01568510e336"/*IsActve*/,
+      "DefaultValue": true
+    }
+  ],
   "Children": [
     {
       "Id": "85c39d79-f072-474d-b8ef-5ae8b963343b"/*Paint*/,
@@ -11,7 +16,7 @@
         {
           "Id": "b81392e2-303e-43f4-985f-db6e5f923304"/*IsActve*/,
           "Type": "System.Boolean",
-          "Value": false
+          "Value": true
         },
         {
           "Id": "b0d76cab-8e7e-4845-b7e4-202424dfa12d"/*TriggerReset*/,
@@ -53,18 +58,18 @@
           "Id": "313596cc-3854-436b-89da-5fd40164ce76"/*Position*/,
           "Type": "System.Numerics.Vector3",
           "Value": {
-            "X": -23.8534889,
-            "Y": -0.5213237,
-            "Z": -27.6564159
+            "X": -15.5086823,
+            "Y": 14.3781366,
+            "Z": -29.3888454
           }
         },
         {
           "Id": "a7acb25c-d60c-43a6-b1df-2cd5c6e183f3"/*Target*/,
           "Type": "System.Numerics.Vector3",
           "Value": {
-            "X": -14.3231459,
-            "Y": 0.05555231,
-            "Z": -15.0506248
+            "X": -16.1606,
+            "Y": 3.66842985,
+            "Z": -17.77179
           }
         }
       ],
@@ -162,6 +167,12 @@
       "SourceSlotId": "78caabcf-9c3b-4e50-9d80-bdcbabaeb003",
       "TargetParentOrChildId": "85c39d79-f072-474d-b8ef-5ae8b963343b",
       "TargetSlotId": "520a2023-7450-4314-9cac-850d6d692461"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "cc4b0b55-59c9-4898-b4ad-01568510e336",
+      "TargetParentOrChildId": "85c39d79-f072-474d-b8ef-5ae8b963343b",
+      "TargetSlotId": "b81392e2-303e-43f4-985f-db6e5f923304"
     },
     {
       "SourceParentOrChildId": "3bd440cc-e256-40c3-b592-fad1e040af40",
