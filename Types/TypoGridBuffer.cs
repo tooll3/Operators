@@ -41,7 +41,10 @@ namespace T3.Operators.Types.Id_fa45d013_5a1c_45a0_9b05_a4a4edfb06f9
             var textCycle = (int)textOffset.X + (int)(textOffset.Y) * columns;
 
             var size = rows * columns;
-            _bufferContent = new BufferLayout[size];
+            if (_bufferContent == null || _bufferContent.Length != size)
+            {
+                _bufferContent = new BufferLayout[size];
+            }
             
             var index = 0;
 

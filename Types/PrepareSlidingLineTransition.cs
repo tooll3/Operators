@@ -52,9 +52,12 @@ namespace T3.Operators.Types.Id_b7345438_f3f4_4ad3_9c57_6076ed0e9399
 
         private void Update(EvaluationContext context)
         {
-            var sourcePoints = SourcePoints.GetValue(context) as StructuredList<Point>;
+            if (!(SourcePoints.GetValue(context) is StructuredList<Point> sourcePoints))
+            {
+                return;
+            }
 
-            if (sourcePoints == null || sourcePoints.NumElements == 0)
+            if (sourcePoints.NumElements == 0)
             {
                 sourcePoints.SetLength(0);
                 ResultList.Value = sourcePoints;
