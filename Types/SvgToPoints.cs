@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -34,7 +35,16 @@ namespace T3.Operators.Types.Id_e8d94dd7_eb54_42fe_a7b1_b43543dd457e
 
             var centerToBounds = CenterToBounds.GetValue(context);
             var scaleToBounds = ScaleToBounds.GetValue(context);
-            var svgDoc = SvgDocument.Open<SvgDocument>(filepath, null);
+            SvgDocument svgDoc;
+            try
+            {
+                svgDoc = SvgDocument.Open<SvgDocument>(filepath, null);
+            }
+            catch (Exception e)
+            {
+                Log.Warning($"Failed to load svg document {filepath}:" + e.Message);
+                return;
+            }
             var bounds = new Vector3(svgDoc.Bounds.Size.Width,svgDoc.Bounds.Size.Height,0);
             var centerOffset = centerToBounds ? new Vector3(-bounds.X/2, bounds.Y/2, 0) : Vector3.Zero;
             var fitBoundsFactor = scaleToBounds ? (2f / bounds.Y) : 1;  
