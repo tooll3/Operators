@@ -35,6 +35,11 @@ namespace T3.Operators.Types.Id_e64f95e4_c045_400f_98ca_7c020ad46174
                     commands[i].GetValue(context); 
                 }
 
+                for (int i = 0; i < commands.Count; i++)
+                {
+                    commands[i].Value?.RestoreAction?.Invoke(context);
+                }
+                
                 return;
             }
             
@@ -45,6 +50,7 @@ namespace T3.Operators.Types.Id_e64f95e4_c045_400f_98ca_7c020ad46174
             }
                 
             commands[index].GetValue(context); 
+            commands[index].Value?.RestoreAction?.Invoke(context);
         }
 
         [Input(Guid = "988DD1B5-636D-4A78-9592-2C6601401CC1")]

@@ -47,7 +47,6 @@ namespace T3.Operators.Types.Id_5efaf208_ba62_42ce_b3df_059b37fc1382
             UpdateMultiInput(RenderTargetViews, ref _renderTargetViews, context);
 
             _prevRenderTargetViews = outputMerger.GetRenderTargets(_renderTargetViews.Length);
-            _prevDepthStencilView = (DepthStencilView) null;
             outputMerger.GetRenderTargets(out _prevDepthStencilView);
             outputMerger.SetDepthStencilState(DepthStencilState.GetValue(context));
             _prevBlendState = outputMerger.GetBlendState(out _prevBlendFactor, out _prevSampleMask);
@@ -69,7 +68,8 @@ namespace T3.Operators.Types.Id_5efaf208_ba62_42ce_b3df_059b37fc1382
             {
                 rtv?.Dispose();
             }
-            _prevDepthStencilView?.Dispose();
+            Utilities.Dispose(ref _prevDepthStencilView);
+            Utilities.Dispose(ref _prevBlendState);
         }
 
         private RenderTargetView[] _renderTargetViews = new RenderTargetView[0];
