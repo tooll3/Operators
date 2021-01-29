@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using SharpDX;
+using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
@@ -52,8 +53,10 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                 return;
             }
 
+            var sampleCount = Multisampling.GetValue(context).Clamp(1, 32);
+
             bool generateMips = GenerateMips.GetValue(context);
-            UpdateTextures(device, size, TextureFormat.GetValue(context), DepthFormat.GetValue(context), generateMips);
+            UpdateTextures(device, size, TextureFormat.GetValue(context), DepthFormat.GetValue(context), generateMips, sampleCount);
 
             var deviceContext = device.ImmediateContext;
 
@@ -90,6 +93,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
             // Set default values for new sub tree
             context.SetDefaultCamera();
+
             if (TextureReference.IsConnected)
             {
                 var reference = TextureReference.GetValue(context);
@@ -99,6 +103,40 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
             // Render
             Command.GetValue(context);
+
+            // Resolve depth
+            // {
+            //     using (var msDepthView
+            //         = new ShaderResourceView(device,
+            //                                  _multiSampledColorBuffer,
+            //                                  new ShaderResourceViewDescription
+            //                                      {
+            //                                          Dimension = (int)sampleCount > 1
+            //                                                          ? ShaderResourceViewDimension.Texture2DMultisampled
+            //                                                          : ShaderResourceViewDimension.Texture2D,
+            //                                          Texture2D = { MipLevels = 10 }
+            //                                      }))
+            //     {
+            //         // TODO:
+            //         //
+            //         // _effect.GetVariableByName("txMSDepth").AsShaderResource().SetResource(msDepthView);
+            //         //
+            //         // var context2 = new OperatorPartContext(subContext)
+            //         //                    {
+            //         //                        DepthStencilView = _resolvedTargetDepthView,
+            //         //                        RenderTargetView = null,
+            //         //                        Effect = _effect,
+            //         //                        Renderer = _renderer,
+            //         //                        InputLayout = subContext.Renderer.ScreenQuadInputLayout,
+            //         //                        CameraProjection = Matrix.OrthoLH(1, 1, -100, 100),
+            //         //                        WorldToCamera = Matrix.Identity,
+            //         //                        ObjectTWorld = Matrix.Identity,
+            //         //                        TextureMatrix = Matrix.Identity
+            //         //                    };
+            //         //context2.Renderer.SetupEffect(context2);
+            //         //context2.Renderer.Render(context2.Renderer._screenQuadMesh, context2);
+            //     }
+            // }
 
             if (generateMips)
             {
@@ -126,20 +164,56 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             DepthBuffer.DirtyFlag.Clear();
         }
 
-        private bool UpdateTextures(Device device, Size2 size, Format colorFormat, Format depthFormat, bool generateMips)
+        private bool UpdateTextures(Device device, Size2 size, Format colorFormat, Format depthFormat, bool generateMips, int sampleCount)
         {
             int w = Math.Max(size.Width, size.Height);
             int mipLevels = generateMips ? (int)MathUtils.Log2(w) + 1 : 1;
 
             // Log.Debug($"miplevel: {mipLevels}, w: {w}");
-            bool colorBufferNeedsUpdate = _colorBuffer == null
-                                          || _colorBuffer.Description.Width != size.Width
-                                          || _colorBuffer.Description.Height != size.Height
-                                          || _colorBuffer.Description.Format != colorFormat
-                                          || _colorBuffer.Description.MipLevels != mipLevels;
+            bool colorBuffersNeedsUpdate = _colorBuffer == null
+                                           || _colorBuffer.Description.Width != size.Width
+                                           || _colorBuffer.Description.Height != size.Height
+                                           || _colorBuffer.Description.Format != colorFormat
+                                           || _colorBuffer.Description.MipLevels != mipLevels;
 
-            if (colorBufferNeedsUpdate)
+            if (colorBuffersNeedsUpdate)
             {
+                // Color / Multi sampling
+                Core.Utilities.Dispose(ref _multiSampledColorBufferSrv);
+                Core.Utilities.Dispose(ref _multiSampledColorBufferRtv);
+                Core.Utilities.Dispose(ref _multiSampledColorBuffer);
+
+                try
+                {
+                    _multiSampledColorBuffer = new Texture2D(device,
+                                                             new Texture2DDescription()
+                                                                 {
+                                                                     ArraySize = 1,
+                                                                     BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource | BindFlags.UnorderedAccess,
+                                                                     CpuAccessFlags = CpuAccessFlags.None,
+                                                                     Format = colorFormat,
+                                                                     Width = size.Width,
+                                                                     Height = size.Height,
+                                                                     MipLevels = mipLevels,
+                                                                     OptionFlags =
+                                                                         generateMips ? ResourceOptionFlags.GenerateMipMaps : ResourceOptionFlags.None,
+                                                                     SampleDescription = new SampleDescription(sampleCount, 0),
+                                                                     Usage = ResourceUsage.Default
+                                                                 });
+
+                    _multiSampledColorBufferSrv = new ShaderResourceView(device, _multiSampledColorBuffer);
+                    _multiSampledColorBufferRtv = new RenderTargetView(device, _multiSampledColorBuffer);
+                    _wasCleared = false;
+                }
+                catch
+                {
+                    Core.Utilities.Dispose(ref _multiSampledColorBufferSrv);
+                    Core.Utilities.Dispose(ref _multiSampledColorBufferRtv);
+                    Core.Utilities.Dispose(ref _multiSampledColorBuffer);
+                    Log.Error("Error creating color render target.");
+                }
+
+                // Color / Down sampled
                 Core.Utilities.Dispose(ref _colorBufferSrv);
                 Core.Utilities.Dispose(ref _colorBufferRtv);
                 Core.Utilities.Dispose(ref _colorBuffer);
@@ -171,6 +245,8 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                     Core.Utilities.Dispose(ref _colorBuffer);
                     Log.Error("Error creating color render target.");
                 }
+
+                _wasCleared = false;
             }
 
             bool depthBufferNeedsUpdate = _depthBuffer == null
@@ -181,8 +257,46 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
             if (depthBufferNeedsUpdate)
             {
+                // Depth / Multi sampled
+                try
+                {
+                    _multiSampledDepthBuffer = new Texture2D(device,
+                                                             new Texture2DDescription()
+                                                                 {
+                                                                     ArraySize = 1,
+                                                                     BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource,
+                                                                     CpuAccessFlags = CpuAccessFlags.None,
+                                                                     Format = Format.R32_Typeless,
+                                                                     Width = size.Width,
+                                                                     Height = size.Height,
+                                                                     MipLevels = 1,
+                                                                     OptionFlags = ResourceOptionFlags.None,
+                                                                     SampleDescription = new SampleDescription(sampleCount, 0),
+                                                                     Usage = ResourceUsage.Default
+                                                                 });
+
+                    _multiSampledDepthBufferDsv = new DepthStencilView(device,
+                                                                       _multiSampledDepthBuffer,
+                                                                       new DepthStencilViewDescription()
+                                                                           {
+                                                                               Format = Format.D32_Float,
+                                                                               Dimension = sampleCount > 1
+                                                                                               ? DepthStencilViewDimension.Texture2DMultisampled
+                                                                                               : DepthStencilViewDimension.Texture2D
+                                                                           });
+                }
+                catch
+                {
+                    Core.Utilities.Dispose(ref _multiSampledDepthBufferDsv);
+                    Core.Utilities.Dispose(ref _multiSampledDepthBuffer);
+                    Log.Error("Error creating depth/stencil buffer.");
+                }
+
+                // Depth / down sampled
                 Core.Utilities.Dispose(ref _depthBufferDsv);
                 Core.Utilities.Dispose(ref _depthBuffer);
+                Core.Utilities.Dispose(ref _multiSampledDepthBufferDsv);
+                Core.Utilities.Dispose(ref _multiSampledDepthBuffer);
 
                 if (depthFormat == Format.Unknown)
                     return true;
@@ -223,14 +337,21 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             return true;
         }
 
+        private Texture2D _multiSampledColorBuffer;
+        private ShaderResourceView _multiSampledColorBufferSrv;
+        private RenderTargetView _multiSampledColorBufferRtv;
+
         private Texture2D _colorBuffer;
         private ShaderResourceView _colorBufferSrv;
         private RenderTargetView _colorBufferRtv;
 
-        private bool _wasCleared;
+        private Texture2D _multiSampledDepthBuffer;
+        private DepthStencilView _multiSampledDepthBufferDsv;
 
         private Texture2D _depthBuffer;
         private DepthStencilView _depthBufferDsv;
+
+        private bool _wasCleared;
 
         [Input(Guid = "4da253b7-4953-439a-b03f-1d515a78bddf")]
         public readonly InputSlot<T3.Core.Command> Command = new InputSlot<T3.Core.Command>();
@@ -255,5 +376,8 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
         [Input(Guid = "07AD28AD-FF5F-4CA9-B7BB-F7F8B16A6434")]
         public readonly InputSlot<RenderTargetReference> TextureReference = new InputSlot<RenderTargetReference>();
+
+        [Input(Guid = "E882E0F0-03F9-46E6-AC7A-709E6FA66613")]
+        public readonly InputSlot<int> Multisampling = new InputSlot<int>();
     }
 }
