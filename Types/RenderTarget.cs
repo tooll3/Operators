@@ -23,14 +23,14 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
         [Output(Guid = "8bb0b18f-4fad-4348-a4fa-95b40c4167a4")]
         public readonly Slot<Texture2D> DepthBuffer = new Slot<Texture2D>();
-        
+
         [Output(Guid = "152312A6-729B-49CB-9AC5-A63105694A6B")]
         public readonly Slot<Texture2D> VelocityBuffer = new Slot<Texture2D>();
+
         public RenderTarget()
         {
             ColorBuffer.UpdateAction = Update;
             DepthBuffer.UpdateAction = Update;
-            VelocityBuffer.UpdateAction = Update;
         }
 
         private const int MaximumTexture2DSize = SharpDX.Direct3D11.Resource.MaximumTexture2DSize;
@@ -39,7 +39,6 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
         {
             var resourceManager = ResourceManager.Instance();
             var device = resourceManager.Device;
-            var clear = Clear.GetValue(context);
 
             Size2 size = Resolution.GetValue(context);
             if (size.Width == 0 || size.Height == 0)
@@ -54,22 +53,28 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             }
 
             bool generateMips = GenerateMips.GetValue(context);
-            bool useVelocityBuffer = UseVelocityBuffer.GetValue(context);
-            UpdateTextures(device, size, TextureFormat.GetValue(context), DepthFormat.GetValue(context), generateMips, useVelocityBuffer);
+            UpdateTextures(device, size, TextureFormat.GetValue(context), DepthFormat.GetValue(context), generateMips);
 
             var deviceContext = device.ImmediateContext;
+
+            // Save settings in context
             var prevViewports = deviceContext.Rasterizer.GetViewports<RawViewportF>();
             var prevTargets = deviceContext.OutputMerger.GetRenderTargets(2, out var prevDepthStencilView);
+            var prevObjectToWorld = context.ObjectToWorld;
+            var prevWorldToCamera = context.WorldToCamera;
+            var prevCameraToClipSpace = context.CameraToClipSpace;
+
             deviceContext.Rasterizer.SetViewport(new SharpDX.Viewport(0, 0, size.Width, size.Height, 0.0f, 1.0f));
-            deviceContext.OutputMerger.SetTargets(_depthBufferDsv, _colorBufferRtv, _velocityBufferRtv);
+            deviceContext.OutputMerger.SetTargets(_depthBufferDsv, _colorBufferRtv);
+
+            // Clear
+            var clear = Clear.GetValue(context);
             var c = ClearColor.GetValue(context);
             if (clear || !_wasCleared)
             {
                 try
                 {
                     deviceContext.ClearRenderTargetView(_colorBufferRtv, new Color(c.X, c.Y, c.Z, c.W));
-                    if (useVelocityBuffer)
-                        deviceContext.ClearRenderTargetView(_velocityBufferRtv, Color.Black);
                     if (_depthBufferDsv != null)
                     {
                         deviceContext.ClearDepthStencilView(_depthBufferDsv, DepthStencilClearFlags.Depth, 1.0f, 0);
@@ -83,19 +88,16 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                 }
             }
 
-            var prevObjectToWorld = context.ObjectToWorld;
-            var prevWorldToCamera = context.WorldToCamera;
-            var prevCameraToClipSpace = context.CameraToClipSpace;
-            
+            // Set default values for new sub tree
             context.SetDefaultCamera();
-            
             if (TextureReference.IsConnected)
             {
                 var reference = TextureReference.GetValue(context);
                 reference.ColorTexture = _colorBuffer;
                 reference.DepthTexture = _depthBuffer;
             }
-            
+
+            // Render
             Command.GetValue(context);
 
             if (generateMips)
@@ -103,13 +105,14 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                 deviceContext.GenerateMips(_colorBufferSrv);
             }
 
+            // Restore context
             context.ObjectToWorld = prevObjectToWorld;
             context.WorldToCamera = prevWorldToCamera;
             context.CameraToClipSpace = prevCameraToClipSpace;
             deviceContext.Rasterizer.SetViewports(prevViewports);
             deviceContext.OutputMerger.SetTargets(prevDepthStencilView, prevTargets);
 
-            // clean up ref counts for RTVs
+            // Clean up ref counts for RTVs
             for (int i = 0; i < prevTargets.Length; i++)
             {
                 prevTargets[i]?.Dispose();
@@ -121,18 +124,19 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             ColorBuffer.DirtyFlag.Clear();
             DepthBuffer.Value = _depthBuffer;
             DepthBuffer.DirtyFlag.Clear();
-            VelocityBuffer.Value = _velocityBuffer;
-            VelocityBuffer.DirtyFlag.Clear();
         }
 
-        private bool UpdateTextures(Device device, Size2 size, Format colorFormat, Format depthFormat, bool generateMips, bool useVelocityBuffer)
+        private bool UpdateTextures(Device device, Size2 size, Format colorFormat, Format depthFormat, bool generateMips)
         {
             int w = Math.Max(size.Width, size.Height);
             int mipLevels = generateMips ? (int)MathUtils.Log2(w) + 1 : 1;
+
             // Log.Debug($"miplevel: {mipLevels}, w: {w}");
-            bool colorBufferNeedsUpdate = _colorBuffer == null || _colorBuffer.Description.Width != size.Width ||
-                                          _colorBuffer.Description.Height != size.Height || _colorBuffer.Description.Format != colorFormat ||
-                                          _colorBuffer.Description.MipLevels != mipLevels;
+            bool colorBufferNeedsUpdate = _colorBuffer == null
+                                          || _colorBuffer.Description.Width != size.Width
+                                          || _colorBuffer.Description.Height != size.Height
+                                          || _colorBuffer.Description.Format != colorFormat
+                                          || _colorBuffer.Description.MipLevels != mipLevels;
 
             if (colorBufferNeedsUpdate)
             {
@@ -142,24 +146,22 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
                 try
                 {
-                    var colorDesc = new Texture2DDescription()
-                                        {
-                                            ArraySize = 1,
-                                            BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource | BindFlags.UnorderedAccess,
-                                            CpuAccessFlags = CpuAccessFlags.None,
-                                            Format = colorFormat,
-                                            Width = size.Width,
-                                            Height = size.Height,
-                                            MipLevels = mipLevels,
-                                            OptionFlags = generateMips ? ResourceOptionFlags.GenerateMipMaps : ResourceOptionFlags.None,
-                                            SampleDescription = new SampleDescription(1, 0),
-                                            Usage = ResourceUsage.Default
-                                        };
-
-                    _colorBuffer = new Texture2D(device, colorDesc);
+                    _colorBuffer = new Texture2D(device,
+                                                 new Texture2DDescription()
+                                                     {
+                                                         ArraySize = 1,
+                                                         BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource | BindFlags.UnorderedAccess,
+                                                         CpuAccessFlags = CpuAccessFlags.None,
+                                                         Format = colorFormat,
+                                                         Width = size.Width,
+                                                         Height = size.Height,
+                                                         MipLevels = mipLevels,
+                                                         OptionFlags = generateMips ? ResourceOptionFlags.GenerateMipMaps : ResourceOptionFlags.None,
+                                                         SampleDescription = new SampleDescription(1, 0),
+                                                         Usage = ResourceUsage.Default
+                                                     });
                     _colorBufferSrv = new ShaderResourceView(device, _colorBuffer);
                     _colorBufferRtv = new RenderTargetView(device, _colorBuffer);
-
                     _wasCleared = false;
                 }
                 catch
@@ -171,9 +173,11 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                 }
             }
 
-            bool depthBufferNeedsUpdate = _depthBuffer == null || (_depthBuffer != null && depthFormat == Format.Unknown) ||
-                                          _depthBuffer.Description.Width != size.Width || _depthBuffer.Description.Height != size.Height ||
-                                          _depthBuffer.Description.Format != depthFormat;
+            bool depthBufferNeedsUpdate = _depthBuffer == null
+                                          || (_depthBuffer != null && depthFormat == Format.Unknown)
+                                          || _depthBuffer.Description.Width != size.Width
+                                          || _depthBuffer.Description.Height != size.Height
+                                          || _depthBuffer.Description.Format != depthFormat;
 
             if (depthBufferNeedsUpdate)
             {
@@ -185,27 +189,27 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
                 try
                 {
-                    var depthDesc = new Texture2DDescription()
-                                        {
-                                            ArraySize = 1,
-                                            BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource,
-                                            CpuAccessFlags = CpuAccessFlags.None,
-                                            Format = Format.R32_Typeless,
-                                            Width = size.Width,
-                                            Height = size.Height,
-                                            MipLevels = 1,
-                                            OptionFlags = ResourceOptionFlags.None,
-                                            SampleDescription = new SampleDescription(1, 0),
-                                            Usage = ResourceUsage.Default
-                                        };
-                    _depthBuffer = new Texture2D(device, depthDesc);
-                    var depthViewDesc = new DepthStencilViewDescription()
-                                            {
-                                                Format = Format.D32_Float,
-                                                Dimension = DepthStencilViewDimension.Texture2D
-                                            };
-                    _depthBufferDsv = new DepthStencilView(device, _depthBuffer, depthViewDesc);
-                    //Log.Debug("new depth stencil view");
+                    _depthBuffer = new Texture2D(device,
+                                                 new Texture2DDescription()
+                                                     {
+                                                         ArraySize = 1,
+                                                         BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource,
+                                                         CpuAccessFlags = CpuAccessFlags.None,
+                                                         Format = Format.R32_Typeless,
+                                                         Width = size.Width,
+                                                         Height = size.Height,
+                                                         MipLevels = 1,
+                                                         OptionFlags = ResourceOptionFlags.None,
+                                                         SampleDescription = new SampleDescription(1, 0),
+                                                         Usage = ResourceUsage.Default
+                                                     });
+
+                    _depthBufferDsv = new DepthStencilView(device, _depthBuffer,
+                                                           new DepthStencilViewDescription()
+                                                               {
+                                                                   Format = Format.D32_Float,
+                                                                   Dimension = DepthStencilViewDimension.Texture2D
+                                                               });
                     _wasCleared = false;
                 }
                 catch
@@ -216,62 +220,18 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                 }
             }
 
-            bool velocityBufferNeedsUpdate = useVelocityBuffer && (_velocityBuffer == null ||
-                                                                   _velocityBuffer.Description.Width != size.Width ||
-                                                                   _velocityBuffer.Description.Height != size.Height);
-
-            if (velocityBufferNeedsUpdate)
-            {
-                Core.Utilities.Dispose(ref _velocityBufferSrv);
-                Core.Utilities.Dispose(ref _velocityBufferRtv);
-                Core.Utilities.Dispose(ref _velocityBuffer);
-
-                try
-                {
-                    var velocityDesc = new Texture2DDescription()
-                                           {
-                                               ArraySize = 1,
-                                               BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource | BindFlags.UnorderedAccess,
-                                               CpuAccessFlags = CpuAccessFlags.None,
-                                               Format = Format.R8G8B8A8_SNorm,
-                                               Width = size.Width,
-                                               Height = size.Height,
-                                               MipLevels = mipLevels,
-                                               OptionFlags = generateMips ? ResourceOptionFlags.GenerateMipMaps : ResourceOptionFlags.None,
-                                               SampleDescription = new SampleDescription(1, 0),
-                                               Usage = ResourceUsage.Default
-                                           };
-                    _velocityBuffer = new Texture2D(device, velocityDesc);
-                    _velocityBufferSrv = new ShaderResourceView(device, _velocityBuffer);
-                    _velocityBufferRtv = new RenderTargetView(device, _velocityBuffer);
-                    Log.Debug("Created velocity buffer");
-                }
-                catch
-                {
-                    Core.Utilities.Dispose(ref _velocityBuffer);
-                    Core.Utilities.Dispose(ref _velocityBufferSrv);
-                    Core.Utilities.Dispose(ref _velocityBufferRtv);
-                    Log.Error("Error creating velocity render target.");
-                }
-            }
-
             return true;
         }
 
         private Texture2D _colorBuffer;
         private ShaderResourceView _colorBufferSrv;
         private RenderTargetView _colorBufferRtv;
-        
-        private Texture2D _velocityBuffer;
-        private ShaderResourceView _velocityBufferSrv;
-        private RenderTargetView _velocityBufferRtv;
-        
+
         private bool _wasCleared;
 
         private Texture2D _depthBuffer;
         private DepthStencilView _depthBufferDsv;
 
-        
         [Input(Guid = "4da253b7-4953-439a-b03f-1d515a78bddf")]
         public readonly InputSlot<T3.Core.Command> Command = new InputSlot<T3.Core.Command>();
 
@@ -292,11 +252,8 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
         [Input(Guid = "f0cf3325-4967-4419-9beb-036cd6dbfd6a")]
         public readonly InputSlot<bool> GenerateMips = new InputSlot<bool>();
-        
+
         [Input(Guid = "07AD28AD-FF5F-4CA9-B7BB-F7F8B16A6434")]
         public readonly InputSlot<RenderTargetReference> TextureReference = new InputSlot<RenderTargetReference>();
-
-        [Input(Guid = "537C9406-7C31-4A31-A0C4-647B3DBE9A0E")]
-        public readonly InputSlot<bool> UseVelocityBuffer = new InputSlot<bool>();
     }
 }
