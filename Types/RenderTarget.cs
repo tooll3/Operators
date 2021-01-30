@@ -1,6 +1,7 @@
 using System;
 using SharpDX;
 using SharpDX.D3DCompiler;
+using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
@@ -29,6 +30,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
         {
             ColorBuffer.UpdateAction = Update;
             DepthBuffer.UpdateAction = Update;
+            SetupShaderResources();
         }
 
         private const int MaximumTexture2DSize = SharpDX.Direct3D11.Resource.MaximumTexture2DSize;
@@ -118,20 +120,21 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                                                0,
                                                                _resolvedColorBuffer, 0,
                                                                _resolvedColorBuffer.Description.Format);
+
+                    if (withDepthBuffer)
+                    {
+                        ResolveDepthBuffer();
+                    }
                 }
                 catch (Exception e)
                 {
                     Log.Error("resolving render target buffer failed:" + e.Message);
                 }
             }
-
-            // Resolve depth
-
+            
             if (generateMips)
             {
-                deviceContext.GenerateMips(DownSamplingRequired 
-                                               ? _resolvedColorBufferSrv 
-                                               : _multiSampledColorBufferSrv);
+                deviceContext.GenerateMips(DownSamplingRequired ? _resolvedColorBufferSrv : _multiSampledColorBufferSrv);
             }
 
             // Clean up ref counts for RTVs
@@ -154,15 +157,17 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
         {
             if (_resolveComputeShaderResourceId == ResourceManager.NullResource)
             {
-                string sourcePath = @"Resources\lib\internal\resolve-multisampled-depth-buffer-cs.hlsl";
+                string sourcePath = @"Resources\lib\img\internal\resolve-multisampled-depth-buffer-cs.hlsl";
                 string entryPoint = "main";
                 string debugName = "resolve-multisampled-depth-buffer";
                 var resourceManager = ResourceManager.Instance();
-                _resolveComputeShaderResourceId = resourceManager.CreateVertexShaderFromFile(sourcePath, entryPoint, debugName, null);
+                _resolveComputeShaderResourceId = resourceManager.CreateComputeShaderFromFile(sourcePath, entryPoint, debugName, null);
             }
         }
+       
         
-        private void Resolve()
+        
+        private void ResolveDepthBuffer()
         {
             var resourceManager = ResourceManager.Instance();
             var device = resourceManager.Device;
@@ -170,21 +175,21 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             var csStage = deviceContext.ComputeShader;
             var prevShader = csStage.Get();
             var prevUavs = csStage.GetUnorderedAccessViews(0, 1);
-            
-            // Set and call shader
-            var reflectedShader = new ShaderReflection(resourceManager.GetComputeShaderBytecode(_resolveComputeShaderResourceId));
-            reflectedShader.GetThreadGroupSize(out int threadNumX, out int threadNumY, out int threadNumZ);
+            var prevSrvs = csStage.GetShaderResources(0, 1);
             
             ComputeShader resolveShader = resourceManager.GetComputeShader(_resolveComputeShaderResourceId);
             csStage.Set(resolveShader);
-            
-            // FIXME: implement UAV for _depthbuffer
-            //csStage.SetUnorderedAccessView(0, _multiSampledDepthBufferDsv, 0);
-            var dispatchCount = _multiSampledDepthBuffer.Description.Width / threadNumX * _multiSampledDepthBuffer.Description.Height / threadNumY;
-            deviceContext.Dispatch(dispatchCount, 1, 1);
+
+            const int threadNumX = 16, threadNumY = 16;
+            csStage.SetShaderResource(0, _multiSampledDepthBufferSrv);
+            csStage.SetUnorderedAccessView(0, _resolvedDepthBufferUav, 0);
+            int dispatchCountX = _multiSampledDepthBuffer.Description.Width / threadNumX ;
+            int dispatchCountY = _multiSampledDepthBuffer.Description.Height / threadNumY;
+            deviceContext.Dispatch(dispatchCountX, dispatchCountY, 1);
             
             // Restore prev setup
             csStage.SetUnorderedAccessView(0, prevUavs[0]);
+            csStage.SetShaderResource(0, prevSrvs[0]);
             csStage.Set(prevShader);
         }
         
@@ -305,8 +310,9 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             if (depthFormatChanged || (!depthRequired && depthInitialized))
             {
                 Core.Utilities.Dispose(ref _multiSampledDepthBufferDsv);
+                Core.Utilities.Dispose(ref _multiSampledDepthBufferSrv);
                 Core.Utilities.Dispose(ref _multiSampledDepthBuffer);
-                Core.Utilities.Dispose(ref _resolvedDepthBufferDsv);
+                Core.Utilities.Dispose(ref _resolvedDepthBufferUav);
                 Core.Utilities.Dispose(ref _resolvedDepthBuffer);
             }
 
@@ -339,10 +345,19 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                                                                                ? DepthStencilViewDimension.Texture2DMultisampled
                                                                                                : DepthStencilViewDimension.Texture2D
                                                                            });
+                    _multiSampledDepthBufferSrv = new ShaderResourceView(device, _multiSampledDepthBuffer, new ShaderResourceViewDescription
+                                                                             {
+                                                                                 Format = Format.R32_Float,
+                                                                                 Dimension = DownSamplingRequired
+                                                                                                 ? ShaderResourceViewDimension.Texture2DMultisampled
+                                                                                                 : ShaderResourceViewDimension.Texture2D
+                                                                             }
+                                                                        );
                 }
                 catch
                 {
                     Core.Utilities.Dispose(ref _multiSampledDepthBufferDsv);
+                    Core.Utilities.Dispose(ref _multiSampledDepthBufferSrv);
                     Core.Utilities.Dispose(ref _multiSampledDepthBuffer);
                     Log.Error("Error  creating multisampled depth/stencil buffer.", SymbolChildId);
                 }
@@ -355,9 +370,9 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                                              new Texture2DDescription
                                                                  {
                                                                      ArraySize = 1,
-                                                                     BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource,
+                                                                     BindFlags = BindFlags.ShaderResource | BindFlags.UnorderedAccess,
                                                                      CpuAccessFlags = CpuAccessFlags.None,
-                                                                     Format = Format.R32_Typeless,
+                                                                     Format = Format.R32_Float,
                                                                      Width = size.Width,
                                                                      Height = size.Height,
                                                                      MipLevels = mipLevels,
@@ -366,16 +381,11 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                                                      Usage = ResourceUsage.Default
                                                                  });
 
-                        _resolvedDepthBufferDsv = new DepthStencilView(device, _resolvedDepthBuffer,
-                                                                       new DepthStencilViewDescription
-                                                                           {
-                                                                               Format = Format.D32_Float,
-                                                                               Dimension = DepthStencilViewDimension.Texture2D
-                                                                           });
+                        _resolvedDepthBufferUav = new UnorderedAccessView(device, _resolvedDepthBuffer);
                     }
                     catch
                     {
-                        Core.Utilities.Dispose(ref _resolvedDepthBufferDsv);
+                        Core.Utilities.Dispose(ref _resolvedDepthBufferUav);
                         Core.Utilities.Dispose(ref _resolvedDepthBuffer);
                         Log.Error("Error creating depth/stencil downsampling buffer.", SymbolChildId);
                     }
@@ -393,9 +403,10 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
         private Texture2D _multiSampledDepthBuffer;
         private DepthStencilView _multiSampledDepthBufferDsv;
+        private ShaderResourceView _multiSampledDepthBufferSrv;
 
         private Texture2D _resolvedDepthBuffer;
-        private DepthStencilView _resolvedDepthBufferDsv;
+        private UnorderedAccessView _resolvedDepthBufferUav;
 
         private bool _wasCleared;
 
