@@ -15,7 +15,7 @@ namespace T3.Operators.Types.Id_fc1ef086_c160_4174_8e60_a4eda931163d
         // [Output(Guid = "27495e79-5229-4a2d-b780-52265c3085ea")]
         // public readonly Slot<Texture2D> Texture = new Slot<Texture2D>();
         [Output(Guid = "3cbfceaa-4fa1-44e9-8c43-aff7dba7f871")]
-        public readonly Slot<Core.DataTypes.Texture3d> OutputTexture = new Slot<Core.DataTypes.Texture3d>();
+        public readonly Slot<Core.DataTypes.Texture3d> OutputTexture = new Slot<Core.DataTypes.Texture3d>(new Core.DataTypes.Texture3d());
 
         private uint _textureResId;
 
@@ -46,7 +46,7 @@ namespace T3.Operators.Types.Id_fc1ef086_c160_4174_8e60_a4eda931163d
                                   OptionFlags = ResourceOptionFlags.GetValue(context)
                               };
             var rm = ResourceManager.Instance();
-            rm.CreateTexture3d(texDesc, "Texture2D", ref _textureResId, ref OutputTexture.Value.Texture);
+            rm.CreateTexture3d(texDesc, "Texture3D", ref _textureResId, ref OutputTexture.Value.Texture);
             if ((BindFlags.Value & SharpDX.Direct3D11.BindFlags.ShaderResource) > 0)
                 rm.CreateShaderResourceView(_textureResId, "", ref OutputTexture.Value.Srv);
             if ((BindFlags.Value & SharpDX.Direct3D11.BindFlags.RenderTarget) > 0)
@@ -60,9 +60,6 @@ namespace T3.Operators.Types.Id_fc1ef086_c160_4174_8e60_a4eda931163d
 
         [Input(Guid = "2e0fd6be-0c9e-4624-803c-178d1d80ea43")]
         public readonly InputSlot<int> MipLevels = new InputSlot<int>();
-
-        [Input(Guid = "de91fefa-7ba0-4fcb-b7cc-f5b6d80f7ab2")]
-        public readonly InputSlot<int> ArraySize = new InputSlot<int>();
 
         [Input(Guid = "ce649059-f136-4d32-81c6-23d7b55f3378")]
         public readonly InputSlot<Format> Format = new InputSlot<Format>();
