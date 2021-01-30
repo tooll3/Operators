@@ -16,7 +16,7 @@ namespace T3.Operators.Types.Id_fd9bffd3_5c57_462f_8761_85f94c5a629b
         [Input(Guid = "30b58444-0485-4116-8b15-7e62fee69eaa", MappedType = typeof(BlendModes))]
         public readonly InputSlot<int> BlendMode = new InputSlot<int>();
 
-        enum BlendModes
+        public enum BlendModes
         {
             Normal,
             Additive,
