@@ -10,18 +10,18 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
     public class PeakLevel : Instance<PeakLevel>
     {
         [Output(Guid = "6fe37109-0177-4823-9466-eaa49adb19d4")]
-        public readonly Slot<float> Result = new Slot<float>();
+        public readonly Slot<float> AverageLevel = new Slot<float>();
 
         [Output(Guid = "79BADB66-ED5C-4E01-B26A-29B5AA115FC4")]
-        public readonly Slot<float> MovingSum = new Slot<float>();
+        public readonly Slot<float> EnergyLevel = new Slot<float>();
 
         [Output(Guid = "80DCAD3B-5E93-4991-855D-24176EC54F4D", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<bool> FoundPeak = new Slot<bool>();
         
         public PeakLevel()
         {
-            Result.UpdateAction = Update;
-            MovingSum.UpdateAction = Update;
+            AverageLevel.UpdateAction = Update;
+            EnergyLevel.UpdateAction = Update;
             FoundPeak.UpdateAction = Update;
         }
 
@@ -46,8 +46,9 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
             var minTimeBetweenBeats = MinTimeBetweenPeaks.GetValue(context);
             _averageLevel = MathUtils.Lerp(value, _averageLevel,  SmoothAverageLevel.GetValue(context)).Clamp(0.001f, 1000);    // very long smoothing to normalize level
             
-            var normalizedValue = value / _averageLevel /3;
-            _energy +=  (float)Math.Pow(normalizedValue,3);
+            //var normalizedValue = value / _averageLevel /3;
+            var normalizedValue = (value - _averageLevel).Clamp(0, 100);
+            _energy +=  (float)Math.Pow(normalizedValue,1);
 
             var timeSinceLastPeak = EvaluationContext.BeatTime - _lastPeakTime;
             if (timeSinceLastPeak < 0)
@@ -58,17 +59,17 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
             if (_energy > Threshold.GetValue(context)  && timeSinceLastPeak > minTimeBetweenBeats)
             {
                 _lastPeakTime = EvaluationContext.BeatTime;
-                _energy = 0; 
+                //_energy = 0.1f; 
                 FoundPeak.Value = true;
             }
             else
             {
-                _energy = (_energy - (float)EvaluationContext.LastFrameDuration * decayRate ).Clamp(0,100);
+                _energy = (_energy - (float)EvaluationContext.LastFrameDuration * decayRate * 60 ).Clamp(0,100);
                 FoundPeak.Value = false;
             }
 
-            MovingSum.Value = _energy;
-            Result.Value = _averageLevel;
+            AverageLevel.Value = (value - _averageLevel).Clamp(0,10);
+            EnergyLevel.Value = _energy;
         }
 
         //private float _lastPeak = 0;

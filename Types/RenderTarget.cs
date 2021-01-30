@@ -53,7 +53,9 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             _sampleCount = Multisampling.GetValue(context).Clamp(1, 32);
 
             bool generateMips = GenerateMips.GetValue(context);
-            UpdateTextures(device, size, TextureFormat.GetValue(context), DepthFormat.GetValue(context), generateMips, _sampleCount);
+            var withDepthBuffer = WithDepthBuffer.GetValue(context);
+            
+            UpdateTextures(device, size, TextureFormat.GetValue(context), withDepthBuffer ? Format.R32_Typeless : Format.Unknown, generateMips);
 
             var deviceContext = device.ImmediateContext;
 
@@ -127,7 +129,9 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
             if (generateMips)
             {
-                deviceContext.GenerateMips(DownSamplingRequired ? _resolvedColorBufferSrv : _multiSampledColorBufferSrv);
+                deviceContext.GenerateMips(DownSamplingRequired 
+                                               ? _resolvedColorBufferSrv 
+                                               : _multiSampledColorBufferSrv);
             }
 
             // Clean up ref counts for RTVs
@@ -185,7 +189,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
         }
         
         
-        private void UpdateTextures(Device device, Size2 size, Format colorFormat, Format depthFormat, bool generateMips, int sampleCount)
+        private void UpdateTextures(Device device, Size2 size, Format colorFormat, Format depthFormat, bool generateMips)
         {
             int w = Math.Max(size.Width, size.Height);
             int mipLevels = generateMips ? (int)MathUtils.Log2(w) + 1 : 1;
@@ -197,9 +201,9 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                       || _multiSampledColorBuffer.Description.MipLevels != mipLevels
                                       || _multiSampledColorBuffer.Description.Width != size.Width
                                       || _multiSampledColorBuffer.Description.Height != size.Height
-                                      || _multiSampledColorBuffer.Description.SampleDescription.Count != sampleCount;
+                                      || _multiSampledColorBuffer.Description.SampleDescription.Count != _sampleCount;
 
-            bool useMultiSampling = sampleCount > 1;
+            //bool useMultiSampling = _sampleCount > 1;
 
             if (colorFormatChanged)
             {
@@ -218,9 +222,9 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                                        Format = colorFormat,
                                                        Width = size.Width,
                                                        Height = size.Height,
-                                                       MipLevels = 1,
+                                                       MipLevels = DownSamplingRequired ? 1 : mipLevels,
                                                        OptionFlags = ResourceOptionFlags.None,
-                                                       SampleDescription = new SampleDescription(sampleCount, 0),
+                                                       SampleDescription = new SampleDescription(_sampleCount, 0),
                                                        Usage = ResourceUsage.Default,
                                                    };
                     _multiSampledColorBuffer = new Texture2D(device, texture2DDescription);
@@ -230,7 +234,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                                                        new RenderTargetViewDescription
                                                                            {
                                                                                Format = colorFormat,
-                                                                               Dimension = sampleCount > 1
+                                                                               Dimension = DownSamplingRequired
                                                                                                ? RenderTargetViewDimension.Texture2DMultisampled
                                                                                                : RenderTargetViewDimension.Texture2D
                                                                            });
@@ -254,7 +258,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                     Core.Utilities.Dispose(ref _resolvedColorBuffer);
                 }
 
-                if (useMultiSampling)
+                if (DownSamplingRequired)
                 {
                     try
                     {
@@ -290,12 +294,12 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             }
 
             var depthRequired = depthFormat != Format.Unknown;
-            var depthInitialized = _resolvedDepthBuffer != null;
+            var depthInitialized = _multiSampledDepthBuffer != null;
 
             bool depthFormatChanged = _multiSampledDepthBuffer == null
                                       || _multiSampledDepthBuffer.Description.Width != size.Width
                                       || _multiSampledDepthBuffer.Description.Height != size.Height
-                                      || _multiSampledDepthBuffer.Description.SampleDescription.Count != sampleCount
+                                      || _multiSampledDepthBuffer.Description.SampleDescription.Count != _sampleCount
                                       || _multiSampledDepthBuffer.Description.Format != depthFormat;
 
             if (depthFormatChanged || (!depthRequired && depthInitialized))
@@ -320,9 +324,9 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                                                      Format = Format.R32_Typeless,
                                                                      Width = size.Width,
                                                                      Height = size.Height,
-                                                                     MipLevels = 1,
+                                                                     MipLevels = DownSamplingRequired ? 1: mipLevels,
                                                                      OptionFlags = ResourceOptionFlags.None,
-                                                                     SampleDescription = new SampleDescription(sampleCount, 0),
+                                                                     SampleDescription = new SampleDescription(_sampleCount, 0),
                                                                      Usage = ResourceUsage.Default
                                                                  });
 
@@ -331,7 +335,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                                                        new DepthStencilViewDescription
                                                                            {
                                                                                Format = Format.D32_Float,
-                                                                               Dimension = sampleCount > 1
+                                                                               Dimension = DownSamplingRequired
                                                                                                ? DepthStencilViewDimension.Texture2DMultisampled
                                                                                                : DepthStencilViewDimension.Texture2D
                                                                            });
@@ -340,10 +344,10 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                 {
                     Core.Utilities.Dispose(ref _multiSampledDepthBufferDsv);
                     Core.Utilities.Dispose(ref _multiSampledDepthBuffer);
-                    Log.Error("Error creating depth/stencil buffer.", SymbolChildId);
+                    Log.Error("Error  creating multisampled depth/stencil buffer.", SymbolChildId);
                 }
 
-                if (useMultiSampling)
+                if (DownSamplingRequired)
                 {
                     try
                     {
@@ -356,7 +360,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                                                      Format = Format.R32_Typeless,
                                                                      Width = size.Width,
                                                                      Height = size.Height,
-                                                                     MipLevels = 1,
+                                                                     MipLevels = mipLevels,
                                                                      OptionFlags = ResourceOptionFlags.None,
                                                                      SampleDescription = new SampleDescription(1, 0),
                                                                      Usage = ResourceUsage.Default
@@ -373,7 +377,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                     {
                         Core.Utilities.Dispose(ref _resolvedDepthBufferDsv);
                         Core.Utilities.Dispose(ref _resolvedDepthBuffer);
-                        Log.Error("Error creating depth/stencil buffer.", SymbolChildId);
+                        Log.Error("Error creating depth/stencil downsampling buffer.", SymbolChildId);
                     }
                 }
             }
@@ -412,9 +416,12 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
         [Input(Guid = "ec46bef4-8dce-4eb4-bfe8-e35a5ac416ec")]
         public readonly InputSlot<SharpDX.DXGI.Format> TextureFormat = new InputSlot<SharpDX.DXGI.Format>();
 
-        [Input(Guid = "2d54adbb-04c7-4f92-babd-9822953aa4cd")]
-        public readonly InputSlot<SharpDX.DXGI.Format> DepthFormat = new InputSlot<SharpDX.DXGI.Format>();
-
+        // [Input(Guid = "2d54adbb-04c7-4f92-babd-9822953aa4cd")]
+        // public readonly InputSlot<SharpDX.DXGI.Format> DepthFormat = new InputSlot<SharpDX.DXGI.Format>();
+        
+        [Input(Guid = "6EA4F801-FF52-4266-A41F-B9EF02C68510")]
+        public readonly InputSlot<bool> WithDepthBuffer = new InputSlot<bool>();
+        
         [Input(Guid = "aacafc4d-f47f-4893-9a6e-98db306a8901")]
         public readonly InputSlot<bool> Clear = new InputSlot<bool>();
 

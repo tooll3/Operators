@@ -50,7 +50,7 @@ namespace T3.Operators.Types.Id_5efaf208_ba62_42ce_b3df_059b37fc1382
                 rtv?.Dispose();
             }
             Utilities.Dispose(ref _prevDepthStencilView);
-            Utilities.Dispose(ref _prevBlendState);
+            _prevBlendState = null;
         }
 
         private RenderTargetView[] _renderTargetViews = new RenderTargetView[0];
