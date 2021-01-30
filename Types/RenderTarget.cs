@@ -1,5 +1,6 @@
 using System;
 using SharpDX;
+using SharpDX.D3DCompiler;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
@@ -123,38 +124,6 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             }
 
             // Resolve depth
-            // {
-            //     using (var msDepthView
-            //         = new ShaderResourceView(device,
-            //                                  _multiSampledColorBuffer,
-            //                                  new ShaderResourceViewDescription
-            //                                      {
-            //                                          Dimension = (int)sampleCount > 1
-            //                                                          ? ShaderResourceViewDimension.Texture2DMultisampled
-            //                                                          : ShaderResourceViewDimension.Texture2D,
-            //                                          Texture2D = { MipLevels = 10 }
-            //                                      }))
-            //     {
-            //         // TODO:
-            //         //
-            //         // _effect.GetVariableByName("txMSDepth").AsShaderResource().SetResource(msDepthView);
-            //         //
-            //         // var context2 = new OperatorPartContext(subContext)
-            //         //                    {
-            //         //                        DepthStencilView = _resolvedTargetDepthView,
-            //         //                        RenderTargetView = null,
-            //         //                        Effect = _effect,
-            //         //                        Renderer = _renderer,
-            //         //                        InputLayout = subContext.Renderer.ScreenQuadInputLayout,
-            //         //                        CameraProjection = Matrix.OrthoLH(1, 1, -100, 100),
-            //         //                        WorldToCamera = Matrix.Identity,
-            //         //                        ObjectTWorld = Matrix.Identity,
-            //         //                        TextureMatrix = Matrix.Identity
-            //         //                    };
-            //         //context2.Renderer.SetupEffect(context2);
-            //         //context2.Renderer.Render(context2.Renderer._screenQuadMesh, context2);
-            //     }
-            // }
 
             if (generateMips)
             {
@@ -174,7 +143,48 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             DepthBuffer.Value = DepthTexture;
             DepthBuffer.DirtyFlag.Clear();
         }
+        
+        private uint _resolveComputeShaderResourceId = ResourceManager.NullResource;
 
+        private void SetupShaderResources()
+        {
+            if (_resolveComputeShaderResourceId == ResourceManager.NullResource)
+            {
+                string sourcePath = @"Resources\lib\internal\resolve-multisampled-depth-buffer-cs.hlsl";
+                string entryPoint = "main";
+                string debugName = "resolve-multisampled-depth-buffer";
+                var resourceManager = ResourceManager.Instance();
+                _resolveComputeShaderResourceId = resourceManager.CreateVertexShaderFromFile(sourcePath, entryPoint, debugName, null);
+            }
+        }
+        
+        private void Resolve()
+        {
+            var resourceManager = ResourceManager.Instance();
+            var device = resourceManager.Device;
+            var deviceContext = device.ImmediateContext;
+            var csStage = deviceContext.ComputeShader;
+            var prevShader = csStage.Get();
+            var prevUavs = csStage.GetUnorderedAccessViews(0, 1);
+            
+            // Set and call shader
+            var reflectedShader = new ShaderReflection(resourceManager.GetComputeShaderBytecode(_resolveComputeShaderResourceId));
+            reflectedShader.GetThreadGroupSize(out int threadNumX, out int threadNumY, out int threadNumZ);
+            
+            ComputeShader resolveShader = resourceManager.GetComputeShader(_resolveComputeShaderResourceId);
+            csStage.Set(resolveShader);
+            
+            // FIXME: implement UAV for _depthbuffer
+            //csStage.SetUnorderedAccessView(0, _multiSampledDepthBufferDsv, 0);
+            var dispatchCount = _multiSampledDepthBuffer.Description.Width / threadNumX * _multiSampledDepthBuffer.Description.Height / threadNumY;
+            deviceContext.Dispatch(dispatchCount, 1, 1);
+            
+            // Restore prev setup
+            csStage.SetUnorderedAccessView(0, prevUavs[0]);
+            csStage.Set(prevShader);
+        }
+        
+        
         private void UpdateTextures(Device device, Size2 size, Format colorFormat, Format depthFormat, bool generateMips, int sampleCount)
         {
             int w = Math.Max(size.Width, size.Height);
