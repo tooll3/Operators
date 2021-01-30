@@ -47,7 +47,7 @@ namespace T3.Operators.Types.Id_0b3436db_e283_436e_ba85_2f3a1de76a9d
                                                                                                       Texture.DirtyFlag.Invalidate();
                                                                                                       ShaderResourceView.DirtyFlag.Invalidate();
                                                                                                   });
-                    if (resourceManager.Resources.TryGetValue(_textureResId, out var resource1) && resource1 is TextureResource textureResource)
+                    if (resourceManager.Resources.TryGetValue(_textureResId, out var resource1) && resource1 is Texture2dResource textureResource)
                         Texture.Value = textureResource.Texture;
                     if (resourceManager.Resources.TryGetValue(_srvResId, out var resource2) && resource2 is ShaderResourceViewResource srvResource)
                         ShaderResourceView.Value = srvResource.ShaderResourceView;
