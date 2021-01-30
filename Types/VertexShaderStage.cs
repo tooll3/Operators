@@ -18,25 +18,6 @@ namespace T3.Operators.Types.Id_a9600440_4203_4315_bdb1_4dfd603b4515
             Output.Value.RestoreAction = Restore;
         }
 
-        private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)
-        {
-            if (input.DirtyFlag.IsDirty)
-            {
-                var connectedInputs = input.GetCollectedTypedInputs();
-                if (connectedInputs.Count != resources.Length)
-                {
-                    resources = new T[connectedInputs.Count];
-                }
-
-                for (int i = 0; i < connectedInputs.Count; i++)
-                {
-                    resources[i] = connectedInputs[i].GetValue(context);
-                }
-
-                input.DirtyFlag.Clear();
-            }
-        }
-        
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
@@ -44,9 +25,9 @@ namespace T3.Operators.Types.Id_a9600440_4203_4315_bdb1_4dfd603b4515
             var deviceContext = device.ImmediateContext;
             var vsStage = deviceContext.VertexShader;
 
-            UpdateMultiInput(ConstantBuffers, ref _constantBuffers, context);
-            UpdateMultiInput(ShaderResources, ref _shaderResourceViews, context);
-            
+            ConstantBuffers.GetValues(ref _constantBuffers, context);
+            ShaderResources.GetValues(ref _shaderResourceViews, context);
+
             _prevConstantBuffers = vsStage.GetConstantBuffers(0, _constantBuffers.Length);
             _prevShaderResourceViews = vsStage.GetShaderResources(0, _shaderResourceViews.Length);
             _prevVertexShader = vsStage.Get();
@@ -78,10 +59,13 @@ namespace T3.Operators.Types.Id_a9600440_4203_4315_bdb1_4dfd603b4515
 
         [Input(Guid = "B1C236E5-6757-4D77-9911-E3ACD5EA9FE9")]
         public readonly InputSlot<SharpDX.Direct3D11.VertexShader> VertexShader = new InputSlot<SharpDX.Direct3D11.VertexShader>();
+
         [Input(Guid = "BBA8F6EB-7CFF-435B-AB47-FEBF58DD8FBA")]
         public readonly MultiInputSlot<Buffer> ConstantBuffers = new MultiInputSlot<Buffer>();
+
         [Input(Guid = "3A0BEA89-BD93-4594-B1B6-3E25689C67E6")]
         public readonly MultiInputSlot<ShaderResourceView> ShaderResources = new MultiInputSlot<ShaderResourceView>();
+
         [Input(Guid = "2BC7584D-A347-4954-9120-C1841AF76650")]
         public readonly MultiInputSlot<SamplerState> SamplerStates = new MultiInputSlot<SamplerState>();
     }

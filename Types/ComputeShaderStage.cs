@@ -20,25 +20,6 @@ namespace T3.Operators.Types.Id_8bef116d_7d1c_4c1b_b902_25c1d5e925a9
             Output.UpdateAction = Update;
         }
 
-        private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)
-        {
-            if (input.DirtyFlag.IsDirty)
-            {
-                var connectedConstBuffers = input.GetCollectedTypedInputs();
-                if (connectedConstBuffers.Count != resources.Length)
-                {
-                    resources = new T[connectedConstBuffers.Count];
-                }
-
-                for (int i = 0; i < connectedConstBuffers.Count; i++)
-                {
-                    resources[i] = connectedConstBuffers[i].GetValue(context);
-                }
-
-                input.DirtyFlag.Clear();
-            }
-        }
-
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
@@ -48,10 +29,10 @@ namespace T3.Operators.Types.Id_8bef116d_7d1c_4c1b_b902_25c1d5e925a9
 
             _cs = ComputeShader.GetValue(context);
 
-            UpdateMultiInput(ConstantBuffers, ref _constantBuffers, context);
-            UpdateMultiInput(ShaderResources, ref _shaderResourceViews, context);
-            UpdateMultiInput(SamplerStates, ref _samplerStates, context);
-            UpdateMultiInput(Uavs, ref _uavs, context);
+            ConstantBuffers.GetValues(ref _constantBuffers, context);
+            ShaderResources.GetValues(ref _shaderResourceViews, context);
+            SamplerStates.GetValues(ref _samplerStates, context);
+            Uavs.GetValues(ref _uavs, context);
             int counter = UavBufferCount.GetValue(context);
 
             if (_uavs.Length == 0 || _uavs[0] == null || _cs == null)

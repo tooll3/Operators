@@ -18,25 +18,6 @@ namespace T3.Operators.Types.Id_5efaf208_ba62_42ce_b3df_059b37fc1382
             Output.Value.RestoreAction = Restore;
         }
 
-        private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)
-        {
-            if (input.DirtyFlag.IsDirty)
-            {
-                var connectedInputs = input.GetCollectedTypedInputs();
-                if (connectedInputs.Count != resources.Length)
-                {
-                    resources = new T[connectedInputs.Count];
-                }
-
-                for (int i = 0; i < connectedInputs.Count; i++)
-                {
-                    resources[i] = connectedInputs[i].GetValue(context);
-                }
-
-                input.DirtyFlag.Clear();
-            }
-        }
-
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
@@ -44,7 +25,7 @@ namespace T3.Operators.Types.Id_5efaf208_ba62_42ce_b3df_059b37fc1382
             var deviceContext = device.ImmediateContext;
             var outputMerger = deviceContext.OutputMerger;
 
-            UpdateMultiInput(RenderTargetViews, ref _renderTargetViews, context);
+            RenderTargetViews.GetValues(ref _renderTargetViews, context);
 
             _prevRenderTargetViews = outputMerger.GetRenderTargets(_renderTargetViews.Length);
             outputMerger.GetRenderTargets(out _prevDepthStencilView);

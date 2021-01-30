@@ -22,25 +22,6 @@ namespace T3.Operators.Types.Id_fbd7f0f0_36a3_4fbb_91e1_cb33d4666d09
             Output.Value.RestoreAction = Restore;
         }
 
-        private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)
-        {
-            if (input.DirtyFlag.IsDirty)
-            {
-                var connectedInputs = input.GetCollectedTypedInputs();
-                if (connectedInputs.Count != resources.Length)
-                {
-                    resources = new T[connectedInputs.Count];
-                }
-
-                for (int i = 0; i < connectedInputs.Count; i++)
-                {
-                    resources[i] = connectedInputs[i].GetValue(context);
-                }
-
-                input.DirtyFlag.Clear();
-            }
-        }
-
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
@@ -49,7 +30,7 @@ namespace T3.Operators.Types.Id_fbd7f0f0_36a3_4fbb_91e1_cb33d4666d09
             var rasterizer = deviceContext.Rasterizer;
 
             _prevViewports = rasterizer.GetViewports<RawViewportF>();
-            UpdateMultiInput(Viewports, ref _viewports, context);
+            Viewports.GetValues(ref _viewports, context);
             rasterizer.State = RasterizerState.GetValue(context);
 
             if (_viewports.Length > 0)

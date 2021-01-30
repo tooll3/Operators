@@ -18,25 +18,6 @@ namespace T3.Operators.Types.Id_75306997_4329_44e9_a17a_050dae532182
             Output.Value.RestoreAction = Restore;
         }
 
-        private void UpdateMultiInput<T>(MultiInputSlot<T> input, ref T[] resources, EvaluationContext context)
-        {
-            if (input.DirtyFlag.IsDirty)
-            {
-                var connectedInputs = input.GetCollectedTypedInputs();
-                if (connectedInputs.Count != resources.Length)
-                {
-                    resources = new T[connectedInputs.Count];
-                }
-
-                for (int i = 0; i < connectedInputs.Count; i++)
-                {
-                    resources[i] = connectedInputs[i].GetValue(context);
-                }
-
-                input.DirtyFlag.Clear();
-            }
-        }
-
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
@@ -45,10 +26,10 @@ namespace T3.Operators.Types.Id_75306997_4329_44e9_a17a_050dae532182
             var psStage = deviceContext.PixelShader;
 
             var ps = PixelShader.GetValue(context);
-
-            UpdateMultiInput(ConstantBuffers, ref _constantBuffers, context);
-            UpdateMultiInput(ShaderResources, ref _shaderResourceViews, context);
-            UpdateMultiInput(SamplerStates, ref _samplerStates, context);
+            
+            ConstantBuffers.GetValues(ref _constantBuffers, context);
+            ShaderResources.GetValues(ref _shaderResourceViews, context);
+            SamplerStates.GetValues(ref _samplerStates, context);
 
             _prevPixelShader = psStage.Get();
             _prevConstantBuffers = psStage.GetConstantBuffers(0, _constantBuffers.Length);
