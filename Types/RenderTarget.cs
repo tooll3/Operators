@@ -344,14 +344,15 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                                                                                ? DepthStencilViewDimension.Texture2DMultisampled
                                                                                                : DepthStencilViewDimension.Texture2D
                                                                            });
-                    _multiSampledDepthBufferSrv = new ShaderResourceView(device, _multiSampledDepthBuffer, new ShaderResourceViewDescription
-                                                                             {
-                                                                                 Format = Format.R32_Float,
-                                                                                 Dimension = DownSamplingRequired
-                                                                                                 ? ShaderResourceViewDimension.Texture2DMultisampled
-                                                                                                 : ShaderResourceViewDimension.Texture2D
-                                                                             }
-                                                                        );
+                    if (DownSamplingRequired)
+                    {
+                        var viewDesc = new ShaderResourceViewDescription
+                                           {
+                                               Format = Format.R32_Float,
+                                               Dimension = ShaderResourceViewDimension.Texture2DMultisampled
+                                           };
+                        _multiSampledDepthBufferSrv = new ShaderResourceView(device, _multiSampledDepthBuffer, viewDesc);
+                    }
                 }
                 catch
                 {
