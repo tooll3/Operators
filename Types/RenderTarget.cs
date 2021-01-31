@@ -200,8 +200,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             int mipLevels = generateMips ? (int)MathUtils.Log2(w) + 1 : 1;
             // Log.Debug($"miplevel: {mipLevels}, w: {w}");
 
-            bool colorFormatChanged = _resolvedColorBuffer == null
-                                      || _multiSampledColorBuffer == null
+            bool colorFormatChanged = _multiSampledColorBuffer == null
                                       || _multiSampledColorBuffer.Description.Format != colorFormat
                                       || _multiSampledColorBuffer.Description.MipLevels != mipLevels
                                       || _multiSampledColorBuffer.Description.Width != size.Width

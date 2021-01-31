@@ -23,7 +23,8 @@ namespace T3.Operators.Types.Id_b7910fc6_c3b2_4daf_93cd_010dcfe22a57
             
             //const string pattern = @"(-)(\d+)(-)";
             var pattern = SearchPattern.GetValue(context);
-            var replace = Replace.GetValue(context);
+            
+            var replace = Replace.GetValue(context).Replace("\\n","\n");
             
             try
             {
