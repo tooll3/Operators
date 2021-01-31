@@ -1,3 +1,4 @@
+using System;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -16,9 +17,10 @@ namespace T3.Operators.Types.Id_acdd78b1_4e66_4fd0_a36b_5318670fefd4
 
         private void Update(EvaluationContext context)
         {
-            Result.Value = Input2.GetValue(context).ToUpper();
+            var str = Input2.GetValue(context);
+            Result.Value = str?.ToUpper();
         }
-        
+
         [Input(Guid = "041C98B6-4450-46D7-9DAE-C9030C88B9E6")]
         public readonly InputSlot<string> Input2 = new InputSlot<string>();
     }

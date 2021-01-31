@@ -29,7 +29,7 @@ namespace T3.Operators.Types.Id_d3a19896_230f_458f_b4ba_e448f63f0d51
             for (var index = lowerLimit; index < upperLimit; index++) {
                 sum += list[index];
             }
-                Selected.Value = sum;
+            Selected.Value = sum;
         }
 
 

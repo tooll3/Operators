@@ -35,11 +35,6 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
                 _analyzer = new Analyzer();
 
             _analyzer.SetDeviceIndex((int)Input1.GetValue(context));
-
-            //if (_analyzer.SpectrumData.Count < 16)
-            //    return;
-
-            //Result.Value = _analyzer.SpectrumData[2];
             FftBuffer.Value = _analyzer.FftBuffer.ToList();
             AvailableData.Value = _analyzer.AvailableData;
         }
@@ -58,8 +53,11 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
     {
         public Analyzer()
         {
-            _timer.Interval = TimeSpan.FromMilliseconds(1 / 44.1f * 1000);
+            
+            const int doubleFrequency = 1; // double interval as an attempt to decrease latency
+            _timer.Interval = TimeSpan.FromMilliseconds(1000f / 44.1f / doubleFrequency); 
             _timer.Tick += TimerUpdateEventHandler;
+            
             // ReSharper disable once RedundantDelegateCreation
             _wasapiProcedure = new WasapiProcedure(Process); // capture to avoid freeing by GC
             _initialized = false;
@@ -157,49 +155,16 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
         {
             BassWasapi.GetData(null, (int)DataFlags.Available);
             
-            // get FFT data. Return value is -1 on error
-            var ret = BassWasapi.GetData(FftBuffer, (int)DataFlags.FFT1024);    // Note: The DataFlags seems to be offset by one (FFT256 only fills 128 entries)
+            // Note: The DataFlags seems to be offset by one (e.g. FFT256 only fills 128 entries)
+            const int get256FftValues = (int)DataFlags.FFT512; 
+            
+            // Get FFT data. Return value is -1 on error
+            var ret = BassWasapi.GetData(FftBuffer, get256FftValues);    
             if (ret < 0)
                 return;
             
-            // int x;
-            // var b0 = 0;
-
-            // Compute the spectrum data, the code is taken from a bass_wasapi sample.
-            // SpectrumData.Clear();
-            // for (x = 0; x < SpectrumLineCount; x++)
-            // {
-            //     float peak = 0;
-            //     var b1 = (int)Math.Pow(2, x * 10.0 / (SpectrumLineCount - 1));
-            //
-            //     if (b1 > FftBuffer.Length - 2)
-            //         b1 = FftBuffer.Length - 2;
-            //
-            //     if (b1 <= b0)
-            //         b1 = b0 + 1;
-            //
-            //     for (; b0 < b1; b0++)
-            //     {
-            //         if (peak < FftBuffer[1 + b0])
-            //             peak = FftBuffer[1 + b0];
-            //     }
-            //
-            //     var y = (int)(Math.Sqrt(peak) * 3 * 255 - 4);
-            //     if (y > 255)
-            //         y = 255;
-            //
-            //     if (y < 0)
-            //         y = 0;
-            //
-            //     SpectrumData.Add(y);
-            // }
-
             // Get audio level
             var level = BassWasapi.GetLevel();
-            var left = level &= 0xffff;
-            var right = level >> 16;
-            LeftLevel = 65384f / left;
-            RightLevel = 65384f / right;
 
             if (level == _lastLevel && level != 0) _hangCounter++;
             _lastLevel = level;
@@ -225,8 +190,7 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
         {
             return length;
         }
-
-        //cleanup
+        
         private static void Free()
         {
             BassWasapi.Free();
@@ -234,21 +198,17 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
         }
 
         private int _deviceIndex;
-        private readonly DispatcherTimer _timer = new DispatcherTimer(); //timer that refreshes the display
-
-        //public readonly List<float> SpectrumData = new List<float>();
+        private readonly DispatcherTimer _timer = new DispatcherTimer(); // Timer that refreshes the display
+        
         public readonly float[] FftBuffer = new float[FftSize];
 
         private readonly WasapiProcedure _wasapiProcedure;
-        public float RightLevel;
-        public float LeftLevel;
         private int _lastLevel;
         private int _hangCounter;
-        private const int FftSize = 1024;
+        private const int FftSize = 256;
 
         private readonly List<string> _deviceList = new List<string>();
         private bool _initialized;
         private int _wasapiDeviceIndex;
-        private const int SpectrumLineCount = 16;
     }
 }
