@@ -40,6 +40,6 @@ namespace T3.Operators.Types.Id_09641970_b03a_431f_b3c6_5d8df824dde8
         }
 
         [Input(Guid = "29ded573-c67a-4f19-a988-8cd6473c98a6")]
-        public readonly InputSlot<T3.Core.DataTypes.Texture3d> Input = new InputSlot<T3.Core.DataTypes.Texture3d>();
+        public readonly InputSlot<T3.Core.DataTypes.Texture3dWithViews> Input = new InputSlot<T3.Core.DataTypes.Texture3dWithViews>();
     }
 }

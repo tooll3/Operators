@@ -15,7 +15,7 @@ namespace T3.Operators.Types.Id_fc1ef086_c160_4174_8e60_a4eda931163d
         // [Output(Guid = "27495e79-5229-4a2d-b780-52265c3085ea")]
         // public readonly Slot<Texture2D> Texture = new Slot<Texture2D>();
         [Output(Guid = "3cbfceaa-4fa1-44e9-8c43-aff7dba7f871")]
-        public readonly Slot<Core.DataTypes.Texture3d> OutputTexture = new Slot<Core.DataTypes.Texture3d>(new Core.DataTypes.Texture3d());
+        public readonly Slot<Core.DataTypes.Texture3dWithViews> OutputTexture = new Slot<Core.DataTypes.Texture3dWithViews>(new Core.DataTypes.Texture3dWithViews());
 
         private uint _textureResId;
 
