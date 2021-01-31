@@ -21,6 +21,7 @@ namespace T3.Operators.Types.Id_4def850e_3627_46d8_ae2b_58b513843885
 
         private void Update(EvaluationContext context)
         {
+            //Log.Debug(" global time " + EvaluationContext.BeatTime);
             var list = Input.GetValue(context);
             if (list == null || list.Count == 0)
             {
@@ -30,43 +31,62 @@ namespace T3.Operators.Types.Id_4def850e_3627_46d8_ae2b_58b513843885
             if (_averagedValues.Length != list.Count)
             {
                 _averagedValues = new float[list.Count];
+                _lastValues = new float[list.Count];
                 _output = new List<float>(list.Count);
                 _output.AddRange(Enumerable.Repeat(0f, list.Count));
             }
 
-            float smoothing = Smoothing.GetValue(context);
-            var mixAverage = MixAverage.GetValue(context);
-            var mixCurrent = MixCurrent.GetValue(context);
-            var mixAboveAverage = MixAboveAverage.GetValue(context);
-            for (var index = 0; index < list.Count; index++)
+            int index2 = 0;
+            var hasChanged = false;
+            for (; index2 < list.Count; index2++)
             {
-                var v = list[index];
-                if (double.IsNaN(v))
-                    v = 0;
-                
-                var smoothed = MathUtils.Lerp(v, _averagedValues[index], smoothing);
-                if (float.IsNaN(smoothed) || float.IsInfinity(smoothed))
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (list[index2] != _lastValues[index2])
                 {
-                    smoothed = 0;
+                    hasChanged = true;
+                    break;
                 }
-                
-                _averagedValues[index] = smoothed;
+            }
 
-                _output[index] =  (v - smoothed).Clamp(0, 1000) * mixAboveAverage
-                                  + v *mixCurrent
-                                  + smoothed * mixAverage;
+            if (hasChanged)
+            {
+                float smoothing = Smoothing.GetValue(context);
+                var mixAverage = MixAverage.GetValue(context);
+                var mixCurrent = MixCurrent.GetValue(context);
+                var mixAboveAverage = MixAboveAverage.GetValue(context);
+
+                for (var index = 0; index < list.Count; index++)
+                {
+                    var v = list[index];
+                    _lastValues[index] = v;
+                    if (double.IsNaN(v))
+                        v = 0;
+
+                    
+                    var smoothed = MathUtils.Lerp(v, _averagedValues[index], smoothing);
+                    if (float.IsNaN(smoothed) || float.IsInfinity(smoothed))
+                    {
+                        smoothed = 0;
+                    }
+
+                    _averagedValues[index] = smoothed;
+
+                    _output[index] = (v - smoothed).Clamp(0, 1000) * mixAboveAverage
+                                     + v * mixCurrent
+                                     + smoothed * mixAverage;
+                }
             }
 
             Output.Value = _output;
         }
         
         private float[] _averagedValues = new float[0];
+        private float[] _lastValues = new float[0];
         private List<float> _output = new List<float>();
-
 
         [Input(Guid = "2C6C16E9-2037-4B5E-A4AC-6C5AAB0FC582")]
         public readonly InputSlot<float> Smoothing = new InputSlot<float>(0);
-        
+
         [Input(Guid = "DCF2D659-7B51-4A87-8378-CA01419E4B7C")]
         public readonly InputSlot<float> MixAverage = new InputSlot<float>(0);
 

@@ -33,6 +33,8 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
         {
             if (_analyzer == null)
                 _analyzer = new Analyzer();
+ 
+            //_analyzer.TimerUpdateEventHandler();
 
             _analyzer.SetDeviceIndex((int)Input1.GetValue(context));
             FftBuffer.Value = _analyzer.FftBuffer.ToList();
@@ -40,6 +42,11 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
         }
 
         private static Analyzer _analyzer;
+
+        protected override void Dispose(bool disposing)
+        {
+            _analyzer.Dispose();
+        }
 
         [Input(Guid = "e8a10146-ef7f-459c-a1f8-eef621a2c522")]
         public readonly InputSlot<float> Input1 = new InputSlot<float>();
@@ -49,13 +56,13 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
     /// This is based on https://www.codeproject.com/Articles/797537/
     /// Audio Spectrum by @webmaster442
     /// </summary>
-    internal class Analyzer
+    internal class Analyzer : IDisposable
     {
         public Analyzer()
         {
-            
             const int doubleFrequency = 1; // double interval as an attempt to decrease latency
-            _timer.Interval = TimeSpan.FromMilliseconds(1000f / 44.1f / doubleFrequency); 
+            //_timer.Interval = TimeSpan.FromMilliseconds(1000f / 44.1f / doubleFrequency);
+            _timer.Interval = TimeSpan.FromMilliseconds(1000/120f);
             _timer.Tick += TimerUpdateEventHandler;
             
             // ReSharper disable once RedundantDelegateCreation
@@ -64,6 +71,14 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
             Init();
         }
 
+        public void Dispose()
+        {
+            Log.Debug("Disposing Sound analyser");
+            _timer.Tick -= TimerUpdateEventHandler;
+            Free();
+        }
+
+        
         /// <summary>
         /// This property returns the length of the available data.
         /// This might be useful for eventually discover the reason for
@@ -101,9 +116,10 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
                 if (!BassWasapi.Init(_wasapiDeviceIndex, 
                                      Frequency: 0, 
                                      Channels: 0,
+                                     //Flags: WasapiInitFlags.Buffer | WasapiInitFlags.Exclusive,
                                      Flags: WasapiInitFlags.Buffer,
-                                     Buffer: 0.004f, // was 1
-                                     Period: 0.004f,
+                                     Buffer: 1,//0.0041f/2, // was 1
+                                     Period: 1, //0.0041f/2,
                                      Procedure: _wasapiProcedure, 
                                      User: IntPtr.Zero))
                 {
@@ -115,9 +131,10 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
             }
 
             BassWasapi.Start();
-            System.Threading.Thread.Sleep(500);
+            System.Threading.Thread.Sleep(100);
             _timer.IsEnabled = true;
             _timer.Start();
+            
         }
 
         private void Init()
@@ -151,7 +168,7 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
             }
         }
 
-        private void TimerUpdateEventHandler(object sender, EventArgs e)
+        public void TimerUpdateEventHandler(object sender, EventArgs eventArgs)
         {
             BassWasapi.GetData(null, (int)DataFlags.Available);
             
@@ -159,28 +176,36 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
             const int get256FftValues = (int)DataFlags.FFT512; 
             
             // Get FFT data. Return value is -1 on error
-            var ret = BassWasapi.GetData(FftBuffer, get256FftValues);    
-            if (ret < 0)
+            var result = BassWasapi.GetData(FftBuffer, get256FftValues);
+            if (result < 0)
+            {
+                Log.Debug("No new Data");
                 return;
+            }
             
-            // Get audio level
             var level = BassWasapi.GetLevel();
-
-            if (level == _lastLevel && level != 0) _hangCounter++;
-            _lastLevel = level;
 
             // Required, because some programs hang the output. If the output hangs for a 75ms
             // this piece of code re initializes the output so it doesn't make a glitched sound for long.
-            if (_hangCounter > 120)
+            if (level == _lastLevel && level > 0)
             {
-                Log.Warning("Looks like sound got lost. Trying to restart.");
-                _hangCounter = 0;
-                Free();
+                //Log.Debug(" not changed");
+                if (_hangCounter++ > 10)
+                {
+                    Log.Warning("Looks like sound got lost. Trying to restart.");
+                    _hangCounter = 0;
+                    Free();
+            
+                    InitBass();
+                    _initialized = false;
+                    SetEnableWasapi(true);
+                }
 
-                InitBass();
-                _initialized = false;
-                SetEnableWasapi(true);
+                return;
             }
+
+            _lastLevel = level;
+            _hangCounter = 0;
         }
 
         /// <summary>
@@ -198,12 +223,13 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
         }
 
         private int _deviceIndex;
+        private int _lastLevel;
         private readonly DispatcherTimer _timer = new DispatcherTimer(); // Timer that refreshes the display
         
-        public readonly float[] FftBuffer = new float[FftSize];
+        
+        public readonly float[] FftBuffer =  new float[FftSize];
 
         private readonly WasapiProcedure _wasapiProcedure;
-        private int _lastLevel;
         private int _hangCounter;
         private const int FftSize = 256;
 

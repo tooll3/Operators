@@ -4,13 +4,14 @@ using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
+using T3.Operators.Types.Id_c513c58d_e45c_408d_a0b8_250c9af31545;
 
 namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
 {
     public class PeakLevel : Instance<PeakLevel>
     {
         [Output(Guid = "6fe37109-0177-4823-9466-eaa49adb19d4")]
-        public readonly Slot<float> AverageLevel = new Slot<float>();
+        public readonly Slot<float> AboveAverageLevel = new Slot<float>();
 
         [Output(Guid = "79BADB66-ED5C-4E01-B26A-29B5AA115FC4")]
         public readonly Slot<float> EnergyLevel = new Slot<float>();
@@ -20,62 +21,48 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
         
         public PeakLevel()
         {
-            AverageLevel.UpdateAction = Update;
+            AboveAverageLevel.UpdateAction = Update;
             EnergyLevel.UpdateAction = Update;
             FoundPeak.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)
         {
-            var value = Value.GetValue(context);
-            //FoundPeak.Value = false;
-            
-            // if (float.IsNaN(_lastPeak))
-            // {
-            //     _lastPeak = 0;
-            // }
-            // if (value > _lastPeak + Threshold.GetValue(context))
-            // {
-            //     _lastPeak = value;
-            // }
-            // else
-            // {
-            //     _lastPeak *= Decay.GetValue(context);
-            // }
-            var decayRate =  Decay.GetValue(context);
-            var minTimeBetweenBeats = MinTimeBetweenPeaks.GetValue(context);
-            _averageLevel = MathUtils.Lerp(value, _averageLevel,  SmoothAverageLevel.GetValue(context)).Clamp(0.001f, 1000);    // very long smoothing to normalize level
-            
-            //var normalizedValue = value / _averageLevel /3;
-            var normalizedValue = (value - _averageLevel).Clamp(0, 100);
-            _energy +=  (float)Math.Pow(normalizedValue,1);
-
-            var timeSinceLastPeak = EvaluationContext.BeatTime - _lastPeakTime;
-            if (timeSinceLastPeak < 0)
+            var t = EvaluationContext.BeatTime;
+            //Log.Debug("  " + EvaluationContext.RunTimeInSecs);
+            if (t <= _lastEvalTime)
             {
-                _lastPeakTime = Double.NegativeInfinity;
                 
+                 return;
             }
-            if (_energy > Threshold.GetValue(context)  && timeSinceLastPeak > minTimeBetweenBeats)
+            
+            _lastEvalTime = t;
+            
+            var value = Value.GetValue(context);
+            var increase = (value - _lastValue).Clamp(0, 10000);
+            
+            var timeSinceLastPeak = EvaluationContext.RunTimeInSecs - _lastPeakTime;
+            if (timeSinceLastPeak < 0)
+                _lastPeakTime = Double.NegativeInfinity;
+
+            if (increase > Threshold.GetValue(context) && timeSinceLastPeak > MinTimeBetweenPeaks.GetValue(context))
             {
-                _lastPeakTime = EvaluationContext.BeatTime;
-                //_energy = 0.1f; 
-                FoundPeak.Value = true;
+                 _lastPeakTime = EvaluationContext.RunTimeInSecs;
+                 FoundPeak.Value = true;
             }
             else
             {
-                _energy = (_energy - (float)EvaluationContext.LastFrameDuration * decayRate * 60 ).Clamp(0,100);
                 FoundPeak.Value = false;
             }
 
-            AverageLevel.Value = (value - _averageLevel).Clamp(0,10);
-            EnergyLevel.Value = _energy;
+            AboveAverageLevel.Value = increase; //(value - _averageLevel).Clamp(0,100);
+            EnergyLevel.Value = increase;
+            _lastValue = value;
         }
 
-        //private float _lastPeak = 0;
-        private float _averageLevel;
-        private float _energy;
+        private double _lastEvalTime;
         private double _lastPeakTime = double.NegativeInfinity;
+        private float _lastValue;
         
         
 
