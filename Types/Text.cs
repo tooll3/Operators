@@ -7,6 +7,20 @@ namespace T3.Operators.Types.Id_fd31d208_12fe_46bf_bfa3_101211f8f497
 {
     public class Text : Instance<Text>
     {
+        private enum HorizontalAligns
+        {
+            Left,
+            Center,
+            Right,
+        }
+        
+        private enum VerticalAligns
+        {
+            Top,
+            Middle,
+            Bottom,
+        }
+        
         [Output(Guid = "3f8b20a7-c8b8-45ab-86a1-0efcd927358e")]
         public readonly Slot<Command> Output = new Slot<Command>();
 
@@ -28,10 +42,10 @@ namespace T3.Operators.Types.Id_fd31d208_12fe_46bf_bfa3_101211f8f497
         [Input(Guid = "eaf9dc37-e70f-4197-895c-b5607456b4a2")]
         public readonly InputSlot<float> LineHeight = new InputSlot<float>();
 
-        [Input(Guid = "ae7f7e83-fa18-44fd-b639-3bd0dbd3ac06")]
+        [Input(Guid = "ae7f7e83-fa18-44fd-b639-3bd0dbd3ac06", MappedType =  typeof(VerticalAligns))]
         public readonly InputSlot<int> VerticalAlign = new InputSlot<int>();
 
-        [Input(Guid = "82cc31ff-3307-4b6d-be70-16e471c2ffc9")]
+        [Input(Guid = "82cc31ff-3307-4b6d-be70-16e471c2ffc9", MappedType = typeof(HorizontalAligns))]
         public readonly InputSlot<int> HorizontalAlign = new InputSlot<int>();
 
         [Input(Guid = "835d7f17-9de4-4612-a2f0-01c1346cdf1a")]

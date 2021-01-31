@@ -121,16 +121,21 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
             float textureHeight = _font.Font.Common.ScaleH;
             float cursorX = 0;
             float cursorY = 0;
+            const float SdfWidth = 5f; // assumption after some experiments
 
             switch (verticalAlign)
             {
                 // Top
                 case 0:
                     //cursorY = _font.Font.Common.LineHeight * lineHeight * 1;
+                    //cursorY = 40;// _font.Font.Common.LineHeight - _font.Font.Common.Base;// -_font.Font.Common.LineHeight;
+                    cursorY = _font.Font.Common.Base * (1+ SdfWidth / _font.Font.Info.Size);
                     break;
                 // Middle
                 case 1:
-                    cursorY = _font.Font.Common.LineHeight * lineHeight * (numLinesInText  ) / 2;
+                    cursorY = _font.Font.Common.LineHeight * lineHeight * (numLinesInText - 1) / 2
+                              + _font.Font.Common.LineHeight / 2f
+                              + _font.Font.Common.Base * ( SdfWidth / _font.Font.Info.Size);
                     break;
                 // Bottom
                 case 2:
@@ -138,6 +143,12 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
                     break;
             }
 
+
+            
+
+            //cursorY += (_font.Font.Common.LineHeight - _font.Font.Common.Base) * lineHeight;
+            //cursorY += ( _font.Font.Common.Base) * lineHeight / 6;
+            //cursorY += _font.Font.Common.LineHeight * lineHeight/6;
             if (_bufferContent == null || _bufferContent.Length != text.Length)
             {
                 _bufferContent = new BufferLayout[text.Length];
@@ -179,8 +190,8 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
 
                 var sizeWidth = charInfo.Width * size;
                 var sizeHeight = charInfo.Height * size;
-                var x = position.X + (cursorX + charInfo.XOffset) * size;
-                var y = position.Y + (cursorY - charInfo.YOffset) * size;
+                var x = position.X + (cursorX + charInfo.XOffset)  * size;
+                var y = position.Y + ((cursorY - charInfo.YOffset)) * size ;
 
                 _bufferContent[outputIndex]
                     = new BufferLayout
