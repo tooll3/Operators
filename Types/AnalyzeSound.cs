@@ -35,6 +35,9 @@ namespace T3.Operators.Types.Id_112ea923_a349_412f_8dd3_4d9d9fc42dc6
         [Output(Guid = "7d5b7192-f81c-4186-a0e9-864b033caf15")]
         public readonly Slot<float> MovingSum = new Slot<float>();
 
+        [Output(Guid = "6ba78564-8315-49ef-9d47-eb96e0a52fd5")]
+        public readonly Slot<T3.Core.Command> Detection = new Slot<T3.Core.Command>();
+
 
     }
 }
