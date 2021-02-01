@@ -21,6 +21,7 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
         public LoadObjAsMesh()
         {
             VertexBuffer.UpdateAction = Update;
+            IndexBuffer.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)
@@ -61,6 +62,7 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
                 resourceManager.CreateStructuredBufferSrv(_vertexBuffer, ref _vertexBufferWithViews.Srv);
                 resourceManager.CreateStructuredBufferUav(_vertexBuffer, UnorderedAccessViewBufferFlags.None, ref _vertexBufferWithViews.Uav);
                 VertexBuffer.Value = _vertexBufferWithViews;
+                VertexBuffer.DirtyFlag.Clear();
             }
             
             // Create Index buffer
@@ -85,7 +87,9 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
                 resourceManager.CreateStructuredBufferSrv(_indexBuffer, ref _indexBufferWithViews.Srv);
                 resourceManager.CreateStructuredBufferUav(_indexBuffer, UnorderedAccessViewBufferFlags.None, ref _indexBufferWithViews.Uav);
                 IndexBuffer.Value = _indexBufferWithViews;
+                IndexBuffer.DirtyFlag.Clear();
             }            
+            Log.Debug("Updated mesh buffers: " + _vertexBuffer);
         }
 
         private Buffer _vertexBuffer;
