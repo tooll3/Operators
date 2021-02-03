@@ -26,6 +26,9 @@ namespace T3.Operators.Types.Id_5e3648c0_3446_4f8f_b7ce_32d4a54b39de
         [Input(Guid = "271bdcd3-0544-4a40-9b7b-ed8234b35fef")]
         public readonly InputSlot<float> Spin = new InputSlot<float>();
 
+        [Input(Guid = "4d78860a-be07-4e20-8c8d-61be14051f4d")]
+        public readonly InputSlot<float> ScatterSurfaceDistance = new InputSlot<float>();
+
         [Input(Guid = "ec3c9888-3ed2-40d0-9e6f-1b76f02d642b")]
         public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> Vertices = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
 
