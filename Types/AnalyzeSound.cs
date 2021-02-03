@@ -20,6 +20,9 @@ namespace T3.Operators.Types.Id_112ea923_a349_412f_8dd3_4d9d9fc42dc6
         [Input(Guid = "96c60e29-342c-4c20-8e72-5e205e03e305")]
         public readonly InputSlot<float> DetectionSmoothing = new InputSlot<float>();
 
+        [Input(Guid = "1d92b4fa-a8e9-4c1e-891a-65bf7632bdcf")]
+        public readonly InputSlot<float> HiRange = new InputSlot<float>();
+
         [Output(Guid = "70ab1e5d-7947-400a-851b-b1d3d61fdccf")]
         public readonly Slot<float> BeatCount = new Slot<float>();
 

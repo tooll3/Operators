@@ -17,6 +17,9 @@ namespace T3.Operators.Types.Id_6bb3fc41_f1d4_467e_afc6_62b452ec36be
         [Output(Guid = "0b411b96-3907-45b3-9b2b-67f3b57668e5")]
         public readonly Slot<float> PeakCount = new Slot<float>();
 
+        [Output(Guid = "a85d0955-a381-44f3-88e4-c2833c6219b2")]
+        public readonly Slot<float> MovingSum = new Slot<float>();
+
         [Input(Guid = "b9befe9e-c11a-41c8-a127-410bd1681add")]
         public readonly InputSlot<System.Collections.Generic.List<float>> FFT = new InputSlot<System.Collections.Generic.List<float>>();
 
