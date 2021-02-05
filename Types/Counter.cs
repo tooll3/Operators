@@ -13,6 +13,9 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
         [Output(Guid = "c53e3a03-3a6d-4547-abbf-7901b5045539", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> Result = new Slot<float>();
 
+        [Output(Guid = "618a3395-2609-4d73-a09f-36f2316ae612")]
+        public readonly Slot<float> MovingSum = new Slot<float>();
+
         public Counter()
         {
             Result.UpdateAction = Update;
