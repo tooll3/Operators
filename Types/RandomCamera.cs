@@ -47,7 +47,8 @@ namespace T3.Operators.Types.Id_6415ed0e_3692_45e2_8e70_fe0cf4d29ebc
             
             var rot = Matrix.RotationYawPitchRoll(
                                                   ComputeAngle(SpinAngleAndWobble,1) 
-                                                  + MathUtil.DegreesToRadians((float)(SpinRate.GetValue(context) * EvaluationContext.BeatTime * 360 
+                                                  + MathUtil.DegreesToRadians((float)(SpinRate.GetValue(context) 
+                                                                                      * (EvaluationContext.BeatTime + SpinOffset.GetValue(context)) * 360  
                                                                                       + MathUtils.PerlinNoise(0, 1, 6, seed) * 360 ) ), 
                                                   -ComputeAngle(OrbitAngleAndWobble, 2), 
                                                   0);
@@ -115,14 +116,18 @@ namespace T3.Operators.Types.Id_6415ed0e_3692_45e2_8e70_fe0cf4d29ebc
         [Input(Guid = "DD92FB0A-4B3E-4492-BF59-437D914A1AD3")]
         public readonly InputSlot<float> Radius = new InputSlot<float>();
         
+        [Input(Guid = "DF65E717-E2FD-4E4F-9E41-D6BCD3FE67F1")]
+        public readonly InputSlot<float> SpinRate = new InputSlot<float>();
+        
+        [Input(Guid = "8C4DAB88-68CB-40CC-B576-CA3F3EA8461F")]
+        public readonly InputSlot<float> SpinOffset = new InputSlot<float>();
+
         [Input(Guid = "8B75047F-03B7-4619-8869-2906E66731D1")]
         public readonly InputSlot<System.Numerics.Vector2> OrbitAngleAndWobble = new InputSlot<System.Numerics.Vector2>();
         
         [Input(Guid = "7412E22C-1F15-4471-883B-4FCD792146F7")]
         public readonly InputSlot<System.Numerics.Vector2> SpinAngleAndWobble = new InputSlot<System.Numerics.Vector2>();
 
-        [Input(Guid = "DF65E717-E2FD-4E4F-9E41-D6BCD3FE67F1")]
-        public readonly InputSlot<float> SpinRate = new InputSlot<float>();
         
         [Input(Guid = "4D2D2D2D-00BD-4DF9-B209-62F0C7926C38")]
         public readonly InputSlot<System.Numerics.Vector2> AimPitchAngleAndWobble = new InputSlot<System.Numerics.Vector2>();

@@ -16,29 +16,34 @@ namespace T3.Operators.Types.Id_37a747b0_ec0e_4ebc_83dd_2e03022ad100
         [Input(Guid = "22a23dbc-0222-441d-8435-b630dcd77acb")]
         public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();
 
-        [Input(Guid = "5124bd22-a688-4adf-b22b-3a212b1d272a")]
-        public readonly InputSlot<float> Size = new InputSlot<float>();
+        [Input(Guid = "d41169ee-4e53-4198-b56a-b4b771cc3dfd")]
+        public readonly InputSlot<float> Width = new InputSlot<float>();
 
-        [Input(Guid = "979e0561-2dfb-4188-b86f-c99823e87fc7")]
-        public readonly InputSlot<float> FogRate = new InputSlot<float>();
+        [Input(Guid = "3f8b336d-fb2b-4b8a-b13a-a229e7792f46")]
+        public readonly InputSlot<float> Spin = new InputSlot<float>();
 
-        [Input(Guid = "2fe3a9e9-037a-4c7d-bbe3-011045807f85")]
-        public readonly InputSlot<float> FogBias = new InputSlot<float>();
+        [Input(Guid = "cdaf942a-a518-4dd0-aea7-737aa11436bb")]
+        public readonly InputSlot<float> Twist = new InputSlot<float>();
 
-        [Input(Guid = "dc7ddc1f-cbb4-4ab1-9c06-8325ad5f43c3")]
-        public readonly InputSlot<System.Numerics.Vector4> FogColor = new InputSlot<System.Numerics.Vector4>();
+        [Input(Guid = "1e3af280-2f64-423d-b14d-630065659afc")]
+        public readonly InputSlot<int> TextureMode = new InputSlot<int>();
 
-        [Input(Guid = "3d9b1ffc-029a-43a2-85da-1be29d2a25da")]
-        public readonly InputSlot<float> ShrinkWithDistance = new InputSlot<float>();
+        [Input(Guid = "3198a61e-94b3-42c4-a2ae-822456db8bdd")]
+        public readonly InputSlot<System.Numerics.Vector2> TextureRange = new InputSlot<System.Numerics.Vector2>();
 
-        [Input(Guid = "a7fdbfcb-5477-484b-b305-2a6ba2f5b3a4")]
-        public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture_ = new InputSlot<SharpDX.Direct3D11.Texture2D>();
+        [Input(Guid = "1ce27f43-3664-44e6-9a0b-5fcca3a5b9fe")]
+        public readonly InputSlot<bool> EnableDepthWrite = new InputSlot<bool>();
 
         [Input(Guid = "5124b85d-5c09-4329-bf33-ef3cc13f30aa")]
         public readonly InputSlot<int> BlendMod = new InputSlot<int>();
 
-        [Input(Guid = "1ce27f43-3664-44e6-9a0b-5fcca3a5b9fe")]
-        public readonly InputSlot<bool> EnableDepthWrite = new InputSlot<bool>();
+        private enum TextureModes
+        {
+            RelativeStartEnd,
+            StartEnd,
+            StartLength,
+            UseW,
+        }
     }
 }
 

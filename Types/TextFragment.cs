@@ -47,7 +47,7 @@ namespace T3.Operators.Types.Id_7baaa83d_5c09_42a0_b7bc_35dbcfa5156d
                         break;
 
                     case EntityTypes.Lines:
-                        _chunks = new Regex("\\r+\\s*").Split(inputText);
+                        _chunks = new Regex("\\n+\\s*").Split(inputText);
                         _delimiter = "\n";
                         break;
 

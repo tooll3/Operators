@@ -8,8 +8,6 @@ namespace T3.Operators.Types.Id_112ea923_a349_412f_8dd3_4d9d9fc42dc6
 {
     public class AnalyzeSound : Instance<AnalyzeSound>
     {
-        [Output(Guid = "814b9a38-8cfe-432e-9baf-440598c59292")]
-        public readonly Slot<Texture2D> TextureOutput = new Slot<Texture2D>();
 
         [Input(Guid = "cc3b0ab3-7379-4197-9a84-dc1b368790c5")]
         public readonly InputSlot<float> BeatThreshold = new InputSlot<float>();
