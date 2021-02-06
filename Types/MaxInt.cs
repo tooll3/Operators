@@ -20,7 +20,7 @@ namespace T3.Operators.Types.Id_f7fd7342_18d1_443a_98ec_758974891434
         {
             var max = Int32.MinValue;
             
-            foreach (var i in Inputs.CollectedInputs)
+            foreach (var i in Ints.CollectedInputs)
             {
                 max = Math.Max(max, i.GetValue(context));
             }
@@ -30,6 +30,6 @@ namespace T3.Operators.Types.Id_f7fd7342_18d1_443a_98ec_758974891434
 
 
         [Input(Guid = "286DACDF-A469-4983-A944-D9F34ED1E7DE")]
-        public readonly MultiInputSlot<int> Inputs = new MultiInputSlot<int>();
+        public readonly MultiInputSlot<int> Ints = new MultiInputSlot<int>();
     }
 }

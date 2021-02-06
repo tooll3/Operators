@@ -60,8 +60,6 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
     {
         public Analyzer()
         {
-            const int doubleFrequency = 1; // double interval as an attempt to decrease latency
-            //_timer.Interval = TimeSpan.FromMilliseconds(1000f / 44.1f / doubleFrequency);
             _timer.Interval = TimeSpan.FromMilliseconds(1000/120f);
             _timer.Tick += TimerUpdateEventHandler;
             
