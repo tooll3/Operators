@@ -4,6 +4,7 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -36,7 +37,16 @@ namespace T3.Operators.Types.Id_c7283335_ef57_46ad_9538_abbade65845a
                                      IsScissorEnabled = ScissorEnabled.GetValue(context),
                                      SlopeScaledDepthBias = SlopeScaledDepthBias.GetValue(context)
                                  };
-            RasterizerState.Value = new RasterizerState(ResourceManager.Instance().Device, rasterizerDesc); // todo: put into resource manager
+
+
+            try
+            {
+                RasterizerState.Value = new RasterizerState(ResourceManager.Instance().Device, rasterizerDesc); // todo: put into resource manager 
+            }
+            catch(Exception e)
+            {
+                Log.Error("Failed to create rasterizer state: " + e.Message);
+            }
         }
 
         [Input(Guid = "03F3BC7F-3949-4A97-88CF-04E162CFA2F7")]

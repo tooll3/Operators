@@ -28,6 +28,9 @@ namespace T3.Operators.Types.Id_946da16c_f536_4887_b764_af9468f22c0f
 
         [Input(Guid = "e4e5e654-d570-4dea-ad16-f4eb1018ff2f")]
         public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
+
+        [Input(Guid = "9c944546-1363-4e3b-b706-31a4b750db2c")]
+        public readonly InputSlot<SharpDX.Direct3D11.TextureAddressMode> Wrap = new InputSlot<SharpDX.Direct3D11.TextureAddressMode>();
     }
 }
 
