@@ -28,6 +28,12 @@ namespace T3.Operators.Types.Id_3ee8f66d_68df_43c1_b0eb_407259bf7e86
 
         [Input(Guid = "70459c2d-8686-4709-9a12-1ea36d1b08d2")]
         public readonly InputSlot<float> W = new InputSlot<float>();
+
+        [Input(Guid = "e2019c63-f498-4ccb-a2cc-ea2ade0c540b")]
+        public readonly InputSlot<System.Numerics.Vector3> OrientationAxis = new InputSlot<System.Numerics.Vector3>();
+
+        [Input(Guid = "28f5fea3-b7c1-4e46-84d5-47b5f311be80")]
+        public readonly InputSlot<float> OrientationAngle = new InputSlot<float>();
     }
 }
 
