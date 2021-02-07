@@ -21,17 +21,16 @@ namespace T3.Operators.Types.Id_4912ba82_460a_4229_884d_6b647d64b08c
 
         private void Update(EvaluationContext context)
         {
-            var pos = Position.GetValue(context);
-            var intensity = Intensity.GetValue(context);
-            var color = Color.GetValue(context);
-            var range = Range.GetValue(context);
-            
             var pointLights = context.PointLights;
-            var light = new PointLight(pos, intensity, color, range);
+            var light = new PointLight(Position.GetValue(context),
+                                       Intensity.GetValue(context),
+                                       Color.GetValue(context),
+                                       Range.GetValue(context),
+                                       Decay.GetValue(context));
             pointLights.Push(light);
-            
+
             Command.GetValue(context); // Evaluate sub-tree
-            
+
             pointLights.Pop();
         }
 
@@ -49,6 +48,8 @@ namespace T3.Operators.Types.Id_4912ba82_460a_4229_884d_6b647d64b08c
 
         [Input(Guid = "e825e0b5-4c04-4ce6-9aef-7d099e9d2430")]
         public readonly InputSlot<float> Range = new InputSlot<float>();
-        
+
+        [Input(Guid = "0318DCC8-3E8A-4A3E-A0FD-239B55183EE9")]
+        public readonly InputSlot<float> Decay = new InputSlot<float>();
     }
 }
