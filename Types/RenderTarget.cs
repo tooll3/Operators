@@ -226,8 +226,10 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                                        Format = colorFormat,
                                                        Width = size.Width,
                                                        Height = size.Height,
-                                                       MipLevels = DownSamplingRequired ? 1 : mipLevels,
-                                                       OptionFlags = ResourceOptionFlags.None,
+                                                       MipLevels = !DownSamplingRequired ? mipLevels : 1,
+                                                       OptionFlags = !DownSamplingRequired && generateMips 
+                                                                         ? ResourceOptionFlags.GenerateMipMaps 
+                                                                         : ResourceOptionFlags.None,
                                                        SampleDescription = new SampleDescription(_sampleCount, 0),
                                                        Usage = ResourceUsage.Default,
                                                    };
