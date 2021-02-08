@@ -36,6 +36,9 @@ namespace T3.Operators.Types.Id_9c67a8c8_839f_4f67_a949_08cb38b9dffd
         [Input(Guid = "3babb43d-afe6-4c34-a4c6-950d1e3971cc")]
         public readonly InputSlot<float> GizmoSize = new InputSlot<float>();
 
+        [Input(Guid = "d6f6838c-4b36-41a8-86c5-1b1fe5dcece1")]
+        public readonly InputSlot<float> Decay = new InputSlot<float>();
+
     }
 }
 

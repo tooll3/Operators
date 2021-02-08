@@ -34,6 +34,9 @@ namespace T3.Operators.Types.Id_5e3648c0_3446_4f8f_b7ce_32d4a54b39de
 
         [Input(Guid = "6d843334-a0b3-4572-bae0-40943b937388")]
         public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> Indices = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
+
+        [Input(Guid = "7f47f780-7020-4c69-a5af-cab634bf23e8")]
+        public readonly InputSlot<bool> Freeze = new InputSlot<bool>();
     }
 }
 
