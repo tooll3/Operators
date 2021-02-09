@@ -5,12 +5,12 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_d61d7192_9ca3_494e_91e2_10a530ee9375
 {
-    public class GizmoVisibility : Instance<GizmoVisibility>
+    public class VisibleGizmos : Instance<VisibleGizmos>
     {
         [Output(Guid = "6c29ce06-0512-4815-bc83-ab2e095c0455")]
         public readonly Slot<Command> Output = new Slot<Command>();
 
-        public GizmoVisibility()
+        public VisibleGizmos()
         {
             Output.UpdateAction = Update;
         }
