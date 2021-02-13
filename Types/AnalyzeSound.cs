@@ -9,6 +9,9 @@ namespace T3.Operators.Types.Id_112ea923_a349_412f_8dd3_4d9d9fc42dc6
     public class AnalyzeSound : Instance<AnalyzeSound>
     {
 
+        [Input(Guid = "7357ea4b-201d-484b-8398-4a8e13fa3880")]
+        public readonly InputSlot<T3.Core.Command> SubGraph = new InputSlot<T3.Core.Command>();
+
         [Input(Guid = "cc3b0ab3-7379-4197-9a84-dc1b368790c5")]
         public readonly InputSlot<float> BeatThreshold = new InputSlot<float>();
 

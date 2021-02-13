@@ -15,6 +15,10 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
         
         [Output(Guid = "80DCAD3B-5E93-4991-855D-24176EC54F4D", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<bool> FoundPeak = new Slot<bool>();
+
+        [Output(Guid = "EC9B98CF-DD88-4B54-977E-960DDF3D5B32", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<float> TimeSincePeak = new Slot<float>();
+
         
         public PeakLevel()
         {
@@ -52,8 +56,14 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
             }
 
             AttackLevel.Value = increase;
+            TimeSincePeak.Value = (float)timeSinceLastPeak;
             _lastValue = value;
+            
+            FoundPeak.DirtyFlag.Clear();
+            TimeSincePeak.DirtyFlag.Clear();
+            AttackLevel.DirtyFlag.Clear();
         }
+        
 
         private double _lastEvalTime;
         private double _lastPeakTime = double.NegativeInfinity;
