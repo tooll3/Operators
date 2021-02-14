@@ -27,6 +27,9 @@ namespace T3.Operators.Types.Id_112ea923_a349_412f_8dd3_4d9d9fc42dc6
         [Input(Guid = "89e105e1-a333-465a-b8a5-7b0ee645acbf")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
+        [Output(Guid = "6ba78564-8315-49ef-9d47-eb96e0a52fd5")]
+        public readonly Slot<T3.Core.Command> Detection = new Slot<T3.Core.Command>();
+        
         [Output(Guid = "70ab1e5d-7947-400a-851b-b1d3d61fdccf")]
         public readonly Slot<float> BeatCount = new Slot<float>();
 
@@ -42,8 +45,6 @@ namespace T3.Operators.Types.Id_112ea923_a349_412f_8dd3_4d9d9fc42dc6
         [Output(Guid = "7d5b7192-f81c-4186-a0e9-864b033caf15")]
         public readonly Slot<float> MovingSum = new Slot<float>();
 
-        [Output(Guid = "6ba78564-8315-49ef-9d47-eb96e0a52fd5")]
-        public readonly Slot<T3.Core.Command> Detection = new Slot<T3.Core.Command>();
 
         [Output(Guid = "1c9c6951-c300-4ada-ae34-783b30f31180")]
         public readonly Slot<SharpDX.Direct3D11.Texture2D> TextureOutput = new Slot<SharpDX.Direct3D11.Texture2D>();

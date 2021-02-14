@@ -179,6 +179,8 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
                     continue;
                 }
 
+
+
                 if (lastChar != 0)
                 {
                     int key = lastChar | c;
@@ -193,26 +195,30 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
                 var x = position.X + (cursorX + charInfo.XOffset)  * size;
                 var y = position.Y + ((cursorY - charInfo.YOffset)) * size ;
 
-                _bufferContent[outputIndex]
-                    = new BufferLayout
-                          {
-                              Position = new Vector3(x, y, 0),
-                              Size = sizeHeight,
-                              Orientation = new Vector3(0, 1, 0),
-                              AspectRatio = sizeWidth / sizeHeight,
-                              Color = color,
-                              UvMinMax = new Vector4(
-                                                     charInfo.X / textureWidth, // uLeft 
-                                                     charInfo.Y / textureHeight, // vTop 
-                                                     (charInfo.X + charInfo.Width) / textureWidth, // uRight 
-                                                     (charInfo.Y + charInfo.Height) / textureHeight // vBottom                              
-                                                    ),
-                              BirthTime = (float)context.TimeInBars,
-                              Speed = 0,
-                              Id = (uint)outputIndex,
-                          };
+                if (charInfo.Width != 1 || charInfo.Height != 1)
+                {
+                    _bufferContent[outputIndex]
+                        = new BufferLayout
+                              {
+                                  Position = new Vector3(x, y, 0),
+                                  Size = sizeHeight,
+                                  Orientation = new Vector3(0, 1, 0),
+                                  AspectRatio = sizeWidth / sizeHeight,
+                                  Color = color,
+                                  UvMinMax = new Vector4(
+                                                         charInfo.X / textureWidth, // uLeft 
+                                                         charInfo.Y / textureHeight, // vTop 
+                                                         (charInfo.X + charInfo.Width) / textureWidth, // uRight 
+                                                         (charInfo.Y + charInfo.Height) / textureHeight // vBottom                              
+                                                        ),
+                                  BirthTime = (float)context.TimeInBars,
+                                  Speed = 0,
+                                  Id = (uint)outputIndex,
+                              };
 
-                outputIndex++;
+                    outputIndex++;
+                }
+
                 currentLineCharacterCount++;
                 cursorX += charInfo.XAdvance;
                 cursorX += characterSpacing;
@@ -222,7 +228,7 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
 
             ResourceManager.Instance().SetupStructuredBuffer(_bufferContent, ref Buffer.Value);
             Buffer.Value.DebugName = nameof(_RenderFontBuffer);
-            VertexCount.Value = text.Length * 6;
+            VertexCount.Value = outputIndex * 6;
 
             void AdjustLineAlignment()
             {

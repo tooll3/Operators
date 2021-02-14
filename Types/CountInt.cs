@@ -33,7 +33,7 @@ namespace T3.Operators.Types.Id_0e1d5f4b_3ba0_4e71_aa26_7308b6df214d
             _lastTrigger = triggered;
 
             if (triggered)
-                Result.Value++;
+                Result.Value += Increment.GetValue(context);
         }
 
         private bool _initialized;
@@ -50,5 +50,9 @@ namespace T3.Operators.Types.Id_0e1d5f4b_3ba0_4e71_aa26_7308b6df214d
 
         [Input(Guid = "11F9CDB5-84FC-4413-8CA7-77E12047F521")]
         public readonly InputSlot<int> DefaultValue = new InputSlot<int>();
+        
+        [Input(Guid = "ABE64676-CCF7-4163-B4DA-26D8B7179AF4")]
+        public readonly InputSlot<int> Increment = new InputSlot<int>();
+
     }
 }

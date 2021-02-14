@@ -20,13 +20,13 @@ namespace T3.Operators.Types.Id_ecbafbeb_c14b_4507_953f_80bc6676d077
 
         private void Update(EvaluationContext context)
         {
-            AudioAnalysisResult.BeatCount = BeatCount.GetValue(context);
-            AudioAnalysisResult.TimeSinceBeat= TimeSinceBeat.GetValue(context);
-            AudioAnalysisResult.AccumulatedBeat= BeatSum.GetValue(context);
+            AudioAnalysisResult.Bass.PeakCount = BeatCount.GetValue(context);
+            AudioAnalysisResult.Bass.TimeSincePeak= TimeSinceBeat.GetValue(context);
+            AudioAnalysisResult.Bass.AccumulatedEnergy= BeatSum.GetValue(context);
             
-            AudioAnalysisResult.HiHatCount= HiHatCount.GetValue(context);
-            AudioAnalysisResult.TimeSinceHiHat= TimeSinceHiHat.GetValue(context);
-            AudioAnalysisResult.AccumulatedHiHat= AccumulatedHiHat.GetValue(context);
+            AudioAnalysisResult.HiHats.PeakCount= HiHatCount.GetValue(context);
+            AudioAnalysisResult.HiHats.TimeSincePeak= TimeSinceHiHat.GetValue(context);
+            AudioAnalysisResult.HiHats.AccumulatedEnergy= AccumulatedHiHat.GetValue(context);
         }
         
         
@@ -52,13 +52,15 @@ namespace T3.Operators.Types.Id_ecbafbeb_c14b_4507_953f_80bc6676d077
 
         public static class AudioAnalysisResult
         {
-            public static int BeatCount;
-            public static double TimeSinceBeat;
-            public static double AccumulatedBeat;
-            
-            public static int HiHatCount;
-            public static double TimeSinceHiHat;
-            public static double AccumulatedHiHat;
+            public static ResultsForFrequencyBand Bass;
+            public static ResultsForFrequencyBand HiHats;
+        }
+
+        public struct ResultsForFrequencyBand
+        {
+            public int PeakCount;
+            public float TimeSincePeak;
+            public double AccumulatedEnergy;
         }
     }
 }

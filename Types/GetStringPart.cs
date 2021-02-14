@@ -7,12 +7,12 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_7baaa83d_5c09_42a0_b7bc_35dbcfa5156d
 {
-    public class TextFragment : Instance<TextFragment>
+    public class GetStringPart : Instance<GetStringPart>
     {
         [Output(Guid = "62368C06-7815-47BC-9B0D-3024A2907E01")]
         public readonly Slot<string> Fragments = new Slot<string>();
 
-        public TextFragment()
+        public GetStringPart()
         {
             Fragments.UpdateAction = Update;
         }
@@ -33,6 +33,8 @@ namespace T3.Operators.Types.Id_7baaa83d_5c09_42a0_b7bc_35dbcfa5156d
             {
                 _splitInto = (EntityTypes)SplitInto.GetValue(context);
                 var inputText = InputText.GetValue(context);
+                if (!string.IsNullOrEmpty(inputText))
+                    inputText = inputText.Replace("\\n", "\n");
 
                 switch (_splitInto)
                 {
@@ -47,7 +49,7 @@ namespace T3.Operators.Types.Id_7baaa83d_5c09_42a0_b7bc_35dbcfa5156d
                         break;
 
                     case EntityTypes.Lines:
-                        _chunks = new Regex("\\n+\\s*").Split(inputText);
+                        _chunks = new Regex("\\n+").Split(inputText);
                         _delimiter = "\n";
                         break;
 
@@ -89,9 +91,12 @@ namespace T3.Operators.Types.Id_7baaa83d_5c09_42a0_b7bc_35dbcfa5156d
                 if (moduloIndex < 0)
                     moduloIndex += _numberOfChunks;
 
-                sb.Append(d);
+                //sb.Append(d);
+                //sb.Append(_chunks[moduloIndex]);
+                //d = _delimiter;
+                
                 sb.Append(_chunks[moduloIndex]);
-                d = _delimiter;
+                sb.Append(_delimiter);
             }
 
             return sb.ToString();

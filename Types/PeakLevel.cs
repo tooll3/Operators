@@ -19,7 +19,10 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
         [Output(Guid = "EC9B98CF-DD88-4B54-977E-960DDF3D5B32", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> TimeSincePeak = new Slot<float>();
 
-        
+        [Output(Guid = "F0996EF5-39F0-4874-85A9-C3AC83C9D9E8", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<float> MovingSum = new Slot<float>();
+
+
         public PeakLevel()
         {
             AttackLevel.UpdateAction = Update;
@@ -55,6 +58,15 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
                 FoundPeak.Value = false;
             }
 
+            var previousSum = MovingSum.GetValue(context);
+
+            const float precisionThreshold = 30000f;
+            if (Math.Abs(previousSum) > precisionThreshold)
+            {
+                previousSum %= precisionThreshold;
+            }
+            MovingSum.Value = previousSum + increase;
+            
             AttackLevel.Value = increase;
             TimeSincePeak.Value = (float)timeSinceLastPeak;
             _lastValue = value;
