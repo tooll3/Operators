@@ -111,7 +111,9 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
             var verticalAlign = VerticalAlign.GetValue(context);
             var characterSpacing = Spacing.GetValue(context);
             var lineHeight = LineHeight.GetValue(context);
-            var size = (float)(Size.GetValue(context) * _font.Font.Info.Size / 870486.0); // Scaling to match 1080p 72DPI pt font sizes 
+            var commonScaleH = (512.0 / _font.Font.Common.ScaleH);
+            var scaleFactor = 1.0 / _font.Font.Info.Size * 0.00185; 
+            var size = (float)(Size.GetValue(context)  * scaleFactor); // Scaling to match 1080p 72DPI pt font sizes 
             var position = Position.GetValue(context);
 
             var numLinesInText = text.Split('\n').Length;

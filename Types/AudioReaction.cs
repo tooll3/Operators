@@ -61,7 +61,7 @@ namespace T3.Operators.Types.Id_f8aed421_5e0e_4d1f_993c_1801153ebba8
                     break;
 
                 case Modes.RandomValue:
-                    value = (float)_random.NextDouble() * Amplitude.GetValue(context);
+                    value = (float)_random.NextDouble();
                     break;
 
                 default:
