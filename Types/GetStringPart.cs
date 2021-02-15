@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.RegularExpressions;
-using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -33,6 +32,13 @@ namespace T3.Operators.Types.Id_7baaa83d_5c09_42a0_b7bc_35dbcfa5156d
             {
                 _splitInto = (EntityTypes)SplitInto.GetValue(context);
                 var inputText = InputText.GetValue(context);
+
+                if (inputText == null)
+                {
+                    Fragments.Value = null;
+                    return;
+                }
+                
                 if (!string.IsNullOrEmpty(inputText))
                     inputText = inputText.Replace("\\n", "\n");
 
@@ -78,7 +84,6 @@ namespace T3.Operators.Types.Id_7baaa83d_5c09_42a0_b7bc_35dbcfa5156d
 
         private string GetFragment(int startFragment, int fragmentCount)
         {
-            var d = "";
             if (fragmentCount <= 0 || _numberOfChunks == 0)
                 return "";
 
