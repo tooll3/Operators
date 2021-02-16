@@ -22,6 +22,15 @@ namespace T3.Operators.Types.Id_dc3d1571_ad9f_46aa_bed9_df2f4e1c7040
 
         [Input(Guid = "e801acdb-7750-4cd4-9366-ea2d17dbb649")]
         public readonly InputSlot<int> Mode = new InputSlot<int>();
+
+        [Input(Guid = "a03ffef9-11e3-41f9-9f13-71f107b484df")]
+        public readonly InputSlot<float> GrowRate = new InputSlot<float>();
+
+        [Input(Guid = "0f84199d-76f0-4155-b5b0-f6d05260423a")]
+        public readonly InputSlot<float> MaxAge = new InputSlot<float>();
+
+        [Input(Guid = "267b6cae-2c3d-4874-9532-ca3da138fde6")]
+        public readonly InputSlot<bool> Reset = new InputSlot<bool>();
     }
 }
 
