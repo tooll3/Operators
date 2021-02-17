@@ -18,10 +18,10 @@ namespace T3.Operators.Types.Id_d61d7192_9ca3_494e_91e2_10a530ee9375
         private void Update(EvaluationContext context)
         {
             var visibility = Visibility.GetValue(context);
-            if (visibility == EvaluationContext.GizmoVisibility.Inherit)
+            if (visibility == T3.Core.Operator.GizmoVisibility.Inherit)
                 visibility = context.ShowGizmos;
 
-            if (visibility != EvaluationContext.GizmoVisibility.On)
+            if (visibility != T3.Core.Operator.GizmoVisibility.On)
                 return;
             
             
@@ -39,7 +39,7 @@ namespace T3.Operators.Types.Id_d61d7192_9ca3_494e_91e2_10a530ee9375
 
         
         [Input(Guid = "4F52683C-F2AA-4D3F-A964-F5232FA98872")]
-        public readonly InputSlot<EvaluationContext.GizmoVisibility> Visibility = new InputSlot<EvaluationContext.GizmoVisibility>();
+        public readonly InputSlot<T3.Core.Operator.GizmoVisibility> Visibility = new InputSlot<T3.Core.Operator.GizmoVisibility>();
         
         [Input(Guid = "4d663aa5-e2d4-40e0-8901-abe09cb832c3")]
         public readonly MultiInputSlot<Command> Commands = new MultiInputSlot<Command>();

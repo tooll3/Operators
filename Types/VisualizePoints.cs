@@ -17,7 +17,7 @@ namespace T3.Operators.Types.Id_37bdbafc_d14c_4b81_91c3_8f63c3b63812
         public readonly InputSlot<float> Size = new InputSlot<float>();
 
         [Input(Guid = "C85649DF-A235-49D6-A964-C69B299FB4B5")]
-        public readonly InputSlot<EvaluationContext.GizmoVisibility> Visibility = new InputSlot<EvaluationContext.GizmoVisibility>();
+        public readonly InputSlot<T3.Core.Operator.GizmoVisibility> Visibility = new InputSlot<T3.Core.Operator.GizmoVisibility>();
 
         [Input(Guid = "40a04de8-54aa-4f66-acea-80ffc4dab7bd")]
         public readonly InputSlot<float> PointSize = new InputSlot<float>();
