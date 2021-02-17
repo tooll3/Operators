@@ -1,15 +1,27 @@
+using System;
 using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Interfaces;
 using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_9c67a8c8_839f_4f67_a949_08cb38b9dffd
 {
-    public class PointLight : Instance<PointLight>
+    public class PointLight : Instance<PointLight>, ITransformable
     {
         [Output(Guid = "32b87a4d-bef3-4646-be76-8f8224ebd5c2")]
-        public readonly Slot<Command> Output = new Slot<Command>();
+        public readonly TransformCallbackSlot<Command> Output = new TransformCallbackSlot<Command>();
 
+        public PointLight()
+        {
+            Output.TransformableOp = this;
+        }
+
+        System.Numerics.Vector3 ITransformable.Translation { get => Position.Value; set => Position.SetTypedInputValue(value); }
+        System.Numerics.Vector3 ITransformable.Rotation { get => System.Numerics.Vector3.Zero; set { } }
+        System.Numerics.Vector3 ITransformable.Scale { get => System.Numerics.Vector3.One; set { } }
+
+        public Action<ITransformable, EvaluationContext> TransformCallback { get => Output.TransformCallback; set => Output.TransformCallback = value; }
 
         [Input(Guid = "55dc52d8-51a6-497a-9624-b118e0e27c65")]
         public readonly InputSlot<Command> Command = new InputSlot<Command>();
