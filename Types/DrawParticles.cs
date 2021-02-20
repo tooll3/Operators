@@ -8,7 +8,7 @@ namespace T3.Operators.Types.Id_73a55607_c892_4a85_946b_e37354c4c0e4
 {
     public class DrawParticles : Instance<DrawParticles>
     {
-        [Output(Guid = "29ca47fe-0dbe-4727-a958-55b9c78ca50c")]
+        [Output(Guid = "29ca47fe-0dbe-4727-a958-55b9c78ca50c", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
 

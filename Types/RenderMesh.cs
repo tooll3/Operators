@@ -7,7 +7,7 @@ namespace T3.Operators.Types.Id_a3c5471e_079b_4d4b_886a_ec02d6428ff6
 {
     public class RenderMesh : Instance<RenderMesh>
     {
-        [Output(Guid = "53b3fdca-9d5e-4808-a02f-4aa743cd8456")]
+        [Output(Guid = "53b3fdca-9d5e-4808-a02f-4aa743cd8456", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         [Input(Guid = "8c9dee45-d165-48c8-b8dd-b7f47e77fd00")]

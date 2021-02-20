@@ -21,7 +21,7 @@ namespace T3.Operators.Types.Id_fd31d208_12fe_46bf_bfa3_101211f8f497
             Bottom,
         }
         
-        [Output(Guid = "3f8b20a7-c8b8-45ab-86a1-0efcd927358e")]
+        [Output(Guid = "3f8b20a7-c8b8-45ab-86a1-0efcd927358e", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         [Input(Guid = "f1f1be0e-d5bc-4940-bbc1-88bfa958f0e1")]

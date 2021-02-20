@@ -8,7 +8,7 @@ namespace T3.Operators.Types.Id_348652c3_abf5_4fe9_873b_89d1acaaf0ff
 {
     public class Locator : Instance<Locator>
     {
-        [Output(Guid = "357c4c25-2b08-4470-84b1-9707a3d8e56e")]
+        [Output(Guid = "357c4c25-2b08-4470-84b1-9707a3d8e56e", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         [Output(Guid = "7599cf50-cbb6-49ce-bb41-9f709b593b0b")]

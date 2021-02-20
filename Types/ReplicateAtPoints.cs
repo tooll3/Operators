@@ -7,7 +7,7 @@ namespace T3.Operators.Types.Id_42cb88bc_beb8_4d89_ac99_44b77be5f03e
 {
     public class ReplicateAtPoints : Instance<ReplicateAtPoints>
     {
-        [Output(Guid = "774a96e4-24e2-4e1a-a70d-63794d24dd51")]
+        [Output(Guid = "774a96e4-24e2-4e1a-a70d-63794d24dd51", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         [Input(Guid = "408ae7c7-9aa8-4537-8c55-b5689f8f9b56")]

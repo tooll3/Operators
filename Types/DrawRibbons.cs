@@ -9,7 +9,7 @@ namespace T3.Operators.Types.Id_37a747b0_ec0e_4ebc_83dd_2e03022ad100
 {
     public class DrawRibbons : Instance<DrawRibbons>
     {
-        [Output(Guid = "324f8114-dae9-4cc8-aa88-021d84dbaf79")]
+        [Output(Guid = "324f8114-dae9-4cc8-aa88-021d84dbaf79", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         [Input(Guid = "bbec658b-84fa-4528-ad03-6b306531b152")]

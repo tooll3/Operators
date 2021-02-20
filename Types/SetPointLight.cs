@@ -8,7 +8,7 @@ namespace T3.Operators.Types.Id_4912ba82_460a_4229_884d_6b647d64b08c
 {
     public class SetPointLight : Instance<SetPointLight>
     {
-        [Output(Guid = "d8c0cd0c-90e9-44fa-9f11-dda5a5b47239")]
+        [Output(Guid = "d8c0cd0c-90e9-44fa-9f11-dda5a5b47239", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         public SetPointLight()

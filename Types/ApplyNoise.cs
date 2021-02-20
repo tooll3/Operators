@@ -31,6 +31,9 @@ namespace T3.Operators.Types.Id_5f846187_e109_45d1_97e0_ae95e3e7d9ba
 
         [Input(Guid = "41ee0e65-e2dc-4bf7-af40-bc90517c6c23")]
         public readonly InputSlot<float> RotLookupDistance = new InputSlot<float>();
+
+        [Input(Guid = "a0982e6c-da72-4d7f-a562-1a6ff144db46")]
+        public readonly InputSlot<bool> UseCurlNoise = new InputSlot<bool>();
     }
 }
 

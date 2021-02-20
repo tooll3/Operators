@@ -8,7 +8,7 @@ namespace T3.Operators.Types.Id_35dd9888_dea5_4ca4_8e1d_b8f0a59ec0ea
 {
     public class ExecuteFloat : Instance<ExecuteFloat>
     {
-        [Output(Guid = "30fe17a0-1825-47f3-806d-c3d74a75d691")]
+        [Output(Guid = "30fe17a0-1825-47f3-806d-c3d74a75d691", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         public ExecuteFloat()

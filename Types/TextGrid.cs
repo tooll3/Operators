@@ -7,7 +7,7 @@ namespace T3.Operators.Types.Id_ad28819d_be62_4ed7_932a_fc861562983d
 {
     public class TextGrid : Instance<TextGrid>
     {
-        [Output(Guid = "982bd425-e781-42ad-9c58-f026fb6f193c")]
+        [Output(Guid = "982bd425-e781-42ad-9c58-f026fb6f193c", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         [Input(Guid = "7c3dbe80-da67-430b-9aaa-f2e2f34fed73")]

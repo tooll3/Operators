@@ -15,7 +15,7 @@ namespace T3.Operators.Types.Id_d8c5330f_59b5_4907_b845_a02def3042fa
             Multiply
         }        
         
-        [Output(Guid = "e4a8d926-7abd-4d2a-82a1-b7d140cb457f")]
+        [Output(Guid = "e4a8d926-7abd-4d2a-82a1-b7d140cb457f", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
 
