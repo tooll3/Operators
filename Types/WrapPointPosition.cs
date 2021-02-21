@@ -22,6 +22,9 @@ namespace T3.Operators.Types.Id_0814a593_80ab_416f_a3ca_eef78b0a9c0c
 
         [Input(Guid = "8b09ea72-d6e8-444c-b20a-05133d846571")]
         public readonly InputSlot<bool> UseCameraPosition = new InputSlot<bool>();
+
+        [Input(Guid = "d56c770e-1cc5-4bab-8f2d-1b503e686aed")]
+        public readonly InputSlot<bool> AddLineBreaks = new InputSlot<bool>();
     }
 }
 

@@ -33,7 +33,7 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
         {
             var t = EvaluationContext.BeatTime;
 
-            var wasEvaluatedThisFrame = t <= _lastEvalTime;
+            var wasEvaluatedThisFrame = Math.Abs(t - _lastEvalTime) < 0.001f;
             if (wasEvaluatedThisFrame)
             {
                 return;
