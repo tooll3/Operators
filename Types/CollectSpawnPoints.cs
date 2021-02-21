@@ -31,6 +31,9 @@ namespace T3.Operators.Types.Id_dc3d1571_ad9f_46aa_bed9_df2f4e1c7040
 
         [Input(Guid = "267b6cae-2c3d-4874-9532-ca3da138fde6")]
         public readonly InputSlot<bool> Reset = new InputSlot<bool>();
+
+        [Input(Guid = "ae7aa205-faa0-454b-9a82-0067410275a0")]
+        public readonly InputSlot<bool> Freeze = new InputSlot<bool>();
     }
 }
 

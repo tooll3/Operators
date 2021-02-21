@@ -12,13 +12,14 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
     {
         [Output(Guid = "c53e3a03-3a6d-4547-abbf-7901b5045539", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> Result = new Slot<float>();
-
-        [Output(Guid = "618a3395-2609-4d73-a09f-36f2316ae612")]
-        public readonly Slot<float> MovingSum = new Slot<float>();
+        
+        [Output(Guid = "BAE829AD-8454-4625-BDE4-A7AB62F579A4")]
+        public readonly Slot<bool> WasStep = new Slot<bool>();
 
         public Counter()
         {
             Result.UpdateAction = Update;
+            WasStep.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)
@@ -95,6 +96,10 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
             {
                 Result.Value = _count + startPosition;
             }
+            
+            WasStep.Value = jump;
+            Result.DirtyFlag.Clear();
+            WasStep.DirtyFlag.Clear();
         }
 
         public float Fragment =>

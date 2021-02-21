@@ -21,24 +21,14 @@ namespace T3.Operators.Types.Id_c513c58d_e45c_408d_a0b8_250c9af31545
         {
             var v = Value.GetValue(context);
             var increase = v > _lastValue + Threshold.GetValue(context);
-            var hasIncreased = increase;
-            if (hasIncreased != _lastIncreased)
-            {
-                _lastIncreased = hasIncreased;
-                HasIncreased.Value = hasIncreased;
-            }
-            else
-            {
-                HasIncreased.Value = false;
-            }
+            var hasIncreased = increase; 
+            HasIncreased.Value = hasIncreased;
+            
             _lastValue = v;
-            //if(HasIncreased.Value)
-            //Log.Debug("Increased! " + context.TimeInBars + " / " + v);
             
         }
 
-        private float _lastValue = 0;
-        private bool _lastIncreased;
+        private float _lastValue;
         
         [Input(Guid = "ed88c6c7-1ea2-4593-9589-ec670afb4654")]
         public readonly InputSlot<float> Value = new InputSlot<float>();
