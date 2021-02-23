@@ -23,23 +23,26 @@ namespace T3.Operators.Types.Id_836f211f_b387_417c_8316_658e0dc6e117
         [Input(Guid = "d0919481-203a-4379-8094-187d6209e00d")]
         public readonly InputSlot<float> ShrinkWithDistance = new InputSlot<float>();
 
+        [Input(Guid = "28f85ae9-ebae-4300-8aa0-738c6327cc44")]
+        public readonly InputSlot<float> TransitionProgress = new InputSlot<float>();
+
+        [Input(Guid = "039e11ea-2155-4f90-aa8a-74ead604679c")]
+        public readonly InputSlot<float> UseWForWidth = new InputSlot<float>();
+
+        [Input(Guid = "567794ab-b3d3-43f6-ae95-4d654f797577")]
+        public readonly InputSlot<bool> UseWAsTexCoordV = new InputSlot<bool>();
+
         [Input(Guid = "c10f9c6c-9923-42c6-848d-6b98097acc67")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture_ = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
-        [Input(Guid = "d90ff4e6-7d70-441f-a064-b40401025c36", MappedType = typeof(PickBlendMode.BlendModes))]
-        public readonly InputSlot<int> BlendMod = new InputSlot<int>();
+        [Input(Guid = "9ba2aa59-e55b-4ebe-aa98-0f79ed77c7aa")]
+        public readonly InputSlot<bool> EnableTest = new InputSlot<bool>();
 
         [Input(Guid = "c9cf2182-1297-463c-b5c1-d4ee7ad0895c")]
         public readonly InputSlot<bool> EnableDepthWrite = new InputSlot<bool>();
 
-        [Input(Guid = "092fc56a-65f8-425d-ae32-359839256a43")]
-        public readonly InputSlot<int> UseWFor = new InputSlot<int>();
-
-        [Input(Guid = "28f85ae9-ebae-4300-8aa0-738c6327cc44")]
-        public readonly InputSlot<float> TransitionProgress = new InputSlot<float>();
-
-        [Input(Guid = "9ba2aa59-e55b-4ebe-aa98-0f79ed77c7aa")]
-        public readonly InputSlot<bool> EnableTest = new InputSlot<bool>();
+        [Input(Guid = "d90ff4e6-7d70-441f-a064-b40401025c36")]
+        public readonly InputSlot<int> BlendMod = new InputSlot<int>();
     }
 }
 

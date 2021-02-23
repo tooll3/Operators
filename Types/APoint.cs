@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Resources;
-using Microsoft.Win32;
-using SharpDX;
-using T3.Core;
 using T3.Core.DataTypes;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
@@ -12,14 +7,12 @@ using T3.Core.Operator.Slots;
 using Point = T3.Core.DataTypes.Point;
 using Quaternion = System.Numerics.Quaternion;
 using Vector3 = System.Numerics.Vector3;
-using Vector4 = SharpDX.Vector4;
 
 namespace T3.Operators.Types.Id_9989f539_f86c_4508_83d7_3fc0e559f502
 {
     public class APoint : Instance<APoint>, ITransformable
     {
         [Output(Guid = "D9C04756-8922-496D-8380-120F280EF65B", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
-        //public readonly TransformCallbackSlot<StructuredList> ResultList = new TransformCallbackSlot<StructuredList>();
         public readonly Slot<StructuredList> ResultList = new Slot<StructuredList>();
         
         public APoint()
@@ -33,7 +26,6 @@ namespace T3.Operators.Types.Id_9989f539_f86c_4508_83d7_3fc0e559f502
         System.Numerics.Vector3 ITransformable.Rotation { get => System.Numerics.Vector3.Zero; set { } }
         System.Numerics.Vector3 ITransformable.Scale { get => System.Numerics.Vector3.One; set { } }
 
-        //public Action<ITransformable, EvaluationContext> TransformCallback { get => ResultList.TransformCallback; set => ResultList.TransformCallback = value; }
         public Action<ITransformable, EvaluationContext> TransformCallback { get; set; }
 
         private void Update(EvaluationContext context)
