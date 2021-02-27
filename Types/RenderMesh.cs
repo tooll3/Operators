@@ -18,12 +18,6 @@ namespace T3.Operators.Types.Id_a3c5471e_079b_4d4b_886a_ec02d6428ff6
 
         [Input(Guid = "97429e1f-3f30-4789-89a6-8e930e356ee6")]
         public readonly InputSlot<T3.Core.DataTypes.MeshBuffers> Mesh = new InputSlot<T3.Core.DataTypes.MeshBuffers>();
-
-        [Input(Guid = "7c3ebcac-08f2-4be1-a2a8-c4763c556fbe")]
-        public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> MeshVertices = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
-
-        [Input(Guid = "7425044d-f525-4a85-afe1-7f78f53b2d02")]
-        public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> MeshIndices = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
     }
 }
 

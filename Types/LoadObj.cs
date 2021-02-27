@@ -1,31 +1,25 @@
+using System.IO;
 using SharpDX.Direct3D11;
 using T3.Core;
 using T3.Core.DataTypes;
 using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Interfaces;
 using T3.Core.Operator.Slots;
 using T3.Core.Rendering;
 using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
 {
-    public class LoadObjAsMesh : Instance<LoadObjAsMesh>
+    public class LoadObj : Instance<LoadObj>, IDescriptiveGraphNode
     {
         [Output(Guid = "1F4E7CAC-1F62-4633-B0F3-A3017A026753")]
         public readonly Slot<MeshBuffers> Data = new Slot<MeshBuffers>();
         
-        [Output(Guid = "C84342BA-0271-4C56-A642-B02BD401D246")]
-        public readonly Slot<BufferWithViews> VertexBuffer = new Slot<BufferWithViews>();
-
-        [Output(Guid = "FB41F6C6-A5EB-483F-AE7D-85A31095B42F")]
-        public readonly Slot<BufferWithViews> IndexBuffer = new Slot<BufferWithViews>();
-
-        public LoadObjAsMesh()
+        public LoadObj()
         {
             Data.UpdateAction = Update;
-            VertexBuffer.UpdateAction = Update;
-            IndexBuffer.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)
@@ -68,8 +62,6 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
                     resourceManager.SetupStructuredBuffer(_vertexBufferData, PbrVertex.Stride * verticesCount, PbrVertex.Stride, ref _vertexBuffer);
                     resourceManager.CreateStructuredBufferSrv(_vertexBuffer, ref _vertexBufferWithViews.Srv);
                     resourceManager.CreateStructuredBufferUav(_vertexBuffer, UnorderedAccessViewBufferFlags.None, ref _vertexBufferWithViews.Uav);
-                    VertexBuffer.Value = _vertexBufferWithViews;
-                    VertexBuffer.DirtyFlag.Clear();
                 }
 
                 // Create Index buffer
@@ -93,20 +85,27 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
                     resourceManager.SetupStructuredBuffer(_indexBufferData, stride * faceCount, stride, ref _indexBuffer);
                     resourceManager.CreateStructuredBufferSrv(_indexBuffer, ref _indexBufferWithViews.Srv);
                     resourceManager.CreateStructuredBufferUav(_indexBuffer, UnorderedAccessViewBufferFlags.None, ref _indexBufferWithViews.Uav);
-                    IndexBuffer.DirtyFlag.Clear();
                 }
                 //Log.Debug($"Updated mesh buffers: {_vertexBuffer} for {path}");
+
+                _description = System.IO.Path.GetFileName(_lastFilePath);
             }
-            VertexBuffer.Value = _vertexBufferWithViews;
-            IndexBuffer.Value = _indexBufferWithViews;
             _dataBuffers.VertexBuffer = _vertexBufferWithViews;
             _dataBuffers.IndicesBuffer = _indexBufferWithViews;
             Data.Value = _dataBuffers;
         }
+
         
+        public string GetDescriptiveString()
+        {
+            return _description;
+        }
+        
+        
+        private string _description;
 
         private string _lastFilePath;
-        private MeshBuffers _dataBuffers = new MeshBuffers();
+        private readonly MeshBuffers _dataBuffers = new MeshBuffers();
         private Buffer _vertexBuffer;
         private PbrVertex[] _vertexBufferData = new PbrVertex[0];
         private readonly BufferWithViews _vertexBufferWithViews = new BufferWithViews();
@@ -117,5 +116,6 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
 
         [Input(Guid = "7d576017-89bd-4813-bc9b-70214efe6a27")]
         public readonly InputSlot<string> Path = new InputSlot<string>();
+
     }
 }
