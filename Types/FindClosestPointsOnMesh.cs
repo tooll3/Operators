@@ -37,6 +37,9 @@ namespace T3.Operators.Types.Id_58afd953_d3fd_44a9_b54b_ccb287edc40c
 
         [Input(Guid = "d6ddebd9-3762-4c0e-969e-1a7277d9b272")]
         public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> Indices = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
+
+        [Input(Guid = "603501a2-5581-47ca-a9e1-ab8e09fda1d8")]
+        public readonly InputSlot<T3.Core.DataTypes.MeshBuffers> Mesh = new InputSlot<T3.Core.DataTypes.MeshBuffers>();
     }
 }
 

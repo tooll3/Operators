@@ -28,6 +28,9 @@ namespace T3.Operators.Types.Id_42cb88bc_beb8_4d89_ac99_44b77be5f03e
         [Input(Guid = "6c36bf68-e22f-419d-9ec0-f60a83d6a560")]
         public readonly InputSlot<int> BlendMode = new InputSlot<int>();
 
+        [Input(Guid = "329d8248-5f9f-4ad3-9b97-0f142e91ba05")]
+        public readonly InputSlot<T3.Core.DataTypes.MeshBuffers> Mesh = new InputSlot<T3.Core.DataTypes.MeshBuffers>();
+
         [Input(Guid = "38602e09-d6fa-4d15-b0a1-f85b64732d19")]
         public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> MeshVertices = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
 

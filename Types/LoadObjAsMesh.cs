@@ -12,6 +12,9 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
 {
     public class LoadObjAsMesh : Instance<LoadObjAsMesh>
     {
+        [Output(Guid = "1F4E7CAC-1F62-4633-B0F3-A3017A026753")]
+        public readonly Slot<MeshBuffers> Data = new Slot<MeshBuffers>();
+        
         [Output(Guid = "C84342BA-0271-4C56-A642-B02BD401D246")]
         public readonly Slot<BufferWithViews> VertexBuffer = new Slot<BufferWithViews>();
 
@@ -20,6 +23,7 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
 
         public LoadObjAsMesh()
         {
+            Data.UpdateAction = Update;
             VertexBuffer.UpdateAction = Update;
             IndexBuffer.UpdateAction = Update;
         }
@@ -95,11 +99,14 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
             }
             VertexBuffer.Value = _vertexBufferWithViews;
             IndexBuffer.Value = _indexBufferWithViews;
+            _dataBuffers.VertexBuffer = _vertexBufferWithViews;
+            _dataBuffers.IndicesBuffer = _indexBufferWithViews;
+            Data.Value = _dataBuffers;
         }
         
 
         private string _lastFilePath;
-        
+        private MeshBuffers _dataBuffers = new MeshBuffers();
         private Buffer _vertexBuffer;
         private PbrVertex[] _vertexBufferData = new PbrVertex[0];
         private readonly BufferWithViews _vertexBufferWithViews = new BufferWithViews();
