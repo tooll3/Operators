@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using SharpDX.Direct3D11;
 using T3.Core;
@@ -27,72 +28,88 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
             var path = Path.GetValue(context);
             if (path != _lastFilePath)
             {
-                var mesh = ObjMesh.LoadFromFile(path);
-                _lastFilePath = path;
+                _description = System.IO.Path.GetFileName(path);
+
+                if (UseGPUCaching.GetValue(context))
+                {
+                    if (MeshBufferCache.TryGetValue(path, out var cachedBuffer))
+                    {
+                        Data.Value = cachedBuffer.DataBuffers;
+                        return;
+                    }
+                }
                 
+                var mesh = ObjMesh.LoadFromFile(path);
                 if (mesh == null || mesh.DistinctDistinctVertices.Count == 0)
                 {
                     Log.Warning($"Can't read file {path}");
                     return;
                 }
+                _lastFilePath = path;
 
                 var resourceManager = ResourceManager.Instance();
 
+                var newData = new DataSet();
                 // Create Vertex buffer
                 {
                     var verticesCount = mesh.DistinctDistinctVertices.Count;
-                    if (_vertexBufferData.Length != verticesCount)
-                        _vertexBufferData = new PbrVertex[verticesCount];
+                    if (newData.VertexBufferData.Length != verticesCount)
+                        newData.VertexBufferData = new PbrVertex[verticesCount];
 
                     for (var vertexIndex = 0; vertexIndex < verticesCount; vertexIndex++)
                     {
 
                         var vertex = mesh.DistinctDistinctVertices[vertexIndex];
-                        _vertexBufferData[vertexIndex] = new PbrVertex
-                                                             {
-                                                                 Position = mesh.Positions[vertex.PositionIndex],
-                                                                 Normal = mesh.Normals[vertex.NormalIndex],
-                                                                 Tangent = mesh.VertexTangents[vertexIndex],
-                                                                 Bitangent = mesh.VertexBinormals[vertexIndex],
-                                                                 Texcoord = mesh.TexCoords[vertex.TextureCoordsIndex]
-                                                             };
+                        newData.VertexBufferData[vertexIndex] = new PbrVertex
+                                                                   {
+                                                                       Position = mesh.Positions[vertex.PositionIndex],
+                                                                       Normal = mesh.Normals[vertex.NormalIndex],
+                                                                       Tangent = mesh.VertexTangents[vertexIndex],
+                                                                       Bitangent = mesh.VertexBinormals[vertexIndex],
+                                                                       Texcoord = mesh.TexCoords[vertex.TextureCoordsIndex]
+                                                                   };
                     }
 
-                    _vertexBufferWithViews.Buffer = _vertexBuffer;
-                    resourceManager.SetupStructuredBuffer(_vertexBufferData, PbrVertex.Stride * verticesCount, PbrVertex.Stride, ref _vertexBuffer);
-                    resourceManager.CreateStructuredBufferSrv(_vertexBuffer, ref _vertexBufferWithViews.Srv);
-                    resourceManager.CreateStructuredBufferUav(_vertexBuffer, UnorderedAccessViewBufferFlags.None, ref _vertexBufferWithViews.Uav);
+                    newData.VertexBufferWithViews.Buffer = newData.VertexBuffer;
+                    resourceManager.SetupStructuredBuffer(newData.VertexBufferData, PbrVertex.Stride * verticesCount, PbrVertex.Stride, ref newData.VertexBuffer);
+                    resourceManager.CreateStructuredBufferSrv(newData.VertexBuffer, ref newData.VertexBufferWithViews.Srv);
+                    resourceManager.CreateStructuredBufferUav(newData.VertexBuffer, UnorderedAccessViewBufferFlags.None, ref newData.VertexBufferWithViews.Uav);
                 }
 
                 // Create Index buffer
                 {
                     var faceCount = mesh.Faces.Count;
-                    if (_indexBufferData.Length != faceCount)
-                        _indexBufferData = new SharpDX.Int3[faceCount];
+                    if (newData.IndexBufferData.Length != faceCount)
+                        newData.IndexBufferData = new SharpDX.Int3[faceCount];
 
                     for (var faceIndex = 0; faceIndex < faceCount; faceIndex++)
                     {
                         var face = mesh.Faces[faceIndex];
-                        _indexBufferData[faceIndex] = new SharpDX.Int3(
-                                                                       mesh.GetVertexIndex(face.V0, face.V0n, face.V0t),
-                                                                       mesh.GetVertexIndex(face.V1, face.V1n, face.V1t),
-                                                                       mesh.GetVertexIndex(face.V2, face.V2n, face.V2t)
-                                                                      );
+                        newData.IndexBufferData[faceIndex] = new SharpDX.Int3(
+                                                                             mesh.GetVertexIndex(face.V0, face.V0n, face.V0t),
+                                                                             mesh.GetVertexIndex(face.V1, face.V1n, face.V1t),
+                                                                             mesh.GetVertexIndex(face.V2, face.V2n, face.V2t)
+                                                                            );
                     }
 
-                    _indexBufferWithViews.Buffer = _indexBuffer;
+                    newData.IndexBufferWithViews.Buffer = newData.IndexBuffer;
                     const int stride = 3 * 4;
-                    resourceManager.SetupStructuredBuffer(_indexBufferData, stride * faceCount, stride, ref _indexBuffer);
-                    resourceManager.CreateStructuredBufferSrv(_indexBuffer, ref _indexBufferWithViews.Srv);
-                    resourceManager.CreateStructuredBufferUav(_indexBuffer, UnorderedAccessViewBufferFlags.None, ref _indexBufferWithViews.Uav);
+                    resourceManager.SetupStructuredBuffer(newData.IndexBufferData, stride * faceCount, stride, ref newData.IndexBuffer);
+                    resourceManager.CreateStructuredBufferSrv(newData.IndexBuffer, ref newData.IndexBufferWithViews.Srv);
+                    resourceManager.CreateStructuredBufferUav(newData.IndexBuffer, UnorderedAccessViewBufferFlags.None, ref newData.IndexBufferWithViews.Uav);
                 }
-                //Log.Debug($"Updated mesh buffers: {_vertexBuffer} for {path}");
+                
+                if (UseGPUCaching.GetValue(context))
+                {
+                    MeshBufferCache[path] = newData;
+                }
 
-                _description = System.IO.Path.GetFileName(_lastFilePath);
+                _data = newData;
             }
-            _dataBuffers.VertexBuffer = _vertexBufferWithViews;
-            _dataBuffers.IndicesBuffer = _indexBufferWithViews;
-            Data.Value = _dataBuffers;
+            
+            _data.DataBuffers.VertexBuffer = _data.VertexBufferWithViews;
+            _data.DataBuffers.IndicesBuffer = _data.IndexBufferWithViews;
+            Data.Value = _data.DataBuffers;
         }
 
         
@@ -103,19 +120,29 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
         
         
         private string _description;
-
         private string _lastFilePath;
-        private readonly MeshBuffers _dataBuffers = new MeshBuffers();
-        private Buffer _vertexBuffer;
-        private PbrVertex[] _vertexBufferData = new PbrVertex[0];
-        private readonly BufferWithViews _vertexBufferWithViews = new BufferWithViews();
+        private DataSet _data = new DataSet();
 
-        private Buffer _indexBuffer;
-        private SharpDX.Int3[] _indexBufferData = new SharpDX.Int3[0];
-        private readonly BufferWithViews _indexBufferWithViews = new BufferWithViews();
+        private class DataSet
+        {
+            public readonly MeshBuffers DataBuffers = new MeshBuffers();
+            
+            public Buffer VertexBuffer;
+            public PbrVertex[] VertexBufferData = new PbrVertex[0];
+            public readonly BufferWithViews VertexBufferWithViews = new BufferWithViews();
+
+            public Buffer IndexBuffer;
+            public SharpDX.Int3[] IndexBufferData = new SharpDX.Int3[0];
+            public readonly BufferWithViews IndexBufferWithViews = new BufferWithViews();
+        }
+        
+        private static readonly Dictionary<string, DataSet> MeshBufferCache = new Dictionary<string, DataSet>(); 
 
         [Input(Guid = "7d576017-89bd-4813-bc9b-70214efe6a27")]
         public readonly InputSlot<string> Path = new InputSlot<string>();
+
+        [Input(Guid = "FFD22736-A600-4C97-A4A4-AD3526B8B35C")]
+        public readonly InputSlot<bool> UseGPUCaching = new InputSlot<bool>();
 
     }
 }
