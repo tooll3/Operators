@@ -60,10 +60,12 @@ namespace T3.Operators.Types.Id_0ed2bee3_641f_4b08_8685_df1506e9af3c
             _emissiveColorMapSrv = new ShaderResourceView(device, tex4);
             context.PbrMaterialTextures.EmissiveColorMap = _emissiveColorMapSrv;
 
-            var previousParameters = context.FogParameters;
+            var previousParameters = context.PbrMaterialParams;
             context.PbrMaterialParams = _parameterBuffer;
+            
+            
             SubTree.GetValue(context);
-            context.PbrMaterialParams = previousParameters;
+                context.PbrMaterialParams = previousParameters;
         }
 
         private ShaderResourceView _baseColorMapSrv;

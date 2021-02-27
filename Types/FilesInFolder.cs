@@ -22,6 +22,14 @@ namespace T3.Operators.Types.Id_f90fcd0a_eab9_4e2a_b393_e8d3a0380823
 
         private void Update(EvaluationContext context)
         {
+            if (TriggerUpdate.GetValue(context))
+            {
+                TriggerUpdate.Value = false;
+                TriggerUpdate.TypedInputValue.Value = false;
+                TriggerUpdate.DirtyFlag.Invalidate();
+                TriggerUpdate.DirtyFlag.Clear();
+            }
+            
             var folderPath = Folder.GetValue(context);
             var filter = Filter.GetValue(context);
             var filePaths = Directory.Exists(folderPath) 
@@ -39,5 +47,9 @@ namespace T3.Operators.Types.Id_f90fcd0a_eab9_4e2a_b393_e8d3a0380823
         
         [Input(Guid = "8B746651-16A5-4274-85DB-0168D30C86B2")]
         public readonly InputSlot<string> Filter = new InputSlot<string>("*.png");
+        
+        [Input(Guid = "E14A4AAE-E253-4D14-80EF-A90271CD306A")]
+        public readonly InputSlot<bool> TriggerUpdate = new InputSlot<bool>();
+
     }
 }
