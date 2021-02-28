@@ -30,26 +30,26 @@ namespace T3.Operators.Types.Id_a835ab86_29c1_438e_a7f7_2e297108bfd5
             {
                 var resourceManager = ResourceManager.Instance();
 
-                var radiusMajor = Radius.GetValue(context);
-                var radiusMinor = Thickness.GetValue(context);
+                var majorRadius = Radius.GetValue(context);
+                var tubeRadius = Thickness.GetValue(context);
 
                 var segments = Segments.GetValue(context);
-                var tessX = segments.Height.Clamp(1, 10000) + 1;
-                var tessY = segments.Width.Clamp(1, 10000) + 1;
+                var radiusSegments = segments.Width.Clamp(1, 10000) + 1;
+                var tubeSegments = segments.Height.Clamp(1, 10000) + 1;
 
                 var spin = Spin.GetValue(context);
-                var spinMajorInRad = spin.X * MathUtils.ToRad;
+                var radiusSpin = spin.X * MathUtils.ToRad;
                 var spinMinorInRad = spin.Y * MathUtils.ToRad;
 
-                var portion = Portion.GetValue(context);
-                var portionMajor = portion.X;
-                var portionMinor = portion.Y;
+                var fill = Fill.GetValue(context);
+                var fillRadius = fill.X / 360f;
+                var tubeFill = fill.Y / 360f;
 
                 var smoothAngle = SmoothAngle.GetValue(context);
                 
-                var useFlatShading = portionMajor / tessX > smoothAngle / 360 || portionMinor / tessY > smoothAngle / 360;
-                var faceCount = (tessX -1)  * (tessY - 1) * 2;
-                var verticesCount = tessX * tessY;
+                var useFlatShading = fillRadius / tubeSegments > smoothAngle / 360 || tubeFill / radiusSegments > smoothAngle / 360;
+                var faceCount = (tubeSegments -1)  * (radiusSegments - 1) * 2;
+                var verticesCount = tubeSegments * radiusSegments;
 
                 // Create buffers
                 if (_vertexBufferData.Length != verticesCount)
@@ -60,80 +60,68 @@ namespace T3.Operators.Types.Id_a835ab86_29c1_438e_a7f7_2e297108bfd5
 
 
                 // Initialize
-                var majorAngleFraction = portionMinor / (tessX -1) * 2.0 * Math.PI;
-                var secondaryAngleFraction = portionMajor / (tessY -1) * 2.0 * Math.PI;
+                var tubeAngleFraction = tubeFill / (tubeSegments -1) * 2.0 * Math.PI;
+                var radiusAngleFraction = fillRadius / (radiusSegments -1) * 2.0 * Math.PI;
 
-                for (int x = 0; x < tessX; ++x)
+                for (int tubeIndex = 0; tubeIndex < tubeSegments; ++tubeIndex)
                 {
-                    var tubeAngle = x * majorAngleFraction + spinMinorInRad;
-                    var posOnRadiusX = Math.Sin(tubeAngle) * radiusMinor;
-                    var posOnRadiusY = Math.Cos(tubeAngle) * radiusMinor;
+                    var tubeAngle = tubeIndex * tubeAngleFraction + spinMinorInRad;
                     
-                    double tubePosition1Y = Math.Cos(tubeAngle)*radiusMinor;
-                    double tubePosition1X = Math.Sin(tubeAngle)*radiusMinor;
-                    // double tubePosition2Y = Math.Cos(tubeAngle + tubeAngleFraction)*radiusMinor;
-                    // double tubePosition2X = Math.Sin(tubeAngle + tubeAngleFraction)*radiusMinor;                    
-                    //var posOnRadius = new Vector2((float)Math.Sin(tubeAngle) * radiusMinor, (float)Math.Cos(tubeAngle) * radiusMinor);
+                    double tubePosition1X = Math.Sin(tubeAngle)*tubeRadius;
+                    double tubePosition1Y = Math.Cos(tubeAngle)*tubeRadius;
+                    double tubePosition2X = Math.Sin(tubeAngle+ tubeAngleFraction)*tubeRadius;
+                    double tubePosition2Y = Math.Cos(tubeAngle+ tubeAngleFraction)*tubeRadius;
 
-                    var v0 = x / (float)tessX;
-                    var v1 = (x + 1) / (float)tessX;
+                    var v0 = tubeIndex / (float)tubeSegments;
+                    var v1 = (tubeIndex + 1) / (float)tubeSegments;
 
-                    for (int y = 0; y < tessY; ++y)
+                    for (int radiusIndex = 0; radiusIndex < radiusSegments; ++radiusIndex)
                     {
-                        var vertexIndex = y + x * tessY;
-                        var faceIndex =  2 * (y + x * (tessY-1));
+                        var vertexIndex = radiusIndex + tubeIndex * radiusSegments;
+                        var faceIndex =  2 * (radiusIndex + tubeIndex * (radiusSegments-1));
                         
-                        var u0 = (y + 1) / (float)tessX;
-                        var u1 = y / (float)tessX;
+                        var u0 = (radiusIndex + 1) / (float)radiusSegments;
+                        var u1 = radiusIndex / (float)radiusSegments;
 
-                        var secondaryAngle = y * secondaryAngleFraction + spinMajorInRad;
+                        var radiusAngle = radiusIndex * radiusAngleFraction + radiusSpin;
 
-                        // var p0 = new Vector3((float) (Math.Sin(axisAngle + axisAngleFraction)*(tubePosition2X + radiusMajor)),
-                        //                      (float) (Math.Cos(axisAngle + axisAngleFraction)*(tubePosition2X + radiusMajor)), (float) tubePosition2Y);
-                        // var p1 = new Vector3((float) (Math.Sin(axisAngle)*(tubePosition2X + radiusMajor)),
-                        //                      (float) (Math.Cos(axisAngle)*(tubePosition2X + radiusMajor)), (float) tubePosition2Y);
-                        // var p2 = new Vector3((float) (Math.Sin(axisAngle)*(tubePosition1X + radiusMajor)),
-                        //                      (float) (Math.Cos(axisAngle)*(tubePosition1X + radiusMajor)), (float) tubePosition1Y);
+                        var p = new SharpDX.Vector3((float)(Math.Sin(radiusAngle) * (tubePosition1X + majorRadius)),
+                                                    (float)(Math.Cos(radiusAngle) * (tubePosition1X + majorRadius)), 
+                                                    (float)tubePosition1Y);
                         
-                        var p0 = new SharpDX.Vector3((float)(Math.Sin(secondaryAngle) * (posOnRadiusX + radiusMajor)),
-                                                     (float)(Math.Cos(secondaryAngle) * (posOnRadiusX + radiusMajor)), 
-                                                     (float)posOnRadiusY);
+                        var p1 = new SharpDX.Vector3((float)(Math.Sin(radiusAngle + radiusAngleFraction) * (tubePosition1X + majorRadius)),
+                                                     (float)(Math.Cos(radiusAngle + radiusAngleFraction) * (tubePosition1X + majorRadius)), 
+                                                     (float)tubePosition1Y);
                         
-                        var p1 = new SharpDX.Vector3((float)(Math.Sin(secondaryAngle + secondaryAngleFraction) * (posOnRadiusX + radiusMajor)),
-                                                     (float)(Math.Cos(secondaryAngle + secondaryAngleFraction) * (posOnRadiusX + radiusMajor)), 
-                                                     (float)posOnRadiusY);
-                        
-                        var p2 = new SharpDX.Vector3((float)(Math.Sin(secondaryAngle + secondaryAngleFraction) * (posOnRadiusX + radiusMajor)),
-                                                     (float)(Math.Cos(secondaryAngle + secondaryAngleFraction) * (posOnRadiusX + radiusMajor)), 
-                                                     (float)posOnRadiusY);
+                        var p2 = new SharpDX.Vector3((float)(Math.Sin(radiusAngle) * (tubePosition2X + majorRadius)),
+                                                     (float)(Math.Cos(radiusAngle) * (tubePosition2X + majorRadius)), 
+                                                     (float)tubePosition2Y);
                         
                         var uv0 = new SharpDX.Vector2(u0, v1);
                         var uv1 = new SharpDX.Vector2(u1, v1);
                         var uv2 = new SharpDX.Vector2(u1, v0);
 
-                        var tubeCenter1 = new SharpDX.Vector3((float)Math.Sin(secondaryAngle), (float)Math.Cos(secondaryAngle), 0.0f) * radiusMajor;
+                        var tubeCenter1 = new SharpDX.Vector3((float)Math.Sin(radiusAngle), (float)Math.Cos(radiusAngle), 0.0f) * majorRadius;
                         var normal0 = SharpDX.Vector3.Normalize(useFlatShading 
-                                                                    ? SharpDX.Vector3.Cross(p0 - p1, p0 - p2) 
-                                                                    : p0 - tubeCenter1);
+                                                                    ? SharpDX.Vector3.Cross(p - p1, p - p2) 
+                                                                    : p - tubeCenter1);
                         
-                        //Log.Debug($" {p0}   {p1}  {p2}    N0 {normal0}");
-
-                        MeshUtils.CalcTBNSpace(p0, uv0, p1, uv1, p2, uv2, normal0, out var tangent0, out var binormal0);
+                        MeshUtils.CalcTBNSpace(p, uv0, p1, uv1, p2, uv2, normal0, out var tangent0, out var binormal0);
 
                         _vertexBufferData[vertexIndex + 0] = new PbrVertex
                                                             {
-                                                                Position = p0,
+                                                                Position = p,
                                                                 Normal = normal0,
                                                                 Tangent = tangent0,
                                                                 Bitangent = binormal0,
                                                                 Texcoord = uv0
                                                             };
 
-                        if (x >= tessX - 1 || y >= tessY - 1)
+                        if (tubeIndex >= tubeSegments - 1 || radiusIndex >= radiusSegments - 1)
                             continue;
                         
-                        _indexBufferData[faceIndex + 0] = new SharpDX.Int3(vertexIndex + 0, vertexIndex + 1, vertexIndex + tessY);
-                        _indexBufferData[faceIndex + 1] = new SharpDX.Int3(vertexIndex + tessY , vertexIndex + 1, vertexIndex + tessY+1);
+                        _indexBufferData[faceIndex + 0] = new SharpDX.Int3(vertexIndex + 0, vertexIndex + 1, vertexIndex + radiusSegments);
+                        _indexBufferData[faceIndex + 1] = new SharpDX.Int3(vertexIndex + radiusSegments , vertexIndex + 1, vertexIndex + radiusSegments+1);
                     }
                 }
                 
@@ -183,7 +171,7 @@ namespace T3.Operators.Types.Id_a835ab86_29c1_438e_a7f7_2e297108bfd5
         public readonly InputSlot<Vector2> Spin = new InputSlot<Vector2>();
 
         [Input(Guid = "F3E7341C-0C81-42AF-BA48-B43D345188C1")]
-        public readonly InputSlot<Vector2> Portion = new InputSlot<Vector2>();
+        public readonly InputSlot<Vector2> Fill = new InputSlot<Vector2>();
 
         // [Input(Guid = "1457EDC2-5F9B-4F72-9CB2-4CA40066F177")]
         // public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();

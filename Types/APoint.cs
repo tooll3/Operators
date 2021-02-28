@@ -1,4 +1,5 @@
 using System;
+using T3.Core;
 using T3.Core.DataTypes;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
@@ -36,7 +37,7 @@ namespace T3.Operators.Types.Id_9989f539_f86c_4508_83d7_3fc0e559f502
             var w = W.GetValue(context);
             var addSeparator = AddSeparator.GetValue(context);
 
-            var rot = Quaternion.CreateFromAxisAngle(RotationAxis.GetValue(context), RotationAngle.GetValue(context));
+            var rot = Quaternion.CreateFromAxisAngle(RotationAxis.GetValue(context), RotationAngle.GetValue(context) * MathUtils.ToRad);
             var array = addSeparator ? _pointListWithSeparator : _pointList;
             
             array.TypedElements[0].Position = from;

@@ -27,6 +27,9 @@ namespace T3.Operators.Types.Id_b89c5923_cc58_4d7a_8dce_eb1f8cdfc6e8
 
         [Input(Guid = "a4630612-743f-4396-8e2f-982052d508f4")]
         public readonly InputSlot<bool> EnableDepthTest = new InputSlot<bool>();
+
+        [Input(Guid = "efc093f5-6fa4-4042-9cc3-6fdc96355a72")]
+        public readonly InputSlot<bool> EnableDepthWrite = new InputSlot<bool>();
     }
 }
 
