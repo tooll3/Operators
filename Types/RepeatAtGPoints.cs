@@ -22,6 +22,9 @@ namespace T3.Operators.Types.Id_780edb20_f83f_494c_ab17_7015e2311250
 
         [Input(Guid = "f71ddebe-1f2c-47d0-ba39-eb5c4693e909")]
         public readonly InputSlot<bool> ApplyTargetScaleW = new InputSlot<bool>();
+
+        [Input(Guid = "f582aa39-f5e0-46ad-89ae-6f29ab60d3e6")]
+        public readonly InputSlot<bool> MultiplyTargetW = new InputSlot<bool>();
     }
 }
 

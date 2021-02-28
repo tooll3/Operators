@@ -41,6 +41,9 @@ namespace T3.Operators.Types.Id_6415ed0e_3692_45e2_8e70_fe0cf4d29ebc
             var wobbleSpeed = WobbleSpeed.GetValue(context);
             var wobbleComplexity = (int)MathUtils.Clamp(WobbleComplexity.GetValue(context),1,8);
 
+            //var offset = 
+            var rotOffset =  RotationOffset.GetValue(context);
+
             // Orbit rotation
             System.Numerics.Vector3 t = Center.GetValue(context);
             Vector3 target = new Vector3(t.X, t.Y, t.Z);
@@ -49,7 +52,8 @@ namespace T3.Operators.Types.Id_6415ed0e_3692_45e2_8e70_fe0cf4d29ebc
                                                   ComputeAngle(SpinAngleAndWobble,1) 
                                                   + MathUtil.DegreesToRadians((float)(SpinRate.GetValue(context) 
                                                                                       * (EvaluationContext.BeatTime + SpinOffset.GetValue(context)) * 360  
-                                                                                      + MathUtils.PerlinNoise(0, 1, 6, seed) * 360 ) ), 
+                                                                                      + MathUtils.PerlinNoise(0, 1, 6, seed) * 360 ) )
+                                                                                      , 
                                                   -ComputeAngle(OrbitAngleAndWobble, 2), 
                                                   0);
             var p2 = Vector3.Transform(p, rot);
@@ -59,9 +63,9 @@ namespace T3.Operators.Types.Id_6415ed0e_3692_45e2_8e70_fe0cf4d29ebc
             var viewDirection = target - eye;
             
             var rotateAim = Matrix.RotationYawPitchRoll(
-                                                  ComputeAngle(AimYawAngleAndWobble,3),
-                                                  ComputeAngle(AimPitchAngleAndWobble,4),
-                                                  0);
+                                                  ComputeAngle(AimYawAngleAndWobble,3) + rotOffset.X * MathUtils.ToRad,
+                                                  ComputeAngle(AimPitchAngleAndWobble,4) + rotOffset.Y * MathUtils.ToRad,
+                                                  rotOffset.Z * MathUtils.ToRad);
 
             
             var adjustedViewDirection = Vector3.TransformNormal(viewDirection, rotateAim);
@@ -139,7 +143,7 @@ namespace T3.Operators.Types.Id_6415ed0e_3692_45e2_8e70_fe0cf4d29ebc
         public readonly InputSlot<System.Numerics.Vector2> AimRollAngleAndWobble = new InputSlot<System.Numerics.Vector2>();
 
         [Input(Guid = "C81B91C6-2D06-4E3E-97BD-01D60F5F0F7D")]
-        public readonly InputSlot<System.Numerics.Vector3> PositionOffset = new InputSlot<System.Numerics.Vector3>();
+        public readonly InputSlot<System.Numerics.Vector3> RotationOffset = new InputSlot<System.Numerics.Vector3>();
 
         [Input(Guid = "B6BF6FE1-6733-46C0-A274-FAB2A950F606")]
         public readonly InputSlot<float> WobbleSpeed = new InputSlot<float>();
