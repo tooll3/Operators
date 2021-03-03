@@ -10,6 +10,9 @@ namespace T3.Operators.Types.Id_c0feef61_8cec_4418_8889_4001cbe1a957
         [Output(Guid = "9dd9d899-c1b2-4c63-b338-b779b2278f86")]
         public readonly Slot<Texture2D> ImgOutput = new Slot<Texture2D>();
 
+        [Output(Guid = "ca414af7-1bcf-4134-baf0-9f2f06756a5c")]
+        public readonly Slot<T3.Core.DataTypes.BufferWithViews> Points = new Slot<T3.Core.DataTypes.BufferWithViews>();
+
         [Input(Guid = "c22b4247-0989-4452-b9ef-6831a80df778")]
         public readonly InputSlot<float> RestoreLayout = new InputSlot<float>();
 
@@ -39,6 +42,18 @@ namespace T3.Operators.Types.Id_c0feef61_8cec_4418_8889_4001cbe1a957
 
         [Input(Guid = "5100f7d8-a5e0-4630-b646-2db20e0cc4be")]
         public readonly InputSlot<SharpDX.Size2> BlockCount = new InputSlot<SharpDX.Size2>();
+
+        [Input(Guid = "e06937b8-99f7-418b-b352-a42a3a63bf5b")]
+        public readonly InputSlot<float> FXRedFro_Rotate = new InputSlot<float>();
+
+        [Input(Guid = "57e49ac9-a223-4f92-bdba-3675e988f77e")]
+        public readonly InputSlot<float> FXGreenFor_FrontRadius = new InputSlot<float>();
+
+        [Input(Guid = "56050b00-e2ca-4140-8147-4f53c0829908")]
+        public readonly InputSlot<float> FXBlueFor_SideAngle = new InputSlot<float>();
+
+        [Input(Guid = "8f74bb82-393c-4594-b92c-fbe6adfa8ed5")]
+        public readonly InputSlot<SharpDX.Direct3D11.Texture2D> SeedTexture = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
 
     }

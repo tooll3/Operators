@@ -34,6 +34,9 @@ namespace T3.Operators.Types.Id_5f846187_e109_45d1_97e0_ae95e3e7d9ba
 
         [Input(Guid = "a0982e6c-da72-4d7f-a562-1a6ff144db46")]
         public readonly InputSlot<bool> UseCurlNoise = new InputSlot<bool>();
+
+        [Input(Guid = "536948f3-f76c-418a-9b76-2c9fed4dee33")]
+        public readonly InputSlot<bool> IsEnabled = new InputSlot<bool>();
     }
 }
 

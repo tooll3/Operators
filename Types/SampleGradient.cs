@@ -6,7 +6,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_8211249d_7a26_4ad0_8d84_56da72a5c536
 {
-    public class GradientSlider : Instance<GradientSlider>
+    public class SampleGradient : Instance<SampleGradient>
     {
         
         [Output(Guid = "963611E7-F55E-4C94-96E6-34E195558A2B")]
@@ -16,7 +16,7 @@ namespace T3.Operators.Types.Id_8211249d_7a26_4ad0_8d84_56da72a5c536
         public readonly Slot<Gradient> OutGradient = new Slot<Gradient>();
 
 
-        public GradientSlider()
+        public SampleGradient()
         {
             Color.UpdateAction = Update;
             OutGradient.UpdateAction = Update;
