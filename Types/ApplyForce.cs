@@ -37,6 +37,9 @@ namespace T3.Operators.Types.Id_9c378944_9a57_4ae4_a88e_36c07244bcf7
 
         [Input(Guid = "f3d5f8b5-c882-4098-afcb-0f86f5cd7964")]
         public readonly InputSlot<float> ForceDecayRate = new InputSlot<float>();
+
+        [Input(Guid = "e6b12dd3-fd25-4b4c-a3bb-bd4da9c1c1e2")]
+        public readonly InputSlot<bool> IsEnabled = new InputSlot<bool>();
     }
 }
 
