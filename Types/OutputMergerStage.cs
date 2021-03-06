@@ -1,60 +1,70 @@
 ﻿using SharpDX.Direct3D11;
 using SharpDX.Mathematics.Interop;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
 
-namespace T3.Operators.Types.Id_5efaf208_ba62_42ce_b3df_059b37fc1382
-{
-    public class OutputMergerStage : Instance<OutputMergerStage>
-    {
+namespace T3.Operators.Types.Id_5efaf208_ba62_42ce_b3df_059b37fc1382 {
+    public class OutputMergerStage : Instance<OutputMergerStage> {
         [Output(Guid = "CEE8C3F0-64EA-4E4D-B967-EC7E3688DD03", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>(new Command());
 
-        public OutputMergerStage()
-        {
+        public OutputMergerStage() {
             Output.UpdateAction = Update;
             Output.Value.RestoreAction = Restore;
         }
 
-        private void Update(EvaluationContext context)
-        {
+        private void Update(EvaluationContext context) {
             var resourceManager = ResourceManager.Instance();
             var device = resourceManager.Device;
             var deviceContext = device.ImmediateContext;
             var outputMerger = deviceContext.OutputMerger;
 
             RenderTargetViews.GetValues(ref _renderTargetViews, context);
+            UnorderedAccessViews.GetValues(ref _unorderedAccessViews, context);
 
             _prevRenderTargetViews = outputMerger.GetRenderTargets(_renderTargetViews.Length);
+            // if (_unorderedAccessViews.Length > 0)
+                // _prevUnorderedAccessViews = outputMerger.GetUnorderedAccessViews(1, _unorderedAccessViews.Length);
             outputMerger.GetRenderTargets(out _prevDepthStencilView);
             outputMerger.SetDepthStencilState(DepthStencilState.GetValue(context));
             _prevBlendState = outputMerger.GetBlendState(out _prevBlendFactor, out _prevSampleMask);
             if (_renderTargetViews.Length > 0)
-                outputMerger.SetRenderTargets(null, _renderTargetViews);
+                outputMerger.SetRenderTargets(null, new RenderTargetView[] { null});//_renderTargetViews);
+            if (_unorderedAccessViews.Length > 0)
+            {
+                // Log.Debug($"num uavs: {_unorderedAccessViews.Length}");
+                outputMerger.SetUnorderedAccessViews(1, _unorderedAccessViews);
+            }
+
             outputMerger.BlendState = BlendState.GetValue(context);
         }
 
-        private void Restore(EvaluationContext context)
-        {
+        private void Restore(EvaluationContext context) {
             var deviceContext = ResourceManager.Instance().Device.ImmediateContext;
             var outputMerger = deviceContext.OutputMerger;
 
             outputMerger.BlendState = _prevBlendState;
             if (_renderTargetViews.Length > 0)
                 outputMerger.SetRenderTargets(_prevDepthStencilView, _prevRenderTargetViews);
-
             foreach (var rtv in _prevRenderTargetViews)
-            {
                 rtv?.Dispose();
-            }
+
+            // if (_unorderedAccessViews.Length > 0)
+                // outputMerger.SetUnorderedAccessViews(1, _prevUnorderedAccessViews);
+            // foreach (var uav in _prevUnorderedAccessViews)
+                // uav?.Dispose();
+
             Utilities.Dispose(ref _prevDepthStencilView);
             _prevBlendState = null;
         }
 
         private RenderTargetView[] _renderTargetViews = new RenderTargetView[0];
         private RenderTargetView[] _prevRenderTargetViews;
+        private UnorderedAccessView[] _unorderedAccessViews = new UnorderedAccessView[0];
+        private UnorderedAccessView[] _prevUnorderedAccessViews;
         private DepthStencilView _prevDepthStencilView;
         private BlendState _prevBlendState;
         private RawColor4 _prevBlendFactor;
