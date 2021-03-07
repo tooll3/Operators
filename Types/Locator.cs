@@ -30,6 +30,9 @@ namespace T3.Operators.Types.Id_348652c3_abf5_4fe9_873b_89d1acaaf0ff
         [Input(Guid = "a6c523ba-4529-4a51-b6ce-69d396490625")]
         public readonly InputSlot<bool> EnableDepthTest = new InputSlot<bool>();
 
+        [Input(Guid = "fc366e00-4980-4b3e-85a3-b83bff210458")]
+        public readonly InputSlot<T3.Core.Operator.GizmoVisibility> Visibility = new InputSlot<T3.Core.Operator.GizmoVisibility>();
+
     }
 }
 

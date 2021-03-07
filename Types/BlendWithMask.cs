@@ -21,12 +21,6 @@ namespace T3.Operators.Types.Id_7da55d23_0bd1_457b_a036_9b6b51d2e34b
         [Input(Guid = "f551d82e-bbd5-40fd-9d84-e08d97f06c46")]
         public readonly InputSlot<System.Numerics.Vector4> ColorB = new InputSlot<System.Numerics.Vector4>();
 
-        [Input(Guid = "556dcd1b-6102-4b17-838b-1be1f9c61d90")]
-        public readonly InputSlot<int> BlendMode = new InputSlot<int>();
-
-        [Input(Guid = "a9e49459-a783-4e7d-b220-a4c2e8f79003")]
-        public readonly InputSlot<int> AlphaMode = new InputSlot<int>();
-
         [Input(Guid = "d08813be-bd43-4229-86b7-4e53b62b8561")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Mask = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 

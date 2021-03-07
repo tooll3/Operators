@@ -64,7 +64,7 @@ namespace T3.Operators.Types.Id_5efaf208_ba62_42ce_b3df_059b37fc1382 {
         private RenderTargetView[] _renderTargetViews = new RenderTargetView[0];
         private RenderTargetView[] _prevRenderTargetViews;
         private UnorderedAccessView[] _unorderedAccessViews = new UnorderedAccessView[0];
-        private UnorderedAccessView[] _prevUnorderedAccessViews;
+        //private UnorderedAccessView[] _prevUnorderedAccessViews;
         private DepthStencilView _prevDepthStencilView;
         private BlendState _prevBlendState;
         private RawColor4 _prevBlendFactor;

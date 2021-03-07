@@ -5,7 +5,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_ef357e66_24e9_4f54_8d86_869db74602f4
 {
-    public class GetFromStringList : Instance<GetFromStringList>
+    public class PickFromStrings : Instance<PickFromStrings>
     {
         [Output(Guid = "467bb46e-3391-48a7-b0eb-f7fd9d77b60f")]
         public readonly Slot<string> Selected = new Slot<string>();
@@ -14,7 +14,7 @@ namespace T3.Operators.Types.Id_ef357e66_24e9_4f54_8d86_869db74602f4
         public readonly Slot<int> Count = new Slot<int>();
 
         
-        public GetFromStringList()
+        public PickFromStrings()
         {
             Selected.UpdateAction = Update;
         }
