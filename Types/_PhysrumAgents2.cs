@@ -13,20 +13,11 @@ namespace T3.Operators.Types.Id_c0feef61_8cec_4418_8889_4001cbe1a957
         [Output(Guid = "ca414af7-1bcf-4134-baf0-9f2f06756a5c")]
         public readonly Slot<T3.Core.DataTypes.BufferWithViews> Points = new Slot<T3.Core.DataTypes.BufferWithViews>();
 
-        [Input(Guid = "c22b4247-0989-4452-b9ef-6831a80df778")]
-        public readonly InputSlot<float> RestoreLayout = new InputSlot<float>();
-
-        [Input(Guid = "d95ac7c1-c282-4776-9acf-3383981f1d6b")]
-        public readonly InputSlot<bool> RestoreLayoutEnabled = new InputSlot<bool>();
-
         [Input(Guid = "bc0f0973-68c1-4f33-801d-9e9db29f7513")]
         public readonly InputSlot<bool> ShowAgents = new InputSlot<bool>();
 
         [Input(Guid = "cf5837f9-df50-43d2-97db-07595d91828f")]
         public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
-
-        [Input(Guid = "8b2521cc-5f34-4833-8faf-09aa85848e7e")]
-        public readonly InputSlot<int> AgentCount = new InputSlot<int>();
 
         [Input(Guid = "1aff9d51-48d0-4d36-93f3-be97c8533201")]
         public readonly InputSlot<int> ComputeSteps = new InputSlot<int>();
@@ -54,6 +45,12 @@ namespace T3.Operators.Types.Id_c0feef61_8cec_4418_8889_4001cbe1a957
 
         [Input(Guid = "8f74bb82-393c-4594-b92c-fbe6adfa8ed5")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> SeedTexture = new InputSlot<SharpDX.Direct3D11.Texture2D>();
+
+        [Input(Guid = "bdedd5d8-a1b9-4e2d-ba7e-824ee1fdfcba")]
+        public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> PointsBuffer = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
+
+        [Input(Guid = "60c55f37-2a74-44bd-a90d-041501496d76")]
+        public readonly InputSlot<bool> IsEnabled = new InputSlot<bool>();
 
 
     }

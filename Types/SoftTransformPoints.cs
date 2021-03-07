@@ -1,16 +1,29 @@
 using System;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Interfaces;
 using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_697bbc2d_0b2e_4013_bbc3_d58a28a79f31
 {
-    public class SoftTransformPoints : Instance<SoftTransformPoints>
+    public class SoftTransformPoints : Instance<SoftTransformPoints>, ITransformable
     {
 
         [Output(Guid = "b3309ed0-574f-4907-b477-4a1cf98b2fe5")]
-        public readonly Slot<T3.Core.DataTypes.BufferWithViews> Output = new Slot<T3.Core.DataTypes.BufferWithViews>();
+        public readonly TransformCallbackSlot<T3.Core.DataTypes.BufferWithViews> Output = new TransformCallbackSlot<T3.Core.DataTypes.BufferWithViews>();
 
+        public SoftTransformPoints()
+        {
+            Output.TransformableOp = this;
+        }
+        
+        System.Numerics.Vector3 ITransformable.Translation { get => VolumePosition.Value; set => VolumePosition.SetTypedInputValue(value); }
+        System.Numerics.Vector3 ITransformable.Rotation { get => System.Numerics.Vector3.Zero; set { } }
+        System.Numerics.Vector3 ITransformable.Scale { get => System.Numerics.Vector3.One; set { } }
+
+        public Action<ITransformable, EvaluationContext> TransformCallback { get => Output.TransformCallback; set => Output.TransformCallback = value; }
+
+        
         [Input(Guid = "5fac3f09-d6dd-4cba-8575-983353e60af4")]
         public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> Points = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
 

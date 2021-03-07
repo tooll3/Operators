@@ -13,6 +13,9 @@ namespace T3.Operators.Types.Id_763e1851_36ef_4443_92d9_4d49ee479357
         [Input(Guid = "7d44435c-a02e-446e-ada9-1f0d4c432fdd")]
         public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();
 
+        [Input(Guid = "664ebf91-fccc-4531-ad64-16bcddf9a71b")]
+        public readonly InputSlot<float> Radius = new InputSlot<float>();
+
 
     }
 }

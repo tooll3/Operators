@@ -29,6 +29,9 @@ namespace T3.Operators.Types.Id_5e3648c0_3446_4f8f_b7ce_32d4a54b39de
         [Input(Guid = "4d78860a-be07-4e20-8c8d-61be14051f4d")]
         public readonly InputSlot<float> ScatterSurfaceDistance = new InputSlot<float>();
 
+        [Input(Guid = "41cdd210-cca1-4cdf-afde-26403aeedaa7")]
+        public readonly InputSlot<float> MaxSpeed = new InputSlot<float>();
+
         [Input(Guid = "7f47f780-7020-4c69-a5af-cab634bf23e8")]
         public readonly InputSlot<bool> Freeze = new InputSlot<bool>();
 
