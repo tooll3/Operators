@@ -7,12 +7,12 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_919beb6b_4798_45fc_83bd_8203a9b26e8e
 {
-    public class ValueChange : Instance<ValueChange>
+    public class DeltaSinceLastFrame : Instance<DeltaSinceLastFrame>
     {
         [Output(Guid = "F2E21170-11CE-4FEE-BA2C-80AC2CDCE11A", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> Change = new Slot<float>();
         
-        public ValueChange()
+        public DeltaSinceLastFrame()
         {
             Change.UpdateAction = Update;
         }
