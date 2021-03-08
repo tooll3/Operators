@@ -29,5 +29,8 @@ namespace T3.Operators.Types.Id_51968877_03e7_472d_9b43_95bc8aeda3bc
 
         [Input(Guid = "1A0ACD15-34D1-4B8F-9739-F78BA204F315")]
         public readonly InputSlot<System.Numerics.Vector4> Add = new InputSlot<System.Numerics.Vector4>();
+
+        [Input(Guid = "8e25ab02-ef93-441c-8a16-78555093c5a6")]
+        public readonly InputSlot<bool> GenerateMipmaps = new InputSlot<bool>();
     }
 }

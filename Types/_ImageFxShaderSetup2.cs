@@ -34,6 +34,9 @@ namespace T3.Operators.Types.Id_2b20afce_2b54_4bcc_ba0e_e456a0d92833
         [Input(Guid = "3ca67d25-72ec-487b-91b3-ece912b76462")]
         public readonly InputSlot<bool> GenerateMipmaps = new InputSlot<bool>();
 
+        [Input(Guid = "9911dc7e-cd3b-4c58-a5d0-2e9abc8e528a")]
+        public readonly InputSlot<int> BlendMode = new InputSlot<int>();
+
     }
 }
 

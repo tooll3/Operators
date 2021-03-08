@@ -73,10 +73,14 @@ namespace T3.Operators.Types.Id_000e08d0_669f_48df_9083_7aa0a43bbc05
                     LastMeasureInMicroSeconds = usDuration;
                     _readyToMeasure = true;
                 }
+
+                LastMeasureInMs = MathUtils.Lerp(LastMeasureInMs, (float)(LastMeasureInMicroSeconds / 1000.0), 0.03f);
             }
         }
 
         public int LastMeasureInMicroSeconds { get; private set; }
+        
+        public float LastMeasureInMs { get; private set; }
 
         private readonly Device _d3dDevice;
         private GpuQuery _queryTimeStampDisjoint;

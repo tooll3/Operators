@@ -395,6 +395,14 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             }
         }
 
+        private enum Samples
+        {
+            No_MSAA = 1,
+            MSAA_2Samples =2,
+            MSAA_4Samples = 4,
+            MSAA_8Samples = 8,
+        }
+        
         private Texture2D _multiSampledColorBuffer;
         private ShaderResourceView _multiSampledColorBufferSrv;
         private RenderTargetView _multiSampledColorBufferRtv;
@@ -444,7 +452,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
         [Input(Guid = "07AD28AD-FF5F-4CA9-B7BB-F7F8B16A6434")]
         public readonly InputSlot<RenderTargetReference> TextureReference = new InputSlot<RenderTargetReference>();
 
-        [Input(Guid = "E882E0F0-03F9-46E6-AC7A-709E6FA66613")]
+        [Input(Guid = "E882E0F0-03F9-46E6-AC7A-709E6FA66613", MappedType = typeof(Samples))]
         public readonly InputSlot<int> Multisampling = new InputSlot<int>();
     }
 }
