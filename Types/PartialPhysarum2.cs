@@ -10,6 +10,9 @@ namespace T3.Operators.Types.Id_0998c5a8_8771_4161_801d_e14507c2e89c
         [Output(Guid = "b28fe4cf-8a6d-4312-b4ee-3805124462b1")]
         public readonly Slot<Texture2D> Output = new Slot<Texture2D>();
 
+        [Output(Guid = "7fa2fb31-dd11-48b1-b580-db5aa14aa7fb")]
+        public readonly TimeClipSlot<T3.Core.Command> Output2 = new TimeClipSlot<T3.Core.Command>();
+
 
     }
 }

@@ -27,11 +27,12 @@ namespace T3.Operators.Types.Id_50aab941_0a29_474a_affd_13a74ea0c780
             var rangeMin = RangeMin.GetValue(context);
             var rangeMax = RangeMax.GetValue(context);
             var scale = Scale.GetValue(context);
+            var scaleXYZ = ScaleXYZ.GetValue(context);
 
             Result.Value  = new Vector3(
-                                          (MathUtils.PerlinNoise(value, period, octaves, seed) + 1f) * 0.5f * (rangeMax - rangeMin) + rangeMin,
-                                          (MathUtils.PerlinNoise(value, period, octaves, seed+123) + 1f) * 0.5f * (rangeMax - rangeMin) + rangeMin,
-                                          (MathUtils.PerlinNoise(value, period, octaves, seed+234) + 1f) * 0.5f * (rangeMax - rangeMin) + rangeMin) * scale;
+                                          (MathUtils.PerlinNoise(value, period, octaves, seed) + 1f) * 0.5f * (rangeMax.X - rangeMin.X) + rangeMin.X,
+                                          (MathUtils.PerlinNoise(value, period, octaves, seed+123) + 1f) * 0.5f * (rangeMax.Y - rangeMin.Y) + rangeMin.Y,
+                                          (MathUtils.PerlinNoise(value, period, octaves, seed+234) + 1f) * 0.5f * (rangeMax.Z - rangeMin.Z) + rangeMin.Z) * scaleXYZ  * scale;
         }
 
 
@@ -47,14 +48,17 @@ namespace T3.Operators.Types.Id_50aab941_0a29_474a_affd_13a74ea0c780
         [Input(Guid = "2693cb7d-33b3-4a0c-929f-e6911d2d4a0c")]
         public readonly InputSlot<int> Octaves = new InputSlot<int>();
         
-        [Input(Guid = "f5d7cf84-6d7e-478e-96e2-cf20c0a2510e")]
-        public readonly InputSlot<float> RangeMin = new InputSlot<float>();
+        [Input(Guid = "B4B38D87-F661-4B8B-B978-70BF34152422")]
+        public readonly InputSlot<Vector3> RangeMin = new InputSlot<Vector3>();
 
-        [Input(Guid = "635a6831-5a07-48b2-a300-55e1b985bd51")]
-        public readonly InputSlot<float> RangeMax = new InputSlot<float>();
+        [Input(Guid = "5401E715-7A82-43AB-BA16-D0E55A1D83D4")]
+        public readonly InputSlot<Vector3> RangeMax = new InputSlot<Vector3>();
+
+        [Input(Guid = "C427D83B-1046-4B8D-B44A-E616A64A702A")]
+        public readonly InputSlot<Vector3> ScaleXYZ = new InputSlot<Vector3>();
         
-        [Input(Guid = "3762C612-39B4-4B27-9AF2-2A24A0D10E51")]
-        public readonly InputSlot<Vector3> Scale = new InputSlot<Vector3>();
+        [Input(Guid = "E0F4333D-8BEE-4F9E-BB29-9F76BD72E61F")]
+        public readonly InputSlot<float> Scale = new InputSlot<float>();
         
     }
 }
