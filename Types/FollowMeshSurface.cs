@@ -35,6 +35,9 @@ namespace T3.Operators.Types.Id_5e3648c0_3446_4f8f_b7ce_32d4a54b39de
         [Input(Guid = "7f47f780-7020-4c69-a5af-cab634bf23e8")]
         public readonly InputSlot<bool> Freeze = new InputSlot<bool>();
 
+        [Input(Guid = "d13c53a9-3589-4a6b-985b-c2f622d93b3f")]
+        public readonly InputSlot<bool> Reset = new InputSlot<bool>();
+
         [Input(Guid = "a3883c55-787e-47d2-ad69-2c2baf7ff546")]
         public readonly InputSlot<T3.Core.DataTypes.MeshBuffers> Mesh = new InputSlot<T3.Core.DataTypes.MeshBuffers>();
     }

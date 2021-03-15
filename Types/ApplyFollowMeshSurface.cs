@@ -32,14 +32,17 @@ namespace T3.Operators.Types.Id_03aa5f28_3f74_4feb_aa6a_36cdb2d7f0d9
         [Input(Guid = "b4e1cbd6-b97d-4ce1-8c9f-02abf3a7a3ac")]
         public readonly InputSlot<bool> Freeze = new InputSlot<bool>();
 
-        [Input(Guid = "5f3f2dee-bfbe-449b-b5f8-0a0cc79049bc")]
-        public readonly InputSlot<T3.Core.DataTypes.MeshBuffers> Mesh = new InputSlot<T3.Core.DataTypes.MeshBuffers>();
-
         [Input(Guid = "65aa1cc5-af7f-496c-aba4-cf149a7259b0")]
         public readonly InputSlot<float> MaxSpeed = new InputSlot<float>();
 
         [Input(Guid = "cd86f4c4-7189-450f-a383-62bc4967366b")]
         public readonly InputSlot<bool> IsEnabled = new InputSlot<bool>();
+
+        [Input(Guid = "5f3f2dee-bfbe-449b-b5f8-0a0cc79049bc")]
+        public readonly InputSlot<T3.Core.DataTypes.MeshBuffers> Mesh = new InputSlot<T3.Core.DataTypes.MeshBuffers>();
+
+        [Input(Guid = "d112e8a6-984f-465b-9034-7769d9140e2e")]
+        public readonly InputSlot<bool> Reset = new InputSlot<bool>();
     }
 }
 
