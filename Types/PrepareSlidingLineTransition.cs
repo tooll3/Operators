@@ -5,9 +5,11 @@ using Microsoft.Win32;
 using SharpDX;
 using T3.Core;
 using T3.Core.DataTypes;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
+using T3.Operators.Types.Id_8211249d_7a26_4ad0_8d84_56da72a5c536;
 using Point = T3.Core.DataTypes.Point;
 using Quaternion = System.Numerics.Quaternion;
 using Vector3 = System.Numerics.Vector3;
@@ -20,6 +22,9 @@ namespace T3.Operators.Types.Id_b7345438_f3f4_4ad3_9c57_6076ed0e9399
         [Output(Guid = "adcfd192-23a3-48c1-ae21-e7d36e055673")]
         public readonly Slot<StructuredList> ResultList = new Slot<StructuredList>();
 
+        [Output(Guid = "4E6983BB-482F-48E7-93B1-73C73F43C60A")]
+        public readonly Slot<int> StrokeCount = new Slot<int>();
+        
         public PrepareSlidingLineTransition()
         {
             ResultList.UpdateAction = Update;
@@ -39,8 +44,10 @@ namespace T3.Operators.Types.Id_b7345438_f3f4_4ad3_9c57_6076ed0e9399
         /// Computes the sub-progress for elements of an animation that's build of multiple delayed
         /// animations. Progress values always normalized.
         /// </summary>
-        /// <param name="spread">Controls how much the sub-animations should overlay. 0 means that all animation are played simultaneously.
-        /// 1 means they are played one after another. Larger spreads adds a pause between animations</param>
+        /// <param name="spread">Controls how much the sub-animations should overlay.
+        /// 0 means that all animation are played simultaneously.
+        /// 1 means they are played one after another.
+        /// Larger spreads adds a pause between animations</param>
         public static float ComputeOverlappingProgress(float normalizedProgress, int index, int count, float spread)
         {
             var N = (spread * count - spread + 1);
@@ -70,7 +77,8 @@ namespace T3.Operators.Types.Id_b7345438_f3f4_4ad3_9c57_6076ed0e9399
             var lineSegmentLength = 0f;
             var totalLength = 0f;
             
-
+            //Log.Debug("here");
+            
             // Measure...
             segments.Clear();
             for (var pointIndex = 0; pointIndex < sourcePoints.NumElements; pointIndex++)
@@ -104,20 +112,38 @@ namespace T3.Operators.Types.Id_b7345438_f3f4_4ad3_9c57_6076ed0e9399
                     indexWithinSegment++;
                 }
             }
+            
+            //var normalizeFactor = sp 
 
             // Write offsets...
             for (var segmentIndex = 0; segmentIndex < segments.Count; segmentIndex++)
             {
                 var segmentOffset = ComputeOverlappingProgress(0, segmentIndex, segments.Count, spread);
+                var lengthProgressWithingSegment = 0f;
+                var segment = segments[segmentIndex];
+                var hasValidLength = segment.SegmentLength > 0.001f;
+                
                 for (var pointIndexInSegment = 0; pointIndexInSegment < segments[segmentIndex].PointCount; pointIndexInSegment++)
                 {
-                    var pi = segments[segmentIndex].PointIndex + pointIndexInSegment;
-
-                    sourcePoints.TypedElements[pi].W = -segmentOffset *0.2f + pointIndexInSegment / segments[segmentIndex].PointCount / 2;
+                    var pi = segment.PointIndex + pointIndexInSegment;
+                    if (pointIndexInSegment > 0)
+                    {
+                        lengthProgressWithingSegment +=  Vector3.Distance(sourcePoints.TypedElements[pi - 1].Position,
+                                                                          sourcePoints.TypedElements[pi].Position);
+                    }
+                    
+                    // float t= -segmentOffset *0.2f + pointIndexInSegment / segment.PointCount / 2;
+                    float t = hasValidLength 
+                                  ? lengthProgressWithingSegment / segment.SegmentLength
+                                  : segmentOffset *0.2f + pointIndexInSegment / segment.PointCount / 2;
+                    sourcePoints.TypedElements[pi].W = (t - segmentOffset) / (segments.Count + 1);// + spread/ spread.Clamp(0.001f, 9999f); // / segments.Count
                 }
             }
 
+            StrokeCount.Value = segments.Count;
             ResultList.Value = sourcePoints;
+            StrokeCount.DirtyFlag.Clear();
+            ResultList.DirtyFlag.Clear();
         }
 
         [Input(Guid = "5FD5EEA5-B7AB-406F-8C10-8435D59297B5")]
