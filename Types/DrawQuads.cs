@@ -6,7 +6,7 @@ using T3.Operators.Types.Id_fd9bffd3_5c57_462f_8761_85f94c5a629b;
 
 namespace T3.Operators.Types.Id_16d10dc8_63b9_4ddf_90b8_41caef99d945
 {
-    public class DrawSprites : Instance<DrawSprites>
+    public class DrawQuads : Instance<DrawQuads>
     {
         [Output(Guid = "5c6f0299-16bd-4553-9ca1-e8d7c7634b37", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();

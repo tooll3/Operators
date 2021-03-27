@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using SharpDX.Direct3D11;
@@ -42,11 +43,73 @@ namespace T3.Operators.Types.Id_ad651447_75e7_4491_a56a_f737d70c0522
 
             //var pointCount = mesh.Vertices.Count;
 
-            switch ((Modes)Mode.GetValue(context))
+            var exportMode = (Modes)Mode.GetValue(context);
+            switch (exportMode)
             {
                 case Modes.AllVertices:
                 {
                     //var list = new StructuredList<Point>(pointCount);
+                    Log.Warning("Object mode not implemented", SymbolChildId);
+                    break;
+                }
+                case Modes.Vertices_ColorInOrientation: 
+                case Modes.Vertices_GrayscaleAsW:
+                {
+                    if (mesh.Colors.Count == 0)
+                    {
+                        Log.Warning($"{path} doesn't contain colors definitions. You can use MeshLab to export such files.", SymbolChildId);
+                    }
+                    
+                    if (mesh.Positions.Count == 0)
+                    {
+                        Log.Warning($"{path} doesn't contain vertex definitions.", SymbolChildId);
+                    }
+
+                    try
+                    {
+
+                        _points = new StructuredList<Point>(mesh.Positions.Count);
+
+                        for (var vertexIndex = 0; vertexIndex < mesh.Positions.Count; vertexIndex++)
+                        {
+                            var c = (vertexIndex >= mesh.Colors.Count)
+                                        ? SharpDX.Vector4.One
+                                        :  mesh.Colors[vertexIndex];
+
+                            if (exportMode == Modes.Vertices_GrayscaleAsW)
+                            {
+                                _points.TypedElements[vertexIndex] = new Point()
+                                                                         {
+                                                                             Position = new Vector3(
+                                                                                                    mesh.Positions[vertexIndex].X,
+                                                                                                    mesh.Positions[vertexIndex].Y,
+                                                                                                    mesh.Positions[vertexIndex].Z),
+                                                                             Orientation = Quaternion.Identity,
+                                                                             W = (c.X + c.Y + c.Z) / 3,
+                                                                         };
+                                
+                            }
+                            else
+                            {
+                                _points.TypedElements[vertexIndex] = new Point()
+                                                                         {
+                                                                             Position = new Vector3(
+                                                                                                    mesh.Positions[vertexIndex].X,
+                                                                                                    mesh.Positions[vertexIndex].Y,
+                                                                                                    mesh.Positions[vertexIndex].Z),
+                                                                             Orientation = new Quaternion(c.X, c.Y, c.Z, c.W),
+                                                                             W = 1
+                                                                         };
+                            }
+                        }
+
+                        Log.Debug($"loaded {path} with and {mesh.Colors.Count} colored points");
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error("Reading vertices failed " + e);
+                    }
+
                     break;
                 }
                 case Modes.LinesVertices:
@@ -120,6 +183,8 @@ namespace T3.Operators.Types.Id_ad651447_75e7_4491_a56a_f737d70c0522
         {
             AllVertices,
             LinesVertices,
+            Vertices_ColorInOrientation,
+            Vertices_GrayscaleAsW,
             //WireframeLines, // Todo: Not implemented 
         }
 

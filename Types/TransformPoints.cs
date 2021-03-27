@@ -39,6 +39,9 @@ namespace T3.Operators.Types.Id_7f6c64fe_ca2e_445e_a9b4_c70291ce354e
 
         [Input(Guid = "a6e5770b-39dc-4d7b-b92e-53302dc89395")]
         public readonly InputSlot<float> UniformScale = new InputSlot<float>();
+
+        [Input(Guid = "0192b746-ff90-4c26-a7d4-754b6ec8006b")]
+        public readonly InputSlot<bool> UpdateRotation = new InputSlot<bool>();
         
         
         

@@ -17,16 +17,14 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
         [Output(Guid = "c52dfa83-9820-4a54-b90b-62278dc8fe3f")]
         public readonly Slot<BufferWithViews> OutBuffer = new Slot<BufferWithViews>();
 
-        
         [Output(Guid = "e1775fdf-af5a-49b2-b6fc-20e2180b71f5")]
         public readonly Slot<int> Length = new Slot<int>();
-        
+
         public ListToBuffer()
         {
             OutBuffer.UpdateAction = Update;
             Length.UpdateAction = Update;
         }
-
 
         private void Update(EvaluationContext context)
         {
@@ -38,47 +36,54 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
                 OutBuffer.Value = null;
                 return;
             }
-            
+
             var totalSizeInBytes = 0;
             foreach (var entry in listsCollectedInputs)
             {
                 if (entry == null)
                     continue;
-                
+
                 totalSizeInBytes += entry.TotalSizeInBytes;
             }
-            
 
-            var resourceManager = ResourceManager.Instance();
-            using (var data = new DataStream(totalSizeInBytes, true, true))
+            if (totalSizeInBytes == 0)
             {
-                foreach (var entry in listsCollectedInputs)
+                _buffer = null;
+            }
+            else
+            {
+                var resourceManager = ResourceManager.Instance();
+                using (var data = new DataStream(totalSizeInBytes, true, true))
                 {
-                    entry?.WriteToStream(data);
-                }
-                data.Position = 0;
+                    foreach (var entry in listsCollectedInputs)
+                    {
+                        entry?.WriteToStream(data);
+                    }
 
-                var firstInputList = listsCollectedInputs.FirstOrDefault();
-                var elementSizeInBytes = firstInputList?.ElementSizeInBytes ?? 0; // todo: add check that all inputs have same type
-                try
-                {
-                    resourceManager.SetupStructuredBuffer(data, totalSizeInBytes, elementSizeInBytes, ref _buffer);
+                    data.Position = 0;
+
+                    var firstInputList = listsCollectedInputs.FirstOrDefault();
+                    var elementSizeInBytes = firstInputList?.ElementSizeInBytes ?? 0; // todo: add check that all inputs have same type
+                    try
+                    {
+                        resourceManager.SetupStructuredBuffer(data, totalSizeInBytes, elementSizeInBytes, ref _buffer);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error("Failed to setup structured buffer " + e.Message, SymbolChildId);
+                        return;
+                    }
                 }
-                catch (Exception e)
-                {
-                    Log.Error("Failed to setup structured buffer " + e.Message, SymbolChildId);
-                    return;
-                }
+                resourceManager.CreateStructuredBufferSrv(_buffer, ref _bufferWithViews.Srv);
+                resourceManager.CreateStructuredBufferUav(_buffer, UnorderedAccessViewBufferFlags.None, ref _bufferWithViews.Uav);
             }
 
             _bufferWithViews.Buffer = _buffer;
-            resourceManager.CreateStructuredBufferSrv(_buffer, ref _bufferWithViews.Srv);
-            resourceManager.CreateStructuredBufferUav(_buffer, UnorderedAccessViewBufferFlags.None, ref _bufferWithViews.Uav);
             OutBuffer.Value = _bufferWithViews;
         }
 
         private Buffer _buffer;
-        private BufferWithViews _bufferWithViews = new BufferWithViews();
+        private readonly BufferWithViews _bufferWithViews = new BufferWithViews();
 
         [Input(Guid = "08F181BB-9777-497C-871D-BCC1FF252F2F")]
         public readonly MultiInputSlot<StructuredList> Lists = new MultiInputSlot<StructuredList>();

@@ -5,7 +5,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_ffc0a7ed_fe61_4188_8db9_0b0f07c6b981
 {
-    public class DrawDrivenSprites : Instance<DrawDrivenSprites>
+    public class DrawQuadsW : Instance<DrawQuadsW>
     {
         [Output(Guid = "65bf6652-0187-4c5f-8e1f-ccc4254b843b")]
         public readonly Slot<Command> Output = new Slot<Command>();
@@ -26,14 +26,17 @@ namespace T3.Operators.Types.Id_ffc0a7ed_fe61_4188_8db9_0b0f07c6b981
         public readonly InputSlot<float> Size = new InputSlot<float>();
 
         [Input(Guid = "a0d7fc98-590d-481a-83a2-8522a3053082")]
-        public readonly InputSlot<float> WMappinScale = new InputSlot<float>();
+        public readonly InputSlot<float> WSpeed = new InputSlot<float>();
+
+        [Input(Guid = "1dfc889d-ed5b-4e82-b29c-a1b9079b8fa8")]
+        public readonly InputSlot<bool> ApplyPointOrientation = new InputSlot<bool>();
 
         [Input(Guid = "4be3c132-1318-426e-a2ed-9534110ca03f")]
         public readonly InputSlot<float> Rotate = new InputSlot<float>();
 
         [Input(Guid = "c15a2562-824d-416a-91fd-6bab0380ff0f")]
         public readonly InputSlot<System.Numerics.Vector3> RotateAxis = new InputSlot<System.Numerics.Vector3>();
-
+        
         [Input(Guid = "4256223c-ed88-4263-90f0-96cbc6da84d2")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture_ = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
@@ -49,8 +52,6 @@ namespace T3.Operators.Types.Id_ffc0a7ed_fe61_4188_8db9_0b0f07c6b981
         [Input(Guid = "9645b08f-ed92-4b82-8090-0a31162e83fb")]
         public readonly InputSlot<T3.Core.Animation.Curve> Scale = new InputSlot<T3.Core.Animation.Curve>();
 
-        [Input(Guid = "1dfc889d-ed5b-4e82-b29c-a1b9079b8fa8")]
-        public readonly InputSlot<bool> ApplyPointOrientation = new InputSlot<bool>();
     }
 }
 

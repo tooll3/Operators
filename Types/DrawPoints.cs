@@ -31,6 +31,9 @@ namespace T3.Operators.Types.Id_ffd94e5a_bc98_4e70_84d8_cce831e6925f
 
         [Input(Guid = "8fab9161-48d4-43b0-a18f-5942b7071a49", MappedType = typeof(PickBlendMode.BlendModes))]
         public readonly InputSlot<int> BlendMode = new InputSlot<int>();
+
+        [Input(Guid = "3fbad175-6060-40f2-a675-bdae20107698")]
+        public readonly InputSlot<float> FadeNearest = new InputSlot<float>();
     }
 }
 
