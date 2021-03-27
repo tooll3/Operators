@@ -17,7 +17,7 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
     {
         [Output(Guid = "1F4E7CAC-1F62-4633-B0F3-A3017A026753")]
         public readonly Slot<MeshBuffers> Data = new Slot<MeshBuffers>();
-        
+
         public LoadObj()
         {
             Data.UpdateAction = Update;
@@ -26,8 +26,9 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
         private void Update(EvaluationContext context)
         {
             var path = Path.GetValue(context);
-            if (path != _lastFilePath)
+            if (path != _lastFilePath || SortVertices.DirtyFlag.IsDirty)
             {
+                var vertexSorting = SortVertices.GetValue(context);
                 _description = System.IO.Path.GetFileName(path);
 
                 if (UseGPUCaching.GetValue(context))
@@ -38,15 +39,18 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
                         return;
                     }
                 }
-                
+
                 var mesh = ObjMesh.LoadFromFile(path);
                 if (mesh == null || mesh.DistinctDistinctVertices.Count == 0)
                 {
                     Log.Warning($"Can't read file {path}");
                     return;
                 }
-                _lastFilePath = path;
 
+                _lastFilePath = path;
+                
+                mesh.UpdateVertexSorting((ObjMesh.SortDirections)vertexSorting);
+                
                 var resourceManager = ResourceManager.Instance();
 
                 var newData = new DataSet();
@@ -58,20 +62,20 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
 
                     for (var vertexIndex = 0; vertexIndex < verticesCount; vertexIndex++)
                     {
-
-                        var vertex = mesh.DistinctDistinctVertices[vertexIndex];
+                        var vertex = mesh.DistinctDistinctVertices[mesh.SortedVertexIndices[vertexIndex]];
                         newData.VertexBufferData[vertexIndex] = new PbrVertex
-                                                                   {
-                                                                       Position = mesh.Positions[vertex.PositionIndex],
-                                                                       Normal = mesh.Normals[vertex.NormalIndex],
-                                                                       Tangent = mesh.VertexTangents[vertexIndex],
-                                                                       Bitangent = mesh.VertexBinormals[vertexIndex],
-                                                                       Texcoord = mesh.TexCoords[vertex.TextureCoordsIndex]
-                                                                   };
+                                                                    {
+                                                                        Position = mesh.Positions[vertex.PositionIndex],
+                                                                        Normal = mesh.Normals[vertex.NormalIndex],
+                                                                        Tangent = mesh.VertexTangents[vertexIndex],
+                                                                        Bitangent = mesh.VertexBinormals[vertexIndex],
+                                                                        Texcoord = mesh.TexCoords[vertex.TextureCoordsIndex]
+                                                                    };
                     }
 
                     newData.VertexBufferWithViews.Buffer = newData.VertexBuffer;
-                    resourceManager.SetupStructuredBuffer(newData.VertexBufferData, PbrVertex.Stride * verticesCount, PbrVertex.Stride, ref newData.VertexBuffer);
+                    resourceManager.SetupStructuredBuffer(newData.VertexBufferData, PbrVertex.Stride * verticesCount, PbrVertex.Stride,
+                                                          ref newData.VertexBuffer);
                     resourceManager.CreateStructuredBufferSrv(newData.VertexBuffer, ref newData.VertexBufferWithViews.Srv);
                     resourceManager.CreateStructuredBufferUav(newData.VertexBuffer, UnorderedAccessViewBufferFlags.None, ref newData.VertexBufferWithViews.Uav);
                 }
@@ -86,10 +90,10 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
                     {
                         var face = mesh.Faces[faceIndex];
                         newData.IndexBufferData[faceIndex] = new SharpDX.Int3(
-                                                                             mesh.GetVertexIndex(face.V0, face.V0n, face.V0t),
-                                                                             mesh.GetVertexIndex(face.V1, face.V1n, face.V1t),
-                                                                             mesh.GetVertexIndex(face.V2, face.V2n, face.V2t)
-                                                                            );
+                                                                              mesh.SortedVertexIndices[mesh.GetVertexIndex(face.V0, face.V0n, face.V0t)],
+                                                                              mesh.SortedVertexIndices[mesh.GetVertexIndex(face.V1, face.V1n, face.V1t)],
+                                                                              mesh.SortedVertexIndices[mesh.GetVertexIndex(face.V2, face.V2n, face.V2t)]
+                                                                             );
                     }
 
                     newData.IndexBufferWithViews.Buffer = newData.IndexBuffer;
@@ -98,7 +102,7 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
                     resourceManager.CreateStructuredBufferSrv(newData.IndexBuffer, ref newData.IndexBufferWithViews.Srv);
                     resourceManager.CreateStructuredBufferUav(newData.IndexBuffer, UnorderedAccessViewBufferFlags.None, ref newData.IndexBufferWithViews.Uav);
                 }
-                
+
                 if (UseGPUCaching.GetValue(context))
                 {
                     MeshBufferCache[path] = newData;
@@ -112,13 +116,11 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
             Data.Value = _data.DataBuffers;
         }
 
-        
         public string GetDescriptiveString()
         {
             return _description;
         }
-        
-        
+
         private string _description;
         private string _lastFilePath;
         private DataSet _data = new DataSet();
@@ -126,7 +128,7 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
         private class DataSet
         {
             public readonly MeshBuffers DataBuffers = new MeshBuffers();
-            
+
             public Buffer VertexBuffer;
             public PbrVertex[] VertexBufferData = new PbrVertex[0];
             public readonly BufferWithViews VertexBufferWithViews = new BufferWithViews();
@@ -135,14 +137,17 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
             public SharpDX.Int3[] IndexBufferData = new SharpDX.Int3[0];
             public readonly BufferWithViews IndexBufferWithViews = new BufferWithViews();
         }
-        
-        private static readonly Dictionary<string, DataSet> MeshBufferCache = new Dictionary<string, DataSet>(); 
+
+        private static readonly Dictionary<string, DataSet> MeshBufferCache = new Dictionary<string, DataSet>();
 
         [Input(Guid = "7d576017-89bd-4813-bc9b-70214efe6a27")]
         public readonly InputSlot<string> Path = new InputSlot<string>();
 
         [Input(Guid = "FFD22736-A600-4C97-A4A4-AD3526B8B35C")]
         public readonly InputSlot<bool> UseGPUCaching = new InputSlot<bool>();
+        
+        [Input(Guid = "AA19E71D-329C-448B-901C-565BF8C0DA4F", MappedType = typeof(ObjMesh.SortDirections))]
+        public readonly InputSlot<int> SortVertices = new InputSlot<int>();
 
     }
 }
