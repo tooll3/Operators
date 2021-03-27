@@ -48,6 +48,9 @@ namespace T3.Operators.Types.Id_ffc0a7ed_fe61_4188_8db9_0b0f07c6b981
 
         [Input(Guid = "9645b08f-ed92-4b82-8090-0a31162e83fb")]
         public readonly InputSlot<T3.Core.Animation.Curve> Scale = new InputSlot<T3.Core.Animation.Curve>();
+
+        [Input(Guid = "1dfc889d-ed5b-4e82-b29c-a1b9079b8fa8")]
+        public readonly InputSlot<bool> ApplyPointOrientation = new InputSlot<bool>();
     }
 }
 
