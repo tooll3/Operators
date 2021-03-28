@@ -47,13 +47,16 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
                     return;
                 }
 
-                _lastFilePath = path;
-                
                 mesh.UpdateVertexSorting((ObjMesh.SortDirections)vertexSorting);
-                
+
+                _lastFilePath = path;
+
                 var resourceManager = ResourceManager.Instance();
 
                 var newData = new DataSet();
+
+                var reversedLookup = new int[mesh.DistinctDistinctVertices.Count];
+
                 // Create Vertex buffer
                 {
                     var verticesCount = mesh.DistinctDistinctVertices.Count;
@@ -62,14 +65,16 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
 
                     for (var vertexIndex = 0; vertexIndex < verticesCount; vertexIndex++)
                     {
-                        var vertex = mesh.DistinctDistinctVertices[mesh.SortedVertexIndices[vertexIndex]];
+                        var sortedVertexIndex = mesh.SortedVertexIndices[vertexIndex];
+                        var sortedVertex = mesh.DistinctDistinctVertices[sortedVertexIndex];
+                        reversedLookup[sortedVertexIndex] = vertexIndex;
                         newData.VertexBufferData[vertexIndex] = new PbrVertex
                                                                     {
-                                                                        Position = mesh.Positions[vertex.PositionIndex],
-                                                                        Normal = mesh.Normals[vertex.NormalIndex],
-                                                                        Tangent = mesh.VertexTangents[vertexIndex],
-                                                                        Bitangent = mesh.VertexBinormals[vertexIndex],
-                                                                        Texcoord = mesh.TexCoords[vertex.TextureCoordsIndex]
+                                                                        Position = mesh.Positions[sortedVertex.PositionIndex],
+                                                                        Normal = mesh.Normals[sortedVertex.NormalIndex],
+                                                                        Tangent = mesh.VertexTangents[sortedVertexIndex],
+                                                                        Bitangent = mesh.VertexBinormals[sortedVertexIndex],
+                                                                        Texcoord = mesh.TexCoords[sortedVertex.TextureCoordsIndex]
                                                                     };
                     }
 
@@ -89,11 +94,14 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
                     for (var faceIndex = 0; faceIndex < faceCount; faceIndex++)
                     {
                         var face = mesh.Faces[faceIndex];
-                        newData.IndexBufferData[faceIndex] = new SharpDX.Int3(
-                                                                              mesh.SortedVertexIndices[mesh.GetVertexIndex(face.V0, face.V0n, face.V0t)],
-                                                                              mesh.SortedVertexIndices[mesh.GetVertexIndex(face.V1, face.V1n, face.V1t)],
-                                                                              mesh.SortedVertexIndices[mesh.GetVertexIndex(face.V2, face.V2n, face.V2t)]
-                                                                             );
+                        var v1Index = mesh.GetVertexIndex(face.V0, face.V0n, face.V0t);
+                        var v2Index = mesh.GetVertexIndex(face.V1, face.V1n, face.V1t);
+                        var v3Index = mesh.GetVertexIndex(face.V2, face.V2n, face.V2t);
+
+                        newData.IndexBufferData[faceIndex]
+                            = new SharpDX.Int3(reversedLookup[v1Index],
+                                               reversedLookup[v2Index],
+                                               reversedLookup[v3Index]);
                     }
 
                     newData.IndexBufferWithViews.Buffer = newData.IndexBuffer;
@@ -110,7 +118,7 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
 
                 _data = newData;
             }
-            
+
             _data.DataBuffers.VertexBuffer = _data.VertexBufferWithViews;
             _data.DataBuffers.IndicesBuffer = _data.IndexBufferWithViews;
             Data.Value = _data.DataBuffers;
@@ -145,9 +153,8 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
 
         [Input(Guid = "FFD22736-A600-4C97-A4A4-AD3526B8B35C")]
         public readonly InputSlot<bool> UseGPUCaching = new InputSlot<bool>();
-        
+
         [Input(Guid = "AA19E71D-329C-448B-901C-565BF8C0DA4F", MappedType = typeof(ObjMesh.SortDirections))]
         public readonly InputSlot<int> SortVertices = new InputSlot<int>();
-
     }
 }

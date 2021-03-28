@@ -40,6 +40,9 @@ namespace T3.Operators.Types.Id_d8c5330f_59b5_4907_b845_a02def3042fa
         [Input(Guid = "38f34034-b36f-4351-84e1-1a4f96e03fc6")]
         public readonly InputSlot<float> Size = new InputSlot<float>();
 
+        [Input(Guid = "a83bdfb1-c92d-4844-9e43-8ce09959fae9")]
+        public readonly InputSlot<bool> EnableDepthTest = new InputSlot<bool>();
+
     }
 }
 
