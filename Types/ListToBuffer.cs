@@ -34,6 +34,7 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
             if (listsCollectedInputs.Count == 0)
             {
                 OutBuffer.Value = null;
+                Length.Value = 0;
                 return;
             }
 
@@ -49,6 +50,7 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
             if (totalSizeInBytes == 0)
             {
                 _buffer = null;
+                Length.Value = 0;
             }
             else
             {
@@ -73,6 +75,9 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
                         Log.Error("Failed to setup structured buffer " + e.Message, SymbolChildId);
                         return;
                     }
+
+                    var elementCount = totalSizeInBytes / elementSizeInBytes;
+                    Length.Value = elementCount;
                 }
                 resourceManager.CreateStructuredBufferSrv(_buffer, ref _bufferWithViews.Srv);
                 resourceManager.CreateStructuredBufferUav(_buffer, UnorderedAccessViewBufferFlags.None, ref _bufferWithViews.Uav);
@@ -80,6 +85,7 @@ namespace T3.Operators.Types.Id_7e28c796_85e7_47ee_99bb_9599284dbeeb
 
             _bufferWithViews.Buffer = _buffer;
             OutBuffer.Value = _bufferWithViews;
+            
         }
 
         private Buffer _buffer;

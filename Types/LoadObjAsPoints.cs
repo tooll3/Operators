@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using SharpDX.Direct3D11;
@@ -30,19 +31,38 @@ namespace T3.Operators.Types.Id_ad651447_75e7_4491_a56a_f737d70c0522
             Points.UpdateAction = Update;
         }
 
+        
+        private static int[][] _sortAxisAndDirections =
+            {
+                new[] {0,1},
+                new[] {0,-1},
+                new[] {1,1},
+                new[] {1,-1},
+                new[] {2,1},
+                new[] {2,-1},
+            };        
+
         private void Update(EvaluationContext context)
         {
             var path = Path.GetValue(context);
             var mesh = ObjMesh.LoadFromFile(path);
-
+                
+            
             if (mesh == null)
             {
                 Log.Warning($"Can't read file {path}");
                 return;
             }
 
-            //var pointCount = mesh.Vertices.Count;
+            // Prepare sorting
+            var sorting = Sorting.GetValue(context);
+            var sortAxisIndex = _sortAxisAndDirections[sorting][0];
+            var sortDirection = _sortAxisAndDirections[sorting][1];
 
+            var sortedVertexIndices = Enumerable.Range(0, mesh.Positions.Count).ToList();
+            sortedVertexIndices.Sort((v1, v2) => mesh.Positions[v1][sortAxisIndex].CompareTo(mesh.Positions[v2][sortAxisIndex]) * sortDirection);
+            
+            // Export
             var exportMode = (Modes)Mode.GetValue(context);
             switch (exportMode)
             {
@@ -52,14 +72,14 @@ namespace T3.Operators.Types.Id_ad651447_75e7_4491_a56a_f737d70c0522
                     Log.Warning("Object mode not implemented", SymbolChildId);
                     break;
                 }
-                case Modes.Vertices_ColorInOrientation: 
+                case Modes.Vertices_ColorInOrientation:
                 case Modes.Vertices_GrayscaleAsW:
                 {
                     if (mesh.Colors.Count == 0)
                     {
                         Log.Warning($"{path} doesn't contain colors definitions. You can use MeshLab to export such files.", SymbolChildId);
                     }
-                    
+
                     if (mesh.Positions.Count == 0)
                     {
                         Log.Warning($"{path} doesn't contain vertex definitions.", SymbolChildId);
@@ -67,36 +87,35 @@ namespace T3.Operators.Types.Id_ad651447_75e7_4491_a56a_f737d70c0522
 
                     try
                     {
-
                         _points = new StructuredList<Point>(mesh.Positions.Count);
 
                         for (var vertexIndex = 0; vertexIndex < mesh.Positions.Count; vertexIndex++)
                         {
-                            var c = (vertexIndex >= mesh.Colors.Count)
+                            var sortedVertexIndex = sortedVertexIndices[vertexIndex];
+                            var c = (sortedVertexIndex >= mesh.Colors.Count)
                                         ? SharpDX.Vector4.One
-                                        :  mesh.Colors[vertexIndex];
+                                        : mesh.Colors[sortedVertexIndex];
 
                             if (exportMode == Modes.Vertices_GrayscaleAsW)
                             {
                                 _points.TypedElements[vertexIndex] = new Point()
                                                                          {
                                                                              Position = new Vector3(
-                                                                                                    mesh.Positions[vertexIndex].X,
-                                                                                                    mesh.Positions[vertexIndex].Y,
-                                                                                                    mesh.Positions[vertexIndex].Z),
+                                                                                                    mesh.Positions[sortedVertexIndex].X,
+                                                                                                    mesh.Positions[sortedVertexIndex].Y,
+                                                                                                    mesh.Positions[sortedVertexIndex].Z),
                                                                              Orientation = Quaternion.Identity,
                                                                              W = (c.X + c.Y + c.Z) / 3,
                                                                          };
-                                
                             }
                             else
                             {
                                 _points.TypedElements[vertexIndex] = new Point()
                                                                          {
                                                                              Position = new Vector3(
-                                                                                                    mesh.Positions[vertexIndex].X,
-                                                                                                    mesh.Positions[vertexIndex].Y,
-                                                                                                    mesh.Positions[vertexIndex].Z),
+                                                                                                    mesh.Positions[sortedVertexIndex].X,
+                                                                                                    mesh.Positions[sortedVertexIndex].Y,
+                                                                                                    mesh.Positions[sortedVertexIndex].Z),
                                                                              Orientation = new Quaternion(c.X, c.Y, c.Z, c.W),
                                                                              W = 1
                                                                          };
@@ -143,9 +162,9 @@ namespace T3.Operators.Types.Id_ad651447_75e7_4491_a56a_f737d70c0522
                                 _points.TypedElements[pointIndex++] = new Point()
                                                                           {
                                                                               Position = new Vector3(
-                                                                                                     mesh.Positions[lastVertexIndex].X,
-                                                                                                     mesh.Positions[lastVertexIndex].Y,
-                                                                                                     mesh.Positions[lastVertexIndex].Z),
+                                                                                                     mesh.Positions[sortedVertexIndices[lastVertexIndex]].X,
+                                                                                                     mesh.Positions[sortedVertexIndices[lastVertexIndex]].Y,
+                                                                                                     mesh.Positions[sortedVertexIndices[lastVertexIndex]].Z),
                                                                               W = 1
                                                                           };
                                 _points.TypedElements[pointIndex++] = Point.Separator();
@@ -154,14 +173,15 @@ namespace T3.Operators.Types.Id_ad651447_75e7_4491_a56a_f737d70c0522
                             _points.TypedElements[pointIndex++] = new Point()
                                                                       {
                                                                           Position = new Vector3(
-                                                                                                 mesh.Positions[line.V0].X,
-                                                                                                 mesh.Positions[line.V0].Y,
-                                                                                                 mesh.Positions[line.V0].Z),
+                                                                                                 mesh.Positions[sortedVertexIndices[line.V0]].X,
+                                                                                                 mesh.Positions[sortedVertexIndices[line.V0]].Y,
+                                                                                                 mesh.Positions[sortedVertexIndices[line.V0]].Z),
                                                                           W = 1
                                                                       };
 
                             lastVertexIndex = line.V2;
                         }
+
                         _points.TypedElements[pointIndex] = Point.Separator();
                         Log.Debug($"loaded {path} with {segmentCount} segments and {vertexCount} points");
                     }
@@ -193,5 +213,8 @@ namespace T3.Operators.Types.Id_ad651447_75e7_4491_a56a_f737d70c0522
 
         [Input(Guid = "DCACD412-1885-4A10-B073-54192F074AE8", MappedType = typeof(Modes))]
         public readonly InputSlot<int> Mode = new InputSlot<int>();
+        
+        [Input(Guid = "0AE6B6C5-80FA-4229-B06B-D9C2AC8C2A3F", MappedType = typeof(ObjMesh.SortDirections))]
+        public readonly InputSlot<int> Sorting = new InputSlot<int>();
     }
 }
