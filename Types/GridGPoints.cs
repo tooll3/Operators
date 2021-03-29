@@ -1,16 +1,30 @@
 using System;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Interfaces;
 using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_3ee8f66d_68df_43c1_b0eb_407259bf7e86
 {
-    public class GridGPoints : Instance<GridGPoints>
+    public class GridGPoints : Instance<GridGPoints>, ITransformable
     {
 
         [Output(Guid = "eb8c79d4-d147-419c-a606-4bbe7b71933f")]
-        public readonly Slot<T3.Core.DataTypes.BufferWithViews> OutBuffer = new Slot<T3.Core.DataTypes.BufferWithViews>();
+        public readonly TransformCallbackSlot<T3.Core.DataTypes.BufferWithViews> OutBuffer = new TransformCallbackSlot<T3.Core.DataTypes.BufferWithViews>();
 
+        
+        public GridGPoints()
+        {
+            OutBuffer.TransformableOp = this;
+        }
+        
+        System.Numerics.Vector3 ITransformable.Translation { get => Center.Value; set => Center.SetTypedInputValue(value); }
+        System.Numerics.Vector3 ITransformable.Rotation { get => System.Numerics.Vector3.Zero; set { } }
+        System.Numerics.Vector3 ITransformable.Scale { get => System.Numerics.Vector3.One; set { } }
+
+        public Action<ITransformable, EvaluationContext> TransformCallback { get => OutBuffer.TransformCallback; set => OutBuffer.TransformCallback = value; }
+
+        
         [Input(Guid = "72eda38f-fc49-4b1f-b7c0-97e07bee4f7c")]
         public readonly InputSlot<int> CountX = new InputSlot<int>();
 

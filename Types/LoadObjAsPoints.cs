@@ -72,7 +72,8 @@ namespace T3.Operators.Types.Id_ad651447_75e7_4491_a56a_f737d70c0522
                     Log.Warning("Object mode not implemented", SymbolChildId);
                     break;
                 }
-                case Modes.Vertices_ColorInOrientation:
+                case Modes.Vertices_ColorInOrientation: 
+                case Modes.Vertices_GrayscaleInOrientation:
                 case Modes.Vertices_GrayscaleAsW:
                 {
                     if (mesh.Colors.Count == 0)
@@ -108,6 +109,19 @@ namespace T3.Operators.Types.Id_ad651447_75e7_4491_a56a_f737d70c0522
                                                                              W = (c.X + c.Y + c.Z) / 3,
                                                                          };
                             }
+                            else if (exportMode == Modes.Vertices_GrayscaleInOrientation)
+                            {
+                                var gray = (c.X + c.Y + c.Z) / 3;
+                                _points.TypedElements[vertexIndex] = new Point()
+                                                                         {
+                                                                             Position = new Vector3(
+                                                                                                    mesh.Positions[sortedVertexIndex].X,
+                                                                                                    mesh.Positions[sortedVertexIndex].Y,
+                                                                                                    mesh.Positions[sortedVertexIndex].Z),
+                                                                             Orientation = new Quaternion(gray, gray, gray, 1),
+                                                                             W = 1,
+                                                                         };
+                            }                            
                             else
                             {
                                 _points.TypedElements[vertexIndex] = new Point()
@@ -204,6 +218,7 @@ namespace T3.Operators.Types.Id_ad651447_75e7_4491_a56a_f737d70c0522
             AllVertices,
             LinesVertices,
             Vertices_ColorInOrientation,
+            Vertices_GrayscaleInOrientation,
             Vertices_GrayscaleAsW,
             //WireframeLines, // Todo: Not implemented 
         }

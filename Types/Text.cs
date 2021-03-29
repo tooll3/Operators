@@ -1,11 +1,14 @@
+using System;
+using System.Numerics;
 using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Interfaces;
 using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_fd31d208_12fe_46bf_bfa3_101211f8f497
 {
-    public class Text : Instance<Text>
+    public class Text : Instance<Text>, ITransformable
     {
         private enum HorizontalAligns
         {
@@ -22,8 +25,22 @@ namespace T3.Operators.Types.Id_fd31d208_12fe_46bf_bfa3_101211f8f497
         }
         
         [Output(Guid = "3f8b20a7-c8b8-45ab-86a1-0efcd927358e", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
-        public readonly Slot<Command> Output = new Slot<Command>();
+        public readonly TransformCallbackSlot<Command> Output = new TransformCallbackSlot<Command>();
 
+        
+        public Text()
+        {
+            Output.TransformableOp = this;
+        }
+        
+        System.Numerics.Vector3 ITransformable.Translation { get => new Vector3(Position.Value.X, Position.Value.Y,0); 
+            set => Position.SetTypedInputValue(new Vector2(value.X, value.Y)); }
+        System.Numerics.Vector3 ITransformable.Rotation { get => System.Numerics.Vector3.Zero; set { } }
+        System.Numerics.Vector3 ITransformable.Scale { get => System.Numerics.Vector3.One; set { } }
+
+        public Action<ITransformable, EvaluationContext> TransformCallback { get => Output.TransformCallback; set => Output.TransformCallback = value; }
+        
+        
         [Input(Guid = "f1f1be0e-d5bc-4940-bbc1-88bfa958f0e1")]
         public readonly InputSlot<string> Input = new InputSlot<string>();
 

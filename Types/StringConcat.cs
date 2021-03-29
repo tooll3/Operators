@@ -1,4 +1,6 @@
-﻿using T3.Core.Operator;
+﻿using System;
+using System.Text;
+using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
 
@@ -16,15 +18,31 @@ namespace T3.Operators.Types.Id_48ab9824_76ca_4238_800f_9cf95311e6c0
 
         private void Update(EvaluationContext context)
         {
-            // Result.Value = Input1.GetValue(context) + Input2.GetValue(context);
-            Result.Value = string.Empty;
+            _stringBuilder.Clear();
+            var separator = Separator.GetValue(context);
+
+            var isFirst = true;
             foreach (var input in Input.GetCollectedTypedInputs())
             {
-                Result.Value += input.GetValue(context);
+                if (!isFirst && !string.IsNullOrEmpty(separator))
+                    _stringBuilder.Append(separator);
+
+                var t = input.GetValue(context);
+                if(!string.IsNullOrEmpty(t))
+                    _stringBuilder.Append(t);
+                
+                isFirst = false;
             }
+            Result.Value = _stringBuilder.ToString();
         }
+
+        private readonly StringBuilder _stringBuilder = new StringBuilder();
 
         [Input(Guid = "{B5E72715-9339-484F-B197-5A28CD823798}")]
         public readonly MultiInputSlot<string> Input = new MultiInputSlot<string>();
+        
+        [Input(Guid = "C832BA89-F4AE-4C47-B62B-52DA52A09556")]
+        public readonly InputSlot<string> Separator = new InputSlot<string>();
+
     }
 }
