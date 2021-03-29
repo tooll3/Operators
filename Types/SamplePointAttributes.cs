@@ -1,16 +1,27 @@
 using System;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Interfaces;
 using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_b3de7a93_e921_4e43_8a56_6c84b2d18b74
 {
-    public class SamplePointAttributes : Instance<SamplePointAttributes>
+    public class SamplePointAttributes : Instance<SamplePointAttributes>, ITransformable
     {
-
         [Output(Guid = "bdc65f4c-6eac-44bf-af39-6655605b8fae")]
-        public readonly Slot<T3.Core.DataTypes.BufferWithViews> OutBuffer = new Slot<T3.Core.DataTypes.BufferWithViews>();
+        public readonly TransformCallbackSlot<T3.Core.DataTypes.BufferWithViews> OutBuffer = new TransformCallbackSlot<T3.Core.DataTypes.BufferWithViews>();
 
+        public SamplePointAttributes()
+        {
+            OutBuffer.TransformableOp = this;
+        }
+        
+        System.Numerics.Vector3 ITransformable.Translation { get => Center.Value; set => Center.SetTypedInputValue(value); }
+        System.Numerics.Vector3 ITransformable.Rotation { get => System.Numerics.Vector3.Zero; set { } }
+        System.Numerics.Vector3 ITransformable.Scale { get => System.Numerics.Vector3.One; set { } }
+
+        public Action<ITransformable, EvaluationContext> TransformCallback { get => OutBuffer.TransformCallback; set => OutBuffer.TransformCallback = value; }
+        
         [Input(Guid = "d42b8adc-f1d6-4f32-94a3-24802630d763")]
         public readonly InputSlot<T3.Core.DataTypes.BufferWithViews> GPoints = new InputSlot<T3.Core.DataTypes.BufferWithViews>();
 

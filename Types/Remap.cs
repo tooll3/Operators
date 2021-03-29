@@ -23,7 +23,6 @@ namespace T3.Operators.Types.Id_f0acd1a4_7a98_43ab_a807_6d1bd3e92169
             var inMax = RangeInMax.GetValue(context);
             var outMin = RangeOutMin.GetValue(context);
             var outMax = RangeOutMax.GetValue(context);
-            var clamp = Clamp.GetValue(context);
 
             var factor = (value - inMin) / (inMax - inMin);
             var v = factor * (outMax - outMin) + outMin;
@@ -72,9 +71,6 @@ namespace T3.Operators.Types.Id_f0acd1a4_7a98_43ab_a807_6d1bd3e92169
 
         [Input(Guid = "252276FB-8DE1-42CC-BA41-07D6862015BD")]
         public readonly InputSlot<float> RangeOutMax = new InputSlot<float>();
-
-        [Input(Guid = "413C8072-7E0A-46C9-A48E-87272AB72CCB")]
-        public readonly InputSlot<bool> Clamp = new InputSlot<bool>();
         
         [Input(Guid = "406F6476-EB25-4493-AAEA-3899E84DE50F", MappedType = typeof(Modes))]
         public readonly InputSlot<int> Mode = new InputSlot<int>();        

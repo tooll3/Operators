@@ -31,23 +31,21 @@ namespace T3.Operators.Types.Id_ad651447_75e7_4491_a56a_f737d70c0522
             Points.UpdateAction = Update;
         }
 
-        
         private static int[][] _sortAxisAndDirections =
             {
-                new[] {0,1},
-                new[] {0,-1},
-                new[] {1,1},
-                new[] {1,-1},
-                new[] {2,1},
-                new[] {2,-1},
-            };        
+                new[] { 0, 1 },
+                new[] { 0, -1 },
+                new[] { 1, 1 },
+                new[] { 1, -1 },
+                new[] { 2, 1 },
+                new[] { 2, -1 },
+            };
 
         private void Update(EvaluationContext context)
         {
             var path = Path.GetValue(context);
             var mesh = ObjMesh.LoadFromFile(path);
-                
-            
+
             if (mesh == null)
             {
                 Log.Warning($"Can't read file {path}");
@@ -55,13 +53,15 @@ namespace T3.Operators.Types.Id_ad651447_75e7_4491_a56a_f737d70c0522
             }
 
             // Prepare sorting
-            var sorting = Sorting.GetValue(context);
-            var sortAxisIndex = _sortAxisAndDirections[sorting][0];
-            var sortDirection = _sortAxisAndDirections[sorting][1];
-
             var sortedVertexIndices = Enumerable.Range(0, mesh.Positions.Count).ToList();
-            sortedVertexIndices.Sort((v1, v2) => mesh.Positions[v1][sortAxisIndex].CompareTo(mesh.Positions[v2][sortAxisIndex]) * sortDirection);
-            
+            var sorting = Sorting.GetValue(context);
+            if (sorting != (int)ObjMesh.SortDirections.Ignore)
+            {
+                var sortAxisIndex = _sortAxisAndDirections[sorting][0];
+                var sortDirection = _sortAxisAndDirections[sorting][1];
+                sortedVertexIndices.Sort((v1, v2) => mesh.Positions[v1][sortAxisIndex].CompareTo(mesh.Positions[v2][sortAxisIndex]) * sortDirection);
+            }
+
             // Export
             var exportMode = (Modes)Mode.GetValue(context);
             switch (exportMode)
@@ -213,7 +213,7 @@ namespace T3.Operators.Types.Id_ad651447_75e7_4491_a56a_f737d70c0522
 
         [Input(Guid = "DCACD412-1885-4A10-B073-54192F074AE8", MappedType = typeof(Modes))]
         public readonly InputSlot<int> Mode = new InputSlot<int>();
-        
+
         [Input(Guid = "0AE6B6C5-80FA-4229-B06B-D9C2AC8C2A3F", MappedType = typeof(ObjMesh.SortDirections))]
         public readonly InputSlot<int> Sorting = new InputSlot<int>();
     }
