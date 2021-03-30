@@ -182,6 +182,11 @@
           "Id": "7acc95ad-d317-42fc-97f8-85f48d7e516f"/*EnableZTest*/,
           "Type": "System.Boolean",
           "Value": true
+        },
+        {
+          "Id": "3fbad175-6060-40f2-a675-bdae20107698"/*FadeNearest*/,
+          "Type": "System.Single",
+          "Value": 1.28
         }
       ],
       "Outputs": []
@@ -193,12 +198,17 @@
         {
           "Id": "5b9dcd2e-36b6-46f3-bded-0cba148cf628"/*Update*/,
           "Type": "System.Boolean",
-          "Value": false
+          "Value": true
         },
         {
           "Id": "79080698-1097-4178-b7da-7d10fd86be28"/*MixOriginal*/,
           "Type": "System.Single",
-          "Value": 1.57999992
+          "Value": 0.0
+        },
+        {
+          "Id": "0954b214-dd1f-40fd-bebe-29f74a8f5585"/*Reset*/,
+          "Type": "System.Boolean",
+          "Value": false
         }
       ],
       "Outputs": []
@@ -547,6 +557,36 @@
         }
       ],
       "Outputs": []
+    },
+    {
+      "Id": "7e47d0b0-d217-4f6f-9675-ee6513ed1a5e"/*Time*/,
+      "SymbolId": "9cb4d49e-135b-400b-a035-2b02c5ea6a72",
+      "InputValues": [],
+      "Outputs": []
+    },
+    {
+      "Id": "020e39d5-2bbd-4a69-a9c3-63dbe6e39c7a"/*HasValueDecreased*/,
+      "SymbolId": "f376121a-2360-4232-9724-0db6937062c3",
+      "InputValues": [
+        {
+          "Id": "332d2377-c5d3-448d-851f-26e3439720dc"/*Threshold*/,
+          "Type": "System.Single",
+          "Value": 0.5
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "caf14bcb-6cb6-4aa4-857e-b729fca446e6"/*CamPosition*/,
+      "SymbolId": "2ed26fb7-fe66-4ed6-8b8d-230d87ae5c77",
+      "InputValues": [],
+      "Outputs": []
+    },
+    {
+      "Id": "d866e844-0327-4aea-9c7f-d71069a1cc8a"/*Or*/,
+      "SymbolId": "9786dec1-b0fc-49d7-bf79-c9a1d457f386",
+      "InputValues": [],
+      "Outputs": []
     }
   ],
   "Connections": [
@@ -555,6 +595,12 @@
       "SourceSlotId": "e81c99ce-fcee-4e7c-a1c7-0aa3b352b7e1",
       "TargetParentOrChildId": "00000000-0000-0000-0000-000000000000",
       "TargetSlotId": "846bc771-7367-48e2-8389-206e2ee5c063"
+    },
+    {
+      "SourceParentOrChildId": "7e47d0b0-d217-4f6f-9675-ee6513ed1a5e",
+      "SourceSlotId": "b20573fe-7a7e-48e1-9370-744288ca6e32",
+      "TargetParentOrChildId": "020e39d5-2bbd-4a69-a9c3-63dbe6e39c7a",
+      "TargetSlotId": "0ce24e8e-7d35-41a1-85a5-0c55d4247a90"
     },
     {
       "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
@@ -727,8 +773,20 @@
     {
       "SourceParentOrChildId": "b72d24a0-7e75-4288-99af-ccfa6dd67c67",
       "SourceSlotId": "fc297ee7-2b25-4c34-98a4-3f2058040ff7",
+      "TargetParentOrChildId": "d866e844-0327-4aea-9c7f-d71069a1cc8a",
+      "TargetSlotId": "50ed5538-8134-4d8d-aedc-61f19f60446e"
+    },
+    {
+      "SourceParentOrChildId": "020e39d5-2bbd-4a69-a9c3-63dbe6e39c7a",
+      "SourceSlotId": "2de049e8-77d3-4f01-9ba2-63ddeee935ba",
+      "TargetParentOrChildId": "d866e844-0327-4aea-9c7f-d71069a1cc8a",
+      "TargetSlotId": "95ce0046-dbad-444e-bd31-0e34f00a62b9"
+    },
+    {
+      "SourceParentOrChildId": "d866e844-0327-4aea-9c7f-d71069a1cc8a",
+      "SourceSlotId": "fc297ee7-2b25-4c34-98a4-3f2058040ff7",
       "TargetParentOrChildId": "d904ad75-b0f6-42ca-a323-74a9f93415ca",
-      "TargetSlotId": "5b9dcd2e-36b6-46f3-bded-0cba148cf628"
+      "TargetSlotId": "0954b214-dd1f-40fd-bebe-29f74a8f5585"
     },
     {
       "SourceParentOrChildId": "f1898073-d26a-4bb3-8480-134ae4260f40",
@@ -747,6 +805,12 @@
       "SourceSlotId": "9300b07e-977d-47b0-908e-c4b1e5e53a64",
       "TargetParentOrChildId": "d9f68d97-7934-4074-bac8-2393d6030c59",
       "TargetSlotId": "5d73ebe6-9aa0-471a-ae6b-3f5bfd5a0f9c"
+    },
+    {
+      "SourceParentOrChildId": "caf14bcb-6cb6-4aa4-857e-b729fca446e6",
+      "SourceSlotId": "20e33049-c2fa-4c9f-8607-318b279b72ec",
+      "TargetParentOrChildId": "f1898073-d26a-4bb3-8480-134ae4260f40",
+      "TargetSlotId": "0f053c34-c9ef-46b7-9c73-fff9984a3d5e"
     },
     {
       "SourceParentOrChildId": "a9557d18-0866-410e-aef5-6554df41bb68",

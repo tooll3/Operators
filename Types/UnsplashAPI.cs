@@ -53,7 +53,7 @@ namespace T3.Operators.Types.Id_89162b9f_75f5_4d32_9d28_8259cf47cf58
                 _photoIndex = photoIndex;
                 if (_photos != null && _photos.Count != 0)
                 {
-                    var index = _photoIndex % _photos.Count % 100;
+                    var index = Math.Abs(_photoIndex) % _photos.Count;
                     PhotoAuthor.Value = _photos[index].User.Name;
                     PhotoUrl.Value = _photos[index].Urls.Regular;
                     Log.Debug($"Update photo properties: Author {PhotoAuthor.Value}   Url {PhotoUrl.Value}");

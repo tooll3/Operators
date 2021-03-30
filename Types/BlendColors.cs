@@ -27,8 +27,8 @@ namespace T3.Operators.Types.Id_6b7c541a_ca36_4f21_ac95_89e874820c5a
             switch (mode)
             {
                 case Modes.Mix:
-                    result = Color.Value;
-                    Color.Value = a * (1-m) + b * m;
+                    //result = Color.Value;
+                    result = a * (1-m) + b * m;
                     break;
                 case Modes.Multiply:
                     result = a *  Vector4.Lerp(new Vector4(1), b, m);
@@ -43,7 +43,7 @@ namespace T3.Operators.Types.Id_6b7c541a_ca36_4f21_ac95_89e874820c5a
                 
             }
 
-            Color.Value = Vector4.Max(result, Vector4.Zero);
+            Color.Value = result; //Vector4.Max(result, Vector4.Zero);
         }
         
         [Input(Guid = "EB601C57-2025-4135-8292-223EAEDAF187")]
