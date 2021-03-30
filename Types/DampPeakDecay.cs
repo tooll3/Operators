@@ -24,7 +24,11 @@ namespace T3.Operators.Types.Id_ef3a1411_e88c_43a8_83b4_931fdbf16c75
             
             var wasEvaluatedThisFrame = runTime <= _lastEvalTime;
             if (wasEvaluatedThisFrame)
+            {
+                Value.DirtyFlag.Clear();
+                Decay.DirtyFlag.Clear();
                 return;
+            }
 
             _lastEvalTime = runTime;
 

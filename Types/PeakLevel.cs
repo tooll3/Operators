@@ -10,7 +10,7 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
 {
     public class PeakLevel : Instance<PeakLevel>
     {
-        [Output(Guid = "6fe37109-0177-4823-9466-eaa49adb19d4")]
+        [Output(Guid = "6fe37109-0177-4823-9466-eaa49adb19d4", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<float> AttackLevel = new Slot<float>();
         
         [Output(Guid = "80DCAD3B-5E93-4991-855D-24176EC54F4D", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
@@ -27,6 +27,8 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
         {
             AttackLevel.UpdateAction = Update;
             FoundPeak.UpdateAction = Update;
+            TimeSincePeak.UpdateAction = Update;
+            MovingSum.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)
@@ -42,7 +44,7 @@ namespace T3.Operators.Types.Id_d3fb5baf_43f8_4983_a1d9_42f4005a3af0
             _lastEvalTime = t;
             
             var value = Value.GetValue(context);
-            var increase = (value - _lastValue).Clamp(0, 10000);
+            var increase = (value - _lastValue);//.Clamp(0, 10000);
             
             var timeSinceLastPeak = EvaluationContext.RunTimeInSecs - _lastPeakTime;
             if (timeSinceLastPeak < 0)

@@ -38,6 +38,9 @@ namespace T3.Operators.Types.Id_6bb3fc41_f1d4_467e_afc6_62b452ec36be
         [Input(Guid = "f9004ee2-adc6-4d61-97c5-29c47b95281f")]
         public readonly InputSlot<float> MinTimeBetweenPeaks = new InputSlot<float>();
 
+        [Input(Guid = "0cc060fb-b721-4ef1-936f-2a3aa8efd1f7")]
+        public readonly InputSlot<bool> Reset = new InputSlot<bool>();
+
     }
 }
 

@@ -27,6 +27,12 @@ namespace T3.Operators.Types.Id_112ea923_a349_412f_8dd3_4d9d9fc42dc6
         [Input(Guid = "89e105e1-a333-465a-b8a5-7b0ee645acbf")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
+        [Input(Guid = "57bb8790-4c02-422a-833b-0b1cf0f3e781", MappedType = typeof(InputSources))]
+        public readonly InputSlot<int> InputSource = new InputSlot<int>();
+
+        [Input(Guid = "29ef504f-c6a4-4740-a5fe-95e45117fc32")]
+        public readonly InputSlot<bool> Reset = new InputSlot<bool>();
+
         [Output(Guid = "6ba78564-8315-49ef-9d47-eb96e0a52fd5")]
         public readonly Slot<T3.Core.Command> Detection = new Slot<T3.Core.Command>();
         
@@ -49,7 +55,11 @@ namespace T3.Operators.Types.Id_112ea923_a349_412f_8dd3_4d9d9fc42dc6
         [Output(Guid = "1c9c6951-c300-4ada-ae34-783b30f31180")]
         public readonly Slot<SharpDX.Direct3D11.Texture2D> TextureOutput = new Slot<SharpDX.Direct3D11.Texture2D>();
 
-
+        private enum InputSources
+        {
+            ExternalWasabi,
+            InternalSoundtrack,
+        }
     }
 }
 
