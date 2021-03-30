@@ -10,6 +10,9 @@ namespace T3.Operators.Types.Id_18d9721b_e170_4f4d_b630_30445aba5e20
         [Output(Guid = "4b6ba325-0505-4f36-9d33-475848f58b3b")]
         public readonly Slot<Texture2D> Output = new Slot<Texture2D>();
 
+        [Input(Guid = "71eb23a5-dde7-42bd-916a-5278343b64ad")]
+        public readonly InputSlot<float> OverrideTime = new InputSlot<float>();
+
         [Output(Guid = "30951983-8dff-4c85-8508-79386a5a5879")]
         public readonly Slot<Texture2D> ColorBuffer = new Slot<Texture2D>();
 
