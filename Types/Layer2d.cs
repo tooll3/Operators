@@ -1,12 +1,15 @@
+using System;
+using System.Numerics;
 using SharpDX.Direct3D11;
 using T3.Core;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Interfaces;
 using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_d8c5330f_59b5_4907_b845_a02def3042fa
 {
-    public class Layer2d : Instance<Layer2d>
+    public class Layer2d : Instance<Layer2d>, ITransformable
     {
         enum BlendModes
         {
@@ -16,7 +19,19 @@ namespace T3.Operators.Types.Id_d8c5330f_59b5_4907_b845_a02def3042fa
         }        
         
         [Output(Guid = "e4a8d926-7abd-4d2a-82a1-b7d140cb457f", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
-        public readonly Slot<Command> Output = new Slot<Command>();
+        public readonly TransformCallbackSlot<Command> Output = new TransformCallbackSlot<Command>();
+
+        public Layer2d()
+        {
+            Output.TransformableOp = this;
+        }
+        
+        System.Numerics.Vector3 ITransformable.Translation { get => new Vector3(Position.Value.X, Position.Value.Y,0); 
+            set => Position.SetTypedInputValue(new Vector2(value.X, value.Y)); }
+        System.Numerics.Vector3 ITransformable.Rotation { get => System.Numerics.Vector3.Zero; set { } }
+        System.Numerics.Vector3 ITransformable.Scale { get => System.Numerics.Vector3.One; set { } }
+
+        public Action<ITransformable, EvaluationContext> TransformCallback { get => Output.TransformCallback; set => Output.TransformCallback = value; }
 
 
         [Input(Guid = "2a95ac54-5ef7-4d3c-a90b-ecd5b422bddc")]
