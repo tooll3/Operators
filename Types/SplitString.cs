@@ -26,8 +26,18 @@ namespace T3.Operators.Types.Id_a0fcf7ed_1f14_4a8b_a57e_99e5b2407b1b
             var c = (split.Length == 0 || split == "\\n")  
                         ? '\n'
                         : split[0];
-            Fragments.Value = String.GetValue(context).Split(c).ToList();
+            
+            var str = String.GetValue(context);
+            if (string.IsNullOrEmpty(str))
+            {
+                Fragments.Value = _emptyList;
+                return;
+            }
+            
+            Fragments.Value = str.Split(c).ToList();
         }
+
+        private readonly List<string> _emptyList = new List<string>();
 
         [Input(Guid = "b1fd8b37-140e-487f-bfe2-bc426d8fe439")]
         public readonly InputSlot<string> String = new InputSlot<string>("Line\nLine");

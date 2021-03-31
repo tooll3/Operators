@@ -86,12 +86,15 @@ namespace T3.Operators.Types.Id_7baaa83d_5c09_42a0_b7bc_35dbcfa5156d
         {
             if (fragmentCount <= 0 || _numberOfChunks == 0)
                 return "";
-
+            
             var sb = new StringBuilder();
             for (var index = 0;
                  index < fragmentCount;
                  index++)
             {
+                if(index > 0)
+                    sb.Append(_delimiter);
+                    
                 var moduloIndex = (startFragment + index) % _numberOfChunks;
                 if (moduloIndex < 0)
                     moduloIndex += _numberOfChunks;
@@ -101,7 +104,6 @@ namespace T3.Operators.Types.Id_7baaa83d_5c09_42a0_b7bc_35dbcfa5156d
                 //d = _delimiter;
                 
                 sb.Append(_chunks[moduloIndex]);
-                sb.Append(_delimiter);
             }
 
             return sb.ToString();

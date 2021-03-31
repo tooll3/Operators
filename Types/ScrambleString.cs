@@ -57,7 +57,7 @@ namespace T3.Operators.Types.Id_7b21f10b_3548_4a23_95df_360addaeb03d
                     if (TriggerRandomPos.GetValue(context))
                         _index = (int)_random.NextLong(0, stringBuilder.Length);
 
-                    var separator = Separator.GetValue(context);
+                    var separator = Separator.GetValue(context); ;
                     if (!string.IsNullOrEmpty(separator))
                         separator = separator.Replace("\\n", "\n");
 

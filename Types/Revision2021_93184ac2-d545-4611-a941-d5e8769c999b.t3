@@ -428,7 +428,7 @@
         {
           "Id": "cc3b0ab3-7379-4197-9a84-dc1b368790c5"/*BeatThreshold*/,
           "Type": "System.Single",
-          "Value": 0.94
+          "Value": 1.05
         },
         {
           "Id": "9aff8ca6-d2f5-4bb5-9c38-af798061596c"/*HihatThreshold*/,
@@ -436,12 +436,6 @@
           "Value": 0.65
         }
       ],
-      "Outputs": []
-    },
-    {
-      "Id": "c8e9936a-ac96-4f0c-983e-db90e2273c81"/*SimpleSoundReactionExample*/,
-      "SymbolId": "f02d4cf2-4fb0-4964-8990-2360d2db7979",
-      "InputValues": [],
       "Outputs": []
     },
     {
@@ -461,12 +455,12 @@
             "Type": "T3.Core.Animation.TimeClip",
             "TimeClip": {
               "TimeRange": {
-                "Start": 217.5,
-                "End": 437.50943
+                "Start": 216.0,
+                "End": 436.00943
               },
               "SourceRange": {
-                "Start": 217.5,
-                "End": 437.50943
+                "Start": 216.0,
+                "End": 436.00943
               },
               "LayerIndex": 0
             }
@@ -490,12 +484,6 @@
     {
       "Id": "4b32f6e7-f5c6-4912-97c7-0c728310d4fd"/*PairPointsForLinesExample*/,
       "SymbolId": "d1432885-5d16-49ec-afb9-845d0f3efcb8",
-      "InputValues": [],
-      "Outputs": []
-    },
-    {
-      "Id": "7aa1cc50-e505-4303-bf0e-045fc1379a2f"/*SyncedRibbons*/,
-      "SymbolId": "dda7898a-00c3-40c9-9fcd-020706969733",
       "InputValues": [],
       "Outputs": []
     },
@@ -534,6 +522,54 @@
           }
         }
       ]
+    },
+    {
+      "Id": "8d473373-b8e6-4787-94de-dca595ef79b0"/*FadeBlack*/,
+      "SymbolId": "e7821087-ec80-4c1c-907a-e3506dd345b3",
+      "Name": "FadeBlack",
+      "InputValues": [],
+      "Outputs": [
+        {
+          "Id": "f916f73c-ef64-40b5-9994-04292e6a0a9a"/*FadeBlack*/,
+          "OutputData": {
+            "Type": "T3.Core.Animation.TimeClip",
+            "TimeClip": {
+              "TimeRange": {
+                "Start": 448.0,
+                "End": 591.49054
+              },
+              "SourceRange": {
+                "Start": 448.0,
+                "End": 591.49054
+              },
+              "LayerIndex": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "Id": "4287a932-09fe-4c3d-bcaf-86c86eb2a1f1"/*AnalyzeSound*/,
+      "SymbolId": "112ea923-a349-412f-8dd3-4d9d9fc42dc6",
+      "InputValues": [
+        {
+          "Id": "cc3b0ab3-7379-4197-9a84-dc1b368790c5"/*BeatThreshold*/,
+          "Type": "System.Single",
+          "Value": 1.05
+        },
+        {
+          "Id": "9aff8ca6-d2f5-4bb5-9c38-af798061596c"/*HihatThreshold*/,
+          "Type": "System.Single",
+          "Value": 0.65
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "fc8f1c8e-cb59-413c-8308-89dddc0c768a"/*RenderTarget*/,
+      "SymbolId": "f9fe78c5-43a6-48ae-8e8c-6cdbbc330dd1",
+      "InputValues": [],
+      "Outputs": []
     }
   ],
   "Connections": [
@@ -600,6 +636,12 @@
     {
       "SourceParentOrChildId": "a8ebfc32-b93e-4ae7-beb8-de0cdbe90982",
       "SourceSlotId": "2a4db967-6143-445f-8afd-8bb1db2d1041",
+      "TargetParentOrChildId": "5a6c561d-b41d-4029-b3a8-da10ed8607e2",
+      "TargetSlotId": "5d73ebe6-9aa0-471a-ae6b-3f5bfd5a0f9c"
+    },
+    {
+      "SourceParentOrChildId": "8d473373-b8e6-4787-94de-dca595ef79b0",
+      "SourceSlotId": "f916f73c-ef64-40b5-9994-04292e6a0a9a",
       "TargetParentOrChildId": "5a6c561d-b41d-4029-b3a8-da10ed8607e2",
       "TargetSlotId": "5d73ebe6-9aa0-471a-ae6b-3f5bfd5a0f9c"
     },

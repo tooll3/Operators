@@ -70,6 +70,9 @@ namespace T3.Operators.Types.Id_fd31d208_12fe_46bf_bfa3_101211f8f497
 
         [Input(Guid = "50c9ab21-39f4-4e92-b5a7-ad9e60ae6ec3")]
         public readonly InputSlot<string> FontPath = new InputSlot<string>();
+
+        [Input(Guid = "28be4e86-6761-4d07-80bf-abf6f82897e4")]
+        public readonly InputSlot<SharpDX.Direct3D11.CullMode> CullMode = new InputSlot<SharpDX.Direct3D11.CullMode>();
     }
 }
 

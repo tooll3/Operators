@@ -135,6 +135,7 @@ namespace T3.Operators.Types.Id_c5707b79_859b_4d53_92e0_cbed53aae648
                     break;
                 // Middle
                 case 1:
+                    //var evenLineNumber = numLinesInText + numLinesInText % 2;  
                     cursorY = _font.Font.Common.LineHeight * lineHeight * (numLinesInText - 1) / 2
                               + _font.Font.Common.LineHeight / 2f
                               + _font.Font.Common.Base * ( SdfWidth / _font.Font.Info.Size);

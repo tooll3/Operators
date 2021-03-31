@@ -62,6 +62,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             var deviceContext = device.ImmediateContext;
 
             // Save settings in context
+            var prevRequestedResolution = context.RequestedResolution;
             var prevViewports = deviceContext.Rasterizer.GetViewports<RawViewportF>();
             var prevTargets = deviceContext.OutputMerger.GetRenderTargets(2, out var prevDepthStencilView);
             var prevObjectToWorld = context.ObjectToWorld;
@@ -91,8 +92,11 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                     Log.Error($"{Parent.Symbol.Name}: Error clearing actual render target.", SymbolChildId);
                 }
             }
+            
+            
 
             // Set default values for new sub tree
+            context.RequestedResolution = size;
             context.SetDefaultCamera();
 
             if (TextureReference.IsConnected)
@@ -109,8 +113,10 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             context.ObjectToWorld = prevObjectToWorld;
             context.WorldToCamera = prevWorldToCamera;
             context.CameraToClipSpace = prevCameraToClipSpace;
+            context.RequestedResolution = prevRequestedResolution;
             deviceContext.Rasterizer.SetViewports(prevViewports);
             deviceContext.OutputMerger.SetTargets(prevDepthStencilView, prevTargets);
+            
 
             if (_sampleCount > 1)
             {
