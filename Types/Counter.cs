@@ -28,6 +28,7 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
             var modulo = Modulo.GetValue(context);
             var increment = Increment.GetValue(context);
             _rate = Rate.GetValue(context);
+            _phase = Phase.GetValue(context);
             _blending = Blending.GetValue(context);
             var reset = TriggerReset.GetValue(context);
             var jump = TriggerCount.GetValue(context);
@@ -44,7 +45,7 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
 
             if (UseRate)
             {
-                var activationIndex = (int)(_beatTime * _rate);
+                var activationIndex = (int)(_beatTime * _rate + _phase);
                 if (activationIndex != _lastActivationIndex)
                 {
                     //Log.Debug($"ai {activationIndex}  != {_lastActivationIndex}  rate={_rate} t = {_beatTime} ");
@@ -110,6 +111,8 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
         private bool UseRate => _rate > -1;
 
         private float _rate;
+        private float _phase;
+
         private double _beatTime;
         private float _blending;
 
@@ -161,10 +164,15 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
         [Input(Guid = "286CBBFB-796D-499F-93D3-D467512110BE")]
         public readonly InputSlot<float> Rate = new InputSlot<float>();
 
+        [Input(Guid = "701E7534-FAB2-4204-A68F-66D467E39F66")]
+        public readonly InputSlot<float> Phase = new InputSlot<float>();
+
         [Input(Guid = "B04D475B-A898-421B-BF26-AE5CF982A351")]
         public readonly InputSlot<float> Blending = new InputSlot<float>();
 
+
         [Input(Guid = "E0C386B9-A987-4D11-9171-2971FA759827")]
         public readonly InputSlot<bool> SmoothBlending = new InputSlot<bool>();
+
     }
 }
