@@ -10,7 +10,7 @@ namespace T3.Operators.Types.Id_ef3a1411_e88c_43a8_83b4_931fdbf16c75
 {
     public class DampPeakDecay : Instance<DampPeakDecay>
     {
-        [Output(Guid = "A60A2E7B-99B7-489A-A662-301A6E71A885")]
+        [Output(Guid = "A60A2E7B-99B7-489A-A662-301A6E71A885", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> Result = new Slot<float>();
         
         public DampPeakDecay()

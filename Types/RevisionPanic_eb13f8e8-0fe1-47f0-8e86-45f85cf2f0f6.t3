@@ -116,7 +116,7 @@
           "Value": {
             "X": 1.0,
             "Y": 0.0,
-            "Z": 0.0,
+            "Z": 0.183406353,
             "W": 1.0
           }
         },
@@ -138,7 +138,12 @@
         {
           "Id": "e14dcc43-7c18-4ed7-ad39-dfeab10e3d33"/*Roughness*/,
           "Type": "System.Single",
-          "Value": 0.34
+          "Value": 0.29
+        },
+        {
+          "Id": "108ff533-f205-4989-b894-acf48e3cc1db"/*Metal*/,
+          "Type": "System.Single",
+          "Value": 0.22
         }
       ],
       "Outputs": []
@@ -228,7 +233,7 @@
         {
           "Id": "df158fcf-3042-48cf-8383-7bf4c1bcb8a6"/*Size*/,
           "Type": "System.Single",
-          "Value": 0.017
+          "Value": 0.037
         },
         {
           "Id": "c9cf2182-1297-463c-b5c1-d4ee7ad0895c"/*EnableDepthWrite*/,
@@ -512,6 +517,14 @@
           "Value": "PANICPANICPANIC\nPANICPANICPANIC\nPANICPANICPANIC"
         },
         {
+          "Id": "de0fed7d-d2af-4424-baf3-81606e26559f"/*Position*/,
+          "Type": "System.Numerics.Vector2",
+          "Value": {
+            "X": 0.0,
+            "Y": 0.0268618464
+          }
+        },
+        {
           "Id": "d89c518c-a862-4f46-865b-0380350b7417"/*Size*/,
           "Type": "System.Single",
           "Value": 841.0
@@ -773,9 +786,15 @@
         {
           "Id": "ceeae47b-d792-471d-a825-49e22749b7b9"/*InputString*/,
           "Type": "System.String",
-          "Value": "ADDINGITADDINGITADDINGITADDINGITADDINGIT\nADDINGITADDINGITADDINGITADDINGITADDINGIT\nADDINGITADDINGITADDINGITADDINGITADDINGIT\nADDINGITADDINGITADDINGITADDINGITADDINGIT\nADDINGITADDINGITADDINGITADDINGITADDINGIT"
+          "Value": "         ADDINGADDINGADDINGADDINGADDING\n         ADDINGADDINGADDINGADDINGADDING\n         ADDINGADDINGADDINGADDINGADDING\n         ADDINGADDINGADDINGADDINGADDING\n         ADDINGADDINGADDINGADDINGADDING"
         }
       ],
+      "Outputs": []
+    },
+    {
+      "Id": "d7346392-7748-4231-a195-cf723632f8b7"/*SetFog*/,
+      "SymbolId": "74cbfce0-f8b8-46a1-b5d6-38477d4eec99",
+      "InputValues": [],
       "Outputs": []
     }
   ],
@@ -805,8 +824,8 @@
       "TargetSlotId": "afadb109-37b2-49aa-8c32-627cc35fd574"
     },
     {
-      "SourceParentOrChildId": "ce9efaa8-78bb-4430-a10f-91bd3badbfc8",
-      "SourceSlotId": "73ebf863-ba71-421c-bee7-312f13c5eff0",
+      "SourceParentOrChildId": "d7346392-7748-4231-a195-cf723632f8b7",
+      "SourceSlotId": "7c2134d1-45c6-4dc7-b591-a4a5113f5747",
       "TargetParentOrChildId": "12d84766-8c86-4d6d-ad74-d0813aed5f6e",
       "TargetSlotId": "5d73ebe6-9aa0-471a-ae6b-3f5bfd5a0f9c"
     },
@@ -853,8 +872,8 @@
       "TargetSlotId": "307e2b98-a337-4636-969f-a19841b11511"
     },
     {
-      "SourceParentOrChildId": "ce9efaa8-78bb-4430-a10f-91bd3badbfc8",
-      "SourceSlotId": "73ebf863-ba71-421c-bee7-312f13c5eff0",
+      "SourceParentOrChildId": "d7346392-7748-4231-a195-cf723632f8b7",
+      "SourceSlotId": "7c2134d1-45c6-4dc7-b591-a4a5113f5747",
       "TargetParentOrChildId": "3f904ef0-6c3e-46f2-a9c5-74f3a4039d10",
       "TargetSlotId": "4d663aa5-e2d4-40e0-8901-abe09cb832c3"
     },
@@ -1033,6 +1052,12 @@
       "TargetSlotId": "e15b6dc7-aaf9-4244-a4b8-4ac13ee7d23f"
     },
     {
+      "SourceParentOrChildId": "ce9efaa8-78bb-4430-a10f-91bd3badbfc8",
+      "SourceSlotId": "73ebf863-ba71-421c-bee7-312f13c5eff0",
+      "TargetParentOrChildId": "d7346392-7748-4231-a195-cf723632f8b7",
+      "TargetSlotId": "afadb109-37b2-49aa-8c32-627cc35fd574"
+    },
+    {
       "SourceParentOrChildId": "f858012e-ced5-4c85-a882-6e550952d9b3",
       "SourceSlotId": "66ce8660-253c-4a0b-8aec-f7a56751a1e4",
       "TargetParentOrChildId": "df35e274-4fe1-4135-b864-f608ca18d8eb",
@@ -1186,7 +1211,7 @@
         "Keys": [
           {
             "Time": 708.4302,
-            "Value": 194.0,
+            "Value": 400.0,
             "InType": "Spline",
             "OutType": "Spline",
             "InEditMode": "Linear",
@@ -1196,7 +1221,7 @@
           },
           {
             "Time": 712.5,
-            "Value": 194.0,
+            "Value": 400.0,
             "InType": "Spline",
             "OutType": "Spline",
             "InEditMode": "Linear",
