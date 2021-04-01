@@ -24,7 +24,6 @@ namespace T3.Operators.Types.Id_3ee8f66d_68df_43c1_b0eb_407259bf7e86
 
         public Action<ITransformable, EvaluationContext> TransformCallback { get => OutBuffer.TransformCallback; set => OutBuffer.TransformCallback = value; }
 
-        
         [Input(Guid = "72eda38f-fc49-4b1f-b7c0-97e07bee4f7c")]
         public readonly InputSlot<int> CountX = new InputSlot<int>();
 
@@ -36,6 +35,9 @@ namespace T3.Operators.Types.Id_3ee8f66d_68df_43c1_b0eb_407259bf7e86
 
         [Input(Guid = "37a11e3d-e353-4b0f-a052-356582e235b0")]
         public readonly InputSlot<System.Numerics.Vector3> Size = new InputSlot<System.Numerics.Vector3>();
+
+        [Input(Guid = "940133dd-4e45-4a78-8b13-8831e30f78b8")]
+        public readonly InputSlot<float> Scale = new InputSlot<float>();
 
         [Input(Guid = "0f053c34-c9ef-46b7-9c73-fff9984a3d5e")]
         public readonly InputSlot<System.Numerics.Vector3> Center = new InputSlot<System.Numerics.Vector3>();
@@ -52,7 +54,7 @@ namespace T3.Operators.Types.Id_3ee8f66d_68df_43c1_b0eb_407259bf7e86
         [Input(Guid = "d910b40e-6bee-4e1a-82a9-625b89fc27eb")]
         public readonly InputSlot<System.Numerics.Vector3> Pivot = new InputSlot<System.Numerics.Vector3>();
 
-        [Input(Guid = "9748853e-5f13-45c9-bca6-d07b07185aab", MappedType = typeof(SizeModes))]
+        [Input(Guid = "9748853e-5f13-45c9-bca6-d07b07185aab")]
         public readonly InputSlot<int> SizeMode = new InputSlot<int>();
 
         private enum SizeModes

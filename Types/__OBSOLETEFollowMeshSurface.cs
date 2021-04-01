@@ -5,7 +5,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_5e3648c0_3446_4f8f_b7ce_32d4a54b39de
 {
-    public class FollowMeshSurface : Instance<FollowMeshSurface>
+    public class __OBSOLETEFollowMeshSurface : Instance<__OBSOLETEFollowMeshSurface>
     {
 
         [Output(Guid = "2be6338b-ed84-4720-8c73-dae4f115d8e6")]
