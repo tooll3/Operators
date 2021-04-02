@@ -54,7 +54,7 @@ namespace T3.Operators.Types.Id_3ee8f66d_68df_43c1_b0eb_407259bf7e86
         [Input(Guid = "d910b40e-6bee-4e1a-82a9-625b89fc27eb")]
         public readonly InputSlot<System.Numerics.Vector3> Pivot = new InputSlot<System.Numerics.Vector3>();
 
-        [Input(Guid = "9748853e-5f13-45c9-bca6-d07b07185aab")]
+        [Input(Guid = "9748853e-5f13-45c9-bca6-d07b07185aab", MappedType = typeof(SizeModes))]
         public readonly InputSlot<int> SizeMode = new InputSlot<int>();
 
         private enum SizeModes
