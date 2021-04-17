@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -21,6 +22,10 @@ namespace T3.Operators.Types.Id_9db2fcbf_54b9_4222_878b_80d1a0dc6edf
             Result.Value = BoolValue.GetValue(context) 
                                ? ForTrue.GetValue(context) 
                                : ForFalse.GetValue(context);
+            
+            ForTrue.DirtyFlag.Clear();
+            ForFalse.DirtyFlag.Clear();
+            //Log.Debug(" True? " + Result.Value, SymbolChildId);
         }
         
         [Input(Guid = "253b9ae4-fac5-4641-bf0c-d8614606a840")]

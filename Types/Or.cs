@@ -17,7 +17,10 @@ namespace T3.Operators.Types.Id_9786dec1_b0fc_49d7_bf79_c9a1d457f386
 
         private void Update(EvaluationContext context)
         {
-            Result.Value = A.GetValue(context) || B.GetValue(context);
+            // evaluate both to clear dirty flag
+            var a = A.GetValue(context);
+            var b = B.GetValue(context);
+            Result.Value = a || b;
         }
         
         [Input(Guid = "50ED5538-8134-4D8D-AEDC-61F19F60446E")]

@@ -40,50 +40,52 @@ namespace T3.Operators.Types.Id_5777a005_bbae_48d6_b633_5e998ca76c91
                 var c = Center.GetValue(context);
                 var center = new SharpDX.Vector3(c.X, c.Y, c.Z);
 
-
                 var spinInRad = Spin.GetValue(context) * MathUtils.ToRad;
                 var twistInRad = Twist.GetValue(context) * MathUtils.ToRad;
-                var basePivot = BasePivot.GetValue(context); 
-                
+                var basePivot = BasePivot.GetValue(context);
+
                 var fillRatio = Fill.GetValue(context) / 360f;
                 var capSegments = CapSegments.GetValue(context).Clamp(0, 1000);
                 var addCaps = capSegments > 0;
-                var isHullClosed = false; //Math.Abs(fillRatio - 1) < 0.01f;
+                //var isHullClosed = true; //Math.Abs(fillRatio - 1) < 0.01f;
 
                 var isFlipped = lowerRadius < 0;
-                
-                var vertexHullColumns = isHullClosed ? columns : columns + 1;
 
-                var hullTriangleCount = addCaps
-                                            ? rows * columns * 2 + 2 * (capSegments - 1 * columns * 2 + columns)
-                                            : rows * columns * 2;
+                var vertexHullColumns = columns + 1;
 
-                var hullVerticesCount = addCaps
-                                            ? (rows + 1) * vertexHullColumns + 2 * (1 + capSegments * vertexHullColumns)
-                                            : (rows + 1) * vertexHullColumns;
+                var hullVerticesCount = (rows + 1) * vertexHullColumns;
+                var hullTriangleCount = rows * columns * 2;
+
+                var capsVertexCount = +2 * (capSegments * vertexHullColumns + 1);
+                var capsTriangleCount = 2 * ((capSegments - 1) * columns * 2 + columns);
+
+                var totalVertexCount = hullVerticesCount + (addCaps ? capsVertexCount : 0);
+                var totalTriangleCount = hullTriangleCount + (addCaps ? capsTriangleCount : 0);
 
                 // Create buffers
-                if (_vertexBufferData.Length != hullVerticesCount)
-                    _vertexBufferData = new PbrVertex[hullVerticesCount];
+                if (_vertexBufferData.Length != totalVertexCount)
+                    _vertexBufferData = new PbrVertex[totalVertexCount];
 
-                if (_indexBufferData.Length != hullTriangleCount)
-                    _indexBufferData = new SharpDX.Int3[hullTriangleCount];
+                if (_indexBufferData.Length != totalTriangleCount)
+                    _indexBufferData = new SharpDX.Int3[totalTriangleCount];
 
                 // Initialize
                 var radiusAngleFraction = fillRatio / (vertexHullColumns - 1) * 2.0 * Math.PI;
                 var rowStep = height / rows;
 
+                // Hull
                 for (var rowIndex = 0; rowIndex < rows + 1; ++rowIndex)
                 {
-                    var heightFraction = rowIndex * rowStep;
+                    var heightFraction = rowIndex / (float)rows;
                     var rowRadius = MathUtils.Lerp(lowerRadius, upperRadius, heightFraction);
+                    var nextRowRadius = MathUtils.Lerp(lowerRadius, upperRadius, (rowIndex + 1) / (float)rows);
                     var rowLevel = height * (heightFraction - basePivot);
-                    var rowCenter = new SharpDX.Vector3(center.X, rowLevel, center.Z);
+                    var rowCenter = new SharpDX.Vector3(0, rowLevel, 0);
 
                     for (var columnIndex = 0; columnIndex < vertexHullColumns; ++columnIndex)
                     {
                         var columnAngle = columnIndex * radiusAngleFraction + spinInRad + twistInRad * heightFraction + Math.PI;
-                        
+
                         var u0 = columnIndex / (float)columns;
                         var u1 = (columnIndex + 1) / (float)rows;
 
@@ -97,67 +99,186 @@ namespace T3.Operators.Types.Id_5777a005_bbae_48d6_b633_5e998ca76c91
                         var p1 = new SharpDX.Vector3((float)Math.Sin(columnAngle) * rowRadius,
                                                      rowLevel + rowStep,
                                                      (float)Math.Cos(columnAngle) * rowRadius
-                                                     );
+                                                    );
 
-                        var p2 = new SharpDX.Vector3((float)Math.Sin(columnAngle + radiusAngleFraction) * rowRadius,
+                        var p2 = new SharpDX.Vector3((float)Math.Sin(columnAngle + radiusAngleFraction) * nextRowRadius,
                                                      rowLevel,
-                                                     (float)Math.Cos(columnAngle + radiusAngleFraction) * rowRadius
-                                                     );
-
-                        // var p1 = new SharpDX.Vector3((float)(Math.Sin(radiusAngle + radiusAngleFraction) * (tubePosition1X + lowerRadius)),
-                        //                              (float)(Math.Cos(radiusAngle + radiusAngleFraction) * (tubePosition1X + lowerRadius)),
-                        //                              (float)tubePosition1Y);
-                        //
-                        // var p2 = new SharpDX.Vector3((float)(Math.Sin(radiusAngle) * (tubePosition2X + lowerRadius)),
-                        //                              (float)(Math.Cos(radiusAngle) * (tubePosition2X + lowerRadius)),
-                        //                              (float)tubePosition2Y);
+                                                     (float)Math.Cos(columnAngle + radiusAngleFraction) * nextRowRadius
+                                                    );
 
                         var uv0 = new SharpDX.Vector2(u0, v1);
                         var uv1 = new SharpDX.Vector2(u1, v1);
                         var uv2 = new SharpDX.Vector2(u1, v0);
 
-                        //var tubeCenter1 = new SharpDX.Vector3((float)Math.Sin(radiusAngle), (float)Math.Cos(radiusAngle), 0.0f) * lowerRadius;
                         var normal0 = SharpDX.Vector3.Normalize(p - rowCenter);
 
                         MeshUtils.CalcTBNSpace(p, uv0, p1, uv1, p2, uv2, normal0, out var tangent0, out var binormal0);
-                        
 
                         var vertexIndex = rowIndex * vertexHullColumns + columnIndex;
-                        _vertexBufferData[vertexIndex ] = new PbrVertex
-                                                                 {
-                                                                     Position = p + center,
-                                                                     Normal = isFlipped ? normal0 * -1 : normal0,
-                                                                     Tangent = tangent0,
-                                                                     Bitangent = isFlipped ? binormal0 * -1 : binormal0,
-                                                                     Texcoord = uv0
-                                                                 };
+                        _vertexBufferData[vertexIndex] = new PbrVertex
+                                                             {
+                                                                 Position = p + center,
+                                                                 Normal = isFlipped ? normal0 * -1 : normal0,
+                                                                 Tangent = tangent0,
+                                                                 Bitangent = isFlipped ? binormal0 * -1 : binormal0,
+                                                                 Texcoord = uv0
+                                                             };
 
-                        if (columnIndex >= vertexHullColumns - 1 || rowIndex >= rows  )
-                            continue;
-
-                        var faceIndex = 2 * (rowIndex * (vertexHullColumns - 1)  + columnIndex);
-                        if (isFlipped)
+                        var faceIndex = 2 * (rowIndex * (vertexHullColumns - 1) + columnIndex);
+                        if (columnIndex < vertexHullColumns - 1 && rowIndex < rows)
                         {
-                            _indexBufferData[faceIndex + 0] = new SharpDX.Int3(vertexIndex + vertexHullColumns, vertexIndex + 1, vertexIndex + 0);
-                            _indexBufferData[faceIndex + 1] = new SharpDX.Int3(vertexIndex + vertexHullColumns + 1, vertexIndex + 1, vertexIndex + vertexHullColumns);
+                            if (isFlipped)
+                            {
+                                _indexBufferData[faceIndex + 0] = new SharpDX.Int3(vertexIndex + vertexHullColumns, vertexIndex + 1, vertexIndex + 0);
+                                _indexBufferData[faceIndex + 1] =
+                                    new SharpDX.Int3(vertexIndex + vertexHullColumns + 1, vertexIndex + 1, vertexIndex + vertexHullColumns);
+                            }
+                            else
+                            {
+                                _indexBufferData[faceIndex + 0] = new SharpDX.Int3(vertexIndex + 0, vertexIndex + 1, vertexIndex + vertexHullColumns);
+                                _indexBufferData[faceIndex + 1] =
+                                    new SharpDX.Int3(vertexIndex + vertexHullColumns, vertexIndex + 1, vertexIndex + vertexHullColumns + 1);
+                            }
                         }
-                        else
+                    }
+                }
+
+                // Caps
+                if (addCaps)
+                {
+                    for (var capIndex = 0; capIndex <= 1; capIndex++)
+                    {
+                        var isLowerCap = capIndex == 0;
+                        var capLevel = ((isLowerCap ? 0 : 1) - basePivot) * height;
+                        var capRadius = isLowerCap ? lowerRadius : upperRadius;
+
+                        var centerVertexIndex = hullVerticesCount + (capsVertexCount / 2) * (capIndex + 1) - 1;
+                        
+                        for (var capSegmentIndex = 0; capSegmentIndex < capSegments ; ++capSegmentIndex)
                         {
-                            _indexBufferData[faceIndex + 0] = new SharpDX.Int3(vertexIndex + 0, vertexIndex + 1, vertexIndex + vertexHullColumns);
-                            _indexBufferData[faceIndex + 1] = new SharpDX.Int3(vertexIndex + vertexHullColumns, vertexIndex + 1, vertexIndex + vertexHullColumns + 1);
+                            var isCenterSegment = capSegmentIndex == capSegments -1;
+
+                            var capFraction = 1f - (capSegmentIndex) / (float)capSegments;
+                            var nextCapFraction = 1f - (capSegmentIndex + 1) / (float)capSegments;
+                            var radius = upperRadius * capFraction ;
+                            var nextRadius = upperRadius * nextCapFraction;
+
+                            for (var columnIndex = 0; columnIndex < vertexHullColumns; ++columnIndex)
+                            {
+                                var columnAngle = columnIndex  * radiusAngleFraction + spinInRad + twistInRad * (isLowerCap? 0:1) + Math.PI;
+
+                                // TODO: fixme
+                                var u0 = columnIndex / (float)columns;
+                                var u1 = (columnIndex + 1) / (float)columns;
+                                var v0 = (capSegmentIndex + 1) / (float)capSegments;
+                                var v1 = capSegmentIndex / (float)capSegments;
+
+                                var p = new SharpDX.Vector3((float)Math.Sin(columnAngle) * radius,
+                                                            capLevel,
+                                                            (float)Math.Cos(columnAngle) * radius);
+
+                                var p1 = new SharpDX.Vector3((float)Math.Sin(columnAngle) * radius,
+                                                             capLevel,
+                                                             (float)Math.Cos(columnAngle) * radius
+                                                            );
+
+                                var p2 = new SharpDX.Vector3((float)Math.Sin(columnAngle + radiusAngleFraction) * nextRadius,
+                                                             capLevel,
+                                                             (float)Math.Cos(columnAngle + radiusAngleFraction) * nextRadius
+                                                            );
+
+                                var uv0 = new SharpDX.Vector2(u0, v1);
+                                var uv1 = new SharpDX.Vector2(u1, v1);
+                                var uv2 = new SharpDX.Vector2(u1, v0);
+
+                                var normal0 = isLowerCap ? SharpDX.Vector3.Down : SharpDX.Vector3.Up;
+
+                                var tangent0 = SharpDX.Vector3.Left;
+                                var binormal0 = SharpDX.Vector3.ForwardRH;
+                                
+                                var vertexIndex = capSegmentIndex * vertexHullColumns + columnIndex
+                                                                                      + hullVerticesCount + (capsVertexCount / 2) * capIndex;
+                                
+                                // Write vertex
+                                _vertexBufferData[vertexIndex] = new PbrVertex
+                                                                     {
+                                                                         Position = p + center,
+                                                                         Normal = isFlipped ? normal0 * -1 : normal0,
+                                                                         Tangent = tangent0,
+                                                                         Bitangent = isFlipped ? binormal0 * -1 : binormal0,
+                                                                         Texcoord = uv0
+                                                                     };
+                                
+                                if (isCenterSegment)
+                                {
+                                    if (columnIndex == 0)
+                                    {
+                                        _vertexBufferData[centerVertexIndex ] = new PbrVertex
+                                                                                                {
+                                                                                                    Position = new SharpDX.Vector3(0, capLevel,0) + center,
+                                                                                                    Normal = (isFlipped ) ? normal0 * -1 : normal0,
+                                                                                                    Tangent = tangent0,
+                                                                                                    Bitangent = (isFlipped ^ isLowerCap) ? binormal0 * -1 : binormal0,
+                                                                                                    Texcoord = uv1
+                                                                                                };
+                                    }
+                                }                                
+                                
+
+
+                                if (columnIndex < vertexHullColumns - 1 && capSegmentIndex < capSegments)
+                                {
+                                    if (isCenterSegment)
+                                    {
+                                        var faceIndex = (capSegmentIndex * (vertexHullColumns - 1) *2 + columnIndex)
+                                                        + hullTriangleCount + (capsTriangleCount / 2) * capIndex;
+
+                                        var f1 = new SharpDX.Int3( vertexIndex + 1, vertexIndex, centerVertexIndex);
+                                        
+                                        _indexBufferData[faceIndex ] = f1;
+                                    }
+                                    else
+                                    {
+                                        var faceIndex = (capSegmentIndex * (vertexHullColumns - 1) * 2) + columnIndex * 2
+                                                        + hullTriangleCount + (capsTriangleCount / 2) * capIndex;
+
+                                        var f1 = new SharpDX.Int3(vertexIndex + vertexHullColumns, vertexIndex + 1, vertexIndex);
+                                        var f2 = new SharpDX.Int3(vertexIndex + vertexHullColumns, vertexIndex + vertexHullColumns + 1, vertexIndex + 1);
+                                        
+                                        _indexBufferData[faceIndex ] = f1;
+                                        _indexBufferData[faceIndex + 1] = f2 ;
+                                    }
+                                    if (isFlipped ^ isLowerCap)
+                                    {
+                                        
+                                    }
+                                    else
+                                    {
+                                        // _indexBufferData[faceIndex + 0] =
+                                        //     new SharpDX.Int3(vertexIndex + vertexHullColumns, vertexIndex , vertexIndex + 1);
+                                        //
+                                        // if (!isCenterSegment)
+                                        // {
+                                        //     _indexBufferData[faceIndex + 1] =
+                                        //         new SharpDX.Int3(vertexIndex + vertexHullColumns + 1, vertexIndex + 1, vertexIndex + vertexHullColumns);
+                                        // }
+
+                                    }
+                                }
+                            }
                         }
                     }
                 }
 
                 // Write Data
                 _vertexBufferWithViews.Buffer = _vertexBuffer;
-                resourceManager.SetupStructuredBuffer(_vertexBufferData, PbrVertex.Stride * hullVerticesCount, PbrVertex.Stride, ref _vertexBuffer);
+                resourceManager.SetupStructuredBuffer(_vertexBufferData, PbrVertex.Stride * totalVertexCount, PbrVertex.Stride, ref _vertexBuffer);
                 resourceManager.CreateStructuredBufferSrv(_vertexBuffer, ref _vertexBufferWithViews.Srv);
                 resourceManager.CreateStructuredBufferUav(_vertexBuffer, UnorderedAccessViewBufferFlags.None, ref _vertexBufferWithViews.Uav);
 
                 _indexBufferWithViews.Buffer = _indexBuffer;
                 const int stride = 3 * 4;
-                resourceManager.SetupStructuredBuffer(_indexBufferData, stride * hullTriangleCount, stride, ref _indexBuffer);
+                resourceManager.SetupStructuredBuffer(_indexBufferData, stride * totalTriangleCount, stride, ref _indexBuffer);
                 resourceManager.CreateStructuredBufferSrv(_indexBuffer, ref _indexBufferWithViews.Srv);
                 resourceManager.CreateStructuredBufferUav(_indexBuffer, UnorderedAccessViewBufferFlags.None, ref _indexBufferWithViews.Uav);
 
@@ -211,7 +332,6 @@ namespace T3.Operators.Types.Id_5777a005_bbae_48d6_b633_5e998ca76c91
 
         [Input(Guid = "6DDF5966-9140-4BEA-A56B-20690F9F436F")]
         public readonly InputSlot<float> BasePivot = new InputSlot<float>();
-
 
         [Input(Guid = "DB5E3C51-5765-44D8-A61B-A7B552FCE5B3")]
         public readonly InputSlot<int> CapSegments = new InputSlot<int>();

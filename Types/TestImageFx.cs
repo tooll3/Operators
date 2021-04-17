@@ -1,15 +1,33 @@
+using System;
+using System.Numerics;
 using SharpDX.Direct3D11;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Interfaces;
 using T3.Core.Operator.Slots;
+using Unsplasharp.Models;
 
 namespace T3.Operators.Types.Id_0e13e34f_c07b_4ada_8c87_6b89f4ed8b41
 {
-    public class TestImageFx : Instance<TestImageFx>
+    public class TestImageFx : Instance<TestImageFx>, ITransformable
     {
         [Output(Guid = "2d59fec4-af4e-4db2-bc11-3685f31e9de5")]
-        public readonly Slot<Texture2D> TextureOutput = new Slot<Texture2D>();
+        public readonly TransformCallbackSlot<Texture2D> TextureOutput = new TransformCallbackSlot<Texture2D>();
 
+        public TestImageFx()
+        {
+            TextureOutput.TransformableOp = this;
+        }
+        
+        System.Numerics.Vector3 ITransformable.Translation { get => new Vector3(Center.Value.X, Center.Value.Y,0); 
+            set => Center.SetTypedInputValue(new Vector2(value.X, value.Y)); }
+        System.Numerics.Vector3 ITransformable.Rotation { get => System.Numerics.Vector3.Zero; set { } }
+        System.Numerics.Vector3 ITransformable.Scale { get => System.Numerics.Vector3.One; set { } }
+
+        public Action<ITransformable, EvaluationContext> TransformCallback { get => TextureOutput.TransformCallback; set => TextureOutput.TransformCallback = value; }
+        
+        
+        
         [Input(Guid = "78c3486a-3a82-4e61-81fd-3da904fd7aed")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture2d2 = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
