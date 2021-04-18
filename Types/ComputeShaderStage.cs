@@ -12,7 +12,7 @@ namespace T3.Operators.Types.Id_8bef116d_7d1c_4c1b_b902_25c1d5e925a9
 {
     public class ComputeShaderStage : Instance<ComputeShaderStage>
     {
-        [Output(Guid = "{C382284F-7E37-4EB0-B284-BC735247F26B}")]
+        [Output(Guid = "{C382284F-7E37-4EB0-B284-BC735247F26B}", DirtyFlagTrigger = DirtyFlagTrigger.Always)]
         public readonly Slot<Command> Output = new Slot<Command>();
 
         public ComputeShaderStage()
@@ -28,6 +28,9 @@ namespace T3.Operators.Types.Id_8bef116d_7d1c_4c1b_b902_25c1d5e925a9
             var csStage = deviceContext.ComputeShader;
 
             _cs = ComputeShader.GetValue(context);
+            
+            Int3 dispatchCount = Dispatch.GetValue(context);
+            int count = DispatchCallCount.GetValue(context).Clamp(1, 10);
 
             ConstantBuffers.GetValues(ref _constantBuffers, context);
             ShaderResources.GetValues(ref _shaderResourceViews, context);
@@ -62,8 +65,7 @@ namespace T3.Operators.Types.Id_8bef116d_7d1c_4c1b_b902_25c1d5e925a9
                 csStage.SetUnorderedAccessViews(0, _uavs);
             }
 
-            Int3 dispatchCount = Dispatch.GetValue(context);
-            int count = DispatchCallCount.GetValue(context).Clamp(1, 10);
+
 
             for (int i = 0; i < count; i++)
             {

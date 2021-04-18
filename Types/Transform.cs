@@ -27,6 +27,7 @@ namespace T3.Operators.Types.Id_284d2183_197d_47fd_b130_873cced78b1c
 
         private void Update(EvaluationContext context)
         {
+           
             TransformCallback?.Invoke(this, context);
 
             var s = Scale.GetValue(context) * UniformScale.GetValue(context);

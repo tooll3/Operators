@@ -18,14 +18,11 @@ namespace T3.Operators.Types.Id_9db2fcbf_54b9_4222_878b_80d1a0dc6edf
 
         private void Update(EvaluationContext context)
         {
-            
+            var trueValue = ForTrue.GetValue(context);
+            var falseValue = ForFalse.GetValue(context);
             Result.Value = BoolValue.GetValue(context) 
-                               ? ForTrue.GetValue(context) 
-                               : ForFalse.GetValue(context);
-            
-            ForTrue.DirtyFlag.Clear();
-            ForFalse.DirtyFlag.Clear();
-            //Log.Debug(" True? " + Result.Value, SymbolChildId);
+                               ? trueValue 
+                               : falseValue;
         }
         
         [Input(Guid = "253b9ae4-fac5-4641-bf0c-d8614606a840")]
