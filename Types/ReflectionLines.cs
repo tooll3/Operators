@@ -22,6 +22,9 @@ namespace T3.Operators.Types.Id_b5515341_24ef_48ff_b832_d40e8189c6a4
 
         [Input(Guid = "79d4a70d-c427-44fc-b917-646d71cd9647")]
         public readonly InputSlot<float> DecayW = new InputSlot<float>();
+
+        [Input(Guid = "0af5f073-eb2b-4654-af69-2de7edc526e1")]
+        public readonly InputSlot<float> ExtendSteps = new InputSlot<float>();
     }
 }
 

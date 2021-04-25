@@ -34,6 +34,9 @@ namespace T3.Operators.Types.Id_4ae9e2f5_7cb3_40b0_a662_0662e8cb7c68
 
         [Input(Guid = "8f7206d1-5f78-4a9c-bba9-1ef8277b6d5f")]
         public readonly InputSlot<float> Twist = new InputSlot<float>();
+
+        [Input(Guid = "201088d1-ed9d-48b6-a8c8-809447986926")]
+        public readonly InputSlot<System.Numerics.Vector3> OrientationRotation = new InputSlot<System.Numerics.Vector3>();
     }
 }
 
