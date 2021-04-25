@@ -25,6 +25,12 @@ namespace T3.Operators.Types.Id_b5515341_24ef_48ff_b832_d40e8189c6a4
 
         [Input(Guid = "0af5f073-eb2b-4654-af69-2de7edc526e1")]
         public readonly InputSlot<float> ExtendSteps = new InputSlot<float>();
+
+        [Input(Guid = "8a438ea7-b402-49a4-8783-1f721e494ee9")]
+        public readonly InputSlot<float> SpreadColor = new InputSlot<float>();
+
+        [Input(Guid = "877d9d58-a1f3-4b73-9379-7193091c082b")]
+        public readonly InputSlot<float> SpreadColorShift = new InputSlot<float>();
     }
 }
 
