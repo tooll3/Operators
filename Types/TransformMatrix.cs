@@ -33,6 +33,11 @@ namespace T3.Operators.Types.Id_17324ce1_8920_4653_ac67_c211ad507a81
             // transpose all as mem layout in hlsl constant buffer is row based
             objectToParentObject.Transpose();
             
+            if (Invert.GetValue(context))
+            {
+                objectToParentObject.Invert(); 
+            }
+            
             _matrix[0] = objectToParentObject.Row1;
             _matrix[1] = objectToParentObject.Row2;
             _matrix[2] = objectToParentObject.Row3;
@@ -54,6 +59,9 @@ namespace T3.Operators.Types.Id_17324ce1_8920_4653_ac67_c211ad507a81
         public readonly InputSlot<System.Numerics.Vector3> Scale = new InputSlot<System.Numerics.Vector3>();
 
         [Input(Guid = "566F1619-1DE0-4B41-B167-7FC261730D62")]
-        public readonly InputSlot<float> UniformScale = new InputSlot<float>();        
+        public readonly InputSlot<float> UniformScale = new InputSlot<float>();
+        
+        [Input(Guid = "E19808D8-6D73-4638-B5F2-DDDDC49AD815")]
+        public readonly InputSlot<bool> Invert = new InputSlot<bool>();        
     }
 }

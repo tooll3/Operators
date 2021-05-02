@@ -72,16 +72,16 @@ namespace T3.Operators.Types.Id_a835ab86_29c1_438e_a7f7_2e297108bfd5
                     double tubePosition2X = Math.Sin(tubeAngle+ tubeAngleFraction)*tubeRadius;
                     double tubePosition2Y = Math.Cos(tubeAngle+ tubeAngleFraction)*tubeRadius;
 
-                    var v0 = tubeIndex / (float)tubeSegments;
-                    var v1 = (tubeIndex + 1) / (float)tubeSegments;
+                    var v0 = tubeIndex / (float)(tubeSegments-1);
+                    var v1 = (tubeIndex + 1) / (float)(tubeSegments-1);
 
                     for (int radiusIndex = 0; radiusIndex < radiusSegments; ++radiusIndex)
                     {
                         var vertexIndex = radiusIndex + tubeIndex * radiusSegments;
                         var faceIndex =  2 * (radiusIndex + tubeIndex * (radiusSegments-1));
                         
-                        var u0 = (radiusIndex + 1) / (float)radiusSegments;
-                        var u1 = radiusIndex / (float)radiusSegments;
+                        var u0 = (radiusIndex ) / (float)(radiusSegments-1);
+                        var u1 = (radiusIndex +1)/ (float)(radiusSegments-1);
 
                         var radiusAngle = radiusIndex * radiusAngleFraction + radiusSpin;
 
@@ -114,7 +114,8 @@ namespace T3.Operators.Types.Id_a835ab86_29c1_438e_a7f7_2e297108bfd5
                                                                 Normal = normal0,
                                                                 Tangent = tangent0,
                                                                 Bitangent = binormal0,
-                                                                Texcoord = uv0
+                                                                Texcoord = uv0,
+                                                                Selection =1,
                                                             };
 
                         if (tubeIndex >= tubeSegments - 1 || radiusIndex >= radiusSegments - 1)

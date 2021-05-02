@@ -14,12 +14,12 @@ using Vector3 = System.Numerics.Vector3;
 
 namespace T3.Operators.Types.Id_9d6dbf28_9983_4584_abba_6281ce51d583
 {
-    public class PlaneMesh : Instance<PlaneMesh>
+    public class QuadMesh : Instance<QuadMesh>
     {
         [Output(Guid = "9c86f704-a28f-4d2a-b7c0-15648f982462")]
         public readonly Slot<MeshBuffers> Data = new Slot<MeshBuffers>();
 
-        public PlaneMesh()
+        public QuadMesh()
         {
             Data.UpdateAction = Update;
         }
@@ -77,7 +77,7 @@ namespace T3.Operators.Types.Id_9d6dbf28_9983_4584_abba_6281ce51d583
                 {
                     var columnFragment = (float)( columnIndex * columnStep); 
                     
-                    var u0 = columnIndex / (float)columns;
+                    var u0 = columnIndex / ((float)columns-1);
                     //var v1 = (columnIndex + 1) / (float)columns;
 
                     for (int rowIndex = 0; rowIndex < rows; ++rowIndex)
@@ -93,7 +93,7 @@ namespace T3.Operators.Types.Id_9d6dbf28_9983_4584_abba_6281ce51d583
                                                     rowFragment, 
                                                     0);
                         
-                        var v0 = (rowIndex + 1) / (float)rows;
+                        var v0 = (rowIndex ) / ((float)rows-1);
                         var uv0 = new SharpDX.Vector2(u0, v0);
                         _vertexBufferData[vertexIndex + 0] = new PbrVertex
                                                                  {

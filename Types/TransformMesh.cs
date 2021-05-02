@@ -38,6 +38,9 @@ namespace T3.Operators.Types.Id_026e6917_6e6f_4ee3_b2d4_58f4f1de74c9
 
         [Input(Guid = "86791d0a-97c3-413a-89d9-aa2ddd40ce4a")]
         public readonly InputSlot<float> UniformScale = new InputSlot<float>();
+
+        [Input(Guid = "71531810-78ab-449e-bb13-bfe5fe3d2a69")]
+        public readonly InputSlot<bool> UseVertexSelection = new InputSlot<bool>();
         
         
         

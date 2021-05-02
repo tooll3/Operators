@@ -18,7 +18,7 @@ namespace T3.Operators.Types.Id_5202d3f6_c970_4006_933d_3c60d6c202dc
         private void Update(EvaluationContext context)
         {
             var v = Value.GetValue(context);
-            var mod = Mod.GetValue(context);
+            var mod = ModuloValue.GetValue(context);
             Result.Value = v - mod * (float)Math.Floor(v/mod);
         }
         
@@ -26,6 +26,6 @@ namespace T3.Operators.Types.Id_5202d3f6_c970_4006_933d_3c60d6c202dc
         public readonly InputSlot<float> Value = new InputSlot<float>();
 
         [Input(Guid = "62a8185f-32c0-41d2-b8be-d8c1d7178c00")]
-        public readonly InputSlot<float> Mod = new InputSlot<float>();
+        public readonly InputSlot<float> ModuloValue = new InputSlot<float>();
     }
 }
