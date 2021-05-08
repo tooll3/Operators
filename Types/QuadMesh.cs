@@ -43,8 +43,8 @@ namespace T3.Operators.Types.Id_9d6dbf28_9983_4584_abba_6281ce51d583
                 
                 //var offset = 
                 var center = Center.GetValue(context);
-                var offset = new SharpDX.Vector3(stretch.X * scale * (pivot.X - 0.5f),
-                                                 stretch.Y * scale * (pivot.Y - 0.5f),
+                var offset = new SharpDX.Vector3(stretch.X * scale * (pivot.X - 0.5f) + center.X,
+                                                 stretch.Y * scale * (pivot.Y - 0.5f) + center.Y,
                                                  center.Z);
 
                 var segments = Segments.GetValue(context);
@@ -101,7 +101,8 @@ namespace T3.Operators.Types.Id_9d6dbf28_9983_4584_abba_6281ce51d583
                                                                      Normal = normal,
                                                                      Tangent = tangent,
                                                                      Bitangent = binormal,
-                                                                     Texcoord = uv0
+                                                                     Texcoord = uv0,
+                                                                     Selection = 1,
                                                                  };
 
                         if (columnIndex >= columns - 1 || rowIndex >= rows - 1)
