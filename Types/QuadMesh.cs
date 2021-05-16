@@ -42,10 +42,14 @@ namespace T3.Operators.Types.Id_9d6dbf28_9983_4584_abba_6281ce51d583
                 var rotationMatrix = Matrix.RotationYawPitchRoll(yaw, pitch, roll);
                 
                 //var offset = 
+                
                 var center = Center.GetValue(context);
-                var offset = new SharpDX.Vector3(stretch.X * scale * (pivot.X - 0.5f) + center.X,
-                                                 stretch.Y * scale * (pivot.Y - 0.5f) + center.Y,
-                                                 center.Z);
+                //var centerRotated = SharpDX.Vector3.Transform(new SharpDX.Vector3(center.X, center.Y, center.Z), rotationMatrix);
+                var offset = new SharpDX.Vector3(stretch.X * scale * (pivot.X - 0.5f),
+                                                 stretch.Y * scale * (pivot.Y - 0.5f),
+                                                 0);
+
+                var center2 = new SharpDX.Vector3(center.X, center.Y, center.Z);
 
                 var segments = Segments.GetValue(context);
                 var rows = segments.Width.Clamp(1, 10000) + 1;
@@ -97,7 +101,7 @@ namespace T3.Operators.Types.Id_9d6dbf28_9983_4584_abba_6281ce51d583
                         var uv0 = new SharpDX.Vector2(u0, v0);
                         _vertexBufferData[vertexIndex + 0] = new PbrVertex
                                                                  {
-                                                                     Position = SharpDX.Vector3.TransformNormal(p + offset, rotationMatrix),
+                                                                     Position = SharpDX.Vector3.TransformNormal(p + offset, rotationMatrix) + center2,
                                                                      Normal = normal,
                                                                      Tangent = tangent,
                                                                      Bitangent = binormal,

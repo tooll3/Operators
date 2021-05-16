@@ -36,7 +36,8 @@ namespace T3.Operators.Types.Id_f8aed421_5e0e_4d1f_993c_1801153ebba8
                               : _SetAudioAnalysis.AudioAnalysisResult.HiHats;
 
             var peakDetected = results.PeakCount > _lastPeakCount;
-
+            
+            var decay = Decay.GetValue(context);
             var modulo = UseModulo.GetValue(context);
             var usingModulo = modulo > 0;
             var isModuloPeak = peakDetected && (!usingModulo || results.PeakCount % modulo == 0);
@@ -65,15 +66,20 @@ namespace T3.Operators.Types.Id_f8aed421_5e0e_4d1f_993c_1801153ebba8
                     break;
 
                 case Modes.Peaks:
-                    value = (float)Math.Max(0, 1 - timeSincePeak * Decay.GetValue(context));
+                    value = (float)Math.Max(0, 1 - timeSincePeak * decay);
                     break;
 
                 case Modes.PeaksDecaying:
-                    value = (float)Math.Pow(Decay.GetValue(context) + 1, -timeSincePeak);
+                    value = (float)Math.Pow(decay + 1, -timeSincePeak);
+                    break;
+
+                case Modes.Level:
+                    value = (float)results.AccumulatedEnergy;
                     break;
 
                 case Modes.MovingSum:
-                    value = (float)results.AccumulatedEnergy;
+                    _movingSum += Math.Pow(results.AccumulatedEnergy, decay);
+                    value = (float)(_movingSum % 10000);
                     break;
 
                 case Modes.RandomValue:
@@ -114,12 +120,14 @@ namespace T3.Operators.Types.Id_f8aed421_5e0e_4d1f_993c_1801153ebba8
             TimeSincePeak,
             Peaks,
             PeaksDecaying,
-            MovingSum,
+            Level,
             Count,
             RandomValue,
+            MovingSum,
         }
 
         private int _lastPeakCount;
+        private double _movingSum = 0;
         private Random _random = new Random();
 
         [Input(Guid = "15F841F5-5153-4383-90B9-F6A4F72D5D6B", MappedType = typeof(FrequencyBands))]

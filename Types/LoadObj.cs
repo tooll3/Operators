@@ -74,7 +74,8 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
                                                                         Normal = mesh.Normals[sortedVertex.NormalIndex],
                                                                         Tangent = mesh.VertexTangents[sortedVertexIndex],
                                                                         Bitangent = mesh.VertexBinormals[sortedVertexIndex],
-                                                                        Texcoord = mesh.TexCoords[sortedVertex.TextureCoordsIndex]
+                                                                        Texcoord = mesh.TexCoords[sortedVertex.TextureCoordsIndex],
+                                                                        Selection = 1,
                                                                     };
                     }
 
