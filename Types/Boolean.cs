@@ -17,10 +17,10 @@ namespace T3.Operators.Types.Id_ed0f5188_8888_453e_8db4_20d87d18e9f4
 
         private void Update(EvaluationContext context)
         {
-            Result.Value = Float.GetValue(context);
+            Result.Value = BoolValue.GetValue(context);
         }
         
         [Input(Guid = "E7C1F0AF-DA6D-4E33-AC86-7DC96BFE7EB3")]
-        public readonly InputSlot<bool> Float = new InputSlot<bool>();
+        public readonly InputSlot<bool> BoolValue = new InputSlot<bool>();
     }
 }
