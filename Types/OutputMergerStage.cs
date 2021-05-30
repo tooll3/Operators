@@ -32,7 +32,7 @@ namespace T3.Operators.Types.Id_5efaf208_ba62_42ce_b3df_059b37fc1382 {
             outputMerger.SetDepthStencilState(DepthStencilState.GetValue(context));
             _prevBlendState = outputMerger.GetBlendState(out _prevBlendFactor, out _prevSampleMask);
             if (_renderTargetViews.Length > 0)
-                outputMerger.SetRenderTargets(null, new RenderTargetView[] { null});//_renderTargetViews);
+                outputMerger.SetRenderTargets(null, _renderTargetViews);
             if (_unorderedAccessViews.Length > 0)
             {
                 // Log.Debug($"num uavs: {_unorderedAccessViews.Length}");
