@@ -24,7 +24,7 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
 
         private void Update(EvaluationContext context)
         {
-            /*
+            
             var CubeMapSrc = CubeMap.GetValue(context); // Needs to be checked for null!
 
             // if (_prefilteredCubeMap != null && !Changed)
@@ -66,6 +66,8 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
             _rasterizerState = new RasterizerState(device, rastDesc);
             // }
 
+            /*
+            
             // var prevEffect = context.Effect;
             // var prevRTV = context.RenderTargetView;
             // var prevDTV = context.DepthStencilView;
@@ -80,8 +82,8 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
                 }
             }
 
-            context.D3DDevice.ImmediateContext.OutputMerger.BlendState = OperatorPartContext.DefaultRenderer.DisabledBlendState;
-            context.D3DDevice.ImmediateContext.OutputMerger.DepthStencilState = OperatorPartContext.DefaultRenderer.DisabledDepthStencilState;
+            device.ImmediateContext.OutputMerger.BlendState = OperatorPartContext.DefaultRenderer.DisabledBlendState;
+            device.ImmediateContext.OutputMerger.DepthStencilState = OperatorPartContext.DefaultRenderer.DisabledDepthStencilState;
 
             var rtvDesc = new RenderTargetViewDescription()
                               {
@@ -104,14 +106,14 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
                 Utilities.DisposeObj(ref _cubeMapRTV);
                 rtvDesc.Texture2DArray.MipSlice = mipSlice;
                 _cubeMapRTV = new RenderTargetView(device, _prefilteredCubeMap, rtvDesc);
-                context.D3DDevice.ImmediateContext.OutputMerger.SetTargets(_cubeMapRTV, null);
+                device.ImmediateContext.OutputMerger.SetTargets(_cubeMapRTV, null);
 
                 var viewport = new ViewportF(0.0f, 0.0f, size, size);
-                context.D3DDevice.ImmediateContext.Rasterizer.SetViewports(new[] { viewport });
-                context.D3DDevice.ImmediateContext.Rasterizer.State = _rasterizerState;
-                context.D3DDevice.ImmediateContext.InputAssembler.InputLayout = context.InputLayout;
-                context.D3DDevice.ImmediateContext.InputAssembler.PrimitiveTopology = SharpDX.Direct3D.PrimitiveTopology.TriangleList;
-                context.D3DDevice.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(null, 0, 0));
+                device.ImmediateContext.Rasterizer.SetViewports(new[] { viewport });
+                device.ImmediateContext.Rasterizer.State = _rasterizerState;
+                device.ImmediateContext.InputAssembler.InputLayout = context.InputLayout;
+                device.ImmediateContext.InputAssembler.PrimitiveTopology = SharpDX.Direct3D.PrimitiveTopology.TriangleList;
+                device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(null, 0, 0));
                 float roughness = (float)mipSlice / (_prefilteredCubeMap.Description.MipLevels - 1);
                 Log.Debug(this, "roughness: {0}", roughness);
                 _effect.GetVariableByName("Roughness").AsScalar().Set(roughness);
@@ -140,20 +142,20 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
                 }
 
                 var technique = _effect.GetTechniqueByIndex(0);
-                technique.GetPassByIndex(0).Apply(context.D3DDevice.ImmediateContext);
-                context.D3DDevice.ImmediateContext.Draw(6, 0);
+                technique.GetPassByIndex(0).Apply(device.ImmediateContext);
+                device.ImmediateContext.Draw(6, 0);
 
                 size /= 2;
                 ++mipSlice;
             }
 
             // restore render targets and viewport
-            context.D3DDevice.ImmediateContext.OutputMerger.SetTargets(context.DepthStencilView, context.RenderTargetView);
+            device.ImmediateContext.OutputMerger.SetTargets(context.DepthStencilView, context.RenderTargetView);
 
-            context.Image = _prefilteredCubeMap;
-            //Texture2D.ToFile(context.D3DDevice.ImmediateContext, _prefilteredCubeMap, ImageFileFormat.Dds, "CubeMapTest.dds");
-            Changed = false;
-            return context;
+            //context.Image = _prefilteredCubeMap;
+            //Texture2D.ToFile(device.ImmediateContext, _prefilteredCubeMap, ImageFileFormat.Dds, "CubeMapTest.dds");
+            //Changed = false;
+            //return context;
             */
         }
 
