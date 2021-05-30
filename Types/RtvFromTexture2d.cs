@@ -24,13 +24,35 @@ namespace T3.Operators.Types.Id_57a1ee33_702a_41ad_a17e_b43033d58638
                 return; // nothing to do
 
             var resourceManager = ResourceManager.Instance();
+            
+            
+            
             Texture2D texture = Texture.GetValue(context);
             if (texture != null)
             {
                 if (((int)texture.Description.BindFlags & (int)BindFlags.RenderTarget) > 0)
                 {
                     RenderTargetView.Value?.Dispose();
-                    RenderTargetView.Value = new RenderTargetView(resourceManager.Device, texture); // todo: create via resource manager
+                    if ((texture.Description.OptionFlags & ResourceOptionFlags.TextureCube) != 0)
+                    {
+                        var rtvDesc = new RenderTargetViewDescription()
+                                          {
+                                              Dimension = RenderTargetViewDimension.Texture2DArray,
+                                              Format = texture.Description.Format,
+                                              Texture2DArray = new RenderTargetViewDescription.Texture2DArrayResource() 
+                                                                   {
+                                                                       ArraySize = 6,
+                                                                       FirstArraySlice = 0,
+                                                                       MipSlice = 0
+                                                                   }                                                           
+                                          };
+                        //rtvDesc.Texture2DArray.MipSlice = 0;
+                        RenderTargetView.Value = new RenderTargetView(resourceManager.Device, texture, rtvDesc);
+                    }
+                    else
+                    {
+                        RenderTargetView.Value = new RenderTargetView(resourceManager.Device, texture); // todo: create via resource manager
+                    }
                 }
                 else
                 {

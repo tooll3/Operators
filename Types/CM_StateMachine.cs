@@ -31,6 +31,8 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
         [Output(Guid = "BE19AE67-EDB8-402C-A218-C327AF886D81", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> Temperature = new Slot<float>();
 
+        [Output(Guid = "08C995C9-B091-476C-8985-1C7EB64F451D", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<DateTime> Date = new Slot<DateTime>();
 
         public CM_StateMachine()
         {
@@ -51,35 +53,22 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
             switch (_state)
             {
                 case States.Idle:
-                    RestCarbon.Value = GetRestCarbon();
-                    Temperature.Value = GetTemperature();
-                    RestCarbonRatio.Value = GetRestCarbonRatio();
-                    SimulationProgress.Value = (float)Progress;
                     break;
 
                 case States.ShowConfiguration:
-                    RestCarbon.Value = GetRestCarbon();
-                    Temperature.Value = GetTemperature();
-                    RestCarbonRatio.Value = GetRestCarbonRatio();
                     break;
 
                 case States.Simulating:
                 {
                     //var progress = (float)((RunTime - _simulationStartTime) / currentSimulationMode.GetSimulationDuration()) * _simulationSpeed;
                     var complete = Progress >= 1;
-                    if (!complete)
-                    {
-                        Temperature.Value = GetTemperature();
-                        RestCarbon.Value = GetRestCarbon();
-                        RestCarbonRatio.Value = GetRestCarbonRatio();
-                    }
-                    else
+                    if (complete)
                     {
                         _lastInteractionTime = RunTime;
                         SetState(States.SimulationComplete);
                     }
 
-                    SimulationProgress.Value = (float)Progress;
+                    //SimulationProgress.Value = (float)Progress;
                     break;
                 }
 
@@ -89,6 +78,15 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
                     // Eventually switch to idle mode
                     break;
                 }
+            }
+
+            if (_state != States.SimulationComplete)
+            {
+                RestCarbon.Value = GetRestCarbon();
+                Temperature.Value = GetTemperature();
+                RestCarbonRatio.Value = GetRestCarbonRatio();
+                Date.Value = GetDate();
+                SimulationProgress.Value = (float)Progress;
             }
 
             if (startPressed != _startPressed)
@@ -171,6 +169,14 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
         private float GetTemperature()
         {
             return  (float)MathUtils.Lerp(InitialTemp, ActiveMode.EndTemperature, Progress);
+        }
+        
+        private DateTime GetDate()
+        {
+            var timeA = _initialDate;
+            var timeB = ActiveMode.EndDate;
+            var duration = timeB - timeA;
+            return timeA + TimeSpan.FromHours(duration.TotalHours * Progress);
         }
         
         private double Progress
