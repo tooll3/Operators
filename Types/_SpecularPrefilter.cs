@@ -1,13 +1,13 @@
+using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.Direct3D11;
-using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
-using Device = SharpDX.Direct3D11.Device;
+using T3.Core.Rendering;
 using Utilities = T3.Core.Utilities;
 
 namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
@@ -15,48 +15,110 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
     public class _SpecularPrefilter : Instance<_SpecularPrefilter>
     {
         [Output(Guid = "5dab6e1b-6136-45a9-bd63-1e18eafc20b7")]
-        public readonly Slot<Texture2D> Output = new Slot<Texture2D>();
+        public readonly Slot<Texture2D> FilteredCubeMap = new Slot<Texture2D>();
 
         public _SpecularPrefilter()
         {
-            Output.UpdateAction = Update;
+            FilteredCubeMap.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)
         {
             
-            var CubeMapSrc = CubeMap.GetValue(context); // Needs to be checked for null!
+            //ConstantBuffers.GetValues(ref _constantBuffers, context);
+            ShaderResources.GetValues(ref _shaderResourceViews, context);
+            SamplerStates.GetValues(ref _samplerStates, context);
+            var vs = VertexShader.GetValue(context);
+            var gs = GeometryShader.GetValue(context);
+            
+            var cubeMapSrc = CubeMap.GetValue(context); // Needs to be checked for null!
+            if (cubeMapSrc == null)
+            {
+                FilteredCubeMap.Value = null;
+                return;
+            }
+            
+            var device = ResourceManager.Instance().Device;
+            var deviceContext = device.ImmediateContext;
 
+
+            // Vertex shader stage
+            var vsStage = deviceContext.VertexShader;
+
+            _prevVsConstantBuffers = vsStage.GetConstantBuffers(0, 1);
+            _prevVsShaderResourceViews = vsStage.GetShaderResources(0, _shaderResourceViews.Length);
+            _prevVertexShader = vsStage.Get();
+
+            if (vs == null)
+            {
+                Log.Warning( $"{nameof(_SpecularPrefilter)} requires valid vertex shader", SymbolChildId );
+                return;
+            }
+            vsStage.Set(vs);
+            vsStage.SetShaderResources(0, _shaderResourceViews.Length, _shaderResourceViews);
+
+            // Geometry shader stage
+            var gsStage = deviceContext.GeometryShader;
+
+            _prevGsConstantBuffers = gsStage.GetConstantBuffers(0, 1);
+            _prevGsShaderResourceViews = gsStage.GetShaderResources(0, _shaderResourceViews.Length);
+            _prevGeometryShader = gsStage.Get();
+
+            if (gs == null)
+            {
+                Log.Warning( $"{nameof(_SpecularPrefilter)} requires valid geometry shader", SymbolChildId );
+                return;
+            }
+            
+            gsStage.Set(gs);
+            gsStage.SetShaderResources(0, _shaderResourceViews.Length, _shaderResourceViews);
+
+            // Pixel shader stage
+            var psStage = deviceContext.PixelShader;
+
+            _prevPixelShader = psStage.Get();
+            _prevPsConstantBuffers = psStage.GetConstantBuffers(0, 1);
+            _prevPsShaderResourceViews = psStage.GetShaderResources(0, _shaderResourceViews.Length);
+            _prevPsSamplerStates = psStage.GetSamplers(0, _samplerStates.Length);
+
+            var ps = PixelShader.GetValue(context);
+            if (ps == null)
+            {
+                Log.Warning( $"{nameof(_SpecularPrefilter)} requires valid pixel shader", SymbolChildId );
+                return;
+            }
+            psStage.Set(ps);
+            psStage.SetShaderResources(0, _shaderResourceViews.Length, _shaderResourceViews);
+            psStage.SetSamplers(0, _samplerStates);
+            
+            
             // if (_prefilteredCubeMap != null && !Changed)
             // {
             //     context.Image = _prefilteredCubeMap;
             //     return context;
             // }
 
-            Vector2 cubeMapSize = new Vector2(CubeMapSrc.Description.Width, CubeMapSrc.Description.Height);
-            Log.Debug($"source size: {CubeMapSrc.Description.Width} num mips in src: {CubeMapSrc.Description.MipLevels}");
+            Vector2 cubeMapSize = new Vector2(cubeMapSrc.Description.Width, cubeMapSrc.Description.Height);
+            Log.Debug($"source size: {cubeMapSrc.Description.Width} num mips in src: {cubeMapSrc.Description.MipLevels}");
 
             // if ( _prefilteredCubeMap == null )
             // {
-            Log.Debug("create cubemap", SymbolChildId);
             var cubeMapDesc = new Texture2DDescription
                                   {
                                       BindFlags = BindFlags.ShaderResource | BindFlags.RenderTarget,
-                                      Format = CubeMapSrc.Description.Format,
+                                      Format = cubeMapSrc.Description.Format,
                                       Width = (int)cubeMapSize.X,
                                       Height = (int)cubeMapSize.Y,
-                                      MipLevels = CubeMapSrc.Description.MipLevels,
-                                      SampleDescription = CubeMapSrc.Description.SampleDescription,
+                                      MipLevels = cubeMapSrc.Description.MipLevels,
+                                      SampleDescription = cubeMapSrc.Description.SampleDescription,
                                       Usage = ResourceUsage.Default,
                                       OptionFlags = ResourceOptionFlags.TextureCube | ResourceOptionFlags.GenerateMipMaps,
                                       CpuAccessFlags = CpuAccessFlags.None,
                                       ArraySize = 6
                                   };
 
-            var device = ResourceManager.Instance().Device;
             _prefilteredCubeMap = new Texture2D(device, cubeMapDesc);
 
-            
             var rastDesc = new RasterizerStateDescription
                                {
                                    FillMode = FillMode.Solid,
@@ -64,31 +126,21 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
                                    IsDepthClipEnabled = false
                                };
             _rasterizerState = new RasterizerState(device, rastDesc);
-            // }
 
-            /*
+            // Input Assembler
+            //device.ImmediateContext.InputAssembler.PrimitiveTopology = SharpDX.Direct3D.PrimitiveTopology.TriangleList;
+
+            _prevBlendState = device.ImmediateContext.OutputMerger.GetBlendState(out _prevBlendFactor, out _prevSampleMask);
+            device.ImmediateContext.OutputMerger.BlendState = DefaultRenderingStates.DisabledBlendState;
+            device.ImmediateContext.OutputMerger.DepthStencilState = DefaultRenderingStates.DisabledDepthStencilState;
             
-            // var prevEffect = context.Effect;
-            // var prevRTV = context.RenderTargetView;
-            // var prevDTV = context.DepthStencilView;
-
-            using (var CubeMapView = new ShaderResourceView(device, CubeMapSrc))
-            {
-                var cubeMapVariable = _effect.GetVariableByName("CubeMap").AsShaderResource();
-                if (cubeMapVariable != null)
-                {
-                    cubeMapVariable.SetResource(CubeMapView);
-                    //Log.Debug("cubemap source set to shader");
-                }
-            }
-
-            device.ImmediateContext.OutputMerger.BlendState = OperatorPartContext.DefaultRenderer.DisabledBlendState;
-            device.ImmediateContext.OutputMerger.DepthStencilState = OperatorPartContext.DefaultRenderer.DisabledDepthStencilState;
-
+            _prevRenderTargetViews = device.ImmediateContext.OutputMerger.GetRenderTargets(1);
+            device.ImmediateContext.OutputMerger.GetRenderTargets(out _prevDepthStencilView);
+                
             var rtvDesc = new RenderTargetViewDescription()
                               {
                                   Dimension = RenderTargetViewDimension.Texture2DArray,
-                                  Format = CubeMapSrc.Description.Format,
+                                  Format = cubeMapSrc.Description.Format,
                                   Texture2DArray = new RenderTargetViewDescription.Texture2DArrayResource()
                                                        {
                                                            ArraySize = 6,
@@ -98,110 +150,182 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
                               };
 
             int size = _prefilteredCubeMap.Description.Width;
+            
+            _prevViewports = device.ImmediateContext.Rasterizer.GetViewports<RawViewportF>();
+            
+            device.ImmediateContext.Rasterizer.State = _rasterizerState;
+
             int numMipLevels = _prefilteredCubeMap.Description.MipLevels;
             int mipSlice = 0;
-            //float roughness = 0.0f;
+            
             while (mipSlice < numMipLevels)
             {
-                Utilities.DisposeObj(ref _cubeMapRTV);
-                rtvDesc.Texture2DArray.MipSlice = mipSlice;
-                _cubeMapRTV = new RenderTargetView(device, _prefilteredCubeMap, rtvDesc);
-                device.ImmediateContext.OutputMerger.SetTargets(_cubeMapRTV, null);
-
-                var viewport = new ViewportF(0.0f, 0.0f, size, size);
+                var viewport = new RawViewportF { X = 0, Y = 0, Width = size, Height = size };
                 device.ImmediateContext.Rasterizer.SetViewports(new[] { viewport });
-                device.ImmediateContext.Rasterizer.State = _rasterizerState;
-                device.ImmediateContext.InputAssembler.InputLayout = context.InputLayout;
-                device.ImmediateContext.InputAssembler.PrimitiveTopology = SharpDX.Direct3D.PrimitiveTopology.TriangleList;
-                device.ImmediateContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(null, 0, 0));
-                float roughness = (float)mipSlice / (_prefilteredCubeMap.Description.MipLevels - 1);
-                Log.Debug(this, "roughness: {0}", roughness);
-                _effect.GetVariableByName("Roughness").AsScalar().Set(roughness);
+                
+                
+                Utilities.Dispose(ref _cubeMapRtv);
+                rtvDesc.Texture2DArray.MipSlice = mipSlice;
+                _cubeMapRtv = new RenderTargetView(device, _prefilteredCubeMap, rtvDesc);
+                device.ImmediateContext.OutputMerger.SetTargets(_cubeMapRtv, null);
 
-                for (int i = 0; i < _samplingParameters.Length; ++i)
-                {
-                    int indexToUse = -1;
-                    if (roughness == _samplingParameters[i].roughness)
-                    {
-                        indexToUse = i;
-                    }
+                var roughness = (float)mipSlice / (_prefilteredCubeMap.Description.MipLevels - 1);
+                
+                // Is this required?
+                if (_settingsBuffer != null)
+                    Utilities.Dispose(ref _settingsBuffer);
+                
+                
+                ResourceManager.Instance().SetupConstBuffer(new SamplingParameter()
+                                                                {
+                                                                    roughness = roughness,
+                                                                    baseMip = mipSlice,
+                                                                    numSamples = 10,
+                                                                }, ref _settingsBuffer);
 
-                    if (indexToUse == -1 && roughness < _samplingParameters[i].roughness)
-                    {
-                        indexToUse = i - 1;
-                    }
+                var constantBuffers = new[] { _settingsBuffer };
+                psStage.SetConstantBuffers(0, 1, constantBuffers);
+                vsStage.SetConstantBuffers(0, 1, constantBuffers);
+                gsStage.SetConstantBuffers(0, 1, constantBuffers);
 
-                    if (indexToUse != -1)
-                    {
-                        var param = _samplingParameters[indexToUse];
-                        Log.Debug(this, "base mip: {0}  num samples: {1}", param.baseMip, param.numSamples);
-                        _effect.GetVariableByName("BaseMip").AsScalar().Set(param.baseMip);
-                        _effect.GetVariableByName("NumSamples").AsScalar().Set(param.numSamples);
-                        break;
-                    }
-                }
-
-                var technique = _effect.GetTechniqueByIndex(0);
-                technique.GetPassByIndex(0).Apply(device.ImmediateContext);
                 device.ImmediateContext.Draw(6, 0);
-
                 size /= 2;
                 ++mipSlice;
             }
-
-            // restore render targets and viewport
-            device.ImmediateContext.OutputMerger.SetTargets(context.DepthStencilView, context.RenderTargetView);
-
-            //context.Image = _prefilteredCubeMap;
-            //Texture2D.ToFile(device.ImmediateContext, _prefilteredCubeMap, ImageFileFormat.Dds, "CubeMapTest.dds");
-            //Changed = false;
-            //return context;
-            */
+            
+            Restore(context);
         }
+        
+        
+        private void Restore(EvaluationContext context)
+        {
+            var deviceContext = ResourceManager.Instance().Device.ImmediateContext;
 
+            deviceContext.Rasterizer.SetViewports(_prevViewports, _prevViewports.Length);
+            deviceContext.OutputMerger.BlendState = _prevBlendState;
+            
+            // Vertex shader
+            var vsStage = deviceContext.VertexShader;
+            vsStage.Set(_prevVertexShader);
+            vsStage.SetConstantBuffers(0, _prevVsConstantBuffers.Length, _prevVsConstantBuffers);
+            vsStage.SetShaderResources(0, _prevVsShaderResourceViews.Length, _prevVsShaderResourceViews);
+
+            // Vertex shader
+            var gsStage = deviceContext.GeometryShader;
+            gsStage.Set(_prevGeometryShader);
+            gsStage.SetConstantBuffers(0, _prevGsConstantBuffers.Length, _prevGsConstantBuffers);
+            gsStage.SetShaderResources(0, _prevGsShaderResourceViews.Length, _prevGsShaderResourceViews);
+
+            // Pixel shader
+            var psStage = deviceContext.PixelShader;
+            psStage.Set(_prevPixelShader);
+            psStage.SetConstantBuffers(0, _prevPsConstantBuffers.Length, _prevPsConstantBuffers);
+            psStage.SetShaderResources(0, _prevPsShaderResourceViews.Length, _prevPsShaderResourceViews);
+            psStage.SetSamplers(0, _prevPsSamplerStates.Length, _prevPsSamplerStates);
+            
+            //deviceContext.OutputMerger.SetTargets(_previousRtv, null);
+            
+            if (_prevRenderTargetViews.Length > 0)
+                deviceContext.OutputMerger.SetRenderTargets(_prevDepthStencilView, _prevRenderTargetViews);
+            
+            foreach (var rtv in _prevRenderTargetViews)
+                rtv?.Dispose();            
+            
+            Utilities.Dispose(ref _prevDepthStencilView);
+        }        
+
+        
+        [StructLayout(LayoutKind.Explicit, Size = Stride)]
         public struct SamplingParameter
         {
-            public SamplingParameter(float r, int b, int num)
-            {
-                roughness = r;
-                baseMip = b;
-                numSamples = num;
-            }
-
+            [FieldOffset(0)]
             public float roughness;
+            
+            [FieldOffset(1 * 4)]
             public int baseMip;
+            
+            [FieldOffset(2 * 4)]
             public int numSamples;
+            
+            private const int Stride = 4 * 4;
         }
-
-        // r=0     -> base_mip = 0  1 sample
-        // r=0.125 -> base_mip = 0  500 samples
-        // r=0.375 -> base_mip = 4  900 samples
-        // r=0.5   -> base_mip = 5  200 samples
-        // r=0.75  -> base_mip = 6  100 samples
-        // r=0.99  -> base_mip = 8  10 samples
-        SamplingParameter[] _samplingParameters = new SamplingParameter[]
-                                                      {
-                                                          new SamplingParameter(0, 0, 1),
-                                                          new SamplingParameter(0.125f, 0, 500),
-                                                          new SamplingParameter(0.375f, 5, 500),
-                                                          new SamplingParameter(0.5f, 5, 200),
-                                                          new SamplingParameter(0.75f, 6, 100),
-                                                          new SamplingParameter(1.0f, 8, 10),
-                                                      };
+        
+        SamplingParameter[] _samplingParameters =
+            {
+                new SamplingParameter { roughness = 0, baseMip = 0, numSamples = 1 },
+                new SamplingParameter { roughness = 0.125f, baseMip = 0, numSamples = 500 },
+                new SamplingParameter { roughness = 0.375f, baseMip = 5, numSamples = 500 },
+                new SamplingParameter { roughness = 0.5f, baseMip = 5, numSamples = 200 },
+                new SamplingParameter { roughness = 0.75f, baseMip = 6, numSamples = 100 },
+                new SamplingParameter { roughness = 1.0f, baseMip = 8, numSamples = 10 },
+            };
 
         protected override void Dispose(bool disposing)
         {
             Utilities.Dispose(ref _prefilteredCubeMap);
-            Utilities.Dispose(ref _cubeMapRTV);
+            Utilities.Dispose(ref _cubeMapRtv);
             Utilities.Dispose(ref _rasterizerState);
-            base.Dispose();
+            base.Dispose(disposing);
         }
 
-        Texture2D _prefilteredCubeMap;
-        RenderTargetView _cubeMapRTV;
-        RasterizerState _rasterizerState;
+        private Texture2D _prefilteredCubeMap;
+        
+        private RawViewportF[] _prevViewports;
+        
+        private BlendState _prevBlendState;
+        private RawColor4 _prevBlendFactor;
+        private int _prevSampleMask;
+        
+        private RenderTargetView[] _prevRenderTargetViews;
+        private DepthStencilView _prevDepthStencilView;
+        
+        private RenderTargetView _cubeMapRtv;
+        private RasterizerState _rasterizerState;
 
+        //private Buffer[] _constantBuffers = new Buffer[0];
+        private ShaderResourceView[] _shaderResourceViews = new ShaderResourceView[0];
+        private SamplerState[] _samplerStates = new SamplerState[0];
+
+        // VS
+        private VertexShader _prevVertexShader;
+        private Buffer[] _prevVsConstantBuffers;
+        private ShaderResourceView[] _prevVsShaderResourceViews;
+
+        // GS
+        private GeometryShader _prevGeometryShader;
+        private Buffer[] _prevGsConstantBuffers;
+        private ShaderResourceView[] _prevGsShaderResourceViews;
+
+        // PS
+        private PixelShader _prevPixelShader;
+        private Buffer[] _prevPsConstantBuffers;
+        private ShaderResourceView[] _prevPsShaderResourceViews;
+        private SamplerState[] _prevPsSamplerStates = new SamplerState[0];
+
+        private static Buffer _settingsBuffer;
+        
+        
         [Input(Guid = "9f7926aa-ac69-4963-af1d-342ad06fc278")]
         public readonly InputSlot<Texture2D> CubeMap = new InputSlot<Texture2D>();
+
+        [Input(Guid = "D7C5E69E-9DA0-44F1-BAF7-A9D2A91CA41C")]
+        public readonly InputSlot<VertexShader> VertexShader = new InputSlot<VertexShader>();
+
+        [Input(Guid = "2A217F9D-2F9F-418A-8568-F767905384D5")]
+        public readonly InputSlot<GeometryShader> GeometryShader = new InputSlot<GeometryShader>();
+
+        [Input(Guid = "04D1B56F-8655-4D6C-9BDC-A84057A199D0")]
+        public readonly InputSlot<PixelShader> PixelShader = new InputSlot<PixelShader>();
+
+        // [Input(Guid = "D8A5D787-AB0C-4B4A-BD5B-06BA5C32229A")]
+        // public readonly MultiInputSlot<Buffer> ConstantBuffers = new MultiInputSlot<Buffer>();
+
+        [Input(Guid = "26459A4A-1BD8-4987-B41B-6C354CC48D47")]
+        public readonly MultiInputSlot<ShaderResourceView> ShaderResources = new MultiInputSlot<ShaderResourceView>();
+
+        [Input(Guid = "B994BFF4-D1AC-4A30-A6DC-DC7BBE05D15D")]
+        public readonly MultiInputSlot<SamplerState> SamplerStates = new MultiInputSlot<SamplerState>();
+
+        
     }
 }
