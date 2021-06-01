@@ -29,6 +29,7 @@ namespace T3.Operators.Types.Id_fbd7f0f0_36a3_4fbb_91e1_cb33d4666d09
             var deviceContext = device.ImmediateContext;
             var rasterizer = deviceContext.Rasterizer;
 
+            ScissorRectangles.GetValue(context);
             _prevViewports = rasterizer.GetViewports<RawViewportF>();
             Viewports.GetValues(ref _viewports, context);
             rasterizer.State = RasterizerState.GetValue(context);

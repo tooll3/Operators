@@ -19,12 +19,17 @@ namespace T3.Operators.Types.Id_9d1266c5_23db_439f_a475_8000fdd1c318
             Output.Value.RestoreAction = Restore;
         }
 
+        private Buffer[] _vertexBuffer = new Buffer[0];
         private void Update(EvaluationContext context)
         {
             var resourceManager = ResourceManager.Instance();
             var device = resourceManager.Device;
             var deviceContext = device.ImmediateContext;
             var iaStage = deviceContext.InputAssembler;
+
+            InputLayout.GetValue(context);
+            VertexBuffers.GetValues(ref _vertexBuffer, context);
+            IndexBuffer.GetValue(context);
 
             _prevTopology = iaStage.PrimitiveTopology;
             iaStage.PrimitiveTopology = PrimitiveTopology.GetValue(context);

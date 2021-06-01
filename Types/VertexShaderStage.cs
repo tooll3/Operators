@@ -27,6 +27,7 @@ namespace T3.Operators.Types.Id_a9600440_4203_4315_bdb1_4dfd603b4515
 
             ConstantBuffers.GetValues(ref _constantBuffers, context);
             ShaderResources.GetValues(ref _shaderResourceViews, context);
+            SamplerStates.GetValues(ref _samplerStates, context);
 
             _prevConstantBuffers = vsStage.GetConstantBuffers(0, _constantBuffers.Length);
             _prevShaderResourceViews = vsStage.GetShaderResources(0, _shaderResourceViews.Length);
@@ -52,6 +53,7 @@ namespace T3.Operators.Types.Id_a9600440_4203_4315_bdb1_4dfd603b4515
 
         private Buffer[] _constantBuffers = new Buffer[0];
         private ShaderResourceView[] _shaderResourceViews = new ShaderResourceView[0];
+        private SamplerState[] _samplerStates = new SamplerState[0];
 
         private SharpDX.Direct3D11.VertexShader _prevVertexShader;
         private Buffer[] _prevConstantBuffers;

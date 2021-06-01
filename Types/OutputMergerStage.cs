@@ -22,6 +22,12 @@ namespace T3.Operators.Types.Id_5efaf208_ba62_42ce_b3df_059b37fc1382 {
             var deviceContext = device.ImmediateContext;
             var outputMerger = deviceContext.OutputMerger;
 
+            DepthStencilView.GetValue(context);
+            DepthStencilReference.GetValue(context);
+            BlendFactor.GetValue(context);
+            BlendSampleMask.GetValue(context);
+            
+            
             RenderTargetViews.GetValues(ref _renderTargetViews, context);
             UnorderedAccessViews.GetValues(ref _unorderedAccessViews, context);
 
