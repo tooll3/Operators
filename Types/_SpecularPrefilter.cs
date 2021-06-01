@@ -24,6 +24,12 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
 
         private void Update(EvaluationContext context)
         {
+            var freeze = Freeze.GetValue(context);
+            if (freeze)
+            {
+                FilteredCubeMap.Value = _prefilteredCubeMap;
+                return;
+            }
             
             //ConstantBuffers.GetValues(ref _constantBuffers, context);
             ShaderResources.GetValues(ref _shaderResourceViews, context);
@@ -99,7 +105,7 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
             // }
 
             Vector2 cubeMapSize = new Vector2(cubeMapSrc.Description.Width, cubeMapSrc.Description.Height);
-            Log.Debug($"source size: {cubeMapSrc.Description.Width} num mips in src: {cubeMapSrc.Description.MipLevels}");
+            //Log.Debug($"source size: {cubeMapSrc.Description.Width} num mips in src: {cubeMapSrc.Description.MipLevels}");
 
             // if ( _prefilteredCubeMap == null )
             // {
@@ -117,7 +123,16 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
                                       ArraySize = 6
                                   };
 
-            _prefilteredCubeMap = new Texture2D(device, cubeMapDesc);
+            Utilities.Dispose(ref _prefilteredCubeMap);
+            try
+            {
+                _prefilteredCubeMap = new Texture2D(device, cubeMapDesc);
+            }
+            catch(SharpDXException e)
+            {
+                Log.Debug($"can't create CubeMap target {e.Message}");
+                return;
+            }
 
             var rastDesc = new RasterizerStateDescription
                                {
@@ -160,6 +175,7 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
             
             while (mipSlice < numMipLevels)
             {
+                Log.Debug($"Update mipmap level {mipSlice}");
                 var viewport = new RawViewportF { X = 0, Y = 0, Width = size, Height = size };
                 device.ImmediateContext.Rasterizer.SetViewports(new[] { viewport });
                 
@@ -192,7 +208,9 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
                 size /= 2;
                 ++mipSlice;
             }
-            
+
+            FilteredCubeMap.Value = _prefilteredCubeMap;
+            Utilities.Dispose(ref _cubeMapRtv);
             Restore(context);
         }
         
@@ -209,12 +227,14 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
             vsStage.Set(_prevVertexShader);
             vsStage.SetConstantBuffers(0, _prevVsConstantBuffers.Length, _prevVsConstantBuffers);
             vsStage.SetShaderResources(0, _prevVsShaderResourceViews.Length, _prevVsShaderResourceViews);
-
+            Utilities.Dispose(ref _prevVertexShader);
+            
             // Vertex shader
             var gsStage = deviceContext.GeometryShader;
             gsStage.Set(_prevGeometryShader);
             gsStage.SetConstantBuffers(0, _prevGsConstantBuffers.Length, _prevGsConstantBuffers);
             gsStage.SetShaderResources(0, _prevGsShaderResourceViews.Length, _prevGsShaderResourceViews);
+            Utilities.Dispose(ref _prevGeometryShader);
 
             // Pixel shader
             var psStage = deviceContext.PixelShader;
@@ -222,6 +242,7 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
             psStage.SetConstantBuffers(0, _prevPsConstantBuffers.Length, _prevPsConstantBuffers);
             psStage.SetShaderResources(0, _prevPsShaderResourceViews.Length, _prevPsShaderResourceViews);
             psStage.SetSamplers(0, _prevPsSamplerStates.Length, _prevPsSamplerStates);
+            Utilities.Dispose(ref _prevPixelShader);
             
             //deviceContext.OutputMerger.SetTargets(_previousRtv, null);
             
@@ -307,6 +328,9 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
         
         [Input(Guid = "9f7926aa-ac69-4963-af1d-342ad06fc278")]
         public readonly InputSlot<Texture2D> CubeMap = new InputSlot<Texture2D>();
+
+        [Input(Guid = "5C42502F-3F5C-443F-9488-BCD8E38303E3")]
+        public readonly InputSlot<bool> Freeze = new InputSlot<bool>();
 
         [Input(Guid = "D7C5E69E-9DA0-44F1-BAF7-A9D2A91CA41C")]
         public readonly InputSlot<VertexShader> VertexShader = new InputSlot<VertexShader>();
