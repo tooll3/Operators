@@ -24,28 +24,37 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
             FilteredCubeMap.UpdateAction = Update;
         }
 
+        private bool _updatedOnce = false;
+        
         private void Update(EvaluationContext context)
         {
-            var freeze = Freeze.GetValue(context);
-            if (freeze)
+            var updateLive = UpdateLive.GetValue(context);
+            if (_updatedOnce && !updateLive)
             {
                 FilteredCubeMap.Value = _prefilteredCubeMap;
                 return;
             }
-            
+
             //ConstantBuffers.GetValues(ref _constantBuffers, context);
             ShaderResources.GetValues(ref _shaderResourceViews, context);
             SamplerStates.GetValues(ref _samplerStates, context);
             var vs = VertexShader.GetValue(context);
             var gs = GeometryShader.GetValue(context);
-            
+
+            if (CubeMap.IsConnected && CubeMap.DirtyFlag.IsDirty)
+            {
+                //Log.Debug("Dirty");
+            }
+
             var cubeMapSrc = CubeMap.GetValue(context); // Needs to be checked for null!
             if (cubeMapSrc == null)
             {
                 FilteredCubeMap.Value = null;
                 return;
             }
-            
+
+        
+
             var device = ResourceManager.Instance().Device;
             var deviceContext = device.ImmediateContext;
 
@@ -210,6 +219,7 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
                     if (indexToUse != -1)
                     {
                         var param = _samplingParameters[indexToUse];
+                        param.roughness = roughness;
                         ResourceManager.Instance().SetupConstBuffer(param, ref _settingsBuffer);
                         break;
                     }
@@ -230,6 +240,7 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
 
             //device.ImmediateContext.InputAssembler.PrimitiveTopology = previousTopology;
             Restore(context);
+            _updatedOnce = true;
         }
         
         
@@ -292,11 +303,11 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
         SamplingParameter[] _samplingParameters =
             {
                 new SamplingParameter { roughness = 0, baseMip = 0, numSamples = 1 },
-                new SamplingParameter { roughness = 0.125f, baseMip = 0, numSamples = 500 },
-                new SamplingParameter { roughness = 0.375f, baseMip = 5, numSamples = 500 },
-                new SamplingParameter { roughness = 0.5f, baseMip = 5, numSamples = 200 },
-                new SamplingParameter { roughness = 0.75f, baseMip = 6, numSamples = 100 },
-                new SamplingParameter { roughness = 1.0f, baseMip = 8, numSamples = 10 },
+                new SamplingParameter { roughness = 0.125f, baseMip = 2, numSamples = 500 }, // 500
+                new SamplingParameter { roughness = 0.375f, baseMip = 3, numSamples = 500 }, // 500
+                new SamplingParameter { roughness = 0.5f, baseMip = 6, numSamples = 200 }, // 200
+                new SamplingParameter { roughness = 0.75f, baseMip = 7, numSamples = 150 }, // 100
+                new SamplingParameter { roughness = 1.0f, baseMip = 8, numSamples = 20 }, // 20
             };
         
         protected override void Dispose(bool disposing)
@@ -346,9 +357,7 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
         
         [Input(Guid = "9f7926aa-ac69-4963-af1d-342ad06fc278")]
         public readonly InputSlot<Texture2D> CubeMap = new InputSlot<Texture2D>();
-
-        [Input(Guid = "5C42502F-3F5C-443F-9488-BCD8E38303E3")]
-        public readonly InputSlot<bool> Freeze = new InputSlot<bool>();
+        
 
         [Input(Guid = "D7C5E69E-9DA0-44F1-BAF7-A9D2A91CA41C")]
         public readonly InputSlot<VertexShader> VertexShader = new InputSlot<VertexShader>();
@@ -359,8 +368,6 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
         [Input(Guid = "04D1B56F-8655-4D6C-9BDC-A84057A199D0")]
         public readonly InputSlot<PixelShader> PixelShader = new InputSlot<PixelShader>();
 
-        // [Input(Guid = "D8A5D787-AB0C-4B4A-BD5B-06BA5C32229A")]
-        // public readonly MultiInputSlot<Buffer> ConstantBuffers = new MultiInputSlot<Buffer>();
 
         [Input(Guid = "26459A4A-1BD8-4987-B41B-6C354CC48D47")]
         public readonly MultiInputSlot<ShaderResourceView> ShaderResources = new MultiInputSlot<ShaderResourceView>();
@@ -368,6 +375,7 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
         [Input(Guid = "B994BFF4-D1AC-4A30-A6DC-DC7BBE05D15D")]
         public readonly MultiInputSlot<SamplerState> SamplerStates = new MultiInputSlot<SamplerState>();
 
-        
+        [Input(Guid = "9D792412-D1F0-45F9-ABD6-4EAB79719924")]
+        public readonly MultiInputSlot<bool> UpdateLive = new MultiInputSlot<bool>();
     }
 }

@@ -24,6 +24,10 @@ namespace T3.Operators.Types.Id_6c2f8241_9f4b_451e_8a1d_871631d21163
         {
             if (TriggerTexture.IsConnected && !TriggerTexture.DirtyFlag.IsDirty)
             {
+                Output.DirtyFlag.Clear();
+                // UpdateCommands.DirtyFlag.Clear();
+                // TriggerTexture.DirtyFlag.Clear();
+
                 return;
             }
             

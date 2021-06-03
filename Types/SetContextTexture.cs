@@ -10,12 +10,12 @@ using Vector4 = System.Numerics.Vector4;
 
 namespace T3.Operators.Types.Id_944d1903_cd23_49ca_9b0d_2fc73bfcfd30
 {
-    public class _SetIBLTexture : Instance<_SetIBLTexture>
+    public class SetContextTexture : Instance<SetContextTexture>
     {
         [Output(Guid = "db61864d-0dd4-44bf-9722-0b9ce7e8fdd4")]
         public readonly Slot<Command> Output = new Slot<Command>();
 
-        public _SetIBLTexture()
+        public SetContextTexture()
         {
             Output.UpdateAction = Update;
         }

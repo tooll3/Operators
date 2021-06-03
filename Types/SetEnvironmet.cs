@@ -17,8 +17,8 @@ namespace T3.Operators.Types.Id_f3b66187_34b2_4018_8380_279f9f296ded
         [Input(Guid = "5c042a08-74b3-4a6b-a420-2fcfa0fc01ee")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> CubeMap = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
-        [Input(Guid = "a4d06e9a-9a7b-4353-a0a8-1eb0c7d38237")]
-        public readonly InputSlot<bool> Freeze = new InputSlot<bool>();
+        [Input(Guid = "c3c815fa-8672-4d99-99a7-986844f2fc45")]
+        public readonly InputSlot<bool> UpdateLive = new InputSlot<bool>();
 
     }
 }
