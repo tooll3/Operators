@@ -30,6 +30,9 @@ namespace T3.Operators.Types.Id_b89c5923_cc58_4d7a_8dce_eb1f8cdfc6e8
 
         [Input(Guid = "efc093f5-6fa4-4042-9cc3-6fdc96355a72")]
         public readonly InputSlot<bool> EnableDepthWrite = new InputSlot<bool>();
+
+        [Input(Guid = "9fbee6ee-5933-48f6-84f0-1da5e4b744b2")]
+        public readonly InputSlot<SharpDX.Direct3D11.Comparison> Comparison = new InputSlot<SharpDX.Direct3D11.Comparison>();
     }
 }
 

@@ -143,7 +143,8 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
             _rasterizerState = new RasterizerState(device, rastDesc);
 
             // Input Assembler
-            //device.ImmediateContext.InputAssembler.PrimitiveTopology = SharpDX.Direct3D.PrimitiveTopology.TriangleList;
+            var previousTopology = device.ImmediateContext.InputAssembler.PrimitiveTopology;
+            device.ImmediateContext.InputAssembler.PrimitiveTopology = SharpDX.Direct3D.PrimitiveTopology.TriangleList;
 
             _prevBlendState = device.ImmediateContext.OutputMerger.GetBlendState(out _prevBlendFactor, out _prevSampleMask);
             device.ImmediateContext.OutputMerger.BlendState = DefaultRenderingStates.DisabledBlendState;
@@ -211,6 +212,8 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
 
             FilteredCubeMap.Value = _prefilteredCubeMap;
             Utilities.Dispose(ref _cubeMapRtv);
+
+            device.ImmediateContext.InputAssembler.PrimitiveTopology = previousTopology;
             Restore(context);
         }
         

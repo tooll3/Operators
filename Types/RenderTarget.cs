@@ -75,7 +75,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             // Clear
             var clear = Clear.GetValue(context);
             var c = ClearColor.GetValue(context);
-            if (clear || !_wasCleared)
+            if (clear || !_wasClearedOnce)
             {
                 try
                 {
@@ -85,8 +85,8 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                         deviceContext.ClearDepthStencilView(_multiSampledDepthBufferDsv, DepthStencilClearFlags.Depth, 1.0f, 0);
                     }
 
-                    _wasCleared = true;
-                }
+                    _wasClearedOnce = true;
+                } 
                 catch
                 {
                     Log.Error($"{Parent.Symbol.Name}: Error clearing actual render target.", SymbolChildId);
@@ -252,7 +252,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                                                            });
 
                     //_multiSampledColorBufferRtv = new RenderTargetView(device, _multiSampledColorBuffer);
-                    _wasCleared = false;
+                    _wasClearedOnce = false;
                 }
                 catch (Exception e)
                 {
@@ -291,7 +291,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                                                                  });
                         _resolvedColorBufferSrv = new ShaderResourceView(device, _resolvedColorBuffer);
                         _resolvedColorBufferRtv = new RenderTargetView(device, _resolvedColorBuffer);
-                        _wasCleared = false;
+                        _wasClearedOnce = false;
                     }
                     catch
                     {
@@ -302,7 +302,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
                     }
                 }
 
-                _wasCleared = false;
+                _wasClearedOnce = false;
             }
 
             var depthRequired = depthFormat != Format.Unknown;
@@ -424,7 +424,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
         private Texture2D _resolvedDepthBuffer;
         private UnorderedAccessView _resolvedDepthBufferUav;
 
-        private bool _wasCleared;
+        private bool _wasClearedOnce;
 
         private Texture2D ColorTexture => _sampleCount > 1 ? _resolvedColorBuffer : _multiSampledColorBuffer ;
         private Texture2D DepthTexture => _sampleCount > 1 ? _resolvedDepthBuffer : _multiSampledDepthBuffer;
