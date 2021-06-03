@@ -213,7 +213,7 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
             FilteredCubeMap.Value = _prefilteredCubeMap;
             Utilities.Dispose(ref _cubeMapRtv);
 
-            device.ImmediateContext.InputAssembler.PrimitiveTopology = previousTopology;
+            //device.ImmediateContext.InputAssembler.PrimitiveTopology = previousTopology;
             Restore(context);
         }
         

@@ -27,6 +27,7 @@ namespace T3.Operators.Types.Id_4abd5f2e_3296_4d71_8462_faa203091b1d
 
             ConstantBuffers.GetValues(ref _constantBuffers, context);
             ShaderResources.GetValues(ref _shaderResourceViews, context);
+            SamplerStates.GetValue(context);
 
             _prevConstantBuffers = gsStage.GetConstantBuffers(0, _constantBuffers.Length);
             _prevShaderResourceViews = gsStage.GetShaderResources(0, _shaderResourceViews.Length);
