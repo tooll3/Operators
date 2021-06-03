@@ -22,13 +22,18 @@ namespace T3.Operators.Types.Id_6c2f8241_9f4b_451e_8a1d_871631d21163
 
         private void Update(EvaluationContext context)
         {
+            if (TriggerTexture.IsConnected && !TriggerTexture.DirtyFlag.IsDirty)
+            {
+                return;
+            }
+            
             if (UpdateCommands.IsConnected && UpdateCommands.DirtyFlag.IsDirty)
             {
                 // This will execute the input
                 UpdateCommands.GetValue(context);
-                
             }
             UpdateCommands.DirtyFlag.Clear();
+            TriggerTexture.DirtyFlag.Clear();
             
             var inputBuffer = Texture.GetValue(context);
             Output.Value = inputBuffer;
@@ -39,5 +44,8 @@ namespace T3.Operators.Types.Id_6c2f8241_9f4b_451e_8a1d_871631d21163
         
         [Input(Guid = "5599A8AC-0686-4FA8-806C-52A44F910F11")]
         public readonly InputSlot<Texture2D> Texture = new InputSlot<Texture2D>();
+        
+        [Input(Guid = "DC3BD757-300B-416A-92F9-B9C976EF7206")]
+        public readonly InputSlot<Texture2D> TriggerTexture = new InputSlot<Texture2D>();
     }
 }

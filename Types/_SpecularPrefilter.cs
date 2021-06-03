@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.Direct3D11;
@@ -8,6 +9,7 @@ using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
 using T3.Core.Rendering;
+using Buffer = SharpDX.Direct3D11.Buffer;
 using Utilities = T3.Core.Utilities;
 
 namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
@@ -105,7 +107,7 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
             // }
 
             Vector2 cubeMapSize = new Vector2(cubeMapSrc.Description.Width, cubeMapSrc.Description.Height);
-            //Log.Debug($"source size: {cubeMapSrc.Description.Width} num mips in src: {cubeMapSrc.Description.MipLevels}");
+            // Log.Debug($"source size: {cubeMapSrc.Description.Width} num mips in src: {cubeMapSrc.Description.MipLevels}");
 
             // if ( _prefilteredCubeMap == null )
             // {
@@ -176,8 +178,8 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
             
             while (mipSlice < numMipLevels)
             {
-                Log.Debug($"Update mipmap level {mipSlice}");
-                var viewport = new RawViewportF { X = 0, Y = 0, Width = size, Height = size };
+                // Log.Debug($"Update mipmap level {mipSlice} size: {size}");
+                var viewport = new RawViewportF { X = 0, Y = 0, Width = size, Height = size , MinDepth = 0, MaxDepth = 1};
                 device.ImmediateContext.Rasterizer.SetViewports(new[] { viewport });
                 
                 
@@ -191,21 +193,34 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
                 // Is this required?
                 if (_settingsBuffer != null)
                     Utilities.Dispose(ref _settingsBuffer);
-                
-                
-                ResourceManager.Instance().SetupConstBuffer(new SamplingParameter()
-                                                                {
-                                                                    roughness = roughness,
-                                                                    baseMip = mipSlice,
-                                                                    numSamples = 10,
-                                                                }, ref _settingsBuffer);
+
+                for (int i = 0; i < _samplingParameters.Length; ++i)
+                {
+                    int indexToUse = -1;
+                    if (Math.Abs(roughness - _samplingParameters[i].roughness) < 0.001f)
+                    {
+                        indexToUse = i;
+                    }
+
+                    if (indexToUse == -1 && roughness < _samplingParameters[i].roughness)
+                    {
+                        indexToUse = i - 1;
+                    }
+
+                    if (indexToUse != -1)
+                    {
+                        var param = _samplingParameters[indexToUse];
+                        ResourceManager.Instance().SetupConstBuffer(param, ref _settingsBuffer);
+                        break;
+                    }
+                }
 
                 var constantBuffers = new[] { _settingsBuffer };
                 psStage.SetConstantBuffers(0, 1, constantBuffers);
                 vsStage.SetConstantBuffers(0, 1, constantBuffers);
                 gsStage.SetConstantBuffers(0, 1, constantBuffers);
 
-                device.ImmediateContext.Draw(6, 0);
+                device.ImmediateContext.Draw(3, 0);
                 size /= 2;
                 ++mipSlice;
             }
@@ -283,7 +298,7 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
                 new SamplingParameter { roughness = 0.75f, baseMip = 6, numSamples = 100 },
                 new SamplingParameter { roughness = 1.0f, baseMip = 8, numSamples = 10 },
             };
-
+        
         protected override void Dispose(bool disposing)
         {
             Utilities.Dispose(ref _prefilteredCubeMap);
