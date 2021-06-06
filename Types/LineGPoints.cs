@@ -23,6 +23,9 @@ namespace T3.Operators.Types.Id_4ae9e2f5_7cb3_40b0_a662_0662e8cb7c68
         [Input(Guid = "8f439130-529c-42ff-a5c0-255476120f03")]
         public readonly InputSlot<System.Numerics.Vector3> Direction = new InputSlot<System.Numerics.Vector3>();
 
+        [Input(Guid = "af75835a-04c9-4721-8c7a-a31ef8012f06")]
+        public readonly InputSlot<float> Pivot = new InputSlot<float>();
+
         [Input(Guid = "d120d8f7-aff6-4e30-b0d2-c45e3e477fde")]
         public readonly InputSlot<float> W = new InputSlot<float>();
 

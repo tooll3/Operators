@@ -5,7 +5,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_d1570f7a_dd4d_4ca3_821b_b0bc7efdf487
 {
-    public class Kaleidoskope : Instance<Kaleidoskope>
+    public class __ObsoleteKaleidoskope : Instance<__ObsoleteKaleidoskope>
     {
         [Output(Guid = "3bae278b-2555-43a8-8837-e164c87a0900")]
         public readonly Slot<SharpDX.Direct3D11.Texture2D> TextureOutput = new Slot<SharpDX.Direct3D11.Texture2D>();
