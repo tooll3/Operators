@@ -5,7 +5,11 @@
   "Inputs": [
     {
       "Id": "9b430a01-9dfe-4fe5-a946-29496e58f82f"/*Input*/,
-      "DefaultValue": "Animation"
+      "DefaultValue": "TUTORIAL"
+    },
+    {
+      "Id": "2af05bc2-8589-4155-8daa-a3e81e4a8766"/*Category*/,
+      "DefaultValue": ""
     }
   ],
   "Children": [
@@ -94,9 +98,9 @@
                   "Id": "c50eec68-6ec1-4e58-8120-c13be992386b",
                   "NormalizedPosition": 0.0,
                   "Color": {
-                    "R": 1.0,
-                    "G": 0.635589838,
-                    "B": 0.08296943,
+                    "R": 0.08296943,
+                    "G": 0.963959634,
+                    "B": 1.0,
                     "A": 1.0
                   }
                 },
@@ -114,9 +118,9 @@
                   "Id": "f080f701-4357-44da-9271-137f642466a0",
                   "NormalizedPosition": 1.0,
                   "Color": {
-                    "R": 0.884874,
-                    "G": 0.61435467,
-                    "B": 0.0362586379,
+                    "R": 0.0362586379,
+                    "G": 0.884874,
+                    "B": 0.5624741,
                     "A": 1.0
                   }
                 }
@@ -411,6 +415,108 @@
       "SymbolId": "f9fe78c5-43a6-48ae-8e8c-6cdbbc330dd1",
       "InputValues": [],
       "Outputs": []
+    },
+    {
+      "Id": "9fb371a8-275b-458c-b3ef-e995c839a60c"/*SampleGradient*/,
+      "SymbolId": "8211249d-7a26-4ad0-8d84-56da72a5c536",
+      "InputValues": [
+        {
+          "Id": "eff10fad-cf95-4133-91db-efc41258cd1b"/*Gradient*/,
+          "Type": "T3.Core.DataTypes.Gradient",
+          "Value": {
+            "Gradient": {
+              "Interpolation": "Linear",
+              "Steps": [
+                {
+                  "Id": "c50eec68-6ec1-4e58-8120-c13be992386b",
+                  "NormalizedPosition": 0.0,
+                  "Color": {
+                    "R": 1.0,
+                    "G": 0.635589838,
+                    "B": 0.08296943,
+                    "A": 1.0
+                  }
+                },
+                {
+                  "Id": "a8f6e377-b5d3-4e39-ad7e-8fc5230b7cf1",
+                  "NormalizedPosition": 0.9130435,
+                  "Color": {
+                    "R": 0.00112507457,
+                    "G": 0.213968769,
+                    "B": 0.2576419,
+                    "A": 1.0
+                  }
+                },
+                {
+                  "Id": "f080f701-4357-44da-9271-137f642466a0",
+                  "NormalizedPosition": 1.0,
+                  "Color": {
+                    "R": 0.884874,
+                    "G": 0.61435467,
+                    "B": 0.0362586379,
+                    "A": 1.0
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "6d3e07f7-4dae-426b-8ffe-1bc5f441def6"/*SampleGradient*/,
+      "SymbolId": "8211249d-7a26-4ad0-8d84-56da72a5c536",
+      "InputValues": [
+        {
+          "Id": "eff10fad-cf95-4133-91db-efc41258cd1b"/*Gradient*/,
+          "Type": "T3.Core.DataTypes.Gradient",
+          "Value": {
+            "Gradient": {
+              "Interpolation": "Linear",
+              "Steps": [
+                {
+                  "Id": "c50eec68-6ec1-4e58-8120-c13be992386b",
+                  "NormalizedPosition": 0.0,
+                  "Color": {
+                    "R": 1.0,
+                    "G": 0.635589838,
+                    "B": 0.08296943,
+                    "A": 1.0
+                  }
+                },
+                {
+                  "Id": "a8f6e377-b5d3-4e39-ad7e-8fc5230b7cf1",
+                  "NormalizedPosition": 0.9130435,
+                  "Color": {
+                    "R": 0.00112507457,
+                    "G": 0.213968769,
+                    "B": 0.2576419,
+                    "A": 1.0
+                  }
+                },
+                {
+                  "Id": "f080f701-4357-44da-9271-137f642466a0",
+                  "NormalizedPosition": 1.0,
+                  "Color": {
+                    "R": 0.884874,
+                    "G": 0.61435467,
+                    "B": 0.0362586379,
+                    "A": 1.0
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "37009d3c-12bc-47d5-a427-ef06ce03517d"/*ToUpperCase*/,
+      "SymbolId": "acdd78b1-4e66-4fd0-a36b-5318670fefd4",
+      "InputValues": [],
+      "Outputs": []
     }
   ],
   "Connections": [
@@ -421,10 +527,22 @@
       "TargetSlotId": "ad10e89c-3350-495d-a992-5f7d371defc8"
     },
     {
+      "SourceParentOrChildId": "37009d3c-12bc-47d5-a427-ef06ce03517d",
+      "SourceSlotId": "ecf66a1e-45e5-4e0c-ac9e-a784a9339153",
+      "TargetParentOrChildId": "0a26de17-5ef8-484d-8bcc-4d72bd41cc2c",
+      "TargetSlotId": "f1f1be0e-d5bc-4940-bbc1-88bfa958f0e1"
+    },
+    {
       "SourceParentOrChildId": "f6b2497c-a115-4121-b299-483496531a5d",
       "SourceSlotId": "73ebf863-ba71-421c-bee7-312f13c5eff0",
       "TargetParentOrChildId": "33fc0492-1d5b-4fe8-8425-bab02a67cdda",
       "TargetSlotId": "dcd066ce-ac44-4e76-85b3-78821245d9dc"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "9b430a01-9dfe-4fe5-a946-29496e58f82f",
+      "TargetParentOrChildId": "37009d3c-12bc-47d5-a427-ef06ce03517d",
+      "TargetSlotId": "041c98b6-4450-46d7-9dae-c9030c88b9e6"
     },
     {
       "SourceParentOrChildId": "677d91e1-1aea-4555-aeaf-7ae819f6c8a0",
@@ -536,7 +654,7 @@
     },
     {
       "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
-      "SourceSlotId": "9b430a01-9dfe-4fe5-a946-29496e58f82f",
+      "SourceSlotId": "2af05bc2-8589-4155-8daa-a3e81e4a8766",
       "TargetParentOrChildId": "fa5cdfee-7138-4afd-83a7-c781337b9af3",
       "TargetSlotId": "f1f1be0e-d5bc-4940-bbc1-88bfa958f0e1"
     }

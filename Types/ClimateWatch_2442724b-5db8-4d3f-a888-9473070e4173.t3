@@ -1747,7 +1747,7 @@
         {
           "Id": "e7c1f0af-da6d-4e33-ac86-7dc96bfe7eb3"/*BoolValue*/,
           "Type": "System.Boolean",
-          "Value": true
+          "Value": false
         }
       ],
       "Outputs": []
@@ -1948,8 +1948,18 @@
             "X": 1.0,
             "Y": 1.0,
             "Z": 1.0,
-            "W": 0.52
+            "W": 1.0
           }
+        },
+        {
+          "Id": "a83bdfb1-c92d-4844-9e43-8ce09959fae9"/*EnableDepthTest*/,
+          "Type": "System.Boolean",
+          "Value": false
+        },
+        {
+          "Id": "022f1959-a62b-49de-817a-3930bc8ec32b"/*EnableDepthWrite*/,
+          "Type": "System.Boolean",
+          "Value": false
         }
       ],
       "Outputs": [
@@ -2148,8 +2158,8 @@
           "Id": "da607ebd-6fec-4ae8-bf91-b70dcb794557"/*Translation*/,
           "Type": "System.Numerics.Vector3",
           "Value": {
-            "X": -0.457314163,
-            "Y": -0.0793476552,
+            "X": 0.4373487,
+            "Y": -0.116792589,
             "Z": 0.0
           }
         }
@@ -2230,12 +2240,6 @@
           "Value": "Resources\\proj-climatewatch\\images\\Skull.png"
         }
       ],
-      "Outputs": []
-    },
-    {
-      "Id": "85d16e0e-90da-41ee-8823-e08433031158"/*FloatToString*/,
-      "SymbolId": "39c96cfd-dedf-4f76-a471-d1c26c9ba9fa",
-      "InputValues": [],
       "Outputs": []
     },
     {
@@ -2363,6 +2367,117 @@
           "Id": "79080698-1097-4178-b7da-7d10fd86be28"/*MixOriginal*/,
           "Type": "System.Single",
           "Value": 0.15
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "bd808c08-6c70-4969-97bb-c880ebdc4181"/*Execute*/,
+      "SymbolId": "936e4324-bea2-463a-b196-6064a2d8a6b2",
+      "InputValues": [],
+      "Outputs": []
+    },
+    {
+      "Id": "2a170747-a03f-4a3e-a5a9-79fde5e1cc19"/*Transform*/,
+      "SymbolId": "284d2183-197d-47fd-b130-873cced78b1c",
+      "InputValues": [
+        {
+          "Id": "b4a8c16d-5a0f-4867-ae03-92a675abe709"/*Translation*/,
+          "Type": "System.Numerics.Vector3",
+          "Value": {
+            "X": 0.0,
+            "Y": 0.33682844,
+            "Z": 0.0
+          }
+        },
+        {
+          "Id": "a7b1e667-bce3-4e76-a5b1-0955c118d0fc"/*UniformScale*/,
+          "Type": "System.Single",
+          "Value": 1.1
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "fb854a47-79b3-4e2d-9ba3-e5e3a15b629c"/*Gas*/,
+      "SymbolId": "487dad15-abb2-4d8f-a66a-520af9739684",
+      "Name": "Gas",
+      "InputValues": [
+        {
+          "Id": "56bc4d62-4938-4173-86d5-1f1bd3ea6a43"/*ImagePath*/,
+          "Type": "System.String",
+          "Value": "Resources\\proj-climatewatch\\images\\icon\\source-gas.png"
+        },
+        {
+          "Id": "a03886ac-21a6-4c3e-bedd-a3c1a60f17ab"/*Position*/,
+          "Type": "System.Numerics.Vector2",
+          "Value": {
+            "X": -0.0500000119,
+            "Y": 0.0
+          }
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "d3f69da0-4735-49d0-b565-13a4d2d81371"/*Oil*/,
+      "SymbolId": "487dad15-abb2-4d8f-a66a-520af9739684",
+      "Name": "Oil",
+      "InputValues": [
+        {
+          "Id": "56bc4d62-4938-4173-86d5-1f1bd3ea6a43"/*ImagePath*/,
+          "Type": "System.String",
+          "Value": "Resources\\proj-climatewatch\\images\\icon\\source-oil.png"
+        },
+        {
+          "Id": "a03886ac-21a6-4c3e-bedd-a3c1a60f17ab"/*Position*/,
+          "Type": "System.Numerics.Vector2",
+          "Value": {
+            "X": -0.170000017,
+            "Y": 0.0
+          }
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "573a4f96-4352-4a04-9f7d-fb7b2119e928"/*Coal*/,
+      "SymbolId": "487dad15-abb2-4d8f-a66a-520af9739684",
+      "Name": "Coal",
+      "InputValues": [
+        {
+          "Id": "56bc4d62-4938-4173-86d5-1f1bd3ea6a43"/*ImagePath*/,
+          "Type": "System.String",
+          "Value": "Resources\\proj-climatewatch\\images\\icon\\source-coal-ignite.png"
+        },
+        {
+          "Id": "a03886ac-21a6-4c3e-bedd-a3c1a60f17ab"/*Position*/,
+          "Type": "System.Numerics.Vector2",
+          "Value": {
+            "X": 0.19,
+            "Y": 0.0
+          }
+        }
+      ],
+      "Outputs": []
+    },
+    {
+      "Id": "72098020-b80f-4801-a7c8-034b1981b6ae"/*CoalMines*/,
+      "SymbolId": "487dad15-abb2-4d8f-a66a-520af9739684",
+      "Name": "CoalMines",
+      "InputValues": [
+        {
+          "Id": "56bc4d62-4938-4173-86d5-1f1bd3ea6a43"/*ImagePath*/,
+          "Type": "System.String",
+          "Value": "Resources\\proj-climatewatch\\images\\icon\\source-coal.png"
+        },
+        {
+          "Id": "a03886ac-21a6-4c3e-bedd-a3c1a60f17ab"/*Position*/,
+          "Type": "System.Numerics.Vector2",
+          "Value": {
+            "X": 0.07,
+            "Y": 0.0
+          }
         }
       ],
       "Outputs": []
@@ -2532,6 +2647,12 @@
       "TargetSlotId": "2a585a23-b60c-4c8b-8cfa-9ab2a8b04c7a"
     },
     {
+      "SourceParentOrChildId": "bd808c08-6c70-4969-97bb-c880ebdc4181",
+      "SourceSlotId": "e81c99ce-fcee-4e7c-a1c7-0aa3b352b7e1",
+      "TargetParentOrChildId": "2a170747-a03f-4a3e-a5a9-79fde5e1cc19",
+      "TargetSlotId": "dcd066ce-ac44-4e76-85b3-78821245d9dc"
+    },
+    {
       "SourceParentOrChildId": "83573c60-6614-46b9-96e5-734253d24a3f",
       "SourceSlotId": "1f4e7cac-1f62-4633-b0f3-a3017a026753",
       "TargetParentOrChildId": "37947c9f-4a81-4232-97c7-2418e5bfdd12",
@@ -2652,6 +2773,12 @@
       "TargetSlotId": "f36e4078-2608-4308-ab5f-077c05b1181a"
     },
     {
+      "SourceParentOrChildId": "89368a6a-8f9e-4e7f-8af2-5bee6e5ecec2",
+      "SourceSlotId": "70682e31-6f51-4c08-8d96-bed403fc1c7d",
+      "TargetParentOrChildId": "573a4f96-4352-4a04-9f7d-fb7b2119e928",
+      "TargetSlotId": "e49a4ccf-31aa-4168-9b28-b034dbc0848a"
+    },
+    {
       "SourceParentOrChildId": "dc2204c9-0b54-48e2-b93a-31cb369f2f90",
       "SourceSlotId": "7a4c4feb-be2f-463e-96c6-cd9a6bad77a2",
       "TargetParentOrChildId": "5882f7fa-ef9e-4c59-8b47-c432038fc776",
@@ -2758,6 +2885,12 @@
       "SourceSlotId": "62368c06-7815-47bc-9b0d-3024a2907e01",
       "TargetParentOrChildId": "70845d50-5e19-4312-8a73-1ea6134c3cda",
       "TargetSlotId": "f1f1be0e-d5bc-4940-bbc1-88bfa958f0e1"
+    },
+    {
+      "SourceParentOrChildId": "89368a6a-8f9e-4e7f-8af2-5bee6e5ecec2",
+      "SourceSlotId": "01c2e74e-e665-4f01-84e6-10f41a74ad6a",
+      "TargetParentOrChildId": "72098020-b80f-4801-a7c8-034b1981b6ae",
+      "TargetSlotId": "e49a4ccf-31aa-4168-9b28-b034dbc0848a"
     },
     {
       "SourceParentOrChildId": "95a75112-1d7b-475f-8f27-36fb8d9eb6e7",
@@ -2964,6 +3097,30 @@
       "TargetSlotId": "5d73ebe6-9aa0-471a-ae6b-3f5bfd5a0f9c"
     },
     {
+      "SourceParentOrChildId": "d3f69da0-4735-49d0-b565-13a4d2d81371",
+      "SourceSlotId": "2a942a7d-3e98-4c15-9736-675095c714c6",
+      "TargetParentOrChildId": "bd808c08-6c70-4969-97bb-c880ebdc4181",
+      "TargetSlotId": "5d73ebe6-9aa0-471a-ae6b-3f5bfd5a0f9c"
+    },
+    {
+      "SourceParentOrChildId": "fb854a47-79b3-4e2d-9ba3-e5e3a15b629c",
+      "SourceSlotId": "2a942a7d-3e98-4c15-9736-675095c714c6",
+      "TargetParentOrChildId": "bd808c08-6c70-4969-97bb-c880ebdc4181",
+      "TargetSlotId": "5d73ebe6-9aa0-471a-ae6b-3f5bfd5a0f9c"
+    },
+    {
+      "SourceParentOrChildId": "72098020-b80f-4801-a7c8-034b1981b6ae",
+      "SourceSlotId": "2a942a7d-3e98-4c15-9736-675095c714c6",
+      "TargetParentOrChildId": "bd808c08-6c70-4969-97bb-c880ebdc4181",
+      "TargetSlotId": "5d73ebe6-9aa0-471a-ae6b-3f5bfd5a0f9c"
+    },
+    {
+      "SourceParentOrChildId": "573a4f96-4352-4a04-9f7d-fb7b2119e928",
+      "SourceSlotId": "2a942a7d-3e98-4c15-9736-675095c714c6",
+      "TargetParentOrChildId": "bd808c08-6c70-4969-97bb-c880ebdc4181",
+      "TargetSlotId": "5d73ebe6-9aa0-471a-ae6b-3f5bfd5a0f9c"
+    },
+    {
       "SourceParentOrChildId": "e176f6e6-1dd7-46da-aa14-8e8b0db94057",
       "SourceSlotId": "3517d466-d084-45e4-885a-8c7f6b16446e",
       "TargetParentOrChildId": "bedd0265-d811-47e0-bdd5-aa90eb0dcdca",
@@ -2974,6 +3131,12 @@
       "SourceSlotId": "2d329133-29b9-4f56-b5a6-5ff7d83638fa",
       "TargetParentOrChildId": "ca6afae6-62e0-4d78-a89b-aaf9067f484c",
       "TargetSlotId": "dcd066ce-ac44-4e76-85b3-78821245d9dc"
+    },
+    {
+      "SourceParentOrChildId": "89368a6a-8f9e-4e7f-8af2-5bee6e5ecec2",
+      "SourceSlotId": "b2865766-2d84-4753-8e03-af044051fcc2",
+      "TargetParentOrChildId": "d3f69da0-4735-49d0-b565-13a4d2d81371",
+      "TargetSlotId": "e49a4ccf-31aa-4168-9b28-b034dbc0848a"
     },
     {
       "SourceParentOrChildId": "e4185b01-09b5-45e0-a4c0-2f4f6d7ea1c7",
@@ -3084,6 +3247,12 @@
       "TargetSlotId": "40606d4e-acaf-4f23-a845-16f0eb9b73cf"
     },
     {
+      "SourceParentOrChildId": "89368a6a-8f9e-4e7f-8af2-5bee6e5ecec2",
+      "SourceSlotId": "fb7618d7-a738-452c-a10e-ef7968866250",
+      "TargetParentOrChildId": "fb854a47-79b3-4e2d-9ba3-e5e3a15b629c",
+      "TargetSlotId": "e49a4ccf-31aa-4168-9b28-b034dbc0848a"
+    },
+    {
       "SourceParentOrChildId": "12d9910b-f2f1-43b9-b16f-e24d11d435ae",
       "SourceSlotId": "e4a8d926-7abd-4d2a-82a1-b7d140cb457f",
       "TargetParentOrChildId": "fcdb85be-2da0-4799-81e3-dbb92c1fbdf6",
@@ -3122,6 +3291,12 @@
     {
       "SourceParentOrChildId": "ec9d1af8-7d67-49c0-b691-04ae65f4b0a6",
       "SourceSlotId": "e81c99ce-fcee-4e7c-a1c7-0aa3b352b7e1",
+      "TargetParentOrChildId": "fcdb85be-2da0-4799-81e3-dbb92c1fbdf6",
+      "TargetSlotId": "5d73ebe6-9aa0-471a-ae6b-3f5bfd5a0f9c"
+    },
+    {
+      "SourceParentOrChildId": "2a170747-a03f-4a3e-a5a9-79fde5e1cc19",
+      "SourceSlotId": "2d329133-29b9-4f56-b5a6-5ff7d83638fa",
       "TargetParentOrChildId": "fcdb85be-2da0-4799-81e3-dbb92c1fbdf6",
       "TargetSlotId": "5d73ebe6-9aa0-471a-ae6b-3f5bfd5a0f9c"
     },

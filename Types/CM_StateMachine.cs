@@ -13,18 +13,12 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
         [Output(Guid = "78a7a222-ef84-45cb-9732-eb29afc83c3d", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> SimulationProgress = new Slot<float>();
 
-        // [Output(Guid = "21BB7697-6E6E-437D-922B-4B7356939D3D")]
-        // public readonly Slot<float> ModeChangeTime = new Slot<float>();
-        //
-        // [Output(Guid = "BAE401A1-481F-4900-BFE6-292E73AA1C7B")]
-        // public readonly Slot<int> SimulationYear = new Slot<int>();
-
         [Output(Guid = "BBE120E4-DD68-4301-A3F2-3C1CA7D345E5", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<string> RestCarbon = new Slot<string>();
 
         [Output(Guid = "8160A329-0A1A-4FDF-8E9D-D5E21CA95954", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> RestCarbonRatio = new Slot<float>();
-        
+
         [Output(Guid = "A72A83F1-B36B-4653-8D1F-C0EBA3D03A0A", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<bool> IsSimulationRunning = new Slot<bool>();
 
@@ -33,6 +27,18 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
 
         [Output(Guid = "08C995C9-B091-476C-8985-1C7EB64F451D", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<DateTime> Date = new Slot<DateTime>();
+
+        [Output(Guid = "B2865766-2D84-4753-8E03-AF044051FCC2", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<float> SourceOil = new Slot<float>();
+
+        [Output(Guid = "FB7618D7-A738-452C-A10E-EF7968866250", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<float> SourceGas = new Slot<float>();
+
+        [Output(Guid = "70682E31-6F51-4C08-8D96-BED403FC1C7D", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<float> SourceCoal = new Slot<float>();
+
+        [Output(Guid = "01C2E74E-E665-4F01-84E6-10F41A74AD6A", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<float> SourceCoalMines = new Slot<float>();
 
         public CM_StateMachine()
         {
@@ -56,11 +62,19 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
                     break;
 
                 case States.ShowConfiguration:
+                    SourceOil.Value = SelectedSimulationMode.OilConsumption;
+                    SourceGas.Value = SelectedSimulationMode.GasConsumption;
+                    SourceCoalMines.Value = SelectedSimulationMode.CoalConsumption;
+                    SourceCoal.Value = SelectedSimulationMode.CoalConsumption;
                     break;
 
                 case States.Simulating:
                 {
-                    //var progress = (float)((RunTime - _simulationStartTime) / currentSimulationMode.GetSimulationDuration()) * _simulationSpeed;
+                    SourceOil.Value = 0;
+                    SourceGas.Value = 0;
+                    SourceCoalMines.Value = 0;
+                    SourceCoal.Value = 0;
+
                     var complete = Progress >= 1;
                     if (complete)
                     {
@@ -159,18 +173,18 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
             long rest = (long)MathUtils.Lerp(InitialRestCarbon, ActiveMode.RestCarbon, Progress);
             return $"{rest:0}";
         }
-        
+
         private float GetRestCarbonRatio()
         {
             long rest = (long)MathUtils.Lerp(InitialRestCarbon, ActiveMode.RestCarbon, Progress);
-            return (float)(rest / (double) InitialRestCarbon);
+            return (float)(rest / (double)InitialRestCarbon);
         }
 
         private float GetTemperature()
         {
-            return  (float)MathUtils.Lerp(InitialTemp, ActiveMode.EndTemperature, Progress);
+            return (float)MathUtils.Lerp(InitialTemp, ActiveMode.EndTemperature, Progress);
         }
-        
+
         private DateTime GetDate()
         {
             var timeA = _initialDate;
@@ -178,7 +192,7 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
             var duration = timeB - timeA;
             return timeA + TimeSpan.FromHours(duration.TotalHours * Progress);
         }
-        
+
         private double Progress
         {
             get
@@ -202,13 +216,14 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
 
         private const double IdleTimeOut = 3 * 60;
         private const long InitialRestCarbon = 7430000000000;
-        
+
         private readonly DateTime _initialDate = new DateTime(2021, 5, 12);
         private const float InitialTemp = 1.21f;
 
         private SimulationMode DefaultMode => _simulationModes[0];
-        private SimulationMode ActiveMode => _state == States.Simulating || _state == States.SimulationComplete 
-                                                 ? SelectedSimulationMode 
+
+        private SimulationMode ActiveMode => _state == States.Simulating || _state == States.SimulationComplete
+                                                 ? SelectedSimulationMode
                                                  : DefaultMode;
 
         private States _state = States.Idle;
@@ -231,18 +246,24 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
 
         private struct SimulationMode
         {
-            public SimulationMode(int year, float endTemperature, long restCarbon)
+            public SimulationMode(int year, float endTemperature, long restCarbon, float oil, float gas, float coal)
             {
                 Year = year;
                 EndTemperature = endTemperature;
                 RestCarbon = restCarbon;
                 EndDate = new DateTime(year, 12, 30);
+                OilConsumption = oil;
+                GasConsumption = gas;
+                CoalConsumption = coal;
             }
 
             public readonly int Year;
             public float EndTemperature;
             public readonly long RestCarbon;
             public DateTime EndDate;
+            public float OilConsumption;
+            public float GasConsumption;
+            public float CoalConsumption;
 
             public float GetSimulationDuration()
             {
@@ -252,14 +273,14 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
 
         private List<SimulationMode> _simulationModes = new List<SimulationMode>()
                                                             {
-                                                                new SimulationMode(2125, 5f, 3381000000000),
-                                                                new SimulationMode(2172, 5f, 3381000000000),
-                                                                new SimulationMode(2173, 5f, 3381000000000),
-                                                                new SimulationMode(2324, 5f, 3381000000000),
-                                                                new SimulationMode(2174, 5f, 3381000000000),
-                                                                new SimulationMode(2328, 5f, 3381000000000),
-                                                                new SimulationMode(2335, 5f, 3381000000000),
-                                                                new SimulationMode(2036, 1.7f, 6887000000000),
+                                                                new SimulationMode(2125, 5f, 3381000000000, 1, 1, 1),
+                                                                new SimulationMode(2268, 5f, 3381000000000, 1, 0.6f, 0.4f),
+                                                                new SimulationMode(2251, 5f, 3381000000000, 0.8f, 0.7f, 0.5f),
+                                                                new SimulationMode(2140, 2.9f, 5517000000000, 0.8f, 0.3f, 0),
+                                                                new SimulationMode(2190, 5f, 3381000000000, 0.1f, 0.9f, 1),
+                                                                new SimulationMode(2317, 4.1f, 4451000000000, 0.1f, 0.5f, 0.4f),
+                                                                new SimulationMode(2317, 4.3f, 4102000000000, 0, 0.6f, 0.5f),
+                                                                new SimulationMode(2022, 1.72f, 6887000000000, 0, 0, 0),
                                                             };
 
         [Input(Guid = "c766e021-8478-4507-859d-25badb679ff2")]
