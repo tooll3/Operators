@@ -40,6 +40,13 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
         [Output(Guid = "01C2E74E-E665-4F01-84E6-10F41A74AD6A", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<float> SourceCoalMines = new Slot<float>();
 
+        [Output(Guid = "FDBFE711-067B-4D95-83E6-A9125704069F", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<bool> FreezeParticleGrowth = new Slot<bool>();
+
+        [Output(Guid = "64EDD71F-6D86-4669-9481-3D197B505022", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<bool> ResetParticles = new Slot<bool>();
+
+        
         public CM_StateMachine()
         {
             SimulationProgress.UpdateAction = Update;
@@ -103,6 +110,8 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
                 SimulationProgress.Value = (float)Progress;
             }
 
+            FreezeParticleGrowth.Value = _state == States.SimulationComplete;
+            
             if (startPressed != _startPressed)
             {
                 if (startPressed)
@@ -113,9 +122,13 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
                 _startPressed = startPressed;
             }
 
+            ResetParticles.Value = false;
             var newSimMode = GetModeFromRenewalSetting();
             if (newSimMode != _simulationModeIndex)
             {
+                if(_state != States.ShowConfiguration)
+                    ResetParticles.Value = true;
+                
                 SetState(States.ShowConfiguration);
                 _simulationModeIndex = newSimMode;
             }
@@ -280,7 +293,7 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
                                                                 new SimulationMode(2190, 5f, 3381000000000, 0.1f, 0.9f, 1),
                                                                 new SimulationMode(2317, 4.1f, 4451000000000, 0.1f, 0.5f, 0.4f),
                                                                 new SimulationMode(2317, 4.3f, 4102000000000, 0, 0.6f, 0.5f),
-                                                                new SimulationMode(2022, 1.72f, 6887000000000, 0, 0, 0),
+                                                                new SimulationMode(2036, 1.72f, 6887000000000, 0, 0, 0),
                                                             };
 
         [Input(Guid = "c766e021-8478-4507-859d-25badb679ff2")]

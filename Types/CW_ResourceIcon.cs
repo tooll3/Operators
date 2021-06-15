@@ -20,6 +20,12 @@ namespace T3.Operators.Types.Id_487dad15_abb2_4d8f_a66a_520af9739684
         [Input(Guid = "a03886ac-21a6-4c3e-bedd-a3c1a60f17ab")]
         public readonly InputSlot<System.Numerics.Vector2> Position = new InputSlot<System.Numerics.Vector2>();
 
+        [Input(Guid = "fc81bd61-8f6b-49a6-ba35-b95949e1748c")]
+        public readonly InputSlot<int> Index = new InputSlot<int>();
+
+        [Input(Guid = "a74f1b5b-c09c-42a1-8c6d-279aaf6a5e39")]
+        public readonly InputSlot<string> Label = new InputSlot<string>();
+
     }
 }
 
