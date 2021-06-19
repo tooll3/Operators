@@ -45,7 +45,15 @@ namespace T3.Operators.Types.Id_f52db9a4_fde9_49ca_9ef7_131825c34e65
                               CpuAccessFlags = CpuAccessFlags.GetValue(context),
                               OptionFlags = ResourceOptionFlags.GetValue(context)
                           };
-            ResourceManager.Instance().CreateTexture2d(texDesc, "Texture2D", ref _textureResId, ref Texture.Value);
+
+            try
+            {
+                ResourceManager.Instance().CreateTexture2d(texDesc, "Texture2D", ref _textureResId, ref Texture.Value);
+            }
+            catch(Exception e)
+            {
+                Log.Error($"Failed to create Texture2D: {e.Message}", SymbolChildId);
+            }
             //ResourceManager.Instance().id .TestId = _textureResId;
         }
 
