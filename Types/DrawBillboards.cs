@@ -54,6 +54,9 @@ namespace T3.Operators.Types.Id_071c9aad_ecbf_47bf_b2f6_c43e8212d5b1
         [Input(Guid = "957c9ece-5e66-4aee-b0c6-03421cbaf075")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Texture_ = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
+        [Input(Guid = "2c2337ce-9890-4cb3-b85b-5d1edce66671")]
+        public readonly InputSlot<float> AlphaCut = new InputSlot<float>();
+
         private enum UsePointOrientationModes
         {
             Ignore,

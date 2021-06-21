@@ -14,8 +14,26 @@ namespace T3.Operators.Types.Id_c757cde3_511c_44cb_af62_39156557daa6
         [Input(Guid = "42042144-1ca7-41c7-92b8-21ea1136698a")]
         public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();
 
-        [Input(Guid = "f5037611-c425-4097-927f-08041dfee27f")]
-        public readonly InputSlot<T3.Core.DataTypes.MeshBuffers> Mesh = new InputSlot<T3.Core.DataTypes.MeshBuffers>();
+        [Input(Guid = "204a3776-c191-48b1-b502-2efc45adec67")]
+        public readonly InputSlot<System.Numerics.Vector4> Background = new InputSlot<System.Numerics.Vector4>();
+
+        [Input(Guid = "61eb78f5-d36e-479e-938f-a4fa4b31a1b6")]
+        public readonly InputSlot<float> LineWidth = new InputSlot<float>();
+
+        [Input(Guid = "ce4cc48f-07bb-4aa8-a410-2042732aaa25")]
+        public readonly InputSlot<float> FollowSurface = new InputSlot<float>();
+
+        [Input(Guid = "603078ef-e7bc-4ba8-87b2-81574a04cfb6")]
+        public readonly InputSlot<float> OffsetDirection = new InputSlot<float>();
+
+        [Input(Guid = "e069cd71-547b-4231-a6ff-33036337f805")]
+        public readonly InputSlot<float> RandomFaceDirection = new InputSlot<float>();
+
+        [Input(Guid = "50935c43-666f-4c31-825b-667bc83c327a")]
+        public readonly InputSlot<float> RandomFaceLighting = new InputSlot<float>();
+
+        [Input(Guid = "d84bd197-8788-4787-9883-c43bc0e285e7")]
+        public readonly InputSlot<T3.Core.DataTypes.Gradient> Shading = new InputSlot<T3.Core.DataTypes.Gradient>();
 
         [Input(Guid = "a9021b39-f236-4e29-98d7-e7805ceaa82f")]
         public readonly InputSlot<SharpDX.Direct3D11.CullMode> Culling = new InputSlot<SharpDX.Direct3D11.CullMode>();
@@ -29,23 +47,8 @@ namespace T3.Operators.Types.Id_c757cde3_511c_44cb_af62_39156557daa6
         [Input(Guid = "120e2a56-c7fa-4eb8-80b0-ff75cc924960")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> ColorMap = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
-        [Input(Guid = "e069cd71-547b-4231-a6ff-33036337f805")]
-        public readonly InputSlot<float> RandomFaceDirection = new InputSlot<float>();
-
-        [Input(Guid = "ce4cc48f-07bb-4aa8-a410-2042732aaa25")]
-        public readonly InputSlot<float> FollowSurface = new InputSlot<float>();
-
-        [Input(Guid = "603078ef-e7bc-4ba8-87b2-81574a04cfb6")]
-        public readonly InputSlot<float> OffsetDirection = new InputSlot<float>();
-
-        [Input(Guid = "61eb78f5-d36e-479e-938f-a4fa4b31a1b6")]
-        public readonly InputSlot<float> LineWidth = new InputSlot<float>();
-
-        [Input(Guid = "d84bd197-8788-4787-9883-c43bc0e285e7")]
-        public readonly InputSlot<T3.Core.DataTypes.Gradient> Shading = new InputSlot<T3.Core.DataTypes.Gradient>();
-
-        [Input(Guid = "50935c43-666f-4c31-825b-667bc83c327a")]
-        public readonly InputSlot<float> RandomFaceLighting = new InputSlot<float>();
+        [Input(Guid = "f5037611-c425-4097-927f-08041dfee27f")]
+        public readonly InputSlot<T3.Core.DataTypes.MeshBuffers> Mesh = new InputSlot<T3.Core.DataTypes.MeshBuffers>();
 
     }
 }

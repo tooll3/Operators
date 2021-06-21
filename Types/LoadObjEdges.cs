@@ -32,6 +32,12 @@ namespace T3.Operators.Types.Id_dd3d7e16_f33e_4fb0_89c6_4d8cbc9d702f
                 _description = System.IO.Path.GetFileName(path);
 
                 var mesh = ObjMesh.LoadFromFile(path);
+                if (mesh == null)
+                {
+                    Log.Error($"Failed to extract edge line points from obj {path}", SymbolChildId);
+                    return;
+                }
+                
                 var hashSet = new HashSet<int>();
 
                 foreach (var f in mesh.Faces)

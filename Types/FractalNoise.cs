@@ -22,8 +22,11 @@ namespace T3.Operators.Types.Id_97eb35ec_2825_4f63_8fdf_3fe38fa9e652
         public readonly InputSlot<System.Numerics.Vector2> Offset = new InputSlot<System.Numerics.Vector2>();
 
         [Input(Guid = "2381e8e4-a4e5-4691-9059-3b2096146970")]
-        public readonly InputSlot<System.Numerics.Vector2> Scale = new InputSlot<System.Numerics.Vector2>();
+        public readonly InputSlot<System.Numerics.Vector2> Stretch = new InputSlot<System.Numerics.Vector2>();
 
+        [Input(Guid = "59bde7a3-0952-46a8-8285-40f0a00488e6")]
+        public readonly InputSlot<float> Scale = new InputSlot<float>();
+        
         [Input(Guid = "4de046cc-26d7-466f-90b4-3a3bdd59acb3")]
         public readonly InputSlot<float> Evolution = new InputSlot<float>();
 
@@ -32,6 +35,7 @@ namespace T3.Operators.Types.Id_97eb35ec_2825_4f63_8fdf_3fe38fa9e652
 
         [Input(Guid = "37b24ceb-2d25-43e8-a31c-7caf62c2b7ee")]
         public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
+
     }
 }
 

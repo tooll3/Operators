@@ -66,8 +66,6 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
             switch (_state)
             {
                 case States.Idle:
-                    break;
-
                 case States.ShowConfiguration:
                     SourceOil.Value = SelectedSimulationMode.OilConsumption;
                     SourceGas.Value = SelectedSimulationMode.GasConsumption;
@@ -77,10 +75,10 @@ namespace T3.Operators.Types.Id_b0453fd5_e9c5_481a_aa6b_0040bd5c1318
 
                 case States.Simulating:
                 {
-                    SourceOil.Value = 0;
-                    SourceGas.Value = 0;
-                    SourceCoalMines.Value = 0;
-                    SourceCoal.Value = 0;
+                    // SourceOil.Value = 0;
+                    // SourceGas.Value = 0;
+                    // SourceCoalMines.Value = 0;
+                    // SourceCoal.Value = 0;
 
                     var complete = Progress >= 1;
                     if (complete)

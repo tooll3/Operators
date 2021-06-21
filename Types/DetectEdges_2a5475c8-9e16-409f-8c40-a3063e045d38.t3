@@ -1,0 +1,74 @@
+{
+  "Name": "DetectEdges",
+  "Id": "2a5475c8-9e16-409f-8c40-a3063e045d38",
+  "Namespace": "lib.img.generate",
+  "Inputs": [
+    {
+      "Id": "4041b6d8-15e5-428c-9967-7105975a46f7"/*Image*/,
+      "DefaultValue": null
+    },
+    {
+      "Id": "7f66aa8d-fbdd-47d6-ba38-07e257e19401"/*SampleRadius*/,
+      "DefaultValue": 0.0
+    },
+    {
+      "Id": "d3197979-b418-4182-b1c9-f3126b175f8d"/*Strength*/,
+      "DefaultValue": 0.0
+    },
+    {
+      "Id": "9dae724d-7be8-4f82-8907-28550ddbf6e6"/*Contrast*/,
+      "DefaultValue": 0.0
+    }
+  ],
+  "Children": [
+    {
+      "Id": "e471eb84-1a94-4e7e-940f-e5d92babfa94"/*_ImageFxShaderSetupStatic*/,
+      "SymbolId": "bd0b9c5b-c611-42d0-8200-31af9661f189",
+      "InputValues": [
+        {
+          "Id": "1e4e274b-60b2-4fe8-b275-ebef80d520a7"/*Source*/,
+          "Type": "System.String",
+          "Value": "Resources\\lib\\img\\fx\\img-detect-edges.hlsl"
+        },
+        {
+          "Id": "ff7cb999-aa3a-4e11-b9c8-d027bdb55ff6"/*OutputFormat*/,
+          "Type": "SharpDX.DXGI.Format",
+          "Value": "R16G16B16A16_Float"
+        }
+      ],
+      "Outputs": []
+    }
+  ],
+  "Connections": [
+    {
+      "SourceParentOrChildId": "e471eb84-1a94-4e7e-940f-e5d92babfa94",
+      "SourceSlotId": "d49f10dc-6617-4541-96d3-b58b0266b631",
+      "TargetParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "TargetSlotId": "caf8af48-8819-49b4-890b-89545c8c0ff5"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "7f66aa8d-fbdd-47d6-ba38-07e257e19401",
+      "TargetParentOrChildId": "e471eb84-1a94-4e7e-940f-e5d92babfa94",
+      "TargetSlotId": "4ef6f204-1894-4b0a-bb2d-8b5ecbad4040"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "d3197979-b418-4182-b1c9-f3126b175f8d",
+      "TargetParentOrChildId": "e471eb84-1a94-4e7e-940f-e5d92babfa94",
+      "TargetSlotId": "4ef6f204-1894-4b0a-bb2d-8b5ecbad4040"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "9dae724d-7be8-4f82-8907-28550ddbf6e6",
+      "TargetParentOrChildId": "e471eb84-1a94-4e7e-940f-e5d92babfa94",
+      "TargetSlotId": "4ef6f204-1894-4b0a-bb2d-8b5ecbad4040"
+    },
+    {
+      "SourceParentOrChildId": "00000000-0000-0000-0000-000000000000",
+      "SourceSlotId": "4041b6d8-15e5-428c-9967-7105975a46f7",
+      "TargetParentOrChildId": "e471eb84-1a94-4e7e-940f-e5d92babfa94",
+      "TargetSlotId": "b55312c4-6441-473f-a107-df50de60c72e"
+    }
+  ]
+}
