@@ -8,6 +8,7 @@ using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
 using Buffer = SharpDX.Direct3D11.Buffer;
+using Utilities = T3.Core.Utilities;
 
 namespace T3.Operators.Types.Id_724da755_2d0c_42ab_8335_8c88ec5fb078
 {
@@ -46,8 +47,9 @@ namespace T3.Operators.Types.Id_724da755_2d0c_42ab_8335_8c88ec5fb078
                 data.WriteRange(array);
                 data.Position = 0;
 
-                if (Buffer.Value == null)
+                if (Buffer.Value == null || Buffer.Value.Description.SizeInBytes != size)
                 {
+                    Utilities.Dispose(ref Buffer.Value);
                     var bufferDesc = new BufferDescription
                                      {
                                          Usage = ResourceUsage.Default,
