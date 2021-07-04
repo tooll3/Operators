@@ -20,6 +20,8 @@ namespace T3.Operators.Types.Id_cd43942a_887e_4e34_bc54_0c2e5e8bc2af
             Result.Value = BoolValue.GetValue(context) 
                                ? ResultForTrue.GetValue(context)
                                : ResultForFalse.GetValue(context);
+            ResultForTrue.DirtyFlag.Clear();
+            ResultForFalse.DirtyFlag.Clear();
         }
         
         [Input(Guid = "c644165f-3901-4dbf-8091-05f958e668e5")]
