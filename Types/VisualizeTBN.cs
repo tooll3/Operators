@@ -6,7 +6,7 @@ using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_dd353ac7_1f11_4dd6_aff5_5c557c695512
 {
-    public class VilualizeTBN : Instance<VilualizeTBN>
+    public class VisualizeTBN : Instance<VisualizeTBN>
     {
         [Output(Guid = "82fc9f76-6a6d-4464-a94d-e28a06d82205")]
         public readonly Slot<Command> Output = new Slot<Command>();

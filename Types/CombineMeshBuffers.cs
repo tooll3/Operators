@@ -1,4 +1,5 @@
 using SharpDX;
+using T3.Core;
 using T3.Core.DataTypes;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
@@ -12,7 +13,6 @@ namespace T3.Operators.Types.Id_e0849edd_ea1b_4657_b22d_5aa646318aa8
         public readonly Slot<MeshBuffers> MeshBuffers = new Slot<MeshBuffers>();
         
         
-
         public CombineMeshBuffers()
         {
             MeshBuffers.UpdateAction = Update;
@@ -20,6 +20,11 @@ namespace T3.Operators.Types.Id_e0849edd_ea1b_4657_b22d_5aa646318aa8
 
         private void Update(EvaluationContext context)
         {
+            if (PrepareCommand.IsConnected)
+            {
+                PrepareCommand.GetValue(context);
+            }
+            
             var vertices = Vertices.GetValue(context);
             var indices = Indices.GetValue(context);
             
@@ -36,6 +41,8 @@ namespace T3.Operators.Types.Id_e0849edd_ea1b_4657_b22d_5aa646318aa8
 
         private MeshBuffers _result = new MeshBuffers();
 
+        [Input(Guid = "5E82E351-E8A8-4594-83E3-E86C888D0588")]
+        public readonly InputSlot<Command> PrepareCommand = new InputSlot<Command>();
         
         [Input(Guid = "BA53B274-62CA-40A2-B8D2-87D08F0BC259")]
         public readonly InputSlot<BufferWithViews> Vertices = new InputSlot<BufferWithViews>();
