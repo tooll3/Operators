@@ -18,6 +18,9 @@ namespace T3.Operators.Types.Id_dd353ac7_1f11_4dd6_aff5_5c557c695512
         [Input(Guid = "d9287fce-b451-4d5e-83d8-fc8c9d39b9a8")]
         public readonly InputSlot<float> Length = new InputSlot<float>();
 
+        [Input(Guid = "d1cfa06d-a4bd-4975-90d4-5aa1ca39dc39")]
+        public readonly InputSlot<T3.Core.Operator.GizmoVisibility> Visibility = new InputSlot<T3.Core.Operator.GizmoVisibility>();
+
     }
 }
 
