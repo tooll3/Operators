@@ -73,6 +73,9 @@ namespace T3.Operators.Types.Id_fd31d208_12fe_46bf_bfa3_101211f8f497
 
         [Input(Guid = "28be4e86-6761-4d07-80bf-abf6f82897e4")]
         public readonly InputSlot<SharpDX.Direct3D11.CullMode> CullMode = new InputSlot<SharpDX.Direct3D11.CullMode>();
+
+        [Input(Guid = "7a76d5aa-1f44-4238-9333-7c2951becc31")]
+        public readonly InputSlot<bool> EnableZTest = new InputSlot<bool>();
     }
 }
 
