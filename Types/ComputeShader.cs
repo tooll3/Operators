@@ -5,11 +5,12 @@ using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
+using T3.Core.Operator.Interfaces;
 using T3.Core.Operator.Slots;
 
 namespace T3.Operators.Types.Id_a256d70f_adb3_481d_a926_caf35bd3e64c
 {
-    public class ComputeShader : Instance<ComputeShader>
+    public class ComputeShader : Instance<ComputeShader>, IDescriptiveGraphNode
     {
         [Output(Guid = "{6C118567-8827-4422-86CC-4D4D00762D87}")]
         public readonly Slot<SharpDX.Direct3D11.ComputeShader> ComputerShader = new Slot<SharpDX.Direct3D11.ComputeShader>();
@@ -22,6 +23,13 @@ namespace T3.Operators.Types.Id_a256d70f_adb3_481d_a926_caf35bd3e64c
         {
             ComputerShader.UpdateAction = Update;
         }
+        
+        public string GetDescriptiveString()
+        {
+            return _description;
+        }
+
+        private string _description = "ComputeShader";
 
         private void Update(EvaluationContext context)
         {
@@ -39,6 +47,15 @@ namespace T3.Operators.Types.Id_a256d70f_adb3_481d_a926_caf35bd3e64c
                 _computeShaderResId = resourceManager.CreateComputeShaderFromFile(sourcePath, entryPoint, debugName,
                                                                                   () => ComputerShader.DirtyFlag.Invalidate());
                 Log.Debug($"compute shader {sourcePath}:{entryPoint}", SymbolChildId);
+
+                try
+                {
+                    _description =  "ComputeShader\n" + Path.GetFileName(sourcePath);
+                }
+                catch
+                {
+                    Log.Warning($"Unable to get filename from {sourcePath}", SymbolChildId);
+                }
             }
             else
             {
