@@ -31,6 +31,9 @@ namespace T3.Operators.Types.Id_bd0b9c5b_c611_42d0_8200_31af9661f189
         [Input(Guid = "6cf68692-43a5-4a93-873c-99aa0d2dde93")]
         public readonly InputSlot<System.Numerics.Vector4> BufferColor = new InputSlot<System.Numerics.Vector4>();
 
+        [Input(Guid = "480d6c19-a33c-48b3-b9fa-aaf8bd31e6d9")]
+        public readonly InputSlot<bool> GenerateMips = new InputSlot<bool>();
+
     }
 }
 

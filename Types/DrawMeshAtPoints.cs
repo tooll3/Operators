@@ -30,6 +30,9 @@ namespace T3.Operators.Types.Id_42cb88bc_beb8_4d89_ac99_44b77be5f03e
 
         [Input(Guid = "329d8248-5f9f-4ad3-9b97-0f142e91ba05")]
         public readonly InputSlot<T3.Core.DataTypes.MeshBuffers> Mesh = new InputSlot<T3.Core.DataTypes.MeshBuffers>();
+
+        [Input(Guid = "c0351f55-ad27-4fbd-b3d5-668ff49f0ea0")]
+        public readonly InputSlot<SharpDX.Direct3D11.CullMode> CullMode = new InputSlot<SharpDX.Direct3D11.CullMode>();
     }
 }
 
