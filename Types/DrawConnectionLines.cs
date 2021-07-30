@@ -34,6 +34,18 @@ namespace T3.Operators.Types.Id_44d57201_addf_455c_9e31_709b018ba29f
 
         [Input(Guid = "5f64292f-24ac-4a6c-ac3f-402468b0391b")]
         public readonly InputSlot<float> LineWidth = new InputSlot<float>();
+
+        [Input(Guid = "09af14b3-b4c3-4044-b5d1-0d05ec29b6b4")]
+        public readonly InputSlot<float> ScatterLookUp = new InputSlot<float>();
+
+        [Input(Guid = "7d6b777c-3478-4dec-b2a4-dd286473a3f2")]
+        public readonly InputSlot<T3.Core.DataTypes.Gradient> LineGradient = new InputSlot<T3.Core.DataTypes.Gradient>();
+
+        [Input(Guid = "2356bf51-8e08-49f9-8d97-fac5bb6bc25e")]
+        public readonly InputSlot<int> BlendMode = new InputSlot<int>();
+
+        [Input(Guid = "32cd717f-59aa-4fad-9a39-138177124b8c")]
+        public readonly InputSlot<bool> EnableZWrite = new InputSlot<bool>();
     }
 }
 
