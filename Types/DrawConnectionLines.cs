@@ -46,6 +46,9 @@ namespace T3.Operators.Types.Id_44d57201_addf_455c_9e31_709b018ba29f
 
         [Input(Guid = "32cd717f-59aa-4fad-9a39-138177124b8c")]
         public readonly InputSlot<bool> EnableZWrite = new InputSlot<bool>();
+
+        [Input(Guid = "d719fdfa-a933-442e-90ce-70932b2a356f")]
+        public readonly InputSlot<bool> Reset = new InputSlot<bool>();
     }
 }
 
