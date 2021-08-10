@@ -30,7 +30,10 @@ namespace T3.Operators.Types.Id_e8d94dd7_eb54_42fe_a7b1_b43543dd457e
         {
             var filepath = FilePath.GetValue(context);
             if (!File.Exists(filepath))
+            {
+                Log.Debug($"File {filepath} doesn't exist");
                 return;
+            }
 
             var centerToBounds = CenterToBounds.GetValue(context);
             var scaleToBounds = ScaleToBounds.GetValue(context);
@@ -118,6 +121,7 @@ namespace T3.Operators.Types.Id_e8d94dd7_eb54_42fe_a7b1_b43543dd457e
                 _pointListWithSeparator.TypedElements[pointIndex] = Point.Separator();
                 pointIndex++;
             }
+            Log.Debug($"Loaded svg {filepath} with {pointIndex} points");
 
             ResultList.Value = _pointListWithSeparator;
         }

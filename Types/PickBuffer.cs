@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using T3.Core.DataTypes;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -29,6 +28,7 @@ namespace T3.Operators.Types.Id_e6bbbeef_08d8_4105_b84d_39edadb549c0
                 index = -index;
             
             index %= connections.Count;
+            //Log.Debug($"Fetching buffer with index {index}");
             Output.Value = connections[index].GetValue(context);
         }        
         
