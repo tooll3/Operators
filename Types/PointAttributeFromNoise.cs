@@ -73,6 +73,15 @@ namespace T3.Operators.Types.Id_7af59063_88d2_4697_985c_e09b8c77a43f
         [Input(Guid = "69fc36a5-b5bf-4c5f-bd0c-0c81473e4c5a")]
         public readonly InputSlot<float> Amount = new InputSlot<float>();
 
+        [Input(Guid = "0148ae7c-9c69-4dc1-9132-df243f0b31c7")]
+        public readonly InputSlot<T3.Core.DataTypes.Gradient> RemapNoise = new InputSlot<T3.Core.DataTypes.Gradient>();
+
+        [Input(Guid = "6e45fd16-cae7-4a74-8571-8e96e8a15bdb")]
+        public readonly InputSlot<bool> UseRemapCurve = new InputSlot<bool>();
+
+        [Input(Guid = "f02b93cc-b1ad-49e7-be2b-6ab1fd67f837")]
+        public readonly InputSlot<float> Variation = new InputSlot<float>();
+
 
         private enum Attributes
         {
