@@ -14,12 +14,12 @@ using Vector4 = System.Numerics.Vector4;
 
 namespace T3.Operators.Types.Id_b9999f07_da19_45b9_ae12_f9d0662c694c
 {
-    public class __BlendGradients : Instance<__BlendGradients>
+    public class BlendGradients : Instance<BlendGradients>
     {
         [Output(Guid = "D457933E-6642-471E-807A-6C22008BBD0C")]
         public readonly Slot<Gradient> Result = new Slot<Gradient>();
 
-        public __BlendGradients()
+        public BlendGradients()
         {
             Result.UpdateAction = Update;
         }
@@ -29,6 +29,7 @@ namespace T3.Operators.Types.Id_b9999f07_da19_45b9_ae12_f9d0662c694c
             var blendMode = (BlendModes)BlendMode.GetValue(context);
             var gradientA = GradientA.GetValue(context);
             var gradientB = GradientB.GetValue(context);
+            var mixFactor = MixFactor.GetValue(context).Clamp(0,1);
             
             _steps.Clear();
             foreach (var stepA in gradientA.Steps)
@@ -36,7 +37,7 @@ namespace T3.Operators.Types.Id_b9999f07_da19_45b9_ae12_f9d0662c694c
                 var positionA = stepA.NormalizedPosition;
                 var colorA = stepA.Color;
                 var colorB = gradientB.Sample(positionA);
-                var blendedColor = BlendColors(colorA, colorB, blendMode);
+                var blendedColor = BlendColors(colorA, colorB, blendMode, mixFactor);
                 _steps[positionA] = blendedColor;
             }
 
@@ -45,7 +46,7 @@ namespace T3.Operators.Types.Id_b9999f07_da19_45b9_ae12_f9d0662c694c
                 var positionB = stepB.NormalizedPosition;
                 var colorB = stepB.Color;
                 var colorA = gradientA.Sample(positionB);
-                var blendedColor = BlendColors(colorA, colorB, blendMode);
+                var blendedColor = BlendColors(colorA, colorB, blendMode, mixFactor);
                 _steps[positionB] = blendedColor;
             }
 
@@ -72,41 +73,39 @@ namespace T3.Operators.Types.Id_b9999f07_da19_45b9_ae12_f9d0662c694c
             Result.Value = result;
         }
 
-        private Vector4 BlendColors(Vector4 a, Vector4 b, BlendModes blendMode)
+        private Vector4 BlendColors(Vector4 a, Vector4 b, BlendModes blendMode, float mixFactor)
         {
             switch (blendMode)
             {
                 case BlendModes.Normal:
-                    break;
+                {
+                    var alpha = a.W + b.W - a.W*b.W;    
+                    return new Vector4(
+                                   (1.0f - b.W)*a.X + b.W*b.X,
+                                   (1.0f - b.W)*a.Y + b.W*b.Y,
+                                   (1.0f - b.W)*a.Z + b.W*b.Z,
+                                   alpha
+                                   );
+                }
                 
                 case BlendModes.Multiply:
                 {
                     var r = a * b;
-                    r.W = MathUtils.Clamp( r.W, 0, 1);
+                    r.W = a.W + b.W - a.W*b.W;
                     return r;
                 }
 
                 case BlendModes.Screen:
                 {
-                    // var r = a + b;
-                    // r.W = MathUtils.Clamp(0, 1, r.W);
-                    // return r;
-                    break;
-                }
-
-                case BlendModes.Add:
-                {
-                    var r = a + b;
-                    r.W = MathUtils.Clamp(r.W, 0, 1);
+                    var r=  Vector4.One-( Vector4.One-a) * (Vector4.One-b);
+                    r.W = a.W + b.W - a.W*b.W;
                     return r;
                 }
-                    
-                
-                case BlendModes.Color:
-                    
-                    break;
+
                 case BlendModes.Mix:
-                    return Vector4.Lerp(a, b, 0.5f);
+                {
+                    return Vector4.Lerp(a, b, mixFactor);
+                }
             }
             
             return Vector4.One;
@@ -119,8 +118,6 @@ namespace T3.Operators.Types.Id_b9999f07_da19_45b9_ae12_f9d0662c694c
             Normal,
             Multiply,
             Screen,
-            Add,
-            Color,
             Mix,
         }
         
@@ -134,7 +131,8 @@ namespace T3.Operators.Types.Id_b9999f07_da19_45b9_ae12_f9d0662c694c
         [Input(Guid = "EDABC753-2CCA-4F8D-8F14-2B25479C2188", MappedType = typeof(BlendModes))]
         public readonly InputSlot<int> BlendMode = new MultiInputSlot<int>();
         
-        
+        [Input(Guid = "C21371D6-1735-43D4-96FF-D04CBCE0FEC9", MappedType = typeof(BlendModes))]
+        public readonly InputSlot<float> MixFactor = new MultiInputSlot<float>();        
     }
     
     
