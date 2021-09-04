@@ -24,7 +24,7 @@ namespace T3.Operators.Types.Id_c5e39c67_256f_4cb9_a635_b62a0d9c796c
             _ratio = Ratio.GetValue(context);
             var time = OverrideTime.IsConnected
                            ? OverrideTime.GetValue(context)
-                           : EvaluationContext.BeatTime;
+                           : context.TimeInBars;
             
             var rate = Rate.GetValue(context);
 

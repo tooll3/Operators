@@ -22,7 +22,7 @@ namespace T3.Operators.Types.Id_9cb4d49e_135b_400b_a035_2b02c5ea6a72
 
         private void Update(EvaluationContext context)
         {
-            BeatTime.Value = (float)EvaluationContext.BeatTime * SpeedFactor.GetValue(context);
+            BeatTime.Value = (float)context.TimeInBars * SpeedFactor.GetValue(context);
             TimeInSecs.Value = (float)EvaluationContext.GlobalTimeInSecs * SpeedFactor.GetValue(context);
         }
         
