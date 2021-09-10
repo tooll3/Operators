@@ -22,16 +22,17 @@ namespace T3.Operators.Types.Id_d3dbc1cf_0642_4e36_85eb_95bd5a2950b5
 
         private void Update(EvaluationContext context)
         {
-            var previousTime = context.TimeInBars;
-            context.TimeInBars = NewTime.GetValue(context);
+            var previousKeyframeTime = context.TimeForKeyframes;
+            var previousEffectTime = context.TimeForEffects;
             
+            var newTime = NewTime.GetValue(context);
+            context.TimeForKeyframes = newTime;
+            context.TimeForEffects = newTime;
             
             // Execute subtree
-            //SubTree.DirtyFlag.Invalidate();
             Result.Value = SubTree.GetValue(context);
-            //Log.Debug($"old:{previousTime} / new:{context.TimeInBars}");
-            context.TimeInBars = previousTime;
-            //SubTree.DirtyFlag.Clear();
+            context.TimeForKeyframes = previousKeyframeTime;
+            context.TimeForEffects = previousEffectTime;
         }
         
         [Input(Guid = "6220E7DC-7AED-48B8-B419-29393988BBBE")]

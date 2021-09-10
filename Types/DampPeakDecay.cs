@@ -20,7 +20,7 @@ namespace T3.Operators.Types.Id_ef3a1411_e88c_43a8_83b4_931fdbf16c75
 
         private void Update(EvaluationContext context)
         {
-            var runTime = EvaluationContext.BeatTime;
+            var runTime = EvaluationContext.GlobalTimeForEffects;
             
             var wasEvaluatedThisFrame = runTime <= _lastEvalTime;
             if (wasEvaluatedThisFrame)

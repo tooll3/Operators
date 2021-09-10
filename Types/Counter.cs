@@ -41,7 +41,7 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
                 jump = true;
             }
 
-            _beatTime = EvaluationContext.BeatTime;
+            _beatTime = EvaluationContext.GlobalTimeForEffects;
 
             if (UseRate)
             {

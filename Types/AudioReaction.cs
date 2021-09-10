@@ -44,9 +44,9 @@ namespace T3.Operators.Types.Id_f8aed421_5e0e_4d1f_993c_1801153ebba8
 
             if (peakDetected && isModuloPeak)
             {
-                _lastModuloPeakTime = EvaluationContext.BeatTime;
+                _lastModuloPeakTime = EvaluationContext.GlobalTimeForEffects;
             }
-            var timeSinceModuloPeak = (float)(EvaluationContext.BeatTime - _lastModuloPeakTime);
+            var timeSinceModuloPeak = (float)(EvaluationContext.GlobalTimeForEffects - _lastModuloPeakTime);
             var timeSincePeak = usingModulo
                                     ? timeSinceModuloPeak
                                     : results.TimeSincePeak;

@@ -25,10 +25,10 @@ namespace T3.Operators.Types.Id_de8bc97a_8ef0_4d4a_9ffa_88046a2daf40
         {
             //Log.Debug("LastFrame duration:" + EvaluationContext.LastFrameDuration);
             var bufferContent = new TimeBufferLayout(
-                                                     (float)EvaluationContext.GlobalTimeInBars, 
-                                                     (float)context.TimeInBars, 
+                                                     (float)EvaluationContext.GlobalTimeForKeyframes, 
+                                                     (float)context.TimeForKeyframes, 
                                                      (float)EvaluationContext.RunTimeInSecs,
-                                                     (float)EvaluationContext.BeatTime,
+                                                     (float)EvaluationContext.GlobalTimeForEffects,
                                                      (float)EvaluationContext.LastFrameDuration);
             ResourceManager.Instance().SetupConstBuffer(bufferContent, ref Buffer.Value);
             Buffer.Value.DebugName = nameof(TimeConstBuffer);
