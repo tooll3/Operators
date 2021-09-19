@@ -35,6 +35,9 @@ namespace T3.Operators.Types.Id_15f056a3_ee8b_41a2_92c9_eb85153f8200
         [Input(Guid = "07c73fd8-6126-4e03-8f10-05d28a3c7ef4")]
         public readonly InputSlot<float> Gain = new InputSlot<float>();
 
+        [Input(Guid = "36e69f1c-412b-4a5c-8b17-d0f5d909f1cb")]
+        public readonly InputSlot<float> Offset = new InputSlot<float>();
+
 
         private enum Spaces
         {
