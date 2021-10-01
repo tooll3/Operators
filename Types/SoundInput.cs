@@ -36,7 +36,7 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
  
             //_analyzer.TimerUpdateEventHandler();
 
-            _analyzer.SetDeviceIndex((int)Input1.GetValue(context));
+            _analyzer.SetDeviceIndex((int)DeviceIndex.GetValue(context));
             FftBuffer.Value = _analyzer.FftBuffer.ToList();
             AvailableData.Value = _analyzer.AvailableData;
         }
@@ -49,7 +49,7 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
         }
 
         [Input(Guid = "e8a10146-ef7f-459c-a1f8-eef621a2c522")]
-        public readonly InputSlot<float> Input1 = new InputSlot<float>();
+        public readonly InputSlot<float> DeviceIndex = new InputSlot<float>();
     }
 
     /// <summary>
@@ -107,10 +107,11 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
 
             if (!_initialized)
             {
-                var str = _deviceList[_deviceIndex % _deviceList.Count];
-                var array = str.Split(' ');
-                _wasapiDeviceIndex = Convert.ToInt32(array[0]);
-                Log.Debug($"Initializing WASAPI for {str}... #{_wasapiDeviceIndex}");
+                var deviceInfo = _deviceList[_deviceIndex % _deviceList.Count];
+                
+                _wasapiDeviceIndex = deviceInfo.Index;
+                
+                Log.Debug($"Initializing WASAPI for {deviceInfo.Name}... #{_wasapiDeviceIndex}");
                 if (!BassWasapi.Init(_wasapiDeviceIndex, 
                                      Frequency: 0, 
                                      Channels: 0,
@@ -141,15 +142,27 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
             SetEnableWasapi(true);
         }
 
+        private struct DeviceInfo
+        {
+            public int Index;
+            public string Name;
+        }
+        
         private void InitBass()
         {
-            for (var i = 0; i < BassWasapi.DeviceCount; i++)
+            for (var deviceIndex = 0; deviceIndex < BassWasapi.DeviceCount; deviceIndex++)
             {
-                var device = BassWasapi.GetDeviceInfo(i);
-                if (device.IsEnabled && device.IsLoopback)
-                {
-                    _deviceList.Add(string.Format($"{i} - {device.Name}"));
-                }
+                var device = BassWasapi.GetDeviceInfo(deviceIndex);
+                var isValidInputDevice = device.IsEnabled && (device.IsLoopback || device.IsInput);
+                if (!isValidInputDevice)
+                    continue;
+                
+                Log.Debug($"Found Wasapi input ID:{_deviceList.Count} {device.Name} (at {deviceIndex})");
+                _deviceList.Add(new DeviceInfo
+                                    {
+                                        Index = deviceIndex,
+                                        Name = device.Name
+                                    });
             }
 
             Bass.Configure(Configuration.UpdateThreads, false);
@@ -231,7 +244,7 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
         private int _hangCounter;
         private const int FftSize = 256;
 
-        private readonly List<string> _deviceList = new List<string>();
+        private readonly List<DeviceInfo> _deviceList = new List<DeviceInfo>();
         private bool _initialized;
         private int _wasapiDeviceIndex;
     }

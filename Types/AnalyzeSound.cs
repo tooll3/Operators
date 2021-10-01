@@ -33,6 +33,9 @@ namespace T3.Operators.Types.Id_112ea923_a349_412f_8dd3_4d9d9fc42dc6
         [Input(Guid = "29ef504f-c6a4-4740-a5fe-95e45117fc32")]
         public readonly InputSlot<bool> Reset = new InputSlot<bool>();
 
+        [Input(Guid = "118618a7-c836-46ac-aa45-f738fc9e2e3e")]
+        public readonly InputSlot<float> DeviceIndex = new InputSlot<float>();
+
         [Output(Guid = "6ba78564-8315-49ef-9d47-eb96e0a52fd5")]
         public readonly Slot<T3.Core.Command> Detection = new Slot<T3.Core.Command>();
         
