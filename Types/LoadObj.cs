@@ -155,6 +155,10 @@ namespace T3.Operators.Types.Id_be52b670_9749_4c0d_89f0_d8b101395227
         [Input(Guid = "FFD22736-A600-4C97-A4A4-AD3526B8B35C")]
         public readonly InputSlot<bool> UseGPUCaching = new InputSlot<bool>();
 
+        [Input(Guid = "DDD22736-A600-4C97-A4A4-AD3526B8B35C")]
+        public readonly InputSlot<bool> ClearGPUCache = new InputSlot<bool>();
+
+        
         [Input(Guid = "AA19E71D-329C-448B-901C-565BF8C0DA4F", MappedType = typeof(ObjMesh.SortDirections))]
         public readonly InputSlot<int> SortVertices = new InputSlot<int>();
     }

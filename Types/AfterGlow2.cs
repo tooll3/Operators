@@ -26,6 +26,9 @@ namespace T3.Operators.Types.Id_04ac6a30_a2ad_4e43_8954_94dc852b0602
         [Input(Guid = "41165195-b54b-46b2-a928-1347870e8af9")]
         public readonly InputSlot<float> BlurAmount = new InputSlot<float>();
 
+        [Input(Guid = "47ec468d-b984-4653-879d-a08875a90d19")]
+        public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();
+
     }
 }
 

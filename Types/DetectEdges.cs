@@ -22,6 +22,9 @@ namespace T3.Operators.Types.Id_2a5475c8_9e16_409f_8c40_a3063e045d38
 
         [Input(Guid = "9dae724d-7be8-4f82-8907-28550ddbf6e6")]
         public readonly InputSlot<float> Contrast = new InputSlot<float>();
+
+        [Input(Guid = "6d10c73c-37b8-443b-94d9-854b04027a3c")]
+        public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();
     }
 }
 

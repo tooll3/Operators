@@ -18,7 +18,11 @@ namespace T3.Operators.Types.Id_49796f63_27a8_4714_ba69_2073488ca833
 
         private void Update(EvaluationContext context)
         {
-            var t = (float)EvaluationContext.GlobalTimeForEffects * SpeedFactor.GetValue(context);
+            //var t = (float)EvaluationContext.GlobalTimeForEffects * SpeedFactor.GetValue(context);
+
+            var t = OverrideTime.IsConnected
+                        ? OverrideTime.GetValue(context)
+                        : (float)context.TimeForEffects * SpeedFactor.GetValue(context);
             
             //var value = Value.GetValue(context);
             var amplitude = Amplitude.GetValue(context);
@@ -37,7 +41,7 @@ namespace T3.Operators.Types.Id_49796f63_27a8_4714_ba69_2073488ca833
         public readonly InputSlot<float> SpeedFactor = new InputSlot<float>();
         
         [Input(Guid = "f82759c6-154d-41cb-97a8-8b1eea635f6b")]
-        public readonly InputSlot<float> Value = new InputSlot<float>();
+        public readonly InputSlot<float> OverrideTime = new InputSlot<float>();
 
         [Input(Guid = "2C9A6B15-AC0D-4708-A6C8-2834CFC3086C")]
         public readonly InputSlot<System.Numerics.Vector2> Amplitude = new InputSlot<System.Numerics.Vector2>();
