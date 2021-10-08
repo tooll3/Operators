@@ -22,13 +22,36 @@ namespace T3.Operators.Types.Id_c5e39c67_256f_4cb9_a635_b62a0d9c796c
             _bias = Bias.GetValue(context);
             _shape = (Shapes)Shape.GetValue(context);
             _ratio = Ratio.GetValue(context);
+            var f = (SpeedFactors)AllowSpeedFactor.GetValue(context);
+            switch (f)
+            {
+                case SpeedFactors.None:
+                    _speedFactor = 1;
+                    break;
+                case SpeedFactors.FactorA:
+                {
+                    if (!context.FloatVariables.TryGetValue(SpeedFactorA, out _speedFactor))
+                        _speedFactor = 1;
+                    
+                    break;
+                }
+                case SpeedFactors.FactorB:
+                    if (!context.FloatVariables.TryGetValue(SpeedFactorB, out _speedFactor))
+                        _speedFactor = 1;
+
+                    break;
+                
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
             var time = OverrideTime.IsConnected
                            ? OverrideTime.GetValue(context)
                            : context.TimeForEffects;
             
             var rate = Rate.GetValue(context);
 
-            var t = time * rate;
+            var t = time * rate * _speedFactor;
             LastFraction =(float)MathUtils.Fmod(t,1);
             
             var normalizedValue = CalcNormalizedValueForFraction(t);
@@ -69,6 +92,7 @@ namespace T3.Operators.Types.Id_c5e39c67_256f_4cb9_a635_b62a0d9c796c
         private float _bias;
         private float _phase;
         private float _ratio = 1;
+        private float _speedFactor = 1;
 
         
         public float LastFraction;
@@ -105,5 +129,17 @@ namespace T3.Operators.Types.Id_c5e39c67_256f_4cb9_a635_b62a0d9c796c
 
         [Input(Guid = "76ca8a8b-f252-4687-805e-fb7a86a16567")]
         public readonly InputSlot<float> OverrideTime = new InputSlot<float>();
+        
+        [Input(Guid = "6ca8a8b2-f252-4687-805e-fb7a86a16567", MappedType = typeof(SpeedFactors))]
+        public readonly InputSlot<int> AllowSpeedFactor = new InputSlot<int>();
+
+        private enum SpeedFactors {
+            None,
+            FactorA,
+            FactorB,
+        }
+        
+        public const string SpeedFactorA = "SpeedFactorA";
+        public const string SpeedFactorB = "SpeedFactorB";
     }
 }

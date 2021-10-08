@@ -29,16 +29,39 @@ namespace T3.Operators.Types.Id_2a0c932a_eb81_4a7d_aeac_836a23b0b789
             //     Command.Invalidate();
             //     Command.GetValue(context);
             // }
+
             var name = VariableName.GetValue(context);
+            var newValue = Value.GetValue(context);
             if (string.IsNullOrEmpty(name))
             {
                 Log.Warning($"Can't set variable with invalid name {name}");
                 return;
             }
-            context.FloatVariables[name] = Value.GetValue(context);
+            if (!SubGraph.IsConnected)
+            {
+                context.FloatVariables[name] = newValue;
+            }
+            else
+            {
+                var previous = 0f;
+                var hadPreviousValue = context.FloatVariables.TryGetValue(name, out previous);
+                context.FloatVariables[name] = newValue;
+                SubGraph.GetValue(context);
+                if (hadPreviousValue)
+                {
+                    context.FloatVariables[name] = newValue;
+                }
+                else
+                {
+                    context.FloatVariables.Remove(name);
+                }
+            }
         }
-        
 
+        
+        [Input(Guid = "E64D396E-855A-4B20-A8F5-39B4F98E8036")]
+        public readonly InputSlot<Command> SubGraph = new InputSlot<Command>();
+        
         [Input(Guid = "6EE64D39-855A-4B20-A8F5-39B4F98E8036")]
         public readonly InputSlot<string> VariableName = new InputSlot<string>();
         
@@ -46,24 +69,6 @@ namespace T3.Operators.Types.Id_2a0c932a_eb81_4a7d_aeac_836a23b0b789
         public readonly InputSlot<float> Value = new InputSlot<float>();
 
         
-        // [Input(Guid = "2A88C9A0-6809-44BB-9B29-65FE0FE1B37A")]
-        // public readonly InputSlot<float> TimeSinceBeat = new InputSlot<float>();
-        //
-        // [Input(Guid = "F8834F35-9BDC-4403-90F4-97E288A1457C")]
-        // public readonly InputSlot<float> BeatCount = new InputSlot<float>();
-        //
-        // [Input(Guid = "C61ECF04-63CD-4357-AD45-1852BAC450D5")]
-        // public readonly InputSlot<float> BeatSum = new InputSlot<float>();
-        //
-        //
-        // [Input(Guid = "2A88C9A0-6809-44BB-9B29-65FE0FE1B37A")]
-        // public readonly InputSlot<float> TimeSinceHiHat = new InputSlot<float>();
-        //
-        // [Input(Guid = "F8834F35-9BDC-4403-90F4-97E288A1457C")]
-        // public readonly InputSlot<float> HiHatCount = new InputSlot<float>();
-        //
-        // [Input(Guid = "C61ECF04-63CD-4357-AD45-1852BAC450D5")]
-        // public readonly InputSlot<float> HiHatSum = new InputSlot<float>();
 
         
     }
