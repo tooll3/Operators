@@ -1,5 +1,6 @@
 using System;
 using T3.Core;
+using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
@@ -44,7 +45,7 @@ namespace T3.Operators.Types.Id_c5e39c67_256f_4cb9_a635_b62a0d9c796c
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
+
             var time = OverrideTime.IsConnected
                            ? OverrideTime.GetValue(context)
                            : context.TimeForEffects;
@@ -133,7 +134,7 @@ namespace T3.Operators.Types.Id_c5e39c67_256f_4cb9_a635_b62a0d9c796c
         [Input(Guid = "6ca8a8b2-f252-4687-805e-fb7a86a16567", MappedType = typeof(SpeedFactors))]
         public readonly InputSlot<int> AllowSpeedFactor = new InputSlot<int>();
 
-        private enum SpeedFactors {
+        public enum SpeedFactors {
             None,
             FactorA,
             FactorB,

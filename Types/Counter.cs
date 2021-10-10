@@ -5,6 +5,7 @@ using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
 using T3.Core.Operator.Slots;
+using T3.Operators.Types.Id_c5e39c67_256f_4cb9_a635_b62a0d9c796c;
 
 namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
 {
@@ -32,8 +33,29 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
             _blending = Blending.GetValue(context);
             var reset = TriggerReset.GetValue(context);
             var jump = TriggerCount.GetValue(context);
-            //var jump = false;
+            var f = (LFO.SpeedFactors)AllowSpeedFactor.GetValue(context);
+            switch (f)
+            {
+                case LFO.SpeedFactors.None:
+                    _speedFactor = 1;
+                    break;
+                case LFO.SpeedFactors.FactorA:
+                {
+                    if (!context.FloatVariables.TryGetValue(LFO.SpeedFactorA, out _speedFactor))
+                        _speedFactor = 1;
+                    
+                    break;
+                }
+                case LFO.SpeedFactors.FactorB:
+                    if (!context.FloatVariables.TryGetValue(LFO.SpeedFactorB, out _speedFactor))
+                        _speedFactor = 1;
 
+                    break;
+                
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
             if (!_initialized || reset || float.IsNaN(_count))
             {
                 _count = 0;
@@ -41,7 +63,7 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
                 jump = true;
             }
 
-            _beatTime = EvaluationContext.GlobalTimeForEffects;
+            _beatTime = EvaluationContext.GlobalTimeForEffects * _speedFactor;
 
             if (UseRate)
             {
@@ -102,7 +124,7 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
             Result.DirtyFlag.Clear();
             WasStep.DirtyFlag.Clear();
         }
-
+ 
         public float Fragment =>
             UseRate
                 ? (float)((_beatTime - _lastJumpTime) * _rate).Clamp(0, 1)
@@ -110,6 +132,7 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
 
         private bool UseRate => _rate > -1;
 
+        private float _speedFactor=1;
         private float _rate;
         private float _phase;
 
@@ -173,6 +196,9 @@ namespace T3.Operators.Types.Id_11882635_4757_4cac_a024_70bb4e8b504c
 
         [Input(Guid = "E0C386B9-A987-4D11-9171-2971FA759827")]
         public readonly InputSlot<bool> SmoothBlending = new InputSlot<bool>();
+        
+        [Input(Guid = "C386B9E0-A987-4D11-9171-2971FA759827", MappedType = typeof(LFO.SpeedFactors))]
+        public readonly InputSlot<int> AllowSpeedFactor = new InputSlot<int>();
 
     }
 }

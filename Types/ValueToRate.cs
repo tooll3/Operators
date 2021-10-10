@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using T3.Core;
 using T3.Core.Logging;
 using T3.Core.Operator;
 using T3.Core.Operator.Attributes;
@@ -31,7 +32,8 @@ namespace T3.Operators.Types.Id_8171c2f5_96df_41f6_884c_dbd004ae8a17
 
             var lines = rates.Split('\n');
             var stepCount = lines.Length;
-            var index = (int)((v - 1f / stepCount) * stepCount);
+            //var index = (int)((v - 1f / stepCount) * stepCount);
+            var index = (int)((stepCount*v).Clamp(0,stepCount));
             if (index < 0 || index >= stepCount)
                 return;
 

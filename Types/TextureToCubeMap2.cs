@@ -16,6 +16,9 @@ namespace T3.Operators.Types.Id_e85d98cf_9240_4f5d_8df6_35425d325778
         [Input(Guid = "d5aa1045-5471-42c3-bfc2-c5fa9663817f")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Image = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
+        [Input(Guid = "8eeb0224-ade3-4808-a60b-9c490e42229a")]
+        public readonly InputSlot<int> Resolution = new InputSlot<int>();
+
     }
 }
 

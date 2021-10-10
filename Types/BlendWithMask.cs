@@ -24,6 +24,9 @@ namespace T3.Operators.Types.Id_7da55d23_0bd1_457b_a036_9b6b51d2e34b
         [Input(Guid = "d08813be-bd43-4229-86b7-4e53b62b8561")]
         public readonly InputSlot<SharpDX.Direct3D11.Texture2D> Mask = new InputSlot<SharpDX.Direct3D11.Texture2D>();
 
+        [Input(Guid = "ff0e3f81-1340-40e7-9c95-b88938d63901")]
+        public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();
+
     }
 }
 
