@@ -25,6 +25,9 @@ namespace T3.Operators.Types.Id_ca4fe8c4_cf61_4196_84e4_d69dc8869a25
         [Output(Guid = "671F198D-4173-4FE9-AF5A-FCD5D0A71895", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<ShaderResourceView> BrdfLookupMap = new Slot<ShaderResourceView>();
         
+        [Output(Guid = "AB644673-9EAA-4CEC-9663-FBFDC445D112", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<Texture2D> PrefilteredSpecularMap = new Slot<Texture2D>();
+        
         public GetPbrParameters()
         {
             PbrParameterBuffer.UpdateAction = Update;
@@ -43,6 +46,7 @@ namespace T3.Operators.Types.Id_ca4fe8c4_cf61_4196_84e4_d69dc8869a25
             RoughnessSpecularMetallicOcclusionMap.Value = context.PbrMaterialTextures.RoughnessSpecularMetallicOcclusionMap;
             NormalMap.Value = context.PbrMaterialTextures.NormalMap;
             BrdfLookupMap.Value = context.PbrMaterialTextures.BrdfLookUpMap;
+            PrefilteredSpecularMap.Value = context.PrbPrefilteredSpecular;
         }
     }
 }
