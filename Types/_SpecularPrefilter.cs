@@ -35,9 +35,12 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
                 return;
             }
 
+            var exposure = Exposure.GetValue(context);
+
             //ConstantBuffers.GetValues(ref _constantBuffers, context);
             ShaderResources.GetValues(ref _shaderResourceViews, context);
             SamplerStates.GetValues(ref _samplerStates, context);
+            
             var vs = VertexShader.GetValue(context);
             var gs = GeometryShader.GetValue(context);
 
@@ -52,13 +55,10 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
                 FilteredCubeMap.Value = null;
                 return;
             }
-
-        
-
+            
             var device = ResourceManager.Instance().Device;
             var deviceContext = device.ImmediateContext;
-
-
+            
             // Vertex shader stage
             var vsStage = deviceContext.VertexShader;
 
@@ -218,9 +218,10 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
 
                     if (indexToUse != -1)
                     {
-                        var param = _samplingParameters[indexToUse];
-                        param.roughness = roughness;
-                        ResourceManager.Instance().SetupConstBuffer(param, ref _settingsBuffer);
+                        var parameterData = _samplingParameters[indexToUse];
+                        parameterData.roughness = roughness;
+                        parameterData.exposure = exposure;
+                        ResourceManager.Instance().SetupConstBuffer(parameterData, ref _settingsBuffer);
                         break;
                     }
                 }
@@ -296,7 +297,10 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
             
             [FieldOffset(2 * 4)]
             public int numSamples;
-            
+
+            [FieldOffset(3 * 4)]
+            public float exposure;
+
             private const int Stride = 4 * 4;
         }
         
@@ -372,6 +376,9 @@ namespace T3.Operators.Types.Id_cc3cc712_9e87_49c6_b04b_49a12cf2ba75
         [Input(Guid = "26459A4A-1BD8-4987-B41B-6C354CC48D47")]
         public readonly MultiInputSlot<ShaderResourceView> ShaderResources = new MultiInputSlot<ShaderResourceView>();
 
+        [Input(Guid = "86D3EEE1-A4B2-4F23-9C5E-39830C90D0DA")]
+        public readonly InputSlot<float> Exposure = new InputSlot<float>();
+        
         [Input(Guid = "B994BFF4-D1AC-4A30-A6DC-DC7BBE05D15D")]
         public readonly MultiInputSlot<SamplerState> SamplerStates = new MultiInputSlot<SamplerState>();
 

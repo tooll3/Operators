@@ -26,9 +26,8 @@ namespace T3.Operators.Types.Id_944d1903_cd23_49ca_9b0d_2fc73bfcfd30
         {
             var id = Id.GetValue(context);
             
-            var previousMap = context.PrbPrefilteredSpecular;
+            //var previousMap = context.PrbPrefilteredSpecular;
             var tex = PrefilteredSpecularMap.GetValue(context) ?? PbrContextSettings.WhitePixelTexture;
-
             var hadPreviousTexture = context.ContextTextures.TryGetValue(id, out var previousTexture);
             context.ContextTextures[id] = tex;
             // {
@@ -43,7 +42,7 @@ namespace T3.Operators.Types.Id_944d1903_cd23_49ca_9b0d_2fc73bfcfd30
             SubTree.GetValue(context);
             if (hadPreviousTexture)
             {
-                context.ContextTextures[id] = previousMap;
+                context.ContextTextures[id] = previousTexture;
             }
             else
             {

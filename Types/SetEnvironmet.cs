@@ -20,6 +20,9 @@ namespace T3.Operators.Types.Id_f3b66187_34b2_4018_8380_279f9f296ded
         [Input(Guid = "c3c815fa-8672-4d99-99a7-986844f2fc45")]
         public readonly InputSlot<bool> UpdateLive = new InputSlot<bool>();
 
+        [Input(Guid = "71c54c8e-a95f-47e8-b126-0cdaa89ae49b")]
+        public readonly InputSlot<float> Exposure = new InputSlot<float>();
+
     }
 }
 

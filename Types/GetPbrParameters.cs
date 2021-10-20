@@ -22,6 +22,9 @@ namespace T3.Operators.Types.Id_ca4fe8c4_cf61_4196_84e4_d69dc8869a25
         [Output(Guid = "B815BF49-0E44-4DB0-BF32-9C7D188D6AA2", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
         public readonly Slot<ShaderResourceView> NormalMap = new Slot<ShaderResourceView>();
 
+        [Output(Guid = "671F198D-4173-4FE9-AF5A-FCD5D0A71895", DirtyFlagTrigger = DirtyFlagTrigger.Animated)]
+        public readonly Slot<ShaderResourceView> BrdfLookupMap = new Slot<ShaderResourceView>();
+        
         public GetPbrParameters()
         {
             PbrParameterBuffer.UpdateAction = Update;
@@ -29,6 +32,7 @@ namespace T3.Operators.Types.Id_ca4fe8c4_cf61_4196_84e4_d69dc8869a25
             EmissiveColorMap.UpdateAction = Update;
             RoughnessSpecularMetallicOcclusionMap.UpdateAction = Update;
             NormalMap.UpdateAction = Update;
+            BrdfLookupMap.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)
@@ -38,6 +42,7 @@ namespace T3.Operators.Types.Id_ca4fe8c4_cf61_4196_84e4_d69dc8869a25
             EmissiveColorMap.Value = context.PbrMaterialTextures.EmissiveColorMap;
             RoughnessSpecularMetallicOcclusionMap.Value = context.PbrMaterialTextures.RoughnessSpecularMetallicOcclusionMap;
             NormalMap.Value = context.PbrMaterialTextures.NormalMap;
+            BrdfLookupMap.Value = context.PbrMaterialTextures.BrdfLookUpMap;
         }
     }
 }
