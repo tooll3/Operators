@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Threading;
+using System.Timers;
+//using System.Windows.Threading;
 using ManagedBass;
 using ManagedBass.Wasapi;
 using T3.Core.Logging;
@@ -60,8 +61,8 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
     {
         public Analyzer()
         {
-            _timer.Interval = TimeSpan.FromMilliseconds(1000/120f);
-            _timer.Tick += TimerUpdateEventHandler;
+            _timer.Interval = 1000.0/120.0;
+            _timer.Elapsed += TimerUpdateEventHandler;
             
             // ReSharper disable once RedundantDelegateCreation
             _wasapiProcedure = new WasapiProcedure(Process); // capture to avoid freeing by GC
@@ -72,7 +73,7 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
         public void Dispose()
         {
             Log.Debug("Disposing Sound analyser");
-            _timer.Tick -= TimerUpdateEventHandler;
+            _timer.Elapsed -= TimerUpdateEventHandler;
             Free();
         }
 
@@ -101,7 +102,7 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
                 BassWasapi.Stop();
                 //BassWasapi.Free();
                 _timer.Stop();
-                _timer.IsEnabled = false;
+                _timer.Enabled = false;
                 return;
             }
 
@@ -131,7 +132,7 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
 
             BassWasapi.Start();
             System.Threading.Thread.Sleep(100);
-            _timer.IsEnabled = true;
+            _timer.Enabled = true;
             _timer.Start();
             
         }
@@ -235,7 +236,7 @@ namespace T3.Operators.Types.Id_b72d968b_0045_408d_a2f9_5c739c692a66
 
         private int _deviceIndex;
         private int _lastLevel;
-        private readonly DispatcherTimer _timer = new DispatcherTimer(); // Timer that refreshes the display
+        private readonly Timer _timer = new Timer(); // Timer that refreshes the display
         
         
         public readonly float[] FftBuffer =  new float[FftSize];
