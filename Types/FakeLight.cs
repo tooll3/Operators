@@ -25,11 +25,20 @@ namespace T3.Operators.Types.Id_6820b166_1782_43b9_bc5c_6b4f63b16f86
         [Input(Guid = "7f0c127b-ee60-44c8-8490-2d3599cde4a2")]
         public readonly InputSlot<float> Twist = new InputSlot<float>();
 
-        [Input(Guid = "f93db0c6-c5ed-40da-9677-0c284618f5bb")]
-        public readonly InputSlot<float> SampleRadius = new InputSlot<float>();
-
         [Input(Guid = "03298545-a5d6-44d5-bb7c-4747172d2667")]
         public readonly InputSlot<System.Numerics.Vector2> Direction = new InputSlot<System.Numerics.Vector2>();
+
+        [Input(Guid = "9d5e3055-c17e-4013-963d-e17c76b707c1")]
+        public readonly InputSlot<System.Numerics.Vector4> HighlightColor = new InputSlot<System.Numerics.Vector4>();
+
+        [Input(Guid = "9c9e9e49-2f3a-4746-ac1f-c5fb1b3dd96b")]
+        public readonly InputSlot<System.Numerics.Vector4> MidColor = new InputSlot<System.Numerics.Vector4>();
+
+        [Input(Guid = "d162a7e1-1906-45bc-a896-10ee2c2483fe")]
+        public readonly InputSlot<float> BlurRadius = new InputSlot<float>();
+
+        [Input(Guid = "f93db0c6-c5ed-40da-9677-0c284618f5bb")]
+        public readonly InputSlot<float> SampleRadius = new InputSlot<float>();
 
         [Input(Guid = "3c615aa0-61b7-43c5-bea3-8d1110b4f5cd")]
         public readonly InputSlot<SharpDX.Size2> Resolution = new InputSlot<SharpDX.Size2>();

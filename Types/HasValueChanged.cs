@@ -12,10 +12,14 @@ namespace T3.Operators.Types.Id_146fae64_18da_4183_9794_a322f47c669e
         [Output(Guid = "35ab8188-77a1-4cd9-b2ad-c503034e49f9")]
         public readonly Slot<bool> HasIncreased = new Slot<bool>();
 
+        [Output(Guid = "ab818835-77a1-4cd9-b2ad-c503034e49f9")]
+        public readonly Slot<float> Delta = new Slot<float>();
+
 
         public HasValueChanged()
         {
             HasIncreased.UpdateAction = Update;
+            Delta.UpdateAction = Update;
         }
 
         private void Update(EvaluationContext context)
@@ -43,6 +47,7 @@ namespace T3.Operators.Types.Id_146fae64_18da_4183_9794_a322f47c669e
             }
             HasIncreased.Value = hasChanged;
 
+            Delta.Value = newValue - _lastValue;
             _lastValue = newValue;
         }
 

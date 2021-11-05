@@ -25,6 +25,9 @@ namespace T3.Operators.Types.Id_2a5475c8_9e16_409f_8c40_a3063e045d38
 
         [Input(Guid = "6d10c73c-37b8-443b-94d9-854b04027a3c")]
         public readonly InputSlot<System.Numerics.Vector4> Color = new InputSlot<System.Numerics.Vector4>();
+
+        [Input(Guid = "c0a17636-f75b-45c0-ab63-cb0f9130a7ac")]
+        public readonly InputSlot<float> MixOriginal = new InputSlot<float>();
     }
 }
 

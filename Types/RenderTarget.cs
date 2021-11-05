@@ -39,13 +39,19 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
         {
             var resourceManager = ResourceManager.Instance();
             var device = resourceManager.Device;
-
+            
             Size2 size = Resolution.GetValue(context);
+            bool generateMips = GenerateMips.GetValue(context);
+            var withDepthBuffer = WithDepthBuffer.GetValue(context);
+            var clear = Clear.GetValue(context);
+            var clearColor = ClearColor.GetValue(context);
+            var reference = TextureReference.GetValue(context);
+            
             if (size.Width == 0 || size.Height == 0)
             {
                 size = context.RequestedResolution;
             }
-
+            
             if (size.Width <= 0 || size.Height <= 0 || size.Width > MaximumTexture2DSize || size.Height > MaximumTexture2DSize)
             {
                 Log.Warning("Invalid texture size: " + size);
@@ -54,9 +60,6 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
             _sampleCount = Multisampling.GetValue(context).Clamp(1, 32);
 
-            bool generateMips = GenerateMips.GetValue(context);
-            var withDepthBuffer = WithDepthBuffer.GetValue(context);
-            
             UpdateTextures(device, size, TextureFormat.GetValue(context), withDepthBuffer ? Format.R32_Typeless : Format.Unknown, generateMips);
 
             var deviceContext = device.ImmediateContext;
@@ -73,13 +76,12 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
             deviceContext.OutputMerger.SetTargets(_multiSampledDepthBufferDsv, _multiSampledColorBufferRtv);
 
             // Clear
-            var clear = Clear.GetValue(context);
-            var c = ClearColor.GetValue(context);
+
             if (clear || !_wasClearedOnce)
             {
                 try
                 {
-                    deviceContext.ClearRenderTargetView(_multiSampledColorBufferRtv, new Color(c.X, c.Y, c.Z, c.W));
+                    deviceContext.ClearRenderTargetView(_multiSampledColorBufferRtv, new Color(clearColor.X, clearColor.Y, clearColor.Z, clearColor.W));
                     if (_multiSampledDepthBufferDsv != null)
                     {
                         deviceContext.ClearDepthStencilView(_multiSampledDepthBufferDsv, DepthStencilClearFlags.Depth, 1.0f, 0);
@@ -101,7 +103,7 @@ namespace T3.Operators.Types.Id_f9fe78c5_43a6_48ae_8e8c_6cdbbc330dd1
 
             if (TextureReference.IsConnected)
             {
-                var reference = TextureReference.GetValue(context);
+                
                 reference.ColorTexture = ColorTexture;
                 reference.DepthTexture = DepthTexture;
             }

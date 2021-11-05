@@ -23,6 +23,9 @@ namespace T3.Operators.Types.Id_007b7ad9_e8f2_4830_be0f_d3f5f3444683
         [Input(Guid = "f8072fb7-9769-4fd1-8159-4f3d06b27994")]
         public readonly InputSlot<System.Numerics.Vector4> BackColor = new InputSlot<System.Numerics.Vector4>();
 
+        [Input(Guid = "8d09202e-e73c-4998-9fe6-3d0211531bd3")]
+        public readonly InputSlot<bool> OverlaySeed = new InputSlot<bool>();
+
     }
 }
 
