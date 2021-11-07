@@ -54,7 +54,7 @@ namespace T3.Operators.Types.Id_6b8db50a_383c_486c_8065_3aefe8c85576
             public float MaxSpeed;
 
             [FieldOffset(7 * 4)]
-            public string TestString;
+            public float TestString;
         }
 
         private readonly StructuredList<Boid> _boids = new StructuredList<Boid>(10);
